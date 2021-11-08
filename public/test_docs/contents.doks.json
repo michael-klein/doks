@@ -1,0 +1,16 @@
+[
+    {
+        "path": "bla.md",
+        "name": "bla"
+    },
+    {
+        "path": "bla.md",
+        "name": "bla",
+        "doks": [
+            {
+                "path": "bla.md",
+                "name": "bla"
+            }
+        ]
+    }
+]

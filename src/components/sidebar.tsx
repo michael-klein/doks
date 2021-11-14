@@ -4,18 +4,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem from "@mui/lab/TreeItem";
-import { useCallback, useState } from "preact/hooks";
-import { useObservable } from "../hooks/use_observable";
-import { combineLatest } from "rxjs";
+import { Fragment } from "preact";
+import { useCallback, useState, useEffect } from "preact/hooks";
+import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import {
-  Contents,
-  contents$,
-  currentProject$,
-  Project,
-  projects$,
-} from "../store/contents";
-import { useEffect } from "react";
+import { Contents, contents$, Project, projects$ } from "../store/contents";
 import {
   FormControl,
   InputLabel,
@@ -23,11 +16,70 @@ import {
   NativeSelect,
   Select,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router";
+import { Params, useNavigate, useParams } from "react-router";
+import { useParamsObservable } from "../hooks/use_params_observable";
+import { useObservable, useObservableState } from "observable-hooks";
+import { useObservableAndState } from "../hooks/use_observable_and_state";
+import {
+  SUSPEND,
+  useObservableWithSuspense,
+} from "../hooks/use_observable_with_suspense";
+import { Suspense } from "preact/compat";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
 }
+const RenderTree = ({
+  projectObservable$,
+  params,
+}: {
+  projectObservable$: Observable<Project>;
+  params: Readonly<Params<string>>;
+}) => {
+  const content = useObservableWithSuspense(() =>
+    combineLatest(contents$, projectObservable$).pipe(
+      map(([contents, project]) => {
+        console.log("c+p", contents, project);
+        try {
+          return createTree(contents.get(project.slug), project);
+        } catch (e) {
+          return undefined;
+        }
+      })
+    )
+  );
+  const renderContent = (contentIn: ContentTree[]) => {
+    return contentIn.map((item) => {
+      return (
+        <TreeItem nodeId={item.slug} label={item.name}>
+          {renderContent(item.children)}
+        </TreeItem>
+      );
+    });
+  };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!params.contentSlug) {
+      navigate(
+        `/docs/${params.projectSlug}/${params.contentSlug || content[0].slug}`,
+        { replace: true }
+      );
+    }
+  }, [content, params]);
+
+  return (
+    <Fragment>
+      {content.map((item) => {
+        return (
+          <TreeItem nodeId={item.slug} label={item.name}>
+            {renderContent(item.children)}
+          </TreeItem>
+        );
+      })}
+    </Fragment>
+  );
+};
 const createTree = (contents: Map<string, Contents>, project: Project) => {
   let current: ContentTree[] = [
     {
@@ -69,62 +121,41 @@ export function Sidebar() {
     }
   };
 
-  const [projects] = useObservable(projects$);
-  const [project, projectObservable] = useObservable((suspend) =>
-    combineLatest(projects$, currentProject$).pipe(
-      map(([projects, currentProject]) => projects.get(currentProject))
-    )
-  );
-  const handleExpandClick = () => {
-    setExpanded((oldExpanded) =>
-      oldExpanded.length === 0
-        ? Array.from(contents$.value.get(currentProject$.value).values()).map(
-            (i) => i.slug
-          )
-        : []
-    );
-  };
-  const [content] = useObservable((suspend) =>
-    combineLatest(contents$, projectObservable).pipe(
-      map(([contents, project]) => {
-        try {
-          return createTree(contents.get(project.slug), project);
-        } catch (e) {
-          return suspend();
-        }
-      })
-    )
-  );
+  const [projects] = useObservableAndState(() => projects$);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    setExpanded(
-      Array.from(contents$.value.get(project.slug).values())
-        .filter((item) => project.depthMap.get(item.depth) < 3)
-        .map((item) => item.slug)
-    );
-  }, [project]);
-
-  useEffect(() => {
-    if (!params.projectSlug || !params.contentSlug) {
-      navigate(
-        `/docs/${params.projectSlug || project.slug}/${
-          params.contentSlug || content[0].slug
-        }`,
-        { replace: true }
+  const [project, projectObservable$] = useObservableAndState(
+    (inputs$) =>
+      combineLatest(projects$, inputs$).pipe(
+        map(([projects, [currentProject]]) => projects.get(currentProject))
+      ),
+    [params.projectSlug]
+  );
+  const handleExpandClick = useCallback(() => {
+    if (project) {
+      setExpanded((oldExpanded) =>
+        oldExpanded.length === 0
+          ? Array.from(contents$.value.get(project.slug).values()).map(
+              (i) => i.slug
+            )
+          : []
       );
     }
-  }, [project, content, params]);
+  }, [project]);
 
-  const renderContent = (content: ContentTree[]) => {
-    return content.map((item) => {
-      return (
-        <TreeItem nodeId={item.slug} label={item.name}>
-          {renderContent(item.children)}
-        </TreeItem>
-      );
-    });
-  };
+  const navigate = useNavigate();
+  const contents = useObservableState(contents$);
+  useEffect(() => {
+    if (project) {
+      const content = contents.get(project.slug);
+      if (content) {
+        setExpanded(
+          Array.from(content.values())
+            .filter((item) => project.depthMap.get(item.depth) < 3)
+            .map((item) => item.slug)
+        );
+      }
+    }
+  }, [project, contents]);
 
   const onNodeSelect = useCallback(
     (nodeId: string) => {
@@ -177,7 +208,12 @@ export function Sidebar() {
           }}
           selected={params.contentSlug}
         >
-          {renderContent(content)}
+          <Suspense fallback="loading sidebar">
+            <RenderTree
+              projectObservable$={projectObservable$}
+              params={params}
+            ></RenderTree>
+          </Suspense>
         </TreeView>
       )}
     </Box>

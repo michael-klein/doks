@@ -10,7 +10,6 @@ import {
   addOrUpdateContents,
   addOrUpdateProject,
   Contents,
-  currentProject$,
 } from "./store/contents";
 import "./css/reset";
 import { queueDocument } from "./store/documents";
@@ -34,9 +33,6 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
         name: project.name,
         depthMap: new Map(),
       });
-      if (!currentProject$.value) {
-        currentProject$.next(projectSlug);
-      }
       await fetch(join(project.root, "contents.doks"))
         .then((res) => res.text())
         .then((contentsText) => {

@@ -6,11 +6,22 @@ import { map } from "rxjs/operators";
 import { BreadCrumbs } from "../components/breadcrumbs";
 import { Content } from "../components/content";
 import { Sidebar } from "../components/sidebar";
-import { useObservable } from "../hooks/use_observable";
-import { projects$ } from "../store/contents";
+import { contents$, projects$ } from "../store/contents";
+import { useCallback, useState, useEffect } from "preact/hooks";
+import { useObservable, useObservableState } from "observable-hooks";
 
 const Project = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const contents = useObservableState(contents$);
+  console.log(params);
+  useEffect(() => {
+    if (!params.projectSlug && contents.size > 0) {
+      navigate(`/docs/${Array.from(contents.keys())[0]}`, {
+        replace: true,
+      });
+    }
+  }, [params, contents]);
   return (
     <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
       <BreadCrumbs></BreadCrumbs>
@@ -20,7 +31,9 @@ const Project = () => {
             <Sidebar></Sidebar>
           </Suspense>
         </Grid>
-        {params.contentSlug && <Content></Content>}
+        <Suspense fallback={<div>Loading content...</div>}>
+          {params.contentSlug && <Content></Content>}
+        </Suspense>
       </Grid>
     </Container>
   );
@@ -29,6 +42,7 @@ const Project = () => {
 export const Docs = () => {
   return (
     <Routes>
+      <Route path="/:projectSlug" element={<Project></Project>}></Route>
       <Route
         path="/:projectSlug/:contentSlug"
         element={<Project></Project>}

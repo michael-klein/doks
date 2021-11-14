@@ -14,7 +14,6 @@ export interface Project {
   slug: string;
   depthMap: Map<number, number>;
 }
-export const currentProject$ = new BehaviorSubject<string>(undefined);
 export const projects$ = new BehaviorSubject<Map<string, Project>>(new Map());
 export const contents$ = new BehaviorSubject<
   Map<string, Map<string, Contents>>
@@ -26,6 +25,7 @@ export const addOrUpdateProject = (project: Project) => {
     })
   );
 };
+contents$.subscribe((v) => console.log("contents", v));
 export const addOrUpdateContents = (
   contentsIn: Contents,
   projectSlug: string

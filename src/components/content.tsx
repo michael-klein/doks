@@ -1,25 +1,34 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { combineLatest } from "rxjs";
-import { useObservable } from "../hooks/use_observable";
-import { currentProject$, projects$ } from "../store/contents";
+import { contents$, projects$ } from "../store/contents";
 import { map } from "rxjs/operators";
 import { useEffect } from "preact/hooks";
+import { useParamsObservable } from "../hooks/use_params_observable";
+import { useObservable, useObservableState } from "observable-hooks";
+import { documents$ } from "../store/documents";
+import { htmdx } from "htmdx";
+import { h } from "preact";
 
 export const Content = () => {
-  const { contentSlug, projectSlug } = useParams();
-  const navigate = useNavigate();
-  const [project] = useObservable(() =>
-    combineLatest(projects$, currentProject$).pipe(
-      map(([projects, currentProject]) => projects.get(currentProject))
+  const params = useParams();
+  const document = useObservableState(
+    useObservable(
+      (input$) => {
+        return combineLatest(input$, documents$).pipe(
+          map(([input, documents]) => {
+            return documents.get(input[0].contentSlug);
+          })
+        );
+      },
+      [params]
     )
   );
-  console.log(contentSlug, projectSlug);
-
+  console.log("document", document);
   return (
     <Grid item xs={9}>
       <Paper elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
-        <Typography>asdasd</Typography>
+        <Typography>{htmdx(document.mdx, h, {})}</Typography>
       </Paper>
     </Grid>
   );

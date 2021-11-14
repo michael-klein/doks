@@ -13,6 +13,7 @@ import {
   currentProject$,
 } from "./store/contents";
 import "./css/reset";
+import { queueDocument } from "./store/documents";
 
 export interface DocOptionsProject {
   root: string;
@@ -53,6 +54,7 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
               projectSlug,
             };
             addOrUpdateContents(item, projectSlug);
+            queueDocument(item, project, false);
           });
         });
     })

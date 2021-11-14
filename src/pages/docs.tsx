@@ -7,7 +7,7 @@ import { BreadCrumbs } from "../components/breadcrumbs";
 import { Content } from "../components/content";
 import { Sidebar } from "../components/sidebar";
 import { useObservable } from "../hooks/use_observable";
-import { currentProject$, projects$ } from "../store/contents";
+import { projects$ } from "../store/contents";
 
 const Project = () => {
   const params = useParams();

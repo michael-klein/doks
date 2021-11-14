@@ -7,20 +7,19 @@ import { map } from "rxjs/operators";
 import { useEffect } from "preact/hooks";
 
 export const Content = () => {
-  const params = useParams();
+  const { contentSlug, projectSlug } = useParams();
   const navigate = useNavigate();
   const [project] = useObservable(() =>
     combineLatest(projects$, currentProject$).pipe(
       map(([projects, currentProject]) => projects.get(currentProject))
     )
   );
-  console.log(params);
+  console.log(contentSlug, projectSlug);
+
   return (
     <Grid item xs={9}>
       <Paper elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
-        <Typography>
-          <Outlet />
-        </Typography>
+        <Typography>asdasd</Typography>
       </Paper>
     </Grid>
   );

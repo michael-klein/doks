@@ -8,8 +8,10 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { BehaviorSubject } from "rxjs";
+import { SearchOverlay } from "./search";
 
-const Search = styled("div")(({ theme }) => ({
+const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -44,16 +46,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
     },
   },
 }));
-
+const showSearch$ = new BehaviorSubject(false);
 export function Navbar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position: "sticky", top: 0 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -64,17 +63,22 @@ export function Navbar() {
           >
             Docs
           </Typography>
-          <Search>
+          <SearchInputWrapper>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              onFocus={(e) => {
+                e.target.blur();
+                showSearch$.next(true);
+              }}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </SearchInputWrapper>
         </Toolbar>
       </AppBar>
+      <SearchOverlay show$={showSearch$}></SearchOverlay>
     </Box>
   );
 }

@@ -1,9 +1,8 @@
 import { ThemeProvider } from "@mui/material";
 import slugify from "@sindresorhus/slugify";
 import { join } from "path-browserify";
-import { render } from "preact";
+import { render, ComponentChild, Fragment } from "preact";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import { Navbar } from "./components/navbar";
 import { theme } from "./css/theme";
 import { Docs } from "./pages/docs";
 import {
@@ -13,6 +12,7 @@ import {
 } from "./store/contents";
 import "./css/reset";
 import { queueDocument } from "./store/documents";
+import { Navbar } from "./components/navbar";
 
 export interface DocOptionsProject {
   root: string;
@@ -26,7 +26,7 @@ export interface DocOptions {
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
     projects.map(async (project) => {
-      const projectSlug = slugify(project.name + project.root);
+      const projectSlug = slugify(project.root);
       addOrUpdateProject({
         path: project.root,
         slug: projectSlug,
@@ -46,7 +46,7 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
               path: path.trim(),
               name: name?.trim() || path.trim(),
               depth,
-              slug: slugify(path.trim()),
+              slug: slugify(projectSlug + "-" + path.trim()),
               projectSlug,
             };
             addOrUpdateContents(item, projectSlug);
@@ -54,6 +54,15 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
           });
         });
     })
+  );
+};
+
+const Layout = ({ children }: { children: ComponentChild }) => {
+  return (
+    <Fragment>
+      <Navbar></Navbar>
+      {children}
+    </Fragment>
   );
 };
 
@@ -71,11 +80,24 @@ export const docs = (options: DocOptions) => {
 
   render(
     <ThemeProvider theme={theme}>
-      <Navbar></Navbar>
       <HashRouter>
         <Routes>
-          <Route path="/docs/*" element={<Docs></Docs>}></Route>
-          <Route path="*" element={<Docs></Docs>}></Route>
+          <Route
+            path="/docs/*"
+            element={
+              <Layout>
+                <Docs></Docs>
+              </Layout>
+            }
+          ></Route>
+          <Route
+            path="*"
+            element={
+              <Layout>
+                <Docs></Docs>
+              </Layout>
+            }
+          ></Route>
         </Routes>
       </HashRouter>
     </ThemeProvider>,

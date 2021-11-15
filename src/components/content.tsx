@@ -28,7 +28,9 @@ export const Content = () => {
   return (
     <Grid item xs={9}>
       <Paper elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
-        <Typography>{htmdx(document.mdx, h, {})}</Typography>
+        <Typography>
+          {document?.mdx ? htmdx(document.mdx, h, {}) : " Loading..."}
+        </Typography>
       </Paper>
     </Grid>
   );

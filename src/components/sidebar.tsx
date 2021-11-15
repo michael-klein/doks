@@ -20,10 +20,7 @@ import { Params, useNavigate, useParams } from "react-router";
 import { useParamsObservable } from "../hooks/use_params_observable";
 import { useObservable, useObservableState } from "observable-hooks";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
-import {
-  SUSPEND,
-  useObservableWithSuspense,
-} from "../hooks/use_observable_with_suspense";
+import { useObservableWithSuspense } from "../hooks/use_observable_with_suspense";
 import { Suspense } from "preact/compat";
 
 interface ContentTree extends Partial<Contents> {
@@ -39,7 +36,6 @@ const RenderTree = ({
   const content = useObservableWithSuspense(() =>
     combineLatest(contents$, projectObservable$).pipe(
       map(([contents, project]) => {
-        console.log("c+p", contents, project);
         try {
           return createTree(contents.get(project.slug), project);
         } catch (e) {
@@ -57,16 +53,6 @@ const RenderTree = ({
       );
     });
   };
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!params.contentSlug) {
-      navigate(
-        `/docs/${params.projectSlug}/${params.contentSlug || content[0].slug}`,
-        { replace: true }
-      );
-    }
-  }, [content, params]);
 
   return (
     <Fragment>
@@ -166,6 +152,18 @@ export function Sidebar() {
     [project, params]
   );
 
+  useEffect(() => {
+    if (!params.contentSlug && contents.get(params.projectSlug)) {
+      navigate(
+        `/docs/${params.projectSlug}/${
+          params.contentSlug ||
+          Array.from(contents.get(params.projectSlug).values())[0].slug
+        }`,
+        { replace: true }
+      );
+    }
+  }, [contents, params]);
+
   return (
     <Box sx={{ height: 270, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}>
       {projects.size > 1 && (
@@ -174,17 +172,24 @@ export function Sidebar() {
             <InputLabel variant="standard" htmlFor="uncontrolled-native">
               Project
             </InputLabel>
-            <NativeSelect
-              defaultValue={project.slug}
-              inputProps={{
-                name: "age",
-                id: "uncontrolled-native",
-              }}
-            >
-              {Array.from(projects).map(([slug, p]) => (
-                <option value={slug}>{p.name}</option>
-              ))}
-            </NativeSelect>
+            {project && (
+              <NativeSelect
+                defaultValue={project.slug}
+                inputProps={{
+                  name: "age",
+                  id: "uncontrolled-native",
+                }}
+                onChange={(e) => {
+                  navigate(`/docs/${e.target.value}`, {
+                    replace: true,
+                  });
+                }}
+              >
+                {Array.from(projects).map(([slug, p]) => (
+                  <option value={slug}>{p.name}</option>
+                ))}
+              </NativeSelect>
+            )}
           </FormControl>
         </Box>
       )}

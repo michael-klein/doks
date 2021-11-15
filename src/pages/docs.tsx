@@ -3,7 +3,6 @@ import { Suspense } from "preact/compat";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { BreadCrumbs } from "../components/breadcrumbs";
 import { Content } from "../components/content";
 import { Sidebar } from "../components/sidebar";
 import { contents$, projects$ } from "../store/contents";
@@ -24,7 +23,6 @@ const Project = () => {
   }, [params, contents]);
   return (
     <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
-      <BreadCrumbs></BreadCrumbs>
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Suspense fallback={<div>Loading sidebar...</div>}>

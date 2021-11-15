@@ -7,5 +7,9 @@ docs({
       root: "test_docs",
       name: "test docs",
     },
+    {
+      root: "test_docs2",
+      name: "test docs 2",
+    },
   ],
 });

@@ -1,14 +1,13 @@
 import { Container, Grid } from "@mui/material";
+import { useObservableState } from "observable-hooks";
+import { Fragment } from "preact";
 import { Suspense } from "preact/compat";
+import { useEffect } from "preact/hooks";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { combineLatest } from "rxjs";
-import { map } from "rxjs/operators";
 import { Content } from "../components/content";
+import { Navbar } from "../components/navbar";
 import { Sidebar } from "../components/sidebar";
-import { contents$, projects$ } from "../store/contents";
-import { useCallback, useState, useEffect } from "preact/hooks";
-import { useObservable, useObservableState } from "observable-hooks";
-
+import { contents$ } from "../store/contents";
 const Project = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -37,15 +36,42 @@ const Project = () => {
   );
 };
 
+const Layout = ({ children }: { children: ComponentChild }) => {
+  return (
+    <Fragment>
+      <Navbar></Navbar>
+      {children}
+    </Fragment>
+  );
+};
+
 export const Docs = () => {
   return (
     <Routes>
-      <Route path="/:projectSlug" element={<Project></Project>}></Route>
+      <Route
+        path="/:projectSlug"
+        element={
+          <Layout>
+            <Project></Project>
+          </Layout>
+        }
+      ></Route>
       <Route
         path="/:projectSlug/:contentSlug"
-        element={<Project></Project>}
+        element={
+          <Layout>
+            <Project></Project>
+          </Layout>
+        }
       ></Route>
-      <Route path="/" element={<Project></Project>}></Route>
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Project></Project>
+          </Layout>
+        }
+      ></Route>
     </Routes>
   );
 };

@@ -56,16 +56,6 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
     })
   );
 };
-
-const Layout = ({ children }: { children: ComponentChild }) => {
-  return (
-    <Fragment>
-      <Navbar></Navbar>
-      {children}
-    </Fragment>
-  );
-};
-
 export const docs = (options: DocOptions) => {
   const link = document.createElement("link");
   link.setAttribute("ref", "stylesheet");
@@ -82,22 +72,8 @@ export const docs = (options: DocOptions) => {
     <ThemeProvider theme={theme}>
       <HashRouter>
         <Routes>
-          <Route
-            path="/docs/*"
-            element={
-              <Layout>
-                <Docs></Docs>
-              </Layout>
-            }
-          ></Route>
-          <Route
-            path="*"
-            element={
-              <Layout>
-                <Docs></Docs>
-              </Layout>
-            }
-          ></Route>
+          <Route path="/docs/*" element={<Docs></Docs>}></Route>
+          <Route path="*" element={<Docs></Docs>}></Route>
         </Routes>
       </HashRouter>
     </ThemeProvider>,

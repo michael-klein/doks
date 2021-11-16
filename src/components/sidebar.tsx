@@ -11,6 +11,7 @@ import { map } from "rxjs/operators";
 import { Contents, contents$, Project, projects$ } from "../store/contents";
 import {
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   NativeSelect,
@@ -22,6 +23,11 @@ import { useObservable, useObservableState } from "observable-hooks";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { useObservableWithSuspense } from "../hooks/use_observable_with_suspense";
 import { Suspense } from "preact/compat";
+import { styled } from "@mui/system";
+import Fab from "@mui/material/Fab";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import { EastRounded } from "@mui/icons-material";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
@@ -94,8 +100,51 @@ const createTree = (contents: Map<string, Contents>, project: Project) => {
   return current[0].children;
 };
 
+const SidebarWrapper = styled(Grid)(({ theme }) => ({
+  height: 270,
+  flexGrow: 1,
+  maxWidth: 400,
+  overflowY: "auto",
+  [" .menu-button"]: {
+    display: "none",
+    position: "fixed",
+    right: 20,
+    bottom: 20,
+  },
+  [theme.breakpoints.down("sm")]: {
+    paddingRight: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    position: "fixed",
+    top: "55px",
+    width: "100%",
+    maxWidth: "100%",
+    flexBasis: "initial",
+    height: "0%",
+    padingRight: "10px",
+    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#1c2128",
+    overflow: "hidden",
+    transition: "height .3s ease",
+    ["&.show"]: {
+      height: "100%",
+    },
+    [" .menu-button"]: {
+      display: "flex",
+    },
+    ["& > *"]: {
+      width: "100%",
+    },
+    ["ul *, form *, .MuiBox-root *"]: {
+      fontSize: "1.2rem !important",
+    },
+  },
+}));
+
 export function Sidebar() {
   const [expanded, setExpanded] = useState([]);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const params = useParams();
 
   const handleToggle = (
@@ -165,7 +214,14 @@ export function Sidebar() {
   }, [contents, params]);
 
   return (
-    <Box sx={{ height: 270, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}>
+    <SidebarWrapper item xs={3} className={showMobileSidebar ? "show" : ""}>
+      <Fab color="primary" aria-label="add" className="menu-button">
+        {showMobileSidebar ? (
+          <CloseIcon onClick={() => setShowMobileSidebar(false)} />
+        ) : (
+          <MenuIcon onClick={() => setShowMobileSidebar(true)} />
+        )}
+      </Fab>
       {projects.size > 1 && (
         <Box sx={{ mb: 1 }}>
           <FormControl fullWidth>
@@ -221,6 +277,6 @@ export function Sidebar() {
           </Suspense>
         </TreeView>
       )}
-    </Box>
+    </SidebarWrapper>
   );
 }

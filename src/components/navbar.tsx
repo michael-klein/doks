@@ -63,7 +63,13 @@ export function Navbar() {
           >
             Docs
           </Typography>
-          <SearchInputWrapper>
+          <SearchInputWrapper
+            sx={{ cursor: "text" }}
+            onClick={(e) => {
+              e.target.blur();
+              showSearch$.next(true);
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

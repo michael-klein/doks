@@ -24,6 +24,7 @@ const style = {
   maxWidth: 600,
   minHeight: "60vh",
   maxHeight: "80vh",
+  padding: 2,
   ["& > div"]: {
     bgcolor: "background.paper",
     border: "2px solid background.paper",
@@ -107,7 +108,6 @@ export const SearchOverlay = ({
     )
   );
 
-  console.log(currentDocuments);
   const navigate = useNavigate();
   const params = useParams();
 

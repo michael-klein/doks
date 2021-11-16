@@ -21,18 +21,9 @@ const Project = () => {
     }
   }, [params, contents]);
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <Suspense fallback={<div>Loading sidebar...</div>}>
-            <Sidebar></Sidebar>
-          </Suspense>
-        </Grid>
-        <Suspense fallback={<div>Loading content...</div>}>
-          {params.contentSlug && <Content></Content>}
-        </Suspense>
-      </Grid>
-    </Container>
+    <Suspense fallback={<div>Loading content...</div>}>
+      {params.contentSlug && <Content></Content>}
+    </Suspense>
   );
 };
 
@@ -40,7 +31,14 @@ const Layout = ({ children }: { children: ComponentChild }) => {
   return (
     <Fragment>
       <Navbar></Navbar>
-      {children}
+      <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
+        <Grid container spacing={2}>
+          <Suspense fallback={<div>Loading sidebar...</div>}>
+            <Sidebar></Sidebar>
+          </Suspense>
+          {children}
+        </Grid>
+      </Container>
     </Fragment>
   );
 };

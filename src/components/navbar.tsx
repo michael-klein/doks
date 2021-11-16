@@ -8,8 +8,11 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, combineLatest, map } from "rxjs";
 import { SearchOverlay } from "./search";
+import { LinearProgress } from "@mui/material";
+import { useObservableAndState } from "../hooks/use_observable_and_state";
+import { fetchingDocuments$, queuedDocuments$ } from "../store/documents";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -49,10 +52,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+const Progress = styled(LinearProgress)(({ theme }) => ({
+  position: "fixed",
+  top: 0,
+  right: 0,
+  left: 0,
+}));
 const showSearch$ = new BehaviorSubject(false);
 export function Navbar() {
+  const [hasDocumentsFetching] = useObservableAndState(() =>
+    combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
+      map(
+        ([queuedDocuments, fetchingDocuments]) =>
+          queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0
+      )
+    )
+  );
   return (
     <Box sx={{ flexGrow: 1, position: "sticky", top: 0 }}>
+      {hasDocumentsFetching && <Progress />}
       <AppBar position="static">
         <Toolbar>
           <Typography

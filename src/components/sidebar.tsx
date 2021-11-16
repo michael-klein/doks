@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import TreeItem from "@mui/lab/TreeItem";
 import TreeView from "@mui/lab/TreeView";
-import { FormControl, Grid, InputLabel, NativeSelect } from "@mui/material";
+import { CircularProgress, FormControl, Grid, InputLabel, NativeSelect } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
@@ -273,7 +273,7 @@ export function Sidebar() {
           }}
           selected={params.contentSlug}
         >
-          <Suspense fallback="loading sidebar">
+          <Suspense fallback={<CircularProgress />}>
             <RenderTree
               projectObservable$={projectObservable$}
               params={params}

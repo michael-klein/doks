@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { contents$, projects$ } from "../store/contents";
@@ -35,7 +35,7 @@ export const Content = () => {
     <ContentWrapper item xs={9}>
       <Paper elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
         <Typography>
-          {document?.mdx ? htmdx(document.mdx, h, {}) : " Loading..."}
+          {document?.mdx ? htmdx(document.mdx, h, {}) : <CircularProgress />}
         </Typography>
       </Paper>
     </ContentWrapper>

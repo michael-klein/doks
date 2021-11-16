@@ -12,13 +12,13 @@ import {
 } from "./store/contents";
 import "./css/reset";
 import { queueDocument } from "./store/documents";
-import { Navbar } from "./components/navbar";
 
 export interface DocOptionsProject {
   root: string;
   name: string;
 }
 export interface DocOptions {
+  title?: string;
   targetNode?: HTMLElement;
   projects: DocOptionsProject[];
 }
@@ -28,6 +28,7 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
     projects.map(async (project) => {
       const projectSlug = slugify(project.root);
       addOrUpdateProject({
+        ...project,
         path: project.root,
         slug: projectSlug,
         name: project.name,
@@ -50,7 +51,7 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
               projectSlug,
             };
             addOrUpdateContents(item, projectSlug);
-            queueDocument(item, project, false);
+            queueDocument(item, false);
           });
         });
     })

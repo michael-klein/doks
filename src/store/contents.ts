@@ -1,5 +1,6 @@
 import produce, { enableMapSet } from "immer";
 import { BehaviorSubject } from "rxjs";
+import { DocOptionsProject } from "../main";
 enableMapSet();
 export interface Contents {
   name: string;
@@ -8,7 +9,7 @@ export interface Contents {
   projectSlug: string;
   depth: number;
 }
-export interface Project {
+export interface Project extends DocOptionsProject {
   path: string;
   name: string;
   slug: string;

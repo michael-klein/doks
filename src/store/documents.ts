@@ -1,8 +1,8 @@
 import produce from "immer";
 import { join } from "path-browserify";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
 import { DocOptionsProject } from "../main";
-import { Contents, Project } from "./contents";
+import { Contents, Project, projects$ } from "./contents";
 
 export interface DoksDocument extends Contents {
   mdx: string;
@@ -10,10 +10,6 @@ export interface DoksDocument extends Contents {
 export const documents$ = new BehaviorSubject<Map<string, DoksDocument>>(
   new Map()
 );
-
-documents$.subscribe((d) => {
-  console.log("document", d);
-});
 
 export const queuedDocuments$ = new BehaviorSubject<{
   docs: Map<string, Contents>;
@@ -23,13 +19,15 @@ export const queuedDocuments$ = new BehaviorSubject<{
   order: [],
 });
 
-const fetchingDocuments = new Set<string>();
+export const fetchingDocuments$ = new BehaviorSubject(new Set<string>());
 
-const fetchDocument = async (
-  contents: Contents,
-  project: DocOptionsProject
-) => {
-  console.log("fetch", contents.path);
+const fetchDocument = async (contents: Contents) => {
+  const project = projects$.value.get(contents.projectSlug);
+  fetchingDocuments$.next(
+    produce(fetchingDocuments$.value, (draft) => {
+      draft.add(contents.slug);
+    })
+  );
   await fetch(join(project.root, contents.path))
     .then((res) => res.text())
     .then((mdx) => {
@@ -38,40 +36,44 @@ const fetchDocument = async (
           draft.set(contents.slug, { ...contents, mdx });
         })
       );
-      fetchingDocuments.delete(contents.slug);
+      fetchingDocuments$.next(
+        produce(fetchingDocuments$.value, (draft) => {
+          draft.delete(contents.slug);
+        })
+      );
     });
 };
 
-const shiftQueue = (project: DocOptionsProject) => {
-  if (fetchingDocuments.size < 4 && queuedDocuments$.value.order.length > 0) {
+const shiftQueue = () => {
+  if (
+    fetchingDocuments$.value.size < 4 &&
+    queuedDocuments$.value.order.length > 0
+  ) {
+    let contents: Contents;
     queuedDocuments$.next(
       produce(queuedDocuments$.value, (draft) => {
         const slug = draft.order.shift();
-        const contents = queuedDocuments$.value.docs.get(slug);
+        contents = queuedDocuments$.value.docs.get(slug);
         draft.docs.delete(slug);
-        fetchDocument(contents, project);
       })
     );
+    fetchDocument(contents);
   }
 };
-queuedDocuments$.subscribe((v) => {
-  console.log("queued", v);
 
-  if (!fetchingDocuments) {
-  }
-});
+fetchingDocuments$.subscribe(shiftQueue);
 
 export const queueDocument = (
   contents: Contents,
-  project: DocOptionsProject,
   prioritize: boolean = false
 ) => {
   if (
-    documents$.value.has(contents.slug) &&
-    !fetchingDocuments.has(contents.slug)
+    documents$.value.has(contents.slug) ||
+    fetchingDocuments$.value.has(contents.slug)
   ) {
     return;
   }
+  console.log("queue", contents.slug);
   queuedDocuments$.next(
     produce(queuedDocuments$.value, (draft) => {
       draft.docs.set(contents.slug, contents);
@@ -87,5 +89,5 @@ export const queueDocument = (
       }
     })
   );
-  shiftQueue(project);
+  shiftQueue();
 };

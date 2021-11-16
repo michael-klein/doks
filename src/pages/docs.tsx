@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { CircularProgress, Container, Grid } from "@mui/material";
 import { useObservableState } from "observable-hooks";
 import { Fragment } from "preact";
 import { Suspense } from "preact/compat";
@@ -12,7 +12,6 @@ const Project = () => {
   const params = useParams();
   const navigate = useNavigate();
   const contents = useObservableState(contents$);
-  console.log(params);
   useEffect(() => {
     if (!params.projectSlug && contents.size > 0) {
       navigate(`/docs/${Array.from(contents.keys())[0]}`, {
@@ -21,7 +20,7 @@ const Project = () => {
     }
   }, [params, contents]);
   return (
-    <Suspense fallback={<div>Loading content...</div>}>
+    <Suspense fallback={<CircularProgress />}>
       {params.contentSlug && <Content></Content>}
     </Suspense>
   );
@@ -33,7 +32,7 @@ const Layout = ({ children }: { children: ComponentChild }) => {
       <Navbar></Navbar>
       <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
         <Grid container spacing={2}>
-          <Suspense fallback={<div>Loading sidebar...</div>}>
+          <Suspense fallback={<CircularProgress />}>
             <Sidebar></Sidebar>
           </Suspense>
           {children}

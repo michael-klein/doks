@@ -1,4 +1,11 @@
-import { Autocomplete, autocompleteClasses, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  autocompleteClasses,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  TextField,
+} from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -8,12 +15,13 @@ import {
   useObservable,
   useObservableState,
 } from "observable-hooks";
-import { useCallback, useEffect, useRef } from "preact/hooks";
-import { BehaviorSubject, map } from "rxjs";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { BehaviorSubject, combineLatest, map } from "rxjs";
 import { documents$ } from "../store/documents";
 import { h } from "preact";
 import { styled } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
+import { useObservableAndState } from "../hooks/use_observable_and_state";
 
 const style = {
   position: "absolute" as "absolute",
@@ -71,6 +79,15 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
     position: "relative",
   },
 }));
+
+const ProjectToggle = styled(FormGroup)(({ theme }) => ({
+  display: "flex",
+  alignItems: "flex-end",
+  marginTop: -10,
+  marginRight: -10,
+  color: "primary",
+}));
+
 function PopperComponent(props: PopperComponentProps) {
   const { disablePortal, anchorEl, open, ...other } = props;
   return <StyledAutocompletePopper {...other} />;
@@ -85,7 +102,6 @@ export const SearchOverlay = ({
   const show = useLayoutObservableState(show$);
   const handleClose = () => show$.next(false);
 
-  console.log("show search", show);
   const inputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
@@ -94,27 +110,45 @@ export const SearchOverlay = ({
     }
   }, [show]);
 
-  const currentDocuments = useObservableState(
-    useObservable(() =>
-      documents$.pipe(
-        map((documents) =>
-          Array.from(documents.values()).map((document) => ({
+  const params = useParams();
+  const [searchAll, setSearchAll] = useState(false);
+  const [currentDocuments] = useObservableAndState(
+    (inputs$) =>
+      combineLatest(documents$, inputs$).pipe(
+        map(([documents, [params, searchAll]]) => {
+          const docs = Array.from(documents.values()).map((document) => ({
             ...document,
             label: document.mdx,
             id: document.slug,
-          }))
-        )
-      )
-    )
+          }));
+          if (!searchAll) {
+            return docs.filter((doc) => doc.projectSlug === params.projectSlug);
+          }
+          return docs;
+        })
+      ),
+    [params, searchAll]
   );
 
   const navigate = useNavigate();
-  const params = useParams();
 
   const renderSearch = () => {
     return (
       <Box sx={{ ...style, width: "100%" }}>
         <div>
+          <ProjectToggle>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={searchAll}
+                  onChange={(event) => {
+                    setSearchAll(event.target.checked);
+                  }}
+                />
+              }
+              label="search all projects"
+            />
+          </ProjectToggle>
           <Autocomplete
             id="search-input"
             freeSolo

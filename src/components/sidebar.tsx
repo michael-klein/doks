@@ -1,33 +1,30 @@
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MenuIcon from "@mui/icons-material/Menu";
+import TreeItem from "@mui/lab/TreeItem";
+import TreeView from "@mui/lab/TreeView";
+import { FormControl, Grid, InputLabel, NativeSelect } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import TreeView from "@mui/lab/TreeView";
-import TreeItem from "@mui/lab/TreeItem";
+import Fab from "@mui/material/Fab";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled, useTheme } from "@mui/system";
+import { useObservableState } from "observable-hooks";
 import { Fragment } from "preact";
-import { useCallback, useState, useEffect } from "preact/hooks";
+import { Suspense } from "preact/compat";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "preact/hooks";
+import { Params, useNavigate, useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Contents, contents$, Project, projects$ } from "../store/contents";
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  Select,
-} from "@mui/material";
-import { Params, useNavigate, useParams } from "react-router";
-import { useParamsObservable } from "../hooks/use_params_observable";
-import { useObservable, useObservableState } from "observable-hooks";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { useObservableWithSuspense } from "../hooks/use_observable_with_suspense";
-import { Suspense } from "preact/compat";
-import { styled } from "@mui/system";
-import Fab from "@mui/material/Fab";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import { EastRounded } from "@mui/icons-material";
+import { Contents, contents$, Project, projects$ } from "../store/contents";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
@@ -144,7 +141,6 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
 
 export function Sidebar() {
   const [expanded, setExpanded] = useState([]);
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const params = useParams();
 
   const handleToggle = (
@@ -212,6 +208,14 @@ export function Sidebar() {
       );
     }
   }, [contents, params]);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  useLayoutEffect(() => {
+    if (!matches) {
+      setShowMobileSidebar(false);
+    }
+  }, [matches]);
 
   return (
     <SidebarWrapper item xs={3} className={showMobileSidebar ? "show" : ""}>

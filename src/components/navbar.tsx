@@ -13,6 +13,7 @@ import { SearchOverlay } from "./search";
 import { LinearProgress } from "@mui/material";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { fetchingDocuments$, queuedDocuments$ } from "../store/documents";
+import { useDocOptions } from "../hooks/use_doc_options_context";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -68,6 +69,7 @@ export function Navbar() {
       )
     )
   );
+  const { title = "documentation" } = useDocOptions();
   return (
     <Box sx={{ flexGrow: 1, position: "sticky", top: 0 }}>
       {hasDocumentsFetching && <Progress />}
@@ -79,7 +81,7 @@ export function Navbar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Docs
+            {title}
           </Typography>
           <SearchInputWrapper
             sx={{ cursor: "text" }}

@@ -1,6 +1,6 @@
 import produce, { enableMapSet } from "immer";
 import { BehaviorSubject } from "rxjs";
-import { DocOptionsProject } from "../main";
+import { DocOptionsProject } from "../interfaces";
 enableMapSet();
 export interface Contents {
   name: string;

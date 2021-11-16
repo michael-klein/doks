@@ -12,16 +12,8 @@ import {
 } from "./store/contents";
 import "./css/reset";
 import { queueDocument } from "./store/documents";
-
-export interface DocOptionsProject {
-  root: string;
-  name: string;
-}
-export interface DocOptions {
-  title?: string;
-  targetNode?: HTMLElement;
-  projects: DocOptionsProject[];
-}
+import { DocOptions, DocOptionsProject } from "./interfaces";
+import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
@@ -71,12 +63,14 @@ export const docs = (options: DocOptions) => {
 
   render(
     <ThemeProvider theme={theme}>
-      <HashRouter>
-        <Routes>
-          <Route path="/docs/*" element={<Docs></Docs>}></Route>
-          <Route path="*" element={<Docs></Docs>}></Route>
-        </Routes>
-      </HashRouter>
+      <DocOptionsContextProvider options={options}>
+        <HashRouter>
+          <Routes>
+            <Route path="/docs/*" element={<Docs></Docs>}></Route>
+            <Route path="*" element={<Docs></Docs>}></Route>
+          </Routes>
+        </HashRouter>
+      </DocOptionsContextProvider>
     </ThemeProvider>,
     targetNode
   );

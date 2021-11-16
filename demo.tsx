@@ -1,6 +1,7 @@
 import { docs } from "./src/main";
 
 docs({
+  title: "demo docs",
   targetNode: document.getElementById("app"),
   projects: [
     {

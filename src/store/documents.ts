@@ -1,7 +1,6 @@
 import produce from "immer";
 import { join } from "path-browserify";
 import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
-import { DocOptionsProject } from "../main";
 import { Contents, Project, projects$ } from "./contents";
 
 export interface DoksDocument extends Contents {

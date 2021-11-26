@@ -16,12 +16,19 @@ import {
   useObservableState,
 } from "observable-hooks";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { BehaviorSubject, combineLatest, map } from "rxjs";
-import { documents$ } from "../store/documents";
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  startWith,
+  throttleTime,
+} from "rxjs";
+import { documents$, DoksDocument } from "../store/documents";
 import { h } from "preact";
 import { styled } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
+import { searchDocuments } from "../utils/search";
 
 const style = {
   position: "absolute" as "absolute",
@@ -112,25 +119,16 @@ export const SearchOverlay = ({
 
   const params = useParams();
   const [searchAll, setSearchAll] = useState(false);
-  const [currentDocuments] = useObservableAndState(
-    (inputs$) =>
-      combineLatest(documents$, inputs$).pipe(
-        map(([documents, [params, searchAll]]) => {
-          const docs = Array.from(documents.values()).map((document) => ({
-            ...document,
-            label: document.mdx,
-            id: document.slug,
-          }));
-          if (!searchAll) {
-            return docs.filter((doc) => doc.projectSlug === params.projectSlug);
-          }
-          return docs;
-        })
-      ),
-    [params, searchAll]
-  );
-
   const navigate = useNavigate();
+
+  const query$ = useObservable(() => new BehaviorSubject(""));
+  const [hits] = useObservableState(() =>
+    query$.pipe(
+      throttleTime(66),
+      map((query) => searchDocuments(query)),
+      startWith([])
+    )
+  );
 
   const renderSearch = () => {
     return (
@@ -152,15 +150,9 @@ export const SearchOverlay = ({
           <Autocomplete
             id="search-input"
             freeSolo
-            filterOptions={(options) => {
-              if (inputRef.current?.value.length > 2) {
-                return options.filter((o) =>
-                  o.mdx
-                    .toLowerCase()
-                    .includes(inputRef.current.value.toLowerCase())
-                );
-              }
-              return [];
+            filterOptions={(x) => x}
+            onInputChange={(event, newInputValue) => {
+              query$.next(newInputValue);
             }}
             onChange={useCallback(
               (e, option) => {
@@ -175,7 +167,7 @@ export const SearchOverlay = ({
               [params]
             )}
             PopperComponent={PopperComponent}
-            options={currentDocuments}
+            options={hits}
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 <Box>

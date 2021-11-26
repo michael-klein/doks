@@ -71,7 +71,7 @@ export function Navbar() {
   );
   const { title = "documentation" } = useDocOptions();
   return (
-    <Box sx={{ flexGrow: 1, position: "sticky", top: 0 }}>
+    <Box sx={{ flexGrow: 1, position: "sticky", top: 0, zIndex: 1000 }}>
       {hasDocumentsFetching && <Progress />}
       <AppBar position="static">
         <Toolbar>

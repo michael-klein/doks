@@ -17,14 +17,17 @@
         "history": "^5.1.0",
         "htmdx": "^0.3.6",
         "immer": "^9.0.6",
+        "lunr": "^2.3.9",
         "observable-hooks": "^4.1.2",
         "path-browserify": "^1.0.1",
         "preact": "^10.5.13",
         "react-router-dom": "^6.0.1",
+        "remove-markdown": "^0.3.0",
         "rxjs": "^7.4.0"
     },
     "devDependencies": {
         "@preact/preset-vite": "^2.0.0",
+        "@types/lunr": "^2.3.4",
         "@types/path-browserify": "^1.0.0",
         "typescript": "^4.3.2",
         "vite": "^2.6.4"

@@ -2,7 +2,6 @@ import produce from "immer";
 import { join } from "path-browserify";
 import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
 import { Contents, Project, projects$ } from "./contents";
-
 export interface DoksDocument extends Contents {
   mdx: string;
 }
@@ -32,7 +31,8 @@ const fetchDocument = async (contents: Contents) => {
     .then((mdx) => {
       documents$.next(
         produce(documents$.value, (draft) => {
-          draft.set(contents.slug, { ...contents, mdx });
+          const doc: DoksDocument = { ...contents, mdx };
+          draft.set(contents.slug, doc);
         })
       );
       fetchingDocuments$.next(

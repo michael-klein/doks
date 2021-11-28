@@ -1,6 +1,5 @@
 import { IndexSearchResult, Index } from "flexsearch";
 import { documents$, DoksDocument } from "../store/documents";
-import removeMd from "remove-markdown";
 import lunr from "lunr";
 
 let index: lunr.Index;
@@ -11,17 +10,20 @@ documents$.subscribe((documents) => {
     documents.forEach((document) => {
       this.add({
         slug: document.slug,
-        content: removeMd(document.mdx + " " + document.mdx),
+        content: document.mdx + " " + document.plain,
       });
     });
   });
 });
 
 export const searchDocuments = (query: string) => {
-  if (index) {
-    return index.search(query).map((result) => {
+  if (index && query.length > 2) {
+    console.time("search");
+    const result = index.search(query).map((result) => {
       return documents$.value.get(result.ref);
     });
+    console.timeEnd("search");
+    return result;
   }
   return [];
 };

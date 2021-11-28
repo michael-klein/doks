@@ -2,8 +2,10 @@ import produce from "immer";
 import { join } from "path-browserify";
 import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
 import { Contents, Project, projects$ } from "./contents";
+import removeMd from "remove-markdown";
 export interface DoksDocument extends Contents {
   mdx: string;
+  plain: string;
 }
 export const documents$ = new BehaviorSubject<Map<string, DoksDocument>>(
   new Map()
@@ -31,7 +33,7 @@ const fetchDocument = async (contents: Contents) => {
     .then((mdx) => {
       documents$.next(
         produce(documents$.value, (draft) => {
-          const doc: DoksDocument = { ...contents, mdx };
+          const doc: DoksDocument = { ...contents, mdx, plain: removeMd(mdx) };
           draft.set(contents.slug, doc);
         })
       );

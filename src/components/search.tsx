@@ -9,25 +9,23 @@ import {
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { htmdx } from "htmdx";
+import { styled } from "@mui/system";
 import {
   useLayoutObservableState,
   useObservable,
   useObservableState,
 } from "observable-hooks";
+import { h } from "preact";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import Highlighter from "react-highlight-words";
+import { useNavigate, useParams } from "react-router";
 import {
   BehaviorSubject,
-  combineLatest,
+  debounceTime,
   map,
   startWith,
   throttleTime,
 } from "rxjs";
-import { documents$, DoksDocument } from "../store/documents";
-import { h } from "preact";
-import { styled } from "@mui/system";
-import { useNavigate, useParams } from "react-router";
-import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { searchDocuments } from "../utils/search";
 
 const style = {
@@ -36,7 +34,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "100%",
-  maxWidth: 600,
+  maxWidth: 900,
   minHeight: "60vh",
   maxHeight: "80vh",
   padding: 2,
@@ -74,6 +72,18 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
       borderBottom: `1px solid  ${
         theme.palette.mode === "light" ? " #eaecef" : "#30363d"
       }`,
+      border: "1px solid " + theme.palette.action.hover,
+      borderRadius: "4px",
+      marginTop: "5px",
+      marginBottom: "5px",
+      h1: {
+        fontSize: "1.5em",
+        margin: "0px",
+      },
+      h2: {
+        fontSize: "1.2em",
+        margin: "0px",
+      },
       '&[aria-selected="true"]': {
         backgroundColor: "transparent",
       },
@@ -100,7 +110,42 @@ function PopperComponent(props: PopperComponentProps) {
   return <StyledAutocompletePopper {...other} />;
 }
 
-const SPLITTER = "*||*";
+const excerptCache = new Map<string, string[]>();
+const getExcerpts = (text: string, query: string) => {
+  const cacheId = text + query;
+  if (excerptCache.has(cacheId)) {
+    return excerptCache.get(cacheId);
+  }
+  const queryRegExp = new RegExp(query.split(" ").join("|"), "g");
+  const hits = [];
+  let prevSentences = [];
+  let lastSeenHitIndex = 0;
+  let lastHit;
+  const maxHits = 3;
+  for (const sentence of text
+    .replace(/([.?!])\s*(?=[A-Z])/g, "$1|")
+    .split("|")) {
+    if (sentence.match(queryRegExp)?.length > 0) {
+      lastHit = prevSentences.join("") + sentence;
+      prevSentences = [];
+      lastSeenHitIndex = 0;
+      hits.push(lastHit);
+      continue;
+    } else if (lastHit && lastSeenHitIndex < 3) {
+      lastHit += sentence;
+      lastSeenHitIndex++;
+    } else if (hits.length >= maxHits) {
+      break;
+    }
+
+    if (prevSentences.length < 3) {
+      prevSentences.push(sentence);
+    }
+  }
+  excerptCache.set(cacheId, hits);
+  return hits;
+};
+
 export const SearchOverlay = ({
   show$,
 }: {
@@ -121,10 +166,12 @@ export const SearchOverlay = ({
   const [searchAll, setSearchAll] = useState(false);
   const navigate = useNavigate();
 
-  const query$ = useObservable(() => new BehaviorSubject(""));
+  const query$ = useObservable(
+    () => new BehaviorSubject("")
+  ) as BehaviorSubject<string>;
   const [hits] = useObservableState(() =>
     query$.pipe(
-      throttleTime(66),
+      debounceTime(300),
       map((query) => searchDocuments(query)),
       startWith([])
     )
@@ -152,7 +199,12 @@ export const SearchOverlay = ({
             freeSolo
             filterOptions={(x) => x}
             onInputChange={(event, newInputValue) => {
-              query$.next(newInputValue);
+              query$.next(
+                newInputValue
+                  .split(" ")
+                  .filter((q) => q.length > 2)
+                  .join(" ")
+              );
             }}
             onChange={useCallback(
               (e, option) => {
@@ -168,49 +220,26 @@ export const SearchOverlay = ({
             )}
             PopperComponent={PopperComponent}
             options={hits}
+            getOptionLabel={(option) => option?.name ?? ""}
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 <Box>
-                  {htmdx(option.mdx, h, {
-                    jsxTransforms: [
-                      (props, type, children) => {
-                        console.log(children);
-                        if (children && children[0] === "Hello World") {
-                          children[0] = "Foo"; // this will output <h1>Foo</h1> instead of <h1>Hello World</h1> now!
-                        }
-                        return [
-                          props,
-                          type,
-                          children.flatMap((child) => {
-                            if (typeof child === "string") {
-                              const splitText = child
-                                .replace(
-                                  new RegExp(inputRef.current.value, "gi"),
-                                  (s) => SPLITTER + s + SPLITTER
-                                )
-                                .split(SPLITTER);
-                              return splitText.map((s) => {
-                                if (
-                                  s
-                                    .toLowerCase()
-                                    .includes(
-                                      inputRef.current.value.toLowerCase()
-                                    )
-                                ) {
-                                  return h("mark", {
-                                    children: s,
-                                  });
-                                } else {
-                                  return s;
-                                }
-                              });
-                            }
-                            return child;
-                          }),
-                        ];
-                      },
-                    ],
-                  })}
+                  <h1>name:{option.name}</h1>
+                  <h2>path:{option.path}</h2>
+                  {getExcerpts(option.plain, query$.value).map((hit) => (
+                    <p key={hit}>
+                      <span>[...] </span>
+                      {
+                        <Highlighter
+                          highlightClassName="highlight"
+                          searchWords={query$.value.split(" ")}
+                          autoEscape={true}
+                          textToHighlight={hit}
+                        />
+                      }
+                      <span> [...]</span>
+                    </p>
+                  ))}
                 </Box>
               </li>
             )}

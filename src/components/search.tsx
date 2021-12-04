@@ -21,11 +21,13 @@ import Highlighter from "react-highlight-words";
 import { useNavigate, useParams } from "react-router";
 import {
   BehaviorSubject,
+  combineLatest,
   debounceTime,
   map,
   startWith,
   throttleTime,
 } from "rxjs";
+import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { searchDocuments } from "../utils/search";
 
 const style = {
@@ -72,7 +74,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
       borderBottom: `1px solid  ${
         theme.palette.mode === "light" ? " #eaecef" : "#30363d"
       }`,
-      border: "1px solid " + theme.palette.action.hover,
+      border: "2px solid " + theme.palette.primary.light,
       borderRadius: "4px",
       marginTop: "5px",
       marginBottom: "5px",
@@ -88,12 +90,23 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
         backgroundColor: "transparent",
       },
       '&[data-focus="true"], &[data-focus="true"][aria-selected="true"]': {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.primary.light,
       },
     },
   },
   [`&.${autocompleteClasses.popperDisablePortal}`]: {
     position: "relative",
+  },
+  [".meta"]: {
+    backgroundColor: theme.palette.primary.light,
+    padding: "8px",
+    borderRadius: "4px",
+    color: theme.palette.getContrastText(theme.palette.primary.light),
+  },
+  [".hit"]: {
+    backgroundColor: theme.palette.action.hover,
+    padding: "4px",
+    borderRadius: "4px",
   },
 }));
 
@@ -162,38 +175,39 @@ export const SearchOverlay = ({
     }
   }, [show]);
 
-  const params = useParams();
-  const [searchAll, setSearchAll] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
 
+  const [searchAll, searchAll$] = useObservableAndState(
+    () => new BehaviorSubject(true)
+  ) as [boolean, BehaviorSubject<boolean>];
   const query$ = useObservable(
     () => new BehaviorSubject("")
   ) as BehaviorSubject<string>;
-  const [hits] = useObservableState(() =>
-    query$.pipe(
+  const searchProject$ = useObservable(
+    (inputs$) =>
+      combineLatest([inputs$, searchAll$]).pipe(
+        map(([inputs, searchAll]) =>
+          !searchAll ? inputs[0].projectSlug : undefined
+        )
+      ),
+    [params]
+  );
+  const [hits] = useObservableState((input$) =>
+    combineLatest([query$, searchProject$]).pipe(
       debounceTime(300),
-      map((query) => searchDocuments(query)),
+      map(([query, searchProject]) => searchDocuments(query, searchProject)),
       startWith([])
     )
   );
+  useEffect(() => {
+    show$.next(false);
+  }, [params]);
 
   const renderSearch = () => {
     return (
       <Box sx={{ ...style, width: "100%" }}>
         <div>
-          <ProjectToggle>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={searchAll}
-                  onChange={(event) => {
-                    setSearchAll(event.target.checked);
-                  }}
-                />
-              }
-              label="search all projects"
-            />
-          </ProjectToggle>
           <Autocomplete
             id="search-input"
             freeSolo
@@ -224,10 +238,12 @@ export const SearchOverlay = ({
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 <Box>
-                  <h1>name:{option.name}</h1>
-                  <h2>path:{option.path}</h2>
+                  <div className="meta">
+                    <h1>{option.name}</h1>
+                    <h2>path: {option.path}</h2>
+                  </div>
                   {getExcerpts(option.plain, query$.value).map((hit) => (
-                    <p key={hit}>
+                    <p key={hit} className="hit">
                       <span>[...] </span>
                       {
                         <Highlighter
@@ -244,11 +260,26 @@ export const SearchOverlay = ({
               </li>
             )}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Type to search..."
-                inputRef={inputRef}
-              />
+              <Box>
+                <ProjectToggle>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={searchAll}
+                        onClick={() => {
+                          searchAll$.next(!searchAll$.value);
+                        }}
+                      />
+                    }
+                    label="search all projects"
+                  />
+                </ProjectToggle>
+                <TextField
+                  {...params}
+                  label="Type to search..."
+                  inputRef={inputRef}
+                />
+              </Box>
             )}
           />
         </div>

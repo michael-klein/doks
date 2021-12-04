@@ -5,6 +5,7 @@ import { Suspense } from "preact/compat";
 import { useEffect } from "preact/hooks";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Content } from "../components/content";
+import { Footer } from "../components/footer";
 import { Navbar } from "../components/navbar";
 import { Sidebar } from "../components/sidebar";
 import { contents$ } from "../store/contents";
@@ -38,6 +39,7 @@ const Layout = ({ children }: { children: ComponentChild }) => {
           {children}
         </Grid>
       </Container>
+      <Footer></Footer>
     </Fragment>
   );
 };

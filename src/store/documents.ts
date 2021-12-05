@@ -7,6 +7,7 @@ export interface DoksDocument extends Contents {
   mdx: string;
   plain: string;
   lastModified: string;
+  isFavourite?: boolean;
 }
 export const documents$ = new BehaviorSubject<Map<string, DoksDocument>>(
   new Map()
@@ -33,6 +34,22 @@ const getCachedDocument = (slug: string, lastModified: string) => {
   }
   return undefined;
 };
+
+export const modifyDocument = (
+  doc: Partial<DoksDocument> & { slug: string }
+) => {
+  documents$.next(
+    produce(documents$.value, (draft) => {
+      const docNew: DoksDocument = {
+        ...(documents$.value.get(doc.slug) ?? ({} as DoksDocument)),
+        ...doc,
+      };
+      cacheDocument(docNew);
+      draft.set(doc.slug, docNew);
+    })
+  );
+};
+
 const cacheDocument = (doc: DoksDocument) =>
   localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
 const fetchDocument = async (contents: Contents) => {
@@ -50,11 +67,7 @@ const fetchDocument = async (contents: Contents) => {
   });
   const cached = getCachedDocument(contents.slug, lastModified);
   if (cached) {
-    documents$.next(
-      produce(documents$.value, (draft) => {
-        draft.set(contents.slug, cached);
-      })
-    );
+    modifyDocument(cached);
     fetchingDocuments$.next(
       produce(fetchingDocuments$.value, (draft) => {
         draft.delete(contents.slug);
@@ -64,18 +77,12 @@ const fetchDocument = async (contents: Contents) => {
   await fetch(join(project.root, contents.path))
     .then((res) => res.text())
     .then((mdx) => {
-      documents$.next(
-        produce(documents$.value, (draft) => {
-          const doc: DoksDocument = {
-            ...contents,
-            mdx,
-            plain: removeMd(mdx),
-            lastModified,
-          };
-          cacheDocument(doc);
-          draft.set(contents.slug, doc);
-        })
-      );
+      modifyDocument({
+        ...contents,
+        mdx,
+        plain: removeMd(mdx),
+        lastModified,
+      });
       fetchingDocuments$.next(
         produce(fetchingDocuments$.value, (draft) => {
           draft.delete(contents.slug);

@@ -1,12 +1,23 @@
-import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  colors,
+  Grid,
+  IconButton,
+  Paper,
+  Typography,
+} from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { contents$, projects$ } from "../store/contents";
 import { map } from "rxjs/operators";
-import { useEffect } from "preact/hooks";
+import { useCallback, useEffect } from "preact/hooks";
 import { useParamsObservable } from "../hooks/use_params_observable";
 import { useObservable, useObservableState } from "observable-hooks";
-import { documents$ } from "../store/documents";
+import { documents$, modifyDocument } from "../store/documents";
 import { htmdx } from "htmdx";
 import { h } from "preact";
 import { styled } from "@mui/system";
@@ -31,13 +42,29 @@ export const Content = () => {
     )
   );
   console.log("document", document);
+  const toggleFav = useCallback(() => {
+    modifyDocument({ ...document, isFavourite: !document.isFavourite });
+  }, [document]);
   return (
     <ContentWrapper item xs={9}>
-      <Paper elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
-        <Typography>
-          {document?.mdx ? htmdx(document.mdx, h, {}) : <CircularProgress />}
-        </Typography>
-      </Paper>
+      <Card elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
+        {document && (
+          <CardHeader
+            action={
+              <IconButton aria-label="favourite" onClick={toggleFav}>
+                <FavoriteIcon sx={{ color: document.isFavourite && "red" }} />
+              </IconButton>
+            }
+            title={document.name}
+            subheader={document.lastModified}
+          />
+        )}
+        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography>
+            {document?.mdx ? htmdx(document.mdx, h, {}) : <CircularProgress />}
+          </Typography>
+        </CardContent>
+      </Card>
     </ContentWrapper>
   );
 };

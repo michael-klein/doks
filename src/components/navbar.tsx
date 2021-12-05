@@ -10,10 +10,20 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { BehaviorSubject, combineLatest, map } from "rxjs";
 import { SearchOverlay } from "./search";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
-import { fetchingDocuments$, queuedDocuments$ } from "../store/documents";
+import {
+  documents$,
+  DoksDocument,
+  fetchingDocuments$,
+  queuedDocuments$,
+} from "../store/documents";
 import { useDocOptions } from "../hooks/use_doc_options_context";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useCallback, useState } from "preact/hooks";
+import { Fragment } from "react";
+import { useObservableState } from "observable-hooks";
+import { useNavigate, useParams } from "react-router";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,6 +70,68 @@ const Progress = styled(LinearProgress)(({ theme }) => ({
   left: 0,
 }));
 const showSearch$ = new BehaviorSubject(false);
+const FavButton = styled(FavoriteIcon)(({ theme }) => ({
+  "&:hover": {
+    color: "red",
+  },
+}));
+const FavMenu = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: MouseEvent) => {
+    setAnchorEl(event.target as HTMLElement);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const [favDocs] = useObservableState(() =>
+    documents$.pipe(
+      map((docs) => Array.from(docs.values()).filter((doc) => doc.isFavourite))
+    )
+  );
+  const navigate = useNavigate();
+  const onFavClicked = (doc: DoksDocument) => {
+    navigate(`/docs/${doc.projectSlug}/${doc.slug}`, {
+      replace: true,
+    });
+    handleClose();
+  };
+  return favDocs?.length > 0 ? (
+    <Fragment>
+      <Tooltip title="favourites">
+        <IconButton aria-label="favourites" onClick={handleClick}>
+          <FavButton />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        id="fav-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: 200,
+            width: "20ch",
+          },
+        }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        {favDocs.map((doc) => (
+          <MenuItem key={doc.slug} onClick={() => onFavClicked(doc)}>
+            {doc.name}
+          </MenuItem>
+        ))}
+      </Menu>
+    </Fragment>
+  ) : undefined;
+};
 export function Navbar() {
   const [hasDocumentsFetching] = useObservableAndState(() =>
     combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
@@ -83,6 +155,8 @@ export function Navbar() {
           >
             {title}
           </Typography>
+
+          <FavMenu />
           <SearchInputWrapper
             sx={{ cursor: "text" }}
             onClick={(e) => {

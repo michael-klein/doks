@@ -5,7 +5,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const StyledFooter = styled("footer")(({ theme }) => ({
   background: theme.palette.primary.light,
-  maxWidth: 900,
   padding: 20,
   display: "flex",
   justifyContent: "flex-end",

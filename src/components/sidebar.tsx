@@ -108,6 +108,8 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
   flexGrow: 1,
   maxWidth: 400,
   overflowY: "auto",
+  position: "sticky",
+  top: 60,
   [" .menu-button"]: {
     display: "none",
     position: "fixed",

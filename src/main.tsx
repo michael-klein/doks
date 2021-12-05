@@ -58,7 +58,7 @@ export const docs = (options: DocOptions) => {
   );
   document.head.appendChild(link);
   const { targetNode = document.body, projects } = options;
-
+  targetNode.classList.add("docs-root");
   loadProjects(projects);
 
   render(

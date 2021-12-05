@@ -9,7 +9,16 @@ css`
     box-sizing: border-box;
   }
 
-  min-height: 100vh;
+  body,
+  html {
+    min-height: 100vh;
+  }
+
+  .docs-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
   /* Remove default margin */
   body,

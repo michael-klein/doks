@@ -31,7 +31,10 @@ const Layout = ({ children }: { children: ComponentChild }) => {
   return (
     <Fragment>
       <Navbar></Navbar>
-      <Container maxWidth="lg" sx={{ marginTop: 10, marginBottom: 10 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ marginTop: 10, marginBottom: 10, flex: "auto" }}
+      >
         <Grid container spacing={2}>
           <Suspense fallback={<CircularProgress />}>
             <Sidebar></Sidebar>

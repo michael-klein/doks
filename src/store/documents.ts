@@ -6,6 +6,7 @@ import removeMd from "remove-markdown";
 export interface DoksDocument extends Contents {
   mdx: string;
   plain: string;
+  lastModified: string;
 }
 export const documents$ = new BehaviorSubject<Map<string, DoksDocument>>(
   new Map()
@@ -21,6 +22,19 @@ export const queuedDocuments$ = new BehaviorSubject<{
 
 export const fetchingDocuments$ = new BehaviorSubject(new Set<string>());
 
+const CACHE_PREFEX = "doks-cache-";
+const getCachedDocument = (slug: string, lastModified: string) => {
+  const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
+  if (cachedString) {
+    const doc: DoksDocument = JSON.parse(cachedString);
+    if (doc.lastModified === lastModified) {
+      return doc;
+    }
+  }
+  return undefined;
+};
+const cacheDocument = (doc: DoksDocument) =>
+  localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
 const fetchDocument = async (contents: Contents) => {
   const project = projects$.value.get(contents.projectSlug);
   fetchingDocuments$.next(
@@ -28,12 +42,37 @@ const fetchDocument = async (contents: Contents) => {
       draft.add(contents.slug);
     })
   );
+
+  const lastModified = await fetch(join(project.root, contents.path), {
+    method: "HEAD",
+  }).then((value) => {
+    return value.headers.get("Last-Modified");
+  });
+  const cached = getCachedDocument(contents.slug, lastModified);
+  if (cached) {
+    documents$.next(
+      produce(documents$.value, (draft) => {
+        draft.set(contents.slug, cached);
+      })
+    );
+    fetchingDocuments$.next(
+      produce(fetchingDocuments$.value, (draft) => {
+        draft.delete(contents.slug);
+      })
+    );
+  }
   await fetch(join(project.root, contents.path))
     .then((res) => res.text())
     .then((mdx) => {
       documents$.next(
         produce(documents$.value, (draft) => {
-          const doc: DoksDocument = { ...contents, mdx, plain: removeMd(mdx) };
+          const doc: DoksDocument = {
+            ...contents,
+            mdx,
+            plain: removeMd(mdx),
+            lastModified,
+          };
+          cacheDocument(doc);
           draft.set(contents.slug, doc);
         })
       );

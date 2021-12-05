@@ -21,6 +21,7 @@ import { documents$, modifyDocument } from "../store/documents";
 import { htmdx } from "htmdx";
 import { h } from "preact";
 import { styled } from "@mui/system";
+import { MarkdownRenderer } from "./markdown_renderer";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     maxWidth: "100%",
@@ -60,9 +61,7 @@ export const Content = () => {
           />
         )}
         <CardContent sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography>
-            {document?.mdx ? htmdx(document.mdx, h, {}) : <CircularProgress />}
-          </Typography>
+          <MarkdownRenderer mdx={document?.mdx}></MarkdownRenderer>
         </CardContent>
       </Card>
     </ContentWrapper>

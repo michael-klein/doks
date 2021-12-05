@@ -6,11 +6,16 @@ import { useEffect } from "preact/hooks";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Content } from "../components/content";
 import { Footer } from "../components/footer";
+import { MarkdownEditor } from "../components/markdown_editor";
 import { Navbar } from "../components/navbar";
 import { Sidebar } from "../components/sidebar";
 import { contents$ } from "../store/contents";
 const DocumentEditor = () => {
-  return <Suspense fallback={<CircularProgress />}>hello</Suspense>;
+  return (
+    <Suspense fallback={<CircularProgress />}>
+      <MarkdownEditor></MarkdownEditor>
+    </Suspense>
+  );
 };
 
 const Layout = ({ children }: { children: ComponentChild }) => {
@@ -19,11 +24,9 @@ const Layout = ({ children }: { children: ComponentChild }) => {
       <Navbar></Navbar>
       <Container
         maxWidth="lg"
-        sx={{ marginTop: 10, marginBottom: 10, flex: "auto" }}
+        sx={{ marginTop: 3, marginBottom: 3, flex: "auto", display: "flex" }}
       >
-        <Grid container spacing={2}>
-          {children}
-        </Grid>
+        {children}
       </Container>
     </Fragment>
   );

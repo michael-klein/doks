@@ -2,7 +2,7 @@ import { CircularProgress, Container, Grid } from "@mui/material";
 import { useObservable, useObservableState } from "observable-hooks";
 import { Fragment } from "preact";
 import { Suspense } from "preact/compat";
-import { useEffect } from "preact/hooks";
+import { useEffect, useErrorBoundary } from "preact/hooks";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
 import { Content } from "../components/content";
@@ -10,21 +10,20 @@ import { Footer } from "../components/footer";
 import { MarkdownEditor } from "../components/markdown_editor";
 import { Navbar } from "../components/navbar";
 import { Sidebar } from "../components/sidebar";
+import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { contents$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 const DocumentEditor = () => {
   const params = useParams();
-  const document = useObservableState(
-    useObservable(
-      (input$) => {
-        return combineLatest(input$, documents$).pipe(
-          map(([input, documents]) => {
-            return documents.get(input[0]?.contentSlug);
-          })
-        );
-      },
-      [params]
-    )
+  const [document] = useObservableAndState(
+    (input$) => {
+      return combineLatest([input$, documents$]).pipe(
+        map(([input, documents]) => {
+          return documents.get(input[0]?.contentSlug);
+        })
+      );
+    },
+    [params]
   );
   const shouldHaveDocument = !!params.contentSlug;
   return (
@@ -33,6 +32,7 @@ const DocumentEditor = () => {
         <CircularProgress></CircularProgress>
       ) : (
         <MarkdownEditor
+          key={shouldHaveDocument ? document.mdx : "# hello world"}
           initial={shouldHaveDocument ? document.mdx : "# hello world"}
         ></MarkdownEditor>
       )}

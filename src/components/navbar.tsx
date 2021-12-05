@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { BehaviorSubject, combineLatest, map } from "rxjs";
 import { SearchOverlay } from "./search";
@@ -21,9 +21,10 @@ import {
 import { useDocOptions } from "../hooks/use_doc_options_context";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useCallback, useState } from "preact/hooks";
-import { Fragment } from "react";
+import { Fragment, ReactChild } from "react";
 import { useObservableState } from "observable-hooks";
 import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -71,8 +72,15 @@ const Progress = styled(LinearProgress)(({ theme }) => ({
 }));
 const showSearch$ = new BehaviorSubject(false);
 const FavButton = styled(FavoriteIcon)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.primary.main),
   "&:hover": {
     color: "red",
+  },
+}));
+const NavButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.primary.main),
+  "&:hover": {
+    color: theme.palette.primary.dark,
   },
 }));
 const FavMenu = () => {
@@ -132,6 +140,15 @@ const FavMenu = () => {
     </Fragment>
   ) : undefined;
 };
+const NavAppBar = styled(AppBar)(({ theme }) => ({
+  "a, a:link, a:visited, a:hover, a:active": {
+    color: theme.palette.getContrastText(theme.palette.primary.main),
+    textDecoration: "none",
+  },
+  "a:hover": {
+    textDecoration: "underline",
+  },
+}));
 export function Navbar() {
   const [hasDocumentsFetching] = useObservableAndState(() =>
     combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
@@ -145,17 +162,26 @@ export function Navbar() {
   return (
     <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
       {hasDocumentsFetching && <Progress />}
-      <AppBar position="static">
+      <NavAppBar position="static">
         <Toolbar>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+            }}
           >
-            {title}
+            <Link to="/docs/">{title}</Link>
           </Typography>
-
+          <Tooltip title="create document">
+            <Link to="/editor/">
+              <NavButton aria-label="editor">
+                <PostAddIcon />
+              </NavButton>
+            </Link>
+          </Tooltip>
           <FavMenu />
           <SearchInputWrapper
             sx={{ cursor: "text" }}
@@ -177,7 +203,7 @@ export function Navbar() {
             />
           </SearchInputWrapper>
         </Toolbar>
-      </AppBar>
+      </NavAppBar>
       <SearchOverlay show$={showSearch$}></SearchOverlay>
     </Box>
   );

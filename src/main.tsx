@@ -14,6 +14,7 @@ import "./css/reset";
 import { queueDocument } from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
+import { Editor } from "./pages/editor";
 
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
@@ -66,6 +67,7 @@ export const docs = (options: DocOptions) => {
       <DocOptionsContextProvider options={options}>
         <HashRouter>
           <Routes>
+            <Route path="/editor/*" element={<Editor></Editor>}></Route>
             <Route path="/docs/*" element={<Docs></Docs>}></Route>
             <Route path="*" element={<Docs></Docs>}></Route>
           </Routes>

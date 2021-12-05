@@ -16,7 +16,7 @@ export const MarkdownRenderer = ({ mdx }: { mdx: string }) => {
     console.log("mdx error", error.message)
   );
   return (
-    <Typography>
+    <Typography sx={{ textAlign: "justify" }}>
       <MDX mdx={mdx}></MDX>
     </Typography>
   );

@@ -9,6 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import SearchIcon from "@mui/icons-material/Search";
 import { BehaviorSubject, combineLatest, map } from "rxjs";
+import EditIcon from "@mui/icons-material/Edit";
 import { SearchOverlay } from "./search";
 import { LinearProgress, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
@@ -23,7 +24,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useCallback, useState } from "preact/hooks";
 import { Fragment, ReactChild } from "react";
 import { useObservableState } from "observable-hooks";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
@@ -159,6 +160,8 @@ export function Navbar() {
     )
   );
   const { title = "documentation" } = useDocOptions();
+  const params = useParams();
+  const location = useLocation();
   return (
     <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
       {hasDocumentsFetching && <Progress />}
@@ -175,6 +178,16 @@ export function Navbar() {
           >
             <Link to="/docs/">{title}</Link>
           </Typography>
+
+          {params.contentSlug && location.pathname.startsWith("/docs") && (
+            <Tooltip title="edit current document">
+              <Link to={`/editor/${params.projectSlug}/${params.contentSlug}`}>
+                <NavButton aria-label="editor">
+                  <EditIcon />
+                </NavButton>
+              </Link>
+            </Tooltip>
+          )}
           <Tooltip title="create document">
             <Link to="/editor/">
               <NavButton aria-label="editor">

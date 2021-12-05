@@ -1,10 +1,10 @@
 import { EditorProps } from "@monaco-editor/react";
 import { Card } from "@mui/material";
-import { Box, styled } from "@mui/system";
+import { Box, height, styled } from "@mui/system";
 import { useObservable, useObservableState } from "observable-hooks";
 import * as React from "preact";
 import { lazy } from "preact/compat";
-import { useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
 import { useParams } from "react-router";
 import { combineLatest, map } from "rxjs";
 import { documents$ } from "../store/documents";
@@ -31,23 +31,25 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
     Editor = lazy(() => import("@monaco-editor/react"));
   }
   const [mdx, setMDX] = useState(initial);
+  const [editorHeight, setEditorHeight] = useState(0);
+  const boxRef = useRef<HTMLDivElement>();
   return (
     <EditorWrapper>
-      <Box>
+      <Box ref={boxRef}>
         <Editor
           height="100%"
           theme="vs-dark"
           width="100%"
           onChange={setMDX}
           onMount={() => {
-            console.log("editor mounted");
+            setEditorHeight(boxRef.current.clientHeight);
           }}
           defaultLanguage="markdown"
           defaultValue={mdx}
         ></Editor>
       </Box>
-      <ContentBox>
-        <MarkdownRenderer mdx={mdx}></MarkdownRenderer>
+      <ContentBox sx={{ height: editorHeight + "px" }}>
+        {!!editorHeight && <MarkdownRenderer mdx={mdx}></MarkdownRenderer>}
       </ContentBox>
     </EditorWrapper>
   );

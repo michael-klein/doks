@@ -26,7 +26,20 @@ export const addOrUpdateProject = (project: Project) => {
     })
   );
 };
-contents$.subscribe((v) => console.log("contents", v));
+export const updateContents = (
+  contentsIn: Partial<Contents> & { slug: string },
+  projectSlug: string
+) => {
+  contents$.next(
+    produce(contents$.value, (draft) => {
+      draft.get(projectSlug).set(contentsIn.slug, {
+        ...draft.get(projectSlug).get(contentsIn.slug),
+        ...contentsIn,
+      });
+    })
+  );
+};
+
 export const addOrUpdateContents = (
   contentsIn: Contents,
   projectSlug: string

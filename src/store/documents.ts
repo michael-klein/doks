@@ -1,7 +1,7 @@
 import produce from "immer";
 import { join } from "path-browserify";
 import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
-import { Contents, Project, projects$ } from "./contents";
+import { Contents, Project, projects$, updateContents } from "./contents";
 import removeMd from "remove-markdown";
 export interface DoksDocument extends Contents {
   mdx: string;
@@ -44,6 +44,15 @@ export const modifyDocument = (
         ...(documents$.value.get(doc.slug) ?? ({} as DoksDocument)),
         ...doc,
       };
+      if (docNew.name === docNew.path) {
+        if (docNew.mdx.startsWith("#")) {
+          docNew.name = docNew.mdx.split("\n")[0].replace("#", "").trim();
+          updateContents(
+            { slug: docNew.slug, name: docNew.name },
+            docNew.projectSlug
+          );
+        }
+      }
       cacheDocument(docNew);
       draft.set(doc.slug, docNew);
     })

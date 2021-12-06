@@ -45,7 +45,7 @@ const Layout = ({ children }: { children: ComponentChild }) => {
     <Fragment>
       <Navbar></Navbar>
       <Container
-        maxWidth="lg"
+        maxWidth="100%"
         sx={{ marginTop: 3, marginBottom: 3, flex: "auto", display: "flex" }}
       >
         {children}

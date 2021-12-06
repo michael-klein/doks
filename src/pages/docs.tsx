@@ -7,7 +7,8 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Content } from "../components/content";
 import { Footer } from "../components/footer";
 import { Navbar } from "../components/navbar";
-import { Sidebar } from "../components/sidebar";
+import { Sidebar, SIDEBAR_MODE } from "../components/sidebar";
+import { useCallback } from "preact/hooks";
 import { contents$ } from "../store/contents";
 const Project = () => {
   const params = useParams();
@@ -28,6 +29,16 @@ const Project = () => {
 };
 
 const Layout = ({ children }: { children: ComponentChild }) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const onNodeSelect = useCallback(
+    (nodeId: string) => {
+      navigate(`/docs/${params.projectSlug}/${nodeId}`, {
+        replace: true,
+      });
+    },
+    [params]
+  );
   return (
     <Fragment>
       <Navbar></Navbar>
@@ -37,7 +48,15 @@ const Layout = ({ children }: { children: ComponentChild }) => {
       >
         <Grid container spacing={2}>
           <Suspense fallback={<CircularProgress />}>
-            <Sidebar></Sidebar>
+            <Sidebar
+              onProjectSelect={(projectSlug) => {
+                navigate(`/docs/${projectSlug}`, {
+                  replace: true,
+                });
+              }}
+              onNodeSelect={onNodeSelect}
+              mode={SIDEBAR_MODE.DOCS}
+            ></Sidebar>
           </Suspense>
           {children}
         </Grid>

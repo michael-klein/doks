@@ -1,13 +1,16 @@
-import { EditorProps } from "@monaco-editor/react";
 import { Card, CardHeader, IconButton } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import * as React from "preact";
-import { lazy } from "preact/compat";
-import { useCallback, useErrorBoundary, useRef, useState } from "preact/hooks";
+import { StateUpdater, useCallback, useRef, useState } from "preact/hooks";
 import { MarkdownRenderer } from "./markdown_renderer";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import SaveIcon from "@mui/icons-material/Save";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Sidebar, SIDEBAR_MODE } from "./sidebar";
+import { EditorRenderer } from "./editor_renderer";
+import { useNavigate, useParams } from "react-router";
+import { documents$ } from "../store/documents";
 
 const EditorWrapper = styled(Card)({
   width: "100%",
@@ -21,27 +24,34 @@ const EditorWrapper = styled(Card)({
     flexDirection: "row",
   },
 });
+
 const EditorHeader = styled(CardHeader)(({ theme }) => ({
   background: theme.palette.primary.dark,
   color: theme.palette.getContrastText(theme.palette.primary.dark),
   padding: 2,
   height: "44px",
 }));
+
 const ContentBox = styled(Box)({
   overflow: "auto",
   paddingLeft: "20px",
   paddingRight: "20px",
   paddingBottom: "20px",
 });
-const Editor: React.FC<EditorProps> = lazy(
-  () => import("@monaco-editor/react")
-);
+
+const SidebarBox = styled(Box)({
+  flex: 0,
+  position: "relative",
+});
+
 const MAX_FLEX_DIFF = 4;
+
 export const MarkdownEditor = ({ initial }: { initial: string }) => {
   const [mdx, setMDX] = useState(initial);
   const [height, setHeight] = useState(0);
-  const [editorFlex, setEditorFlex] = useState(0);
+  const [editorFlex, setEditorFlex] = useState(-1);
   const boxRef = useRef<HTMLDivElement>();
+  const editorRef = useRef<any>();
 
   const saveMDX = useCallback(() => {
     const element = document.createElement("a");
@@ -58,7 +68,14 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
 
     document.body.removeChild(element);
   }, [mdx]);
-
+  const navigate = useNavigate();
+  const params = useParams();
+  const onProjectSelected = useCallback(
+    (projectSlug: string) => {
+      navigate(`/editor/${projectSlug}/${params.contentSlug ?? ""}`);
+    },
+    [params]
+  );
   return (
     <EditorWrapper>
       <EditorHeader
@@ -99,21 +116,46 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
         }
       ></EditorHeader>
       <Box className="editor">
+        {!!height && (
+          <SidebarBox>
+            <Sidebar
+              mode={SIDEBAR_MODE.EDITOR}
+              onNodeSelect={(node) => {
+                const doc = documents$.value.get(node);
+                console.log(doc);
+                const line = editorRef.current.getPosition();
+                const id = { major: 1, minor: 1 };
+                const text = `[${doc.name}](/docs/${doc.projectSlug}/${doc.slug})`;
+                const op = {
+                  identifier: id,
+                  range: {
+                    startLineNumber: line.lineNumber,
+                    endLineNumber: line.lineNumber,
+                  },
+                  text: text,
+                  forceMoveMarkers: true,
+                };
+                editorRef.current.executeEdits("my-source", [op]);
+              }}
+              onProjectSelect={onProjectSelected}
+            ></Sidebar>
+          </SidebarBox>
+        )}
         <Box
           ref={boxRef}
-          sx={{ flex: "auto", maxWidth: `${50 + 10 * editorFlex}%` }}
+          sx={{
+            flex: "auto",
+            maxWidth: `${50 + 10 * editorFlex}%`,
+            background: "black",
+          }}
         >
-          <Editor
-            height="100%"
-            theme="vs-dark"
-            width="100%"
-            onChange={setMDX}
-            onMount={() => {
-              setHeight(boxRef.current.clientHeight);
-            }}
-            defaultLanguage="markdown"
-            defaultValue={mdx}
-          ></Editor>
+          <EditorRenderer
+            editorRef={editorRef}
+            mdx={mdx}
+            boxRef={boxRef}
+            setHeight={setHeight}
+            setMDX={setMDX}
+          ></EditorRenderer>
         </Box>
         <ContentBox
           sx={{

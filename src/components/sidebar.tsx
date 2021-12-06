@@ -110,6 +110,12 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
   overflowY: "auto",
   position: "sticky",
   top: 60,
+  "&.editor-sidebar": {
+    top: 0,
+    padding: "10px",
+    display: "block",
+    width: "200px",
+  },
   [" .menu-button"]: {
     display: "none",
     position: "fixed",
@@ -146,8 +152,19 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     },
   },
 }));
-
-export function Sidebar() {
+export enum SIDEBAR_MODE {
+  DOCS,
+  EDITOR,
+}
+export function Sidebar({
+  onNodeSelect,
+  mode,
+  onProjectSelect,
+}: {
+  onNodeSelect: (nodeSlug: string) => void;
+  onProjectSelect: (projectSlug: string) => void;
+  mode: SIDEBAR_MODE;
+}) {
   const [expanded, setExpanded] = useState([]);
   const params = useParams();
 
@@ -196,26 +213,20 @@ export function Sidebar() {
     }
   }, [project, contents]);
 
-  const onNodeSelect = useCallback(
-    (nodeId: string) => {
-      navigate(`/docs/${params.projectSlug || project.slug}/${nodeId}`, {
-        replace: true,
-      });
-    },
-    [project, params]
-  );
+  if (mode === SIDEBAR_MODE.DOCS) {
+    useEffect(() => {
+      if (!params.contentSlug && contents.get(params.projectSlug)) {
+        navigate(
+          `/docs/${params.projectSlug}/${
+            params.contentSlug ||
+            Array.from(contents.get(params.projectSlug).values())[0].slug
+          }`,
+          { replace: true }
+        );
+      }
+    }, [contents, params]);
+  }
 
-  useEffect(() => {
-    if (!params.contentSlug && contents.get(params.projectSlug)) {
-      navigate(
-        `/docs/${params.projectSlug}/${
-          params.contentSlug ||
-          Array.from(contents.get(params.projectSlug).values())[0].slug
-        }`,
-        { replace: true }
-      );
-    }
-  }, [contents, params]);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -226,7 +237,14 @@ export function Sidebar() {
   }, [matches]);
 
   return (
-    <SidebarWrapper item xs={3} className={showMobileSidebar ? "show" : ""}>
+    <SidebarWrapper
+      item
+      xs={3}
+      className={showMobileSidebar ? "show" : ""}
+      className={
+        mode === SIDEBAR_MODE.EDITOR ? "editor-sidebar" : "docs-sidebar"
+      }
+    >
       <Fab color="secondary" aria-label="add" className="menu-button">
         {showMobileSidebar ? (
           <CloseIcon onClick={() => setShowMobileSidebar(false)} />
@@ -248,9 +266,7 @@ export function Sidebar() {
                   id: "uncontrolled-native",
                 }}
                 onChange={(e) => {
-                  navigate(`/docs/${e.target.value}`, {
-                    replace: true,
-                  });
+                  onProjectSelect(e.target.value as string);
                 }}
               >
                 {Array.from(projects).map(([slug, p]) => (
@@ -274,12 +290,11 @@ export function Sidebar() {
           expanded={expanded}
           onNodeToggle={handleToggle}
           onNodeSelect={(event: any, nodeId: string) => {
-            console.log(event.target);
             if (event.target.tagName !== "svg") {
               onNodeSelect(nodeId);
             }
           }}
-          selected={params.contentSlug}
+          selected={mode !== SIDEBAR_MODE.EDITOR ? params.contentSlug : ""}
         >
           <Suspense fallback={<CircularProgress />}>
             <RenderTree

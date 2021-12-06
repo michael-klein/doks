@@ -15,6 +15,7 @@ import { queueDocument } from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { Editor } from "./pages/editor";
+import { lazy } from "preact/compat";
 
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(

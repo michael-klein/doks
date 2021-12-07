@@ -100,6 +100,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.primary.light,
     padding: "8px",
     borderRadius: "4px",
+    width: "100%",
     color: theme.palette.getContrastText(theme.palette.primary.light),
   },
   [".hit"]: {
@@ -198,6 +199,19 @@ export const SearchOverlay = ({
     show$.next(false);
   }, [params]);
 
+  const onChange = useCallback(
+    (e: any, option: any) => {
+      if (option instanceof Object) {
+        navigate(`/docs/${option.projectSlug}/${option.slug}`, {
+          replace: true,
+        });
+      }
+      inputRef.current.value = "";
+      show$.next(false);
+    },
+    [params]
+  );
+
   const renderSearch = () => {
     return (
       <Box sx={{ ...style, width: "100%" }}>
@@ -214,18 +228,7 @@ export const SearchOverlay = ({
                   .join(" ")
               );
             }}
-            onChange={useCallback(
-              (e: any, option: any) => {
-                if (option instanceof Object) {
-                  navigate(`/docs/${option.projectSlug}/${option.slug}`, {
-                    replace: true,
-                  });
-                }
-                inputRef.current.value = "";
-                show$.next(false);
-              },
-              [params]
-            )}
+            onChange={onChange}
             PopperComponent={PopperComponent}
             options={hits}
             getOptionLabel={(option) => option?.name ?? ""}

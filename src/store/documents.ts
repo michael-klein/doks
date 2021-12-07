@@ -26,7 +26,7 @@ export const queuedDocuments$ = new BehaviorSubject<{
 
 export const fetchingDocuments$ = new BehaviorSubject(new Set<string>());
 
-const CACHE_PREFEX = "doks-cache-";
+const CACHE_PREFEX = "doks-cache-1";
 const getCachedDocument = (slug: string, lastModified: string) => {
   const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
   if (cachedString) {
@@ -56,7 +56,6 @@ export const modifyDocument = (
           );
         }
       }
-      cacheDocument(docNew);
       draft.set(doc.slug, docNew);
     })
   );
@@ -64,6 +63,10 @@ export const modifyDocument = (
 
 const cacheDocument = (doc: DoksDocument) =>
   localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
+
+window.onunload = () => {
+  documents$.value.forEach((doc) => cacheDocument(doc));
+};
 documentWorker.onmessage = (event) => {
   switch (event.data[0]) {
     case "fetch_done":

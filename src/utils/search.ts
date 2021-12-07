@@ -4,12 +4,19 @@ import { documents$, DoksDocument } from "../store/documents";
 let index: lunr.Index;
 const projectIndizes: Map<string, lunr.Index> = new Map();
 
-documents$.subscribe((documents) => {
+documents$.subscribe(() => {
+  index = undefined;
+});
+
+const createIndex = () => {
+  if (index) {
+    return;
+  }
   const documentsByProject = new Map<string, DoksDocument[]>();
   index = lunr(function () {
     this.ref("slug");
     this.field("content");
-    documents.forEach((document) => {
+    documents$.value.forEach((document) => {
       this.add({
         slug: document.slug,
         content: document.mdx + " " + document.plain,
@@ -36,17 +43,15 @@ documents$.subscribe((documents) => {
       })
     );
   });
-});
+};
 
 export const searchDocuments = (query: string, projectSlug?: string) => {
+  createIndex();
   const indexToSeach = projectSlug ? projectIndizes.get(projectSlug) : index;
-  console.log(projectSlug, indexToSeach);
   if (indexToSeach && query.length > 2) {
-    console.time("search");
     const result = indexToSeach.search(query).map((result) => {
       return documents$.value.get(result.ref);
     });
-    console.timeEnd("search");
     return result;
   }
   return [];

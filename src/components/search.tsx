@@ -15,8 +15,7 @@ import {
   useObservable,
   useObservableState,
 } from "observable-hooks";
-import { h } from "preact";
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { useNavigate, useParams } from "react-router";
 import {
@@ -221,7 +220,7 @@ export const SearchOverlay = ({
               );
             }}
             onChange={useCallback(
-              (e, option) => {
+              (e:any, option:any) => {
                 if (option instanceof Object) {
                   navigate(`/docs/${option.projectSlug}/${option.slug}`, {
                     replace: true,

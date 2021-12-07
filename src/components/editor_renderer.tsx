@@ -1,7 +1,6 @@
 import Editor from "@monaco-editor/react";
-import { RefObject } from "preact";
-import { StateUpdater } from "preact/hooks";
-
+import React, { MutableRefObject } from "react";
+export type StateUpdater<T> = React.Dispatch<T>;
 export const EditorRenderer = ({
   setHeight,
   setMDX,
@@ -11,9 +10,9 @@ export const EditorRenderer = ({
 }: {
   setHeight: StateUpdater<number>;
   setMDX: StateUpdater<string>;
-  boxRef: RefObject<HTMLDivElement>;
+  boxRef: MutableRefObject<HTMLDivElement>;
   mdx: string;
-  editorRef: RefObject<any>;
+  editorRef: MutableRefObject<any>;
 }) => {
   return (
     <Editor

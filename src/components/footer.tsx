@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
-import { h } from "preact";
+import React from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const StyledFooter = styled("footer")(({ theme }) => ({

@@ -1,4 +1,4 @@
-import * as React from "preact";
+import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -21,7 +21,6 @@ import {
 } from "../store/documents";
 import { useDocOptions } from "../hooks/use_doc_options_context";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useCallback, useState } from "preact/hooks";
 import { Fragment, ReactChild } from "react";
 import { useObservableState } from "observable-hooks";
 import { useNavigate, useParams, useLocation } from "react-router";
@@ -87,7 +86,7 @@ const NavButton = styled(IconButton)(({ theme }) => ({
 const FavMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: MouseEvent) => {
+  const handleClick = (event: React.MouseEvent) => {
     setAnchorEl(event.target as HTMLElement);
   };
   const handleClose = () => {
@@ -139,7 +138,9 @@ const FavMenu = () => {
         ))}
       </Menu>
     </Fragment>
-  ) : undefined;
+  ) : (
+    <></>
+  );
 };
 const NavAppBar = styled(AppBar)(({ theme }) => ({
   "a, a:link, a:visited, a:hover, a:active": {
@@ -198,8 +199,8 @@ export function Navbar() {
           <FavMenu />
           <SearchInputWrapper
             sx={{ cursor: "text" }}
-            onClick={(e) => {
-              e.target.blur();
+            onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+              e.currentTarget.blur();
               showSearch$.next(true);
             }}
           >

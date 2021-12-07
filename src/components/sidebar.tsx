@@ -17,14 +17,15 @@ import Fab from "@mui/material/Fab";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled, useTheme } from "@mui/system";
 import { useObservableState } from "observable-hooks";
-import { Fragment } from "preact";
-import { Suspense } from "preact/compat";
-import {
+import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
   useState,
-} from "preact/hooks";
+  Fragment,
+  Suspense,
+} from "react";
+
 import { Params, useNavigate, useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -172,7 +173,7 @@ export function Sidebar({
     event: React.SyntheticEvent<Element, Event>,
     nodeIds: string[]
   ) => {
-    if (event.target.tagName === "svg") {
+    if ((event.target as any).tagName === "svg") {
       setExpanded(nodeIds);
     }
   };
@@ -240,9 +241,10 @@ export function Sidebar({
     <SidebarWrapper
       item
       xs={3}
-      className={showMobileSidebar ? "show" : ""}
       className={
-        mode === SIDEBAR_MODE.EDITOR ? "editor-sidebar" : "docs-sidebar"
+        (showMobileSidebar ? "show" : "") +
+        " " +
+        (mode === SIDEBAR_MODE.EDITOR ? "editor-sidebar" : "docs-sidebar")
       }
     >
       <Fab color="secondary" aria-label="add" className="menu-button">

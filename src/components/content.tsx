@@ -14,12 +14,12 @@ import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { contents$, projects$ } from "../store/contents";
 import { map } from "rxjs/operators";
-import { useCallback, useEffect } from "preact/hooks";
 import { useParamsObservable } from "../hooks/use_params_observable";
 import { useObservable, useObservableState } from "observable-hooks";
 import { documents$, modifyDocument } from "../store/documents";
 import { htmdx } from "htmdx";
-import { h } from "preact";
+import React, { useCallback } from "react";
+import ReactDOM from "react-dom";
 import { styled } from "@mui/system";
 import { MarkdownRenderer } from "./markdown_renderer";
 const ContentWrapper = styled(Grid)(({ theme }) => ({

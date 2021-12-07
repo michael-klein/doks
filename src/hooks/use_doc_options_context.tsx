@@ -1,11 +1,15 @@
-import { createContext, ComponentChildren } from "preact";
-import { useContext } from "preact/hooks";
 import { DocOptions } from "../interfaces";
+import React, {
+  createContext,
+  ReactChild,
+  ReactChildren,
+  useContext,
+} from "react";
 
 const docOptionsContext = createContext<DocOptions>(undefined);
 const { Provider } = docOptionsContext;
 export const DocOptionsContextProvider = (props: {
-  children: ComponentChildren;
+  children: ReactChild | ReactChildren;
   options: DocOptions;
 }) => {
   return <Provider value={props.options}>{props.children}</Provider>;

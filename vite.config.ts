@@ -1,10 +1,10 @@
 import { defineConfig } from "vite";
-import preact from "@preact/preset-vite";
 const path = require("path");
+import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [preact()],
+  plugins: [react()],
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/main.tsx"),
@@ -15,7 +15,7 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ["preact", "rxjs"],
+      external: ["react", "react-dom", "rxjs"],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps

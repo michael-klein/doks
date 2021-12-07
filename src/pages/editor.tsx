@@ -1,17 +1,10 @@
-import { CircularProgress, Container, Grid } from "@mui/material";
-import { useObservable, useObservableState } from "observable-hooks";
-import { Fragment } from "preact";
-import { Suspense } from "preact/compat";
-import { useEffect, useErrorBoundary } from "preact/hooks";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { CircularProgress, Container } from "@mui/material";
+import React, { Fragment, ReactChild, Suspense } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
-import { Content } from "../components/content";
-import { Footer } from "../components/footer";
 import { MarkdownEditor } from "../components/markdown_editor";
 import { Navbar } from "../components/navbar";
-import { Sidebar } from "../components/sidebar";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
-import { contents$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 const DocumentEditor = () => {
   const params = useParams();
@@ -40,13 +33,18 @@ const DocumentEditor = () => {
   );
 };
 
-const Layout = ({ children }: { children: ComponentChild }) => {
+const Layout = ({ children }: { children: ReactChild }) => {
   return (
     <Fragment>
       <Navbar></Navbar>
       <Container
         maxWidth="100%"
-        sx={{ marginTop: 3, marginBottom: 3, flex: "auto", display: "flex" }}
+        sx={{
+          marginTop: 3,
+          marginBottom: 3,
+          flex: "auto",
+          display: "flex",
+        }}
       >
         {children}
       </Container>

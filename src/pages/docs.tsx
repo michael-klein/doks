@@ -1,14 +1,17 @@
 import { CircularProgress, Container, Grid } from "@mui/material";
 import { useObservableState } from "observable-hooks";
-import { Fragment } from "preact";
-import { Suspense } from "preact/compat";
-import { useEffect } from "preact/hooks";
+import React, {
+  Fragment,
+  Suspense,
+  useEffect,
+  useCallback,
+  ReactChild,
+} from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Content } from "../components/content";
 import { Footer } from "../components/footer";
 import { Navbar } from "../components/navbar";
 import { Sidebar, SIDEBAR_MODE } from "../components/sidebar";
-import { useCallback } from "preact/hooks";
 import { contents$ } from "../store/contents";
 const Project = () => {
   const params = useParams();
@@ -28,7 +31,7 @@ const Project = () => {
   );
 };
 
-const Layout = ({ children }: { children: ComponentChild }) => {
+const Layout = ({ children }: { children: ReactChild }) => {
   const params = useParams();
   const navigate = useNavigate();
   const onNodeSelect = useCallback(

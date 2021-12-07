@@ -1,7 +1,8 @@
 import { ThemeProvider } from "@mui/material";
 import slugify from "@sindresorhus/slugify";
 import { join } from "path-browserify";
-import { render, ComponentChild, Fragment } from "preact";
+import React from "react";
+import ReactDOM from "react-dom";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { theme } from "./css/theme";
 import { Docs } from "./pages/docs";
@@ -15,7 +16,6 @@ import { queueDocument } from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { Editor } from "./pages/editor";
-import { lazy } from "preact/compat";
 
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
@@ -63,7 +63,7 @@ export const docs = (options: DocOptions) => {
   targetNode.classList.add("docs-root");
   loadProjects(projects);
 
-  render(
+  ReactDOM.render(
     <ThemeProvider theme={theme}>
       <DocOptionsContextProvider options={options}>
         <HashRouter>

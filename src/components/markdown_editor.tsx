@@ -1,16 +1,14 @@
-import { Card, CardHeader, IconButton } from "@mui/material";
-import { Box, styled } from "@mui/system";
-import * as React from "preact";
-import { StateUpdater, useCallback, useRef, useState } from "preact/hooks";
-import { MarkdownRenderer } from "./markdown_renderer";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import SaveIcon from "@mui/icons-material/Save";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Sidebar, SIDEBAR_MODE } from "./sidebar";
-import { EditorRenderer } from "./editor_renderer";
+import { Card, CardHeader, IconButton } from "@mui/material";
+import { Box, styled } from "@mui/system";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { documents$ } from "../store/documents";
+import { EditorRenderer } from "./editor_renderer";
+import { MarkdownRenderer } from "./markdown_renderer";
+import { Sidebar, SIDEBAR_MODE } from "./sidebar";
 
 const EditorWrapper = styled(Card)({
   width: "100%",
@@ -80,43 +78,41 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
     <EditorWrapper>
       <EditorHeader
         action={
-          !!height && (
-            <React.Fragment>
-              <IconButton
-                sx={{ color: "inherit" }}
-                aria-label="increase preview size"
-                onClick={saveMDX}
-              >
-                <SaveIcon sx={{ fontSize: 22 }} />
-              </IconButton>
-              <IconButton
-                sx={{ color: "inherit" }}
-                aria-label="increase preview size"
-                onClick={() => {
-                  setEditorFlex((value) =>
-                    Math.max(-(MAX_FLEX_DIFF - 1), value - 1)
-                  );
-                }}
-              >
-                <ArrowLeftIcon sx={{ fontSize: 32 }} />
-              </IconButton>
-              <IconButton
-                sx={{ color: "inherit" }}
-                aria-label="decrease preview size"
-                onClick={() => {
-                  setEditorFlex((value) =>
-                    Math.min(MAX_FLEX_DIFF - 1, value + 1)
-                  );
-                }}
-              >
-                <ArrowRightIcon sx={{ fontSize: 32 }} />
-              </IconButton>
-            </React.Fragment>
-          )
+          <React.Fragment>
+            <IconButton
+              sx={{ color: "inherit" }}
+              aria-label="increase preview size"
+              onClick={saveMDX}
+            >
+              <SaveIcon sx={{ fontSize: 22 }} />
+            </IconButton>
+            <IconButton
+              sx={{ color: "inherit" }}
+              aria-label="increase preview size"
+              onClick={() => {
+                setEditorFlex((value) =>
+                  Math.max(-(MAX_FLEX_DIFF - 1), value - 1)
+                );
+              }}
+            >
+              <ArrowLeftIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+            <IconButton
+              sx={{ color: "inherit" }}
+              aria-label="decrease preview size"
+              onClick={() => {
+                setEditorFlex((value) =>
+                  Math.min(MAX_FLEX_DIFF - 1, value + 1)
+                );
+              }}
+            >
+              <ArrowRightIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+          </React.Fragment>
         }
       ></EditorHeader>
       <Box className="editor">
-        {!!height && (
+        {
           <SidebarBox>
             <Sidebar
               mode={SIDEBAR_MODE.EDITOR}
@@ -140,7 +136,7 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
               onProjectSelect={onProjectSelected}
             ></Sidebar>
           </SidebarBox>
-        )}
+        }
         <Box
           ref={boxRef}
           sx={{

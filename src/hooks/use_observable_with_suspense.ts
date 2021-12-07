@@ -3,7 +3,7 @@ import {
   useObservable,
   useObservableSuspense,
 } from "observable-hooks";
-import { useEffect, useMemo } from "preact/hooks";
+import React, { useMemo } from "react";
 import { BehaviorSubject, Observable } from "rxjs";
 
 export function useObservableWithSuspense<TOutput>(

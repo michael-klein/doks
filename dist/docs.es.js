@@ -27733,131 +27733,6 @@ function useObservableState(state$OrInit, initialState) {
 function useLayoutObservableState(state$OrInit, initialState) {
   return useObservableStateInternal(useLayoutSubscription, state$OrInit, initialState);
 }
-function useObservableSuspense(resource) {
-  var resourceValue = resource.read();
-  var forceUpdate = useForceUpdate();
-  var _a = react.exports.useState(resourceValue), state = _a[0], setState2 = _a[1];
-  useSubscription(resource.shouldUpdate$$, function(valueRef) {
-    if (valueRef) {
-      setState2(valueRef.current);
-    } else {
-      forceUpdate();
-    }
-  });
-  react.exports.useDebugValue(state);
-  return state;
-}
-var ObservableResource = function() {
-  function ObservableResource2(input$, isSuccess) {
-    var _this = this;
-    this.shouldUpdate$$ = new Subject();
-    this.handler = this.getHandler();
-    this.error = null;
-    this.isSuccess = function(value) {
-      return true;
-    };
-    this._isDestroyed = false;
-    this.handleNext = function(value) {
-      _this.error = null;
-      if (_this.isSuccess(value)) {
-        var isDiff = _this.value !== value;
-        _this.value = value;
-        if (_this.handler) {
-          var resolve2 = _this.handler.resolve;
-          _this.handler = null;
-          resolve2();
-        }
-        if (isDiff) {
-          _this.shouldUpdate$$.next({ current: value });
-        }
-      } else if (!_this.handler) {
-        _this.handler = _this.getHandler();
-        _this.shouldUpdate$$.next();
-      }
-    };
-    this.handleError = function(error) {
-      _this.error = error;
-      if (_this.handler) {
-        var resolve2 = _this.handler.resolve;
-        _this.handler = null;
-        resolve2();
-      } else {
-        _this.shouldUpdate$$.next();
-      }
-    };
-    this.handleComplete = function() {
-      if (_this.handler) {
-        _this.error = new Error("Suspender ended unexpectedly.");
-        var resolve2 = _this.handler.resolve;
-        _this.handler = null;
-        resolve2();
-      }
-    };
-    if (isSuccess) {
-      this.isSuccess = isSuccess;
-    }
-    this.input$ = input$;
-    this.subscription = input$.subscribe({
-      next: this.handleNext,
-      error: this.handleError,
-      complete: this.handleComplete
-    });
-  }
-  Object.defineProperty(ObservableResource2.prototype, "isDestroyed", {
-    get: function() {
-      return this._isDestroyed;
-    },
-    enumerable: false,
-    configurable: true
-  });
-  ObservableResource2.prototype.read = function() {
-    if (this.error) {
-      throw this.error;
-    }
-    if (this.handler) {
-      throw this.handler.suspender;
-    }
-    return this.value;
-  };
-  ObservableResource2.prototype.reload = function(newInput$) {
-    if (this._isDestroyed) {
-      throw new Error("Cannot reload a destroyed Observable Resource");
-    }
-    if (newInput$) {
-      this.input$ = newInput$;
-    }
-    this.subscription.unsubscribe();
-    this.error = null;
-    if (this.handler) {
-      this.handler.resolve();
-      this.handler = this.getHandler();
-    }
-    this.subscription = this.input$.subscribe({
-      next: this.handleNext,
-      error: this.handleError,
-      complete: this.handleComplete
-    });
-  };
-  ObservableResource2.prototype.destroy = function() {
-    this._isDestroyed = true;
-    this.subscription.unsubscribe();
-    this.shouldUpdate$$.complete();
-    if (this.handler) {
-      this.error = new Error("Resource has been destroyed.");
-      var resolve2 = this.handler.resolve;
-      this.handler = null;
-      resolve2();
-    }
-  };
-  ObservableResource2.prototype.getHandler = function() {
-    var handler = {};
-    handler.suspender = new Promise(function(resolve2) {
-      handler.resolve = resolve2;
-    });
-    return handler;
-  };
-  return ObservableResource2;
-}();
 var Favorite = {};
 var interopRequireDefault = { exports: {} };
 (function(module) {
@@ -37498,21 +37373,9 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
   });
 });
 var TreeView$1 = TreeView;
-function useObservableWithSuspense(init2) {
-  const ressource = react.exports.useMemo(() => new ObservableResource(init2(), (v2) => v2 !== void 0), []);
-  return useObservableSuspense(ressource);
-}
-const RenderTree = ({
-  projectObservable$,
-  params
+const RenderTree = React.memo(({
+  content
 }) => {
-  const content = useObservableWithSuspense(() => combineLatest(contents$, projectObservable$).pipe(map(([contents, project]) => {
-    try {
-      return createTree(contents.get(project.slug), project);
-    } catch (e2) {
-      return void 0;
-    }
-  })));
   const renderContent = (contentIn) => {
     return contentIn.map((item) => {
       return /* @__PURE__ */ jsx(TreeItem$1, {
@@ -37531,7 +37394,7 @@ const RenderTree = ({
       }, item.slug);
     })
   });
-};
+});
 const createTree = (contents, project) => {
   const root2 = {
     depth: -1,
@@ -37613,6 +37476,20 @@ var SIDEBAR_MODE;
   SIDEBAR_MODE2[SIDEBAR_MODE2["DOCS"] = 0] = "DOCS";
   SIDEBAR_MODE2[SIDEBAR_MODE2["EDITOR"] = 1] = "EDITOR";
 })(SIDEBAR_MODE || (SIDEBAR_MODE = {}));
+const RenderTreeWrapper = ({
+  projectObservable$
+}) => {
+  const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(map(([contents, project]) => {
+    try {
+      return createTree(contents.get(project.slug), project);
+    } catch (e2) {
+      return void 0;
+    }
+  })));
+  return content ? /* @__PURE__ */ jsx(RenderTree, {
+    content
+  }) : /* @__PURE__ */ jsx(CircularProgress$1, {});
+};
 function Sidebar({
   onNodeSelect,
   mode,
@@ -37724,12 +37601,8 @@ function Sidebar({
         }
       },
       selected: mode !== 1 ? params.contentSlug : "",
-      children: /* @__PURE__ */ jsx(react.exports.Suspense, {
-        fallback: /* @__PURE__ */ jsx(CircularProgress$1, {}),
-        children: /* @__PURE__ */ jsx(RenderTree, {
-          projectObservable$,
-          params
-        })
+      children: /* @__PURE__ */ jsx(RenderTreeWrapper, {
+        projectObservable$
       })
     })]
   });
@@ -37745,8 +37618,7 @@ const Project = () => {
       });
     }
   }, [params, contents]);
-  return /* @__PURE__ */ jsx(react.exports.Suspense, {
-    fallback: /* @__PURE__ */ jsx(CircularProgress$1, {}),
+  return /* @__PURE__ */ jsx(Fragment, {
     children: params.contentSlug && /* @__PURE__ */ jsx(Content, {})
   });
 };
@@ -37773,17 +37645,14 @@ const Layout$1 = ({
       children: /* @__PURE__ */ jsxs(Grid$1, {
         container: true,
         spacing: 2,
-        children: [/* @__PURE__ */ jsx(react.exports.Suspense, {
-          fallback: /* @__PURE__ */ jsx(CircularProgress$1, {}),
-          children: /* @__PURE__ */ jsx(Sidebar, {
-            onProjectSelect: (projectSlug) => {
-              navigate(`/docs/${projectSlug}`, {
-                replace: true
-              });
-            },
-            onNodeSelect,
-            mode: SIDEBAR_MODE.DOCS
-          })
+        children: [/* @__PURE__ */ jsx(Sidebar, {
+          onProjectSelect: (projectSlug) => {
+            navigate(`/docs/${projectSlug}`, {
+              replace: true
+            });
+          },
+          onNodeSelect,
+          mode: SIDEBAR_MODE.DOCS
         }), children]
       })
     }), /* @__PURE__ */ jsx(Footer, {})]
@@ -38998,8 +38867,7 @@ const DocumentEditor = () => {
     }));
   }, [params]);
   const shouldHaveDocument = !!params.contentSlug;
-  return /* @__PURE__ */ jsx(react.exports.Suspense, {
-    fallback: /* @__PURE__ */ jsx(CircularProgress$1, {}),
+  return /* @__PURE__ */ jsx(Fragment, {
     children: shouldHaveDocument && !document2 ? /* @__PURE__ */ jsx(CircularProgress$1, {}) : /* @__PURE__ */ jsx(MarkdownEditor, {
       initial: shouldHaveDocument ? document2.mdx : "# hello world"
     }, shouldHaveDocument ? document2.mdx : "# hello world")

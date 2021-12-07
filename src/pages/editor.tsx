@@ -1,5 +1,5 @@
 import { CircularProgress, Container } from "@mui/material";
-import React, { Fragment, ReactChild, Suspense } from "react";
+import React, { Fragment, ReactChild } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
 import { MarkdownEditor } from "../components/markdown_editor";
@@ -20,7 +20,7 @@ const DocumentEditor = () => {
   );
   const shouldHaveDocument = !!params.contentSlug;
   return (
-    <Suspense fallback={<CircularProgress />}>
+    <>
       {shouldHaveDocument && !document ? (
         <CircularProgress></CircularProgress>
       ) : (
@@ -29,7 +29,7 @@ const DocumentEditor = () => {
           initial={shouldHaveDocument ? document.mdx : "# hello world"}
         ></MarkdownEditor>
       )}
-    </Suspense>
+    </>
   );
 };
 

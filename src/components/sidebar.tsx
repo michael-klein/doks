@@ -18,43 +18,23 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled, useTheme } from "@mui/system";
 import { useObservableState } from "observable-hooks";
 import React, {
+  Fragment,
   useCallback,
   useEffect,
   useLayoutEffect,
   useState,
-  Fragment,
-  Suspense,
 } from "react";
-
-import { Params, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
-import { useObservableWithSuspense } from "../hooks/use_observable_with_suspense";
 import { Contents, contents$, Project, projects$ } from "../store/contents";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
   parent: ContentTree;
 }
-const RenderTree = ({
-  projectObservable$,
-  params,
-}: {
-  projectObservable$: Observable<Project>;
-  params: Readonly<Params<string>>;
-}) => {
-  const content = useObservableWithSuspense(() =>
-    combineLatest(contents$, projectObservable$).pipe(
-      map(([contents, project]) => {
-        try {
-          return createTree(contents.get(project.slug), project);
-        } catch (e) {
-          return undefined;
-        }
-      })
-    )
-  );
+const RenderTree = React.memo(({ content }: { content: ContentTree[] }) => {
   const renderContent = (contentIn: ContentTree[]) => {
     return contentIn.map((item) => {
       return (
@@ -76,7 +56,7 @@ const RenderTree = ({
       })}
     </Fragment>
   );
-};
+});
 const createTree = (contents: Map<string, Contents>, project: Project) => {
   const root: ContentTree = {
     depth: -1,
@@ -157,6 +137,29 @@ export enum SIDEBAR_MODE {
   DOCS,
   EDITOR,
 }
+
+const RenderTreeWrapper = ({
+  projectObservable$,
+}: {
+  projectObservable$: Observable<Project>;
+}) => {
+  const [content] = useObservableState(() =>
+    combineLatest([contents$, projectObservable$]).pipe(
+      map(([contents, project]) => {
+        try {
+          return createTree(contents.get(project.slug), project);
+        } catch (e) {
+          return undefined;
+        }
+      })
+    )
+  );
+  return content ? (
+    <RenderTree content={content} />
+  ) : (
+    <CircularProgress></CircularProgress>
+  );
+};
 export function Sidebar({
   onNodeSelect,
   mode,
@@ -308,12 +311,9 @@ export function Sidebar({
           }}
           selected={mode !== SIDEBAR_MODE.EDITOR ? params.contentSlug : ""}
         >
-          <Suspense fallback={<CircularProgress />}>
-            <RenderTree
-              projectObservable$={projectObservable$}
-              params={params}
-            ></RenderTree>
-          </Suspense>
+          <RenderTreeWrapper
+            projectObservable$={projectObservable$}
+          ></RenderTreeWrapper>
         </TreeView>
       )}
     </SidebarWrapper>

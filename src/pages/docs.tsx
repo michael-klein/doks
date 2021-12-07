@@ -1,12 +1,6 @@
 import { CircularProgress, Container, Grid } from "@mui/material";
 import { useObservableState } from "observable-hooks";
-import React, {
-  Fragment,
-  Suspense,
-  useEffect,
-  useCallback,
-  ReactChild,
-} from "react";
+import React, { Fragment, ReactChild, useCallback, useEffect } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Content } from "../components/content";
 import { Footer } from "../components/footer";
@@ -25,11 +19,7 @@ const Project = () => {
       });
     }
   }, [params, contents]);
-  return (
-    <Suspense fallback={<CircularProgress />}>
-      {params.contentSlug && <Content></Content>}
-    </Suspense>
-  );
+  return <>{params.contentSlug && <Content></Content>}</>;
 };
 
 const Layout = ({ children }: { children: ReactChild }) => {
@@ -53,17 +43,15 @@ const Layout = ({ children }: { children: ReactChild }) => {
         sx={{ marginTop: 10, marginBottom: 10, flex: "auto" }}
       >
         <Grid container spacing={2}>
-          <Suspense fallback={<CircularProgress />}>
-            <Sidebar
-              onProjectSelect={(projectSlug) => {
-                navigate(`/docs/${projectSlug}`, {
-                  replace: true,
-                });
-              }}
-              onNodeSelect={onNodeSelect}
-              mode={SIDEBAR_MODE.DOCS}
-            ></Sidebar>
-          </Suspense>
+          <Sidebar
+            onProjectSelect={(projectSlug) => {
+              navigate(`/docs/${projectSlug}`, {
+                replace: true,
+              });
+            }}
+            onNodeSelect={onNodeSelect}
+            mode={SIDEBAR_MODE.DOCS}
+          ></Sidebar>
           {children}
         </Grid>
       </Container>

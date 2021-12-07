@@ -28496,11 +28496,21 @@ const shiftQueue = () => {
       const slug = draft.order.shift();
       contents = queuedDocuments$.value.docs.get(slug);
       draft.docs.delete(slug);
+      const index2 = draft.order.indexOf(slug);
+      if (index2 > -1) {
+        draft.order.splice(index2, 1);
+      }
     }));
     fetchDocument(contents);
   }
 };
 fetchingDocuments$.subscribe(shiftQueue);
+fetchingDocuments$.subscribe((fetching) => {
+  console.log("num fetch", fetching.size);
+});
+queuedDocuments$.subscribe((queued) => {
+  console.log("num qeueue", queued.docs.size);
+});
 const queueDocument = (contents, prioritize = false) => {
   if (documents$.value.has(contents.slug) || fetchingDocuments$.value.has(contents.slug)) {
     return;
@@ -37590,6 +37600,9 @@ const SidebarWrapper = styled$3(Grid$1)(({
     right: 20,
     bottom: 20
   },
+  ".MuiTreeItem-label": {
+    wordBreak: "break-word"
+  },
   [theme2.breakpoints.down("sm")]: {
     paddingRight: 20,
     display: "flex",
@@ -37617,9 +37630,6 @@ const SidebarWrapper = styled$3(Grid$1)(({
     },
     ["ul *, form *, .MuiBox-root *"]: {
       fontSize: "1.2rem !important"
-    },
-    ".MuiTreeItem-label": {
-      wordBreak: "break-word"
     }
   }
 }));

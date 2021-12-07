@@ -152,6 +152,10 @@ const shiftQueue = () => {
         const slug = draft.order.shift();
         contents = queuedDocuments$.value.docs.get(slug);
         draft.docs.delete(slug);
+        const index = draft.order.indexOf(slug);
+        if (index > -1) {
+          draft.order.splice(index, 1);
+        }
       })
     );
     fetchDocument(contents);
@@ -159,6 +163,12 @@ const shiftQueue = () => {
 };
 
 fetchingDocuments$.subscribe(shiftQueue);
+fetchingDocuments$.subscribe((fetching) => {
+  console.log("num fetch", fetching.size);
+});
+queuedDocuments$.subscribe((queued) => {
+  console.log("num qeueue", queued.docs.size);
+});
 
 export const queueDocument = (
   contents: Contents,

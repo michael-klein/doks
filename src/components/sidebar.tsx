@@ -104,6 +104,9 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     right: 20,
     bottom: 20,
   },
+  ".MuiTreeItem-label": {
+    wordBreak: "break-word",
+  },
   [theme.breakpoints.down("sm")]: {
     paddingRight: 20,
     display: "flex",
@@ -131,9 +134,6 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     },
     ["ul *, form *, .MuiBox-root *"]: {
       fontSize: "1.2rem !important",
-    },
-    ".MuiTreeItem-label": {
-      wordBreak: "break-word",
     },
   },
 }));

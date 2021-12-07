@@ -4,28 +4,6 @@ import { htmdx } from "htmdx";
 import React from "react";
 import { DoksTheme } from "../css/theme";
 
-const MDX = ({ mdx }: { mdx: string }) => {
-  let i = 0;
-  return (
-    <React.Fragment>
-      {mdx !== undefined ? (
-        htmdx(mdx, React.createElement, {
-          jsxTransforms: [
-            (type, props, children) => {
-              if (!props) {
-                props = {};
-              }
-              props.key = i++;
-              return [type, props, children];
-            },
-          ],
-        })
-      ) : (
-        <CircularProgress />
-      )}
-    </React.Fragment>
-  );
-};
 class ErrorBoundary extends React.Component<
   any,
   { hasError: boolean; error: string }
@@ -36,7 +14,6 @@ class ErrorBoundary extends React.Component<
   }
 
   static getDerivedStateFromError(error: any) {
-    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
@@ -55,15 +32,35 @@ class ErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
+const MDX = ({ mdx }: { mdx: string }) => {
+  let i = 0;
+  return (
+    <ErrorBoundary>
+      {mdx !== undefined ? (
+        htmdx(mdx, React.createElement, {
+          jsxTransforms: [
+            (type, props, children) => {
+              if (!props) {
+                props = {};
+              }
+              props.key = i++;
+              return [type, props, children];
+            },
+          ],
+        })
+      ) : (
+        <CircularProgress />
+      )}
+    </ErrorBoundary>
+  );
+};
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
 }));
 export const MarkdownRenderer = ({ mdx }: { mdx: string }) => {
   return (
-    <ErrorBoundary>
-      <Wrapper sx={{ textAlign: "justify" }}>
-        <MDX mdx={mdx}></MDX>
-      </Wrapper>
-    </ErrorBoundary>
+    <Wrapper sx={{ textAlign: "justify" }}>
+      <MDX mdx={mdx}></MDX>
+    </Wrapper>
   );
 };

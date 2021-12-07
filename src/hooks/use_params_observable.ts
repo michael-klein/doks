@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { BehaviorSubject } from "rxjs";
+import { ValueSubject } from "../utils/value_subject";
 
 export const useParamsObservable = () => {
   const params = useParams();
-  const params$ = useMemo(() => new BehaviorSubject(params), []);
+  const params$ = useMemo(() => new ValueSubject(params), []);
 
   useEffect(() => {
     params$.next(params);

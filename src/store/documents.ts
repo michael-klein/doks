@@ -1,6 +1,6 @@
 import produce from "immer";
 import { join } from "path-browserify";
-import { BehaviorSubject } from "rxjs";
+import { ValueSubject } from "../utils/value_subject";
 import DocumentWorker from "../workers/document_worker?worker";
 import { Contents, projects$, updateContents } from "./contents";
 
@@ -10,11 +10,11 @@ export interface DoksDocument extends Contents {
   lastModified: string;
   isFavourite?: boolean;
 }
-export const documents$ = new BehaviorSubject<Map<string, DoksDocument>>(
+export const documents$ = new ValueSubject<Map<string, DoksDocument>>(
   new Map()
 );
 
-export const queuedDocuments$ = new BehaviorSubject<{
+export const queuedDocuments$ = new ValueSubject<{
   docs: Map<string, Contents>;
   order: string[];
 }>({
@@ -22,7 +22,7 @@ export const queuedDocuments$ = new BehaviorSubject<{
   order: [],
 });
 
-export const fetchingDocuments$ = new BehaviorSubject(new Set<string>());
+export const fetchingDocuments$ = new ValueSubject(new Set<string>());
 
 const CACHE_PREFEX = "doks-cache";
 let flushCache = false;
@@ -52,12 +52,12 @@ export const modifyDocument = (
       if (docNew.name === docNew.path) {
         if (docNew.mdx.startsWith("#")) {
           docNew.name = docNew.mdx.split("\n")[0].replace("#", "").trim();
-          updateContents(
-            { slug: docNew.slug, name: docNew.name },
-            docNew.projectSlug
-          );
         }
       }
+      updateContents(
+        { slug: docNew.slug, name: docNew.name },
+        docNew.projectSlug
+      );
       draft.set(doc.slug, docNew);
     })
   );

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import SearchIcon from "@mui/icons-material/Search";
-import { BehaviorSubject, combineLatest, map } from "rxjs";
+import { combineLatest, map } from "rxjs";
 import EditIcon from "@mui/icons-material/Edit";
 import { SearchOverlay } from "./search";
 import { LinearProgress, Menu, MenuItem, Tooltip } from "@mui/material";
@@ -25,6 +25,7 @@ import { Fragment, ReactChild } from "react";
 import { useObservableState } from "observable-hooks";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { ValueSubject } from "../utils/value_subject";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,7 +71,7 @@ const Progress = styled(LinearProgress)(({ theme }) => ({
   right: 0,
   left: 0,
 }));
-const showSearch$ = new BehaviorSubject(false);
+const showSearch$ = new ValueSubject(false);
 const FavButton = styled(FavoriteIcon)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.primary.main),
   "&:hover": {

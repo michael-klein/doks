@@ -15,19 +15,13 @@ import {
   useObservable,
   useObservableState,
 } from "observable-hooks";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Highlighter from "react-highlight-words";
 import { useNavigate, useParams } from "react-router";
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounceTime,
-  map,
-  startWith,
-  throttleTime,
-} from "rxjs";
+import { combineLatest, debounceTime, map, startWith } from "rxjs";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { searchDocuments } from "../utils/search";
+import { ValueSubject } from "../utils/value_subject";
 
 const style = {
   position: "absolute" as "absolute",
@@ -160,11 +154,7 @@ const getExcerpts = (text: string, query: string) => {
   return hits;
 };
 
-export const SearchOverlay = ({
-  show$,
-}: {
-  show$: BehaviorSubject<boolean>;
-}) => {
+export const SearchOverlay = ({ show$ }: { show$: ValueSubject<boolean> }) => {
   const show = useLayoutObservableState(show$);
   const handleClose = () => show$.next(false);
 
@@ -174,11 +164,11 @@ export const SearchOverlay = ({
   const params = useParams();
 
   const [searchAll, searchAll$] = useObservableAndState(
-    () => new BehaviorSubject(true)
-  ) as [boolean, BehaviorSubject<boolean>];
+    () => new ValueSubject(true)
+  ) as [boolean, ValueSubject<boolean>];
   const query$ = useObservable(
-    () => new BehaviorSubject("")
-  ) as BehaviorSubject<string>;
+    () => new ValueSubject("")
+  ) as ValueSubject<string>;
   const searchProject$ = useObservable(
     (inputs$) =>
       combineLatest([inputs$, searchAll$]).pipe(
@@ -196,7 +186,9 @@ export const SearchOverlay = ({
     )
   );
   useEffect(() => {
-    show$.next(false);
+    if (show$.value !== false) {
+      show$.next(false);
+    }
   }, [params]);
 
   const onChange = useCallback(

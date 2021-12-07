@@ -28243,14 +28243,21 @@ an.setUseProxies.bind(an);
 an.applyPatches.bind(an);
 an.createDraft.bind(an);
 an.finishDraft.bind(an);
+class ValueSubject extends BehaviorSubject {
+  next(value) {
+    if (this.value !== value) {
+      super.next(value);
+    }
+  }
+}
 function WorkerWrapper() {
   return new Worker("/assets/document_worker.4dcf3d91.js", {
     "type": "module"
   });
 }
 C();
-const projects$ = new BehaviorSubject(new Map());
-const contents$ = new BehaviorSubject(new Map());
+const projects$ = new ValueSubject(new Map());
+const contents$ = new ValueSubject(new Map());
 const addOrUpdateProject = (project) => {
   projects$.next(fn2(projects$.value, (draft) => {
     draft.set(project.slug, project);
@@ -28279,12 +28286,12 @@ const addOrUpdateContents = (contentsIn, projectSlug) => {
     draft.get(projectSlug).set(contentsIn.slug, contentsIn);
   }));
 };
-const documents$ = new BehaviorSubject(new Map());
-const queuedDocuments$ = new BehaviorSubject({
+const documents$ = new ValueSubject(new Map());
+const queuedDocuments$ = new ValueSubject({
   docs: new Map(),
   order: []
 });
-const fetchingDocuments$ = new BehaviorSubject(new Set());
+const fetchingDocuments$ = new ValueSubject(new Set());
 const CACHE_PREFEX = "doks-cache";
 let flushCache = false;
 window.flushCacheOnReload = () => {
@@ -28307,9 +28314,9 @@ const modifyDocument = (doc) => {
     if (docNew.name === docNew.path) {
       if (docNew.mdx.startsWith("#")) {
         docNew.name = docNew.mdx.split("\n")[0].replace("#", "").trim();
-        updateContents({ slug: docNew.slug, name: docNew.name }, docNew.projectSlug);
       }
     }
+    updateContents({ slug: docNew.slug, name: docNew.name }, docNew.projectSlug);
     draft.set(doc.slug, docNew);
   }));
 };
@@ -32736,22 +32743,6 @@ function htmdx(m2, h2, options) {
   });
   return markedToReact(esmEntry(m2), h2, options);
 }
-const MDX = ({
-  mdx
-}) => {
-  let i2 = 0;
-  return /* @__PURE__ */ jsx(React.Fragment, {
-    children: mdx !== void 0 ? htmdx(mdx, React.createElement, {
-      jsxTransforms: [(type, props, children) => {
-        if (!props) {
-          props = {};
-        }
-        props.key = i2++;
-        return [type, props, children];
-      }]
-    }) : /* @__PURE__ */ jsx(CircularProgress$1, {})
-  });
-};
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -32780,20 +32771,34 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+const MDX = ({
+  mdx
+}) => {
+  let i2 = 0;
+  return /* @__PURE__ */ jsx(ErrorBoundary, {
+    children: mdx !== void 0 ? htmdx(mdx, React.createElement, {
+      jsxTransforms: [(type, props, children) => {
+        if (!props) {
+          props = {};
+        }
+        props.key = i2++;
+        return [type, props, children];
+      }]
+    }) : /* @__PURE__ */ jsx(CircularProgress$1, {})
+  });
+};
 const Wrapper = styled$3(Box$3)(({
   theme: theme2
 }) => __spreadValues({}, theme2.typography.body1));
 const MarkdownRenderer = ({
   mdx
 }) => {
-  return /* @__PURE__ */ jsx(ErrorBoundary, {
-    children: /* @__PURE__ */ jsx(Wrapper, {
-      sx: {
-        textAlign: "justify"
-      },
-      children: /* @__PURE__ */ jsx(MDX, {
-        mdx
-      })
+  return /* @__PURE__ */ jsx(Wrapper, {
+    sx: {
+      textAlign: "justify"
+    },
+    children: /* @__PURE__ */ jsx(MDX, {
+      mdx
     })
   });
 };
@@ -35909,12 +35914,14 @@ const SearchOverlay = ({
   const inputRef = react.exports.useRef();
   const navigate = useNavigate();
   const params = useParams();
-  const [searchAll, searchAll$] = useObservableAndState(() => new BehaviorSubject(true));
-  const query$ = useObservable(() => new BehaviorSubject(""));
+  const [searchAll, searchAll$] = useObservableAndState(() => new ValueSubject(true));
+  const query$ = useObservable(() => new ValueSubject(""));
   const searchProject$ = useObservable((inputs$) => combineLatest([inputs$, searchAll$]).pipe(map(([inputs, searchAll2]) => !searchAll2 ? inputs[0].projectSlug : void 0)), [params]);
   const [hits] = useObservableState((input$) => combineLatest([query$, searchProject$]).pipe(debounceTime(300), map(([query, searchProject]) => searchDocuments(query, searchProject)), startWith([])));
   react.exports.useEffect(() => {
-    show$.next(false);
+    if (show$.value !== false) {
+      show$.next(false);
+    }
   }, [params]);
   const onChange = react.exports.useCallback((e2, option) => {
     if (option instanceof Object) {
@@ -36065,7 +36072,7 @@ const Progress = styled$1(LinearProgress$1)(({
   right: 0,
   left: 0
 }));
-const showSearch$ = new BehaviorSubject(false);
+const showSearch$ = new ValueSubject(false);
 const FavButton = styled$1(default_1$b)(({
   theme: theme2
 }) => ({

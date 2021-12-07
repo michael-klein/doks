@@ -1,26 +1,17 @@
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CircularProgress,
-  colors,
-  Grid,
-  IconButton,
-  Paper,
-  Typography,
+  CardHeader, Grid,
+  IconButton
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Outlet, useParams, useNavigate } from "react-router-dom";
-import { combineLatest } from "rxjs";
-import { contents$, projects$ } from "../store/contents";
-import { map } from "rxjs/operators";
-import { useParamsObservable } from "../hooks/use_params_observable";
-import { useObservable, useObservableState } from "observable-hooks";
-import { documents$, modifyDocument } from "../store/documents";
-import { htmdx } from "htmdx";
-import React, { useCallback } from "react";
-import ReactDOM from "react-dom";
 import { styled } from "@mui/system";
+import { useObservable, useObservableState } from "observable-hooks";
+import React, { useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { combineLatest } from "rxjs";
+import { map } from "rxjs/operators";
+import { documents$, modifyDocument } from "../store/documents";
 import { MarkdownRenderer } from "./markdown_renderer";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {

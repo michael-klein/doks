@@ -1,6 +1,6 @@
 import produce, { enableMapSet } from "immer";
-import { BehaviorSubject } from "rxjs";
 import { DocOptionsProject } from "../interfaces";
+import { ValueSubject } from "../utils/value_subject";
 enableMapSet();
 export interface Contents {
   name: string;
@@ -17,10 +17,10 @@ export interface Project extends DocOptionsProject {
   slug: string;
   depthMap: Map<number, number>;
 }
-export const projects$ = new BehaviorSubject<Map<string, Project>>(new Map());
-export const contents$ = new BehaviorSubject<
-  Map<string, Map<string, Contents>>
->(new Map());
+export const projects$ = new ValueSubject<Map<string, Project>>(new Map());
+export const contents$ = new ValueSubject<Map<string, Map<string, Contents>>>(
+  new Map()
+);
 export const addOrUpdateProject = (project: Project) => {
   projects$.next(
     produce(projects$.value, (draft) => {

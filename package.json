@@ -1,5 +1,5 @@
 {
-    "name": "docs",
+    "name": "doks",
     "version": "0.0.0",
     "scripts": {
         "dev": "vite",

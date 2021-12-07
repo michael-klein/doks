@@ -106,6 +106,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.action.hover,
     padding: "4px",
     borderRadius: "4px",
+    width: "100%",
   },
 }));
 
@@ -168,12 +169,6 @@ export const SearchOverlay = ({
 
   const inputRef = useRef<HTMLInputElement>();
 
-  useEffect(() => {
-    if (show) {
-      inputRef.current.focus();
-    }
-  }, [show]);
-
   const navigate = useNavigate();
   const params = useParams();
 
@@ -220,7 +215,7 @@ export const SearchOverlay = ({
               );
             }}
             onChange={useCallback(
-              (e:any, option:any) => {
+              (e: any, option: any) => {
                 if (option instanceof Object) {
                   navigate(`/docs/${option.projectSlug}/${option.slug}`, {
                     replace: true,
@@ -277,6 +272,7 @@ export const SearchOverlay = ({
                   {...params}
                   label="Type to search..."
                   inputRef={inputRef}
+                  autoFocus={true}
                 />
               </Box>
             )}

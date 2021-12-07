@@ -1,8 +1,11 @@
 import produce from "immer";
 import { join } from "path-browserify";
-import { BehaviorSubject, combineLatest, throttle, throttleTime } from "rxjs";
-import { Contents, Project, projects$, updateContents } from "./contents";
-import removeMd from "remove-markdown";
+import { BehaviorSubject } from "rxjs";
+import DocumentWorker from "../workers/document_worker?worker";
+import { Contents, projects$, updateContents } from "./contents";
+
+const documentWorker = new DocumentWorker();
+
 export interface DoksDocument extends Contents {
   mdx: string;
   plain: string;
@@ -61,8 +64,19 @@ export const modifyDocument = (
 
 const cacheDocument = (doc: DoksDocument) =>
   localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
+documentWorker.onmessage = (event) => {
+  switch (event.data[0]) {
+    case "fetch_done":
+      const doc = event.data[1];
+      modifyDocument(doc);
+      fetchingDocuments$.next(
+        produce(fetchingDocuments$.value, (draft) => {
+          draft.delete(doc.slug);
+        })
+      );
+  }
+};
 const fetchDocument = async (contents: Contents) => {
-  await new Promise(requestAnimationFrame);
   const project = projects$.value.get(contents.projectSlug);
   fetchingDocuments$.next(
     produce(fetchingDocuments$.value, (draft) => {
@@ -83,23 +97,12 @@ const fetchDocument = async (contents: Contents) => {
         draft.delete(contents.slug);
       })
     );
+  } else {
+    documentWorker.postMessage([
+      "fetch",
+      { contents: { ...contents, lastModified }, projectRoot: project.root },
+    ]);
   }
-  await new Promise(requestAnimationFrame);
-  const mdx = await fetch(join(project.root, contents.path)).then((res) =>
-    res.text()
-  );
-  await new Promise(requestAnimationFrame);
-  modifyDocument({
-    ...contents,
-    mdx,
-    plain: removeMd(mdx),
-    lastModified,
-  });
-  fetchingDocuments$.next(
-    produce(fetchingDocuments$.value, (draft) => {
-      draft.delete(contents.slug);
-    })
-  );
 };
 
 const shiftQueue = () => {
@@ -131,7 +134,6 @@ export const queueDocument = (
   ) {
     return;
   }
-  console.log("queue", contents.slug);
   queuedDocuments$.next(
     produce(queuedDocuments$.value, (draft) => {
       draft.docs.set(contents.slug, contents);

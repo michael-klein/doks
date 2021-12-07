@@ -28368,16 +28368,22 @@ an.setUseProxies.bind(an);
 an.applyPatches.bind(an);
 an.createDraft.bind(an);
 an.finishDraft.bind(an);
+var produce = fn2;
+function WorkerWrapper() {
+  return new Worker("/assets/document_worker.605c3f86.js", {
+    "type": "module"
+  });
+}
 C();
 const projects$ = new BehaviorSubject(new Map());
 const contents$ = new BehaviorSubject(new Map());
 const addOrUpdateProject = (project) => {
-  projects$.next(fn2(projects$.value, (draft) => {
+  projects$.next(produce(projects$.value, (draft) => {
     draft.set(project.slug, project);
   }));
 };
 const updateContents = (contentsIn, projectSlug) => {
-  contents$.next(fn2(contents$.value, (draft) => {
+  contents$.next(produce(contents$.value, (draft) => {
     draft.get(projectSlug).set(contentsIn.slug, __spreadValues(__spreadValues({}, draft.get(projectSlug).get(contentsIn.slug)), contentsIn));
   }));
 };
@@ -28387,43 +28393,19 @@ const addOrUpdateContents = (contentsIn, projectSlug) => {
   depths.add(contentsIn.depth);
   let i2 = 0;
   depths.forEach((depth) => {
-    projects$.next(fn2(projects$.value, (draft) => {
+    projects$.next(produce(projects$.value, (draft) => {
       draft.get(projectSlug).depthMap.set(depth, i2);
     }));
     i2++;
   });
-  contents$.next(fn2(contents$.value, (draft) => {
+  contents$.next(produce(contents$.value, (draft) => {
     if (!draft.has(projectSlug)) {
       draft.set(projectSlug, new Map());
     }
     draft.get(projectSlug).set(contentsIn.slug, contentsIn);
   }));
 };
-var removeMarkdown = function(md2, options) {
-  options = options || {};
-  options.listUnicodeChar = options.hasOwnProperty("listUnicodeChar") ? options.listUnicodeChar : false;
-  options.stripListLeaders = options.hasOwnProperty("stripListLeaders") ? options.stripListLeaders : true;
-  options.gfm = options.hasOwnProperty("gfm") ? options.gfm : true;
-  options.useImgAltText = options.hasOwnProperty("useImgAltText") ? options.useImgAltText : true;
-  var output = md2 || "";
-  output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "");
-  try {
-    if (options.stripListLeaders) {
-      if (options.listUnicodeChar)
-        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, options.listUnicodeChar + " $1");
-      else
-        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, "$1");
-    }
-    if (options.gfm) {
-      output = output.replace(/\n={2,}/g, "\n").replace(/~{3}.*\n/g, "").replace(/~~/g, "").replace(/`{3}.*\n/g, "");
-    }
-    output = output.replace(/<[^>]*>/g, "").replace(/^[=\-]{2,}\s*$/g, "").replace(/\[\^.+?\](\: .*?$)?/g, "").replace(/\s{0,2}\[.*?\]: .*?$/g, "").replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? "$1" : "").replace(/\[(.*?)\][\[\(].*?[\]\)]/g, "$1").replace(/^\s{0,3}>\s?/g, "").replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "").replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, "$1$2$3").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/(`{3,})(.*?)\1/gm, "$2").replace(/`(.+?)`/g, "$1").replace(/\n{2,}/g, "\n\n");
-  } catch (e2) {
-    console.error(e2);
-    return md2;
-  }
-  return output;
-};
+const documentWorker = new WorkerWrapper();
 const documents$ = new BehaviorSubject(new Map());
 const queuedDocuments$ = new BehaviorSubject({
   docs: new Map(),
@@ -28442,7 +28424,7 @@ const getCachedDocument = (slug, lastModified) => {
   return void 0;
 };
 const modifyDocument = (doc) => {
-  documents$.next(fn2(documents$.value, (draft) => {
+  documents$.next(produce(documents$.value, (draft) => {
     var _a;
     const docNew = __spreadValues(__spreadValues({}, (_a = documents$.value.get(doc.slug)) != null ? _a : {}), doc);
     if (docNew.name === docNew.path) {
@@ -28456,10 +28438,19 @@ const modifyDocument = (doc) => {
   }));
 };
 const cacheDocument = (doc) => localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
+documentWorker.onmessage = (event) => {
+  switch (event.data[0]) {
+    case "fetch_done":
+      const doc = event.data[1];
+      modifyDocument(doc);
+      fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
+        draft.delete(doc.slug);
+      }));
+  }
+};
 const fetchDocument = async (contents) => {
-  await new Promise(requestAnimationFrame);
   const project = projects$.value.get(contents.projectSlug);
-  fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
+  fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
     draft.add(contents.slug);
   }));
   const lastModified = await fetch(pathBrowserify.join(project.root, contents.path), {
@@ -28470,26 +28461,20 @@ const fetchDocument = async (contents) => {
   const cached = getCachedDocument(contents.slug, lastModified);
   if (cached) {
     modifyDocument(cached);
-    fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
+    fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
       draft.delete(contents.slug);
     }));
+  } else {
+    documentWorker.postMessage([
+      "fetch",
+      { contents: __spreadProps(__spreadValues({}, contents), { lastModified }), projectRoot: project.root }
+    ]);
   }
-  await new Promise(requestAnimationFrame);
-  const mdx = await fetch(pathBrowserify.join(project.root, contents.path)).then((res) => res.text());
-  await new Promise(requestAnimationFrame);
-  modifyDocument(__spreadProps(__spreadValues({}, contents), {
-    mdx,
-    plain: removeMarkdown(mdx),
-    lastModified
-  }));
-  fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
-    draft.delete(contents.slug);
-  }));
 };
 const shiftQueue = () => {
   if (fetchingDocuments$.value.size < 4 && queuedDocuments$.value.order.length > 0) {
     let contents;
-    queuedDocuments$.next(fn2(queuedDocuments$.value, (draft) => {
+    queuedDocuments$.next(produce(queuedDocuments$.value, (draft) => {
       const slug = draft.order.shift();
       contents = queuedDocuments$.value.docs.get(slug);
       draft.docs.delete(slug);
@@ -28502,8 +28487,7 @@ const queueDocument = (contents, prioritize = false) => {
   if (documents$.value.has(contents.slug) || fetchingDocuments$.value.has(contents.slug)) {
     return;
   }
-  console.log("queue", contents.slug);
-  queuedDocuments$.next(fn2(queuedDocuments$.value, (draft) => {
+  queuedDocuments$.next(produce(queuedDocuments$.value, (draft) => {
     draft.docs.set(contents.slug, contents);
     if (prioritize) {
       const index2 = draft.order.indexOf(contents.slug);

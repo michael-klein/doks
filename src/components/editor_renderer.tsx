@@ -1,6 +1,7 @@
 import Editor from "@monaco-editor/react";
 import React, { MutableRefObject } from "react";
 export type StateUpdater<T> = React.Dispatch<T>;
+
 export const EditorRenderer = ({
   setHeight,
   setMDX,

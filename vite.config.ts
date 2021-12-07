@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 const path = require("path");
 import react from "@vitejs/plugin-react";
+import del from "rollup-plugin-delete";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,18 +13,9 @@ export default defineConfig({
       fileName: (format) => `docs.${format}.js`,
       formats: ["es"],
     },
+    minify: true,
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
-      external: ["react", "react-dom", "rxjs"],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          preact: "Preact",
-          rxjs: "Rxjs",
-        },
-      },
+      plugins: [del({ targets: "dist/*", hook: "generateBundle" })],
     },
   },
 });

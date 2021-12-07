@@ -38,12 +38,12 @@ const Layout = ({ children }: { children: ReactChild }) => {
     <Fragment>
       <Navbar></Navbar>
       <Container
-        maxWidth="100%"
         sx={{
           marginTop: 3,
           marginBottom: 3,
           flex: "auto",
           display: "flex",
+          maxWidth: "100% !important",
         }}
       >
         {children}

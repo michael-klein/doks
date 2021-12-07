@@ -21,11 +21,14 @@ import {
 } from "../store/documents";
 import { useDocOptions } from "../hooks/use_doc_options_context";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Fragment, ReactChild } from "react";
+import { Fragment } from "react";
 import { useObservableState } from "observable-hooks";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import CodeIcon from "@mui/icons-material/Code";
 import { ValueSubject } from "../utils/value_subject";
+import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { codeTheme$ } from "./markdown_renderer";
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -84,7 +87,16 @@ const NavButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.primary.dark,
   },
 }));
-const FavMenu = () => {
+
+const NavMenu = ({
+  items,
+  children,
+  tooltip,
+}: {
+  children: React.ReactChild;
+  tooltip: string;
+  items: { key: string; label: string; onClick: () => void }[];
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent) => {
@@ -93,23 +105,11 @@ const FavMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [favDocs] = useObservableState(() =>
-    documents$.pipe(
-      map((docs) => Array.from(docs.values()).filter((doc) => doc.isFavourite))
-    )
-  );
-  const navigate = useNavigate();
-  const onFavClicked = (doc: DoksDocument) => {
-    navigate(`/docs/${doc.projectSlug}/${doc.slug}`, {
-      replace: true,
-    });
-    handleClose();
-  };
-  return favDocs?.length > 0 ? (
+  return items?.length > 0 ? (
     <Fragment>
-      <Tooltip title="favourites">
-        <IconButton aria-label="favourites" onClick={handleClick}>
-          <FavButton />
+      <Tooltip title={tooltip}>
+        <IconButton aria-label={tooltip} onClick={handleClick}>
+          {children}
         </IconButton>
       </Tooltip>
       <Menu
@@ -119,8 +119,9 @@ const FavMenu = () => {
         onClose={handleClose}
         PaperProps={{
           style: {
-            maxHeight: 200,
-            width: "20ch",
+            maxHeight: "80vh",
+            width: "100%",
+            maxWidth: "200px",
           },
         }}
         anchorOrigin={{
@@ -132,15 +133,72 @@ const FavMenu = () => {
           horizontal: "right",
         }}
       >
-        {favDocs.map((doc) => (
-          <MenuItem key={doc.slug} onClick={() => onFavClicked(doc)}>
-            {doc.name}
+        {items.map(({ onClick, label, key }) => (
+          <MenuItem
+            key={key}
+            onClick={() => {
+              onClick();
+              handleClose();
+            }}
+          >
+            {label}
           </MenuItem>
         ))}
       </Menu>
     </Fragment>
   ) : (
     <></>
+  );
+};
+const FavMenu = () => {
+  const [favDocs] = useObservableState(() =>
+    documents$.pipe(
+      map((docs) => Array.from(docs.values()).filter((doc) => doc.isFavourite))
+    )
+  );
+  const navigate = useNavigate();
+  const onFavClicked = (doc: DoksDocument) => {
+    navigate(`/docs/${doc.projectSlug}/${doc.slug}`, {
+      replace: true,
+    });
+  };
+  return (
+    <NavMenu
+      tooltip="Favourites"
+      items={
+        favDocs?.map((doc) => ({
+          key: doc.slug,
+          label: doc.name,
+          onClick: () => onFavClicked(doc),
+        })) ?? []
+      }
+    >
+      <FavButton></FavButton>
+    </NavMenu>
+  );
+};
+
+const SyntaxMenu = () => {
+  return (
+    <NavMenu
+      tooltip="Syntax theme"
+      items={
+        Object.keys(SyntaxThemes).map((key) => {
+          const theme = SyntaxThemes[key];
+          return {
+            key,
+            label: key,
+            onClick: () => {
+              codeTheme$.next(theme);
+            },
+          };
+        }) ?? []
+      }
+    >
+      <NavButton aria-label="syntax">
+        <CodeIcon></CodeIcon>
+      </NavButton>
+    </NavMenu>
   );
 };
 const NavAppBar = styled(AppBar)(({ theme }) => ({
@@ -197,6 +255,7 @@ export function Navbar() {
               </NavButton>
             </Link>
           </Tooltip>
+          <SyntaxMenu />
           <FavMenu />
           <SearchInputWrapper
             sx={{ cursor: "text" }}

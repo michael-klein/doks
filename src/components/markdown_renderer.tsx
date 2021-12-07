@@ -2,6 +2,24 @@ import { CircularProgress, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { htmdx } from "htmdx";
 import React from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { ValueSubject } from "../utils/value_subject";
+import { useObservableState } from "observable-hooks";
+
+const SYNTAX_KEY = "SYNTAX";
+export const codeTheme$ = new ValueSubject(
+  SyntaxThemes[localStorage.getItem(SYNTAX_KEY)] ?? atomOneDark
+);
+
+codeTheme$.subscribe((theme) => {
+  localStorage.setItem(
+    SYNTAX_KEY,
+    Object.keys(SyntaxThemes).find((key) => SyntaxThemes[key] === theme)
+  );
+});
+
 import { DoksTheme } from "../css/theme";
 
 class ErrorBoundary extends React.Component<
@@ -34,10 +52,30 @@ class ErrorBoundary extends React.Component<
 }
 const MDX = ({ mdx }: { mdx: string }) => {
   let i = 0;
+  const [codeTheme] = useObservableState(() => codeTheme$);
   return (
     <ErrorBoundary>
       {mdx !== undefined ? (
         htmdx(mdx, React.createElement, {
+          components: {
+            code: (props: any) => {
+              return (
+                <SyntaxHighlighter
+                  style={codeTheme}
+                  customStyle={{
+                    marginLeft: "-10px",
+                    marginRight: "-10px",
+                    paddingLeft: "11px",
+                    paddingRight: "11px",
+                    borderRadius: "3px",
+                  }}
+                  language={props?.className?.replace("language-", "")}
+                >
+                  {props.children}
+                </SyntaxHighlighter>
+              );
+            },
+          },
           jsxTransforms: [
             (type, props, children) => {
               if (!props) {
@@ -49,7 +87,7 @@ const MDX = ({ mdx }: { mdx: string }) => {
           ],
         })
       ) : (
-        <CircularProgress />
+        <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
       )}
     </ErrorBoundary>
   );

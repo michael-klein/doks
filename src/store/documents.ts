@@ -163,12 +163,6 @@ const shiftQueue = () => {
 };
 
 fetchingDocuments$.subscribe(shiftQueue);
-fetchingDocuments$.subscribe((fetching) => {
-  console.log("num fetch", fetching.size);
-});
-queuedDocuments$.subscribe((queued) => {
-  console.log("num qeueue", queued.docs.size);
-});
 
 export const queueDocument = (
   contents: Contents,

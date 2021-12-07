@@ -28243,9 +28243,8 @@ an.setUseProxies.bind(an);
 an.applyPatches.bind(an);
 an.createDraft.bind(an);
 an.finishDraft.bind(an);
-var produce = fn2;
 function WorkerWrapper() {
-  return new Worker("/assets/document_worker.605c3f86.js", {
+  return new Worker("/assets/document_worker.4dcf3d91.js", {
     "type": "module"
   });
 }
@@ -28253,12 +28252,12 @@ C();
 const projects$ = new BehaviorSubject(new Map());
 const contents$ = new BehaviorSubject(new Map());
 const addOrUpdateProject = (project) => {
-  projects$.next(produce(projects$.value, (draft) => {
+  projects$.next(fn2(projects$.value, (draft) => {
     draft.set(project.slug, project);
   }));
 };
 const updateContents = (contentsIn, projectSlug) => {
-  contents$.next(produce(contents$.value, (draft) => {
+  contents$.next(fn2(contents$.value, (draft) => {
     draft.get(projectSlug).set(contentsIn.slug, __spreadValues(__spreadValues({}, draft.get(projectSlug).get(contentsIn.slug)), contentsIn));
   }));
 };
@@ -28268,26 +28267,29 @@ const addOrUpdateContents = (contentsIn, projectSlug) => {
   depths.add(contentsIn.depth);
   let i2 = 0;
   depths.forEach((depth) => {
-    projects$.next(produce(projects$.value, (draft) => {
+    projects$.next(fn2(projects$.value, (draft) => {
       draft.get(projectSlug).depthMap.set(depth, i2);
     }));
     i2++;
   });
-  contents$.next(produce(contents$.value, (draft) => {
+  contents$.next(fn2(contents$.value, (draft) => {
     if (!draft.has(projectSlug)) {
       draft.set(projectSlug, new Map());
     }
     draft.get(projectSlug).set(contentsIn.slug, contentsIn);
   }));
 };
-const documentWorker = new WorkerWrapper();
 const documents$ = new BehaviorSubject(new Map());
 const queuedDocuments$ = new BehaviorSubject({
   docs: new Map(),
   order: []
 });
 const fetchingDocuments$ = new BehaviorSubject(new Set());
-const CACHE_PREFEX = "doks-cache-";
+const CACHE_PREFEX = "doks-cache";
+let flushCache = false;
+window.flushCacheOnReload = () => {
+  flushCache = true;
+};
 const getCachedDocument = (slug, lastModified) => {
   const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
   if (cachedString) {
@@ -28299,7 +28301,7 @@ const getCachedDocument = (slug, lastModified) => {
   return void 0;
 };
 const modifyDocument = (doc) => {
-  documents$.next(produce(documents$.value, (draft) => {
+  documents$.next(fn2(documents$.value, (draft) => {
     var _a;
     const docNew = __spreadValues(__spreadValues({}, (_a = documents$.value.get(doc.slug)) != null ? _a : {}), doc);
     if (docNew.name === docNew.path) {
@@ -28308,48 +28310,79 @@ const modifyDocument = (doc) => {
         updateContents({ slug: docNew.slug, name: docNew.name }, docNew.projectSlug);
       }
     }
-    cacheDocument(docNew);
     draft.set(doc.slug, docNew);
   }));
 };
-const cacheDocument = (doc) => localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
-documentWorker.onmessage = (event) => {
-  switch (event.data[0]) {
-    case "fetch_done":
-      const doc = event.data[1];
-      modifyDocument(doc);
-      fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
-        draft.delete(doc.slug);
-      }));
+const cacheDocument = (doc) => {
+  if (!flushCache) {
+    localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
   }
+};
+window.onunload = () => {
+  if (flushCache) {
+    localStorage.clear();
+  }
+  documents$.value.forEach((doc) => cacheDocument(doc));
+};
+const getLastModified = async (src) => {
+  try {
+    return await fetch(src, {
+      method: "HEAD"
+    }).then((response) => {
+      if (response.ok) {
+        return response.headers.get("Last-Modified");
+      } else {
+        throw new Error("does not exist");
+      }
+    });
+  } catch (e2) {
+    return false;
+  }
+};
+const workerPool = [];
+const spawnWorker = () => {
+  const worker = new WorkerWrapper();
+  worker.onmessage = (event) => {
+    switch (event.data[0]) {
+      case "fetch_done":
+        workerPool.push(worker);
+        const doc = event.data[1];
+        modifyDocument(doc);
+        fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
+          draft.delete(doc.slug);
+        }));
+    }
+  };
+  return worker;
+};
+const sendToWorker = (type, payload) => {
+  var _a;
+  const worker = (_a = workerPool.shift()) != null ? _a : spawnWorker();
+  worker.postMessage([type, payload]);
 };
 const fetchDocument = async (contents) => {
   const project = projects$.value.get(contents.projectSlug);
-  fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
+  fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
     draft.add(contents.slug);
   }));
-  const lastModified = await fetch(pathBrowserify.join(project.root, contents.path), {
-    method: "HEAD"
-  }).then((value) => {
-    return value.headers.get("Last-Modified");
-  });
-  const cached = getCachedDocument(contents.slug, lastModified);
+  const cached = getCachedDocument(contents.slug, contents.lastModified);
   if (cached) {
     modifyDocument(cached);
-    fetchingDocuments$.next(produce(fetchingDocuments$.value, (draft) => {
+    fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
       draft.delete(contents.slug);
     }));
   } else {
-    documentWorker.postMessage([
-      "fetch",
-      { contents: __spreadProps(__spreadValues({}, contents), { lastModified }), projectRoot: project.root }
-    ]);
+    sendToWorker("fetch", {
+      contents: __spreadValues({}, contents),
+      projectRoot: project.root
+    });
   }
 };
+const MAX_QUEUE = 50;
 const shiftQueue = () => {
-  if (fetchingDocuments$.value.size < 4 && queuedDocuments$.value.order.length > 0) {
+  if (queuedDocuments$.value.order.length > 0 && queuedDocuments$.value.docs.size < MAX_QUEUE) {
     let contents;
-    queuedDocuments$.next(produce(queuedDocuments$.value, (draft) => {
+    queuedDocuments$.next(fn2(queuedDocuments$.value, (draft) => {
       const slug = draft.order.shift();
       contents = queuedDocuments$.value.docs.get(slug);
       draft.docs.delete(slug);
@@ -28362,7 +28395,7 @@ const queueDocument = (contents, prioritize = false) => {
   if (documents$.value.has(contents.slug) || fetchingDocuments$.value.has(contents.slug)) {
     return;
   }
-  queuedDocuments$.next(produce(queuedDocuments$.value, (draft) => {
+  queuedDocuments$.next(fn2(queuedDocuments$.value, (draft) => {
     draft.docs.set(contents.slug, contents);
     if (prioritize) {
       const index2 = draft.order.indexOf(contents.slug);
@@ -35693,12 +35726,18 @@ var lunr$1 = { exports: {} };
 var lunr = lunr$1.exports;
 let index$2;
 const projectIndizes = new Map();
-documents$.subscribe((documents) => {
+documents$.subscribe(() => {
+  index$2 = void 0;
+});
+const createIndex = () => {
+  if (index$2) {
+    return;
+  }
   const documentsByProject = new Map();
   index$2 = lunr(function() {
     this.ref("slug");
     this.field("content");
-    documents.forEach((document2) => {
+    documents$.value.forEach((document2) => {
       this.add({
         slug: document2.slug,
         content: document2.mdx + " " + document2.plain
@@ -35710,11 +35749,11 @@ documents$.subscribe((documents) => {
     });
   });
   projectIndizes.clear();
-  documentsByProject.forEach((documents2, projectSlug) => {
+  documentsByProject.forEach((documents, projectSlug) => {
     projectIndizes.set(projectSlug, lunr(function() {
       this.ref("slug");
       this.field("content");
-      documents2.forEach((document2) => {
+      documents.forEach((document2) => {
         this.add({
           slug: document2.slug,
           content: document2.mdx + " " + document2.plain
@@ -35722,16 +35761,14 @@ documents$.subscribe((documents) => {
       });
     }));
   });
-});
+};
 const searchDocuments = (query, projectSlug) => {
+  createIndex();
   const indexToSeach = projectSlug ? projectIndizes.get(projectSlug) : index$2;
-  console.log(projectSlug, indexToSeach);
   if (indexToSeach && query.length > 2) {
-    console.time("search");
     const result = indexToSeach.search(query).map((result2) => {
       return documents$.value.get(result2.ref);
     });
-    console.timeEnd("search");
     return result;
   }
   return [];
@@ -35800,6 +35837,7 @@ const StyledAutocompletePopper = styled$3("div")(({
     backgroundColor: theme2.palette.primary.light,
     padding: "8px",
     borderRadius: "4px",
+    width: "100%",
     color: theme2.palette.getContrastText(theme2.palette.primary.light)
   },
   [".hit"]: {
@@ -35878,6 +35916,15 @@ const SearchOverlay = ({
   react.exports.useEffect(() => {
     show$.next(false);
   }, [params]);
+  const onChange = react.exports.useCallback((e2, option) => {
+    if (option instanceof Object) {
+      navigate(`/docs/${option.projectSlug}/${option.slug}`, {
+        replace: true
+      });
+    }
+    inputRef.current.value = "";
+    show$.next(false);
+  }, [params]);
   const renderSearch = () => {
     return /* @__PURE__ */ jsx(Box$1, {
       sx: __spreadProps(__spreadValues({}, style), {
@@ -35891,15 +35938,7 @@ const SearchOverlay = ({
           onInputChange: (event, newInputValue) => {
             query$.next(newInputValue.split(" ").filter((q2) => q2.length > 2).join(" "));
           },
-          onChange: react.exports.useCallback((e2, option) => {
-            if (option instanceof Object) {
-              navigate(`/docs/${option.projectSlug}/${option.slug}`, {
-                replace: true
-              });
-            }
-            inputRef.current.value = "";
-            show$.next(false);
-          }, [params]),
+          onChange,
           PopperComponent,
           options: hits,
           getOptionLabel: (option) => {
@@ -38909,21 +38948,6 @@ const Editor = () => {
     })]
   });
 };
-const checkExists = async (src) => {
-  try {
-    return await fetch(src, {
-      method: "HEAD"
-    }).then((response) => {
-      if (response.ok) {
-        return true;
-      } else {
-        throw new Error("does not exist");
-      }
-    });
-  } catch (e2) {
-    return false;
-  }
-};
 const loadProjects = async (projects) => {
   await Promise.all(projects.map(async (project) => {
     const projectSlug = slugify(project.root);
@@ -38949,8 +38973,9 @@ const loadProjects = async (projects) => {
         isOnlyHeading: !path.includes(".md")
       };
       if (!item.isOnlyHeading) {
-        const exists = await checkExists(pathBrowserify.join(project.root, item.path));
-        if (exists) {
+        const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
+        if (lastModified !== false) {
+          item.lastModified = lastModified;
           addOrUpdateContents(item, projectSlug);
           queueDocument(item, false);
         }

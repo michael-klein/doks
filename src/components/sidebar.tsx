@@ -26,6 +26,7 @@ import React, {
 } from "react";
 import { useNavigate, useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
+import { throttleTime } from "rxjs/operators";
 import { map } from "rxjs/operators";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { Contents, contents$, Project, projects$ } from "../store/contents";
@@ -131,6 +132,9 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     ["ul *, form *, .MuiBox-root *"]: {
       fontSize: "1.2rem !important",
     },
+    ".MuiTreeItem-label": {
+      wordBreak: "break-word",
+    },
   },
 }));
 export enum SIDEBAR_MODE {
@@ -145,6 +149,7 @@ const RenderTreeWrapper = ({
 }) => {
   const [content] = useObservableState(() =>
     combineLatest([contents$, projectObservable$]).pipe(
+      throttleTime(500, undefined, { leading: false, trailing: true }),
       map(([contents, project]) => {
         try {
           return createTree(contents.get(project.slug), project);

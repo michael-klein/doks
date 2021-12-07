@@ -10,9 +10,14 @@ import {
   addOrUpdateContents,
   addOrUpdateProject,
   Contents,
+  removeContents,
 } from "./store/contents";
 import "./css/reset";
-import { getLastModified, queueDocument } from "./store/documents";
+import {
+  getCachedDocument,
+  getLastModified,
+  queueDocument,
+} from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { Editor } from "./pages/editor";
@@ -44,17 +49,21 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
           projectSlug,
           isOnlyHeading: !path.includes(".md"),
         };
+        addOrUpdateContents({ ...item }, projectSlug);
         if (!item.isOnlyHeading) {
           const lastModified = await getLastModified(
             join(project.root, item.path)
           );
           if (lastModified !== false) {
+            const cached = getCachedDocument(item.slug);
+            if (cached) {
+              addOrUpdateContents({ ...item, name: cached.name }, projectSlug);
+            }
             item.lastModified = lastModified;
-            addOrUpdateContents(item, projectSlug);
             queueDocument(item, false);
+          } else {
+            removeContents(item.slug, item.projectSlug);
           }
-        } else {
-          addOrUpdateContents(item, projectSlug);
         }
       }
     })

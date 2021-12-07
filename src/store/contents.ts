@@ -41,7 +41,13 @@ export const updateContents = (
     })
   );
 };
-
+export const removeContents = (contentsSlug: string, projectSlug: string) => {
+  contents$.next(
+    produce(contents$.value, (draft) => {
+      draft.get(projectSlug)?.delete(contentsSlug);
+    })
+  );
+};
 export const addOrUpdateContents = (
   contentsIn: Contents,
   projectSlug: string

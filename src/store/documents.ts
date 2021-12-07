@@ -29,13 +29,16 @@ let flushCache = false;
 (window as any).flushCacheOnReload = () => {
   flushCache = true;
 };
-const getCachedDocument = (slug: string, lastModified: string) => {
+const cachedDocuments = new Map<string, DoksDocument>();
+export const getCachedDocument = (slug: string) => {
+  if (cachedDocuments.has(slug)) {
+    return cachedDocuments.get(slug);
+  }
   const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
   if (cachedString) {
     const doc: DoksDocument = JSON.parse(cachedString);
-    if (doc.lastModified === lastModified) {
-      return doc;
-    }
+    cachedDocuments.set(slug, doc);
+    return doc;
   }
   return undefined;
 };
@@ -122,8 +125,8 @@ const fetchDocument = async (contents: Contents) => {
     })
   );
 
-  const cached = getCachedDocument(contents.slug, contents.lastModified);
-  if (cached) {
+  const cached = getCachedDocument(contents.slug);
+  if (cached && cached.lastModified !== contents.lastModified) {
     modifyDocument(cached);
     fetchingDocuments$.next(
       produce(fetchingDocuments$.value, (draft) => {

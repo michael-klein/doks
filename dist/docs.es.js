@@ -14250,7 +14250,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   });
   const classes = useUtilityClasses$G(ownerState);
   const theme2 = useTheme();
-  const timer = react.exports.useRef();
+  const timer2 = react.exports.useRef();
   const wrapperRef = react.exports.useRef(null);
   const autoTransitionDuration = react.exports.useRef();
   const collapsedSize = typeof collapsedSizeProp === "number" ? `${collapsedSizeProp}px` : collapsedSizeProp;
@@ -14258,7 +14258,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   const size = isHorizontal ? "width" : "height";
   react.exports.useEffect(() => {
     return () => {
-      clearTimeout(timer.current);
+      clearTimeout(timer2.current);
     };
   }, []);
   const nodeRef = react.exports.useRef(null);
@@ -14351,7 +14351,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   });
   const handleAddEndListener = (next2) => {
     if (timeout === "auto") {
-      timer.current = setTimeout(next2, autoTransitionDuration.current || 0);
+      timer2.current = setTimeout(next2, autoTransitionDuration.current || 0);
     }
     if (addEndListener) {
       addEndListener(nodeRef.current, next2);
@@ -19138,7 +19138,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
     timeout = "auto",
     TransitionComponent = Transition$1
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$n);
-  const timer = react.exports.useRef();
+  const timer2 = react.exports.useRef();
   const autoTimeout = react.exports.useRef();
   const theme2 = useTheme();
   const nodeRef = react.exports.useRef(null);
@@ -19225,7 +19225,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
   const handleExited = normalizedTransitionCallback(onExited);
   const handleAddEndListener = (next2) => {
     if (timeout === "auto") {
-      timer.current = setTimeout(next2, autoTimeout.current || 0);
+      timer2.current = setTimeout(next2, autoTimeout.current || 0);
     }
     if (addEndListener) {
       addEndListener(nodeRef.current, next2);
@@ -19233,7 +19233,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
   };
   react.exports.useEffect(() => {
     return () => {
-      clearTimeout(timer.current);
+      clearTimeout(timer2.current);
     };
   }, []);
   return /* @__PURE__ */ jsx(TransitionComponent, _extends$2({
@@ -26963,6 +26963,7 @@ var AsyncScheduler = function(_super) {
   return AsyncScheduler2;
 }(Scheduler);
 var asyncScheduler = new AsyncScheduler(AsyncAction);
+var async = asyncScheduler;
 function isScheduler(value) {
   return value && isFunction$1(value.schedule);
 }
@@ -27333,6 +27334,9 @@ function from(input, scheduler2) {
 function isObservable(obj) {
   return !!obj && (obj instanceof Observable || isFunction$1(obj.lift) && isFunction$1(obj.subscribe));
 }
+function isValidDate(value) {
+  return value instanceof Date && !isNaN(value);
+}
 function map(project, thisArg) {
   return operate(function(source, subscriber) {
     var index2 = 0;
@@ -27528,6 +27532,39 @@ function concat() {
   }
   return concatAll()(from(args, popScheduler(args)));
 }
+function timer(dueTime, intervalOrScheduler, scheduler2) {
+  if (dueTime === void 0) {
+    dueTime = 0;
+  }
+  if (scheduler2 === void 0) {
+    scheduler2 = async;
+  }
+  var intervalDuration = -1;
+  if (intervalOrScheduler != null) {
+    if (isScheduler(intervalOrScheduler)) {
+      scheduler2 = intervalOrScheduler;
+    } else {
+      intervalDuration = intervalOrScheduler;
+    }
+  }
+  return new Observable(function(subscriber) {
+    var due = isValidDate(dueTime) ? +dueTime - scheduler2.now() : dueTime;
+    if (due < 0) {
+      due = 0;
+    }
+    var n2 = 0;
+    return scheduler2.schedule(function() {
+      if (!subscriber.closed) {
+        subscriber.next(n2++);
+        if (0 <= intervalDuration) {
+          this.schedule(void 0, intervalDuration);
+        } else {
+          subscriber.complete();
+        }
+      }
+    }, due);
+  });
+}
 function debounceTime(dueTime, scheduler2) {
   if (scheduler2 === void 0) {
     scheduler2 = asyncScheduler;
@@ -27579,6 +27616,63 @@ function startWith() {
   return operate(function(source, subscriber) {
     (scheduler2 ? concat(values2, source, scheduler2) : concat(values2, source)).subscribe(subscriber);
   });
+}
+var defaultThrottleConfig = {
+  leading: true,
+  trailing: false
+};
+function throttle(durationSelector, _a) {
+  var _b = _a === void 0 ? defaultThrottleConfig : _a, leading = _b.leading, trailing = _b.trailing;
+  return operate(function(source, subscriber) {
+    var hasValue2 = false;
+    var sendValue = null;
+    var throttled = null;
+    var isComplete = false;
+    var endThrottling = function() {
+      throttled === null || throttled === void 0 ? void 0 : throttled.unsubscribe();
+      throttled = null;
+      if (trailing) {
+        send();
+        isComplete && subscriber.complete();
+      }
+    };
+    var cleanupThrottling = function() {
+      throttled = null;
+      isComplete && subscriber.complete();
+    };
+    var startThrottle = function(value) {
+      return throttled = innerFrom(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, endThrottling, cleanupThrottling));
+    };
+    var send = function() {
+      if (hasValue2) {
+        hasValue2 = false;
+        var value = sendValue;
+        sendValue = null;
+        subscriber.next(value);
+        !isComplete && startThrottle(value);
+      }
+    };
+    source.subscribe(new OperatorSubscriber(subscriber, function(value) {
+      hasValue2 = true;
+      sendValue = value;
+      !(throttled && !throttled.closed) && (leading ? send() : startThrottle(value));
+    }, function() {
+      isComplete = true;
+      !(trailing && hasValue2 && throttled && !throttled.closed) && subscriber.complete();
+    }));
+  });
+}
+function throttleTime(duration2, scheduler2, config2) {
+  if (scheduler2 === void 0) {
+    scheduler2 = asyncScheduler;
+  }
+  if (config2 === void 0) {
+    config2 = defaultThrottleConfig;
+  }
+  var duration$ = timer(duration2, scheduler2);
+  return throttle(function() {
+    return duration$;
+  }, config2);
 }
 function getEmptySubject() {
   return new Subject();
@@ -28268,6 +28362,12 @@ const updateContents = (contentsIn, projectSlug) => {
     draft.get(projectSlug).set(contentsIn.slug, __spreadValues(__spreadValues({}, draft.get(projectSlug).get(contentsIn.slug)), contentsIn));
   }));
 };
+const removeContents = (contentsSlug, projectSlug) => {
+  contents$.next(fn2(contents$.value, (draft) => {
+    var _a;
+    (_a = draft.get(projectSlug)) == null ? void 0 : _a.delete(contentsSlug);
+  }));
+};
 const addOrUpdateContents = (contentsIn, projectSlug) => {
   const project = projects$.value.get(projectSlug);
   const depths = new Set(project.depthMap.keys());
@@ -28297,13 +28397,16 @@ let flushCache = false;
 window.flushCacheOnReload = () => {
   flushCache = true;
 };
-const getCachedDocument = (slug, lastModified) => {
+const cachedDocuments = new Map();
+const getCachedDocument = (slug) => {
+  if (cachedDocuments.has(slug)) {
+    return cachedDocuments.get(slug);
+  }
   const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
   if (cachedString) {
     const doc = JSON.parse(cachedString);
-    if (doc.lastModified === lastModified) {
-      return doc;
-    }
+    cachedDocuments.set(slug, doc);
+    return doc;
   }
   return void 0;
 };
@@ -28372,8 +28475,8 @@ const fetchDocument = async (contents) => {
   fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
     draft.add(contents.slug);
   }));
-  const cached = getCachedDocument(contents.slug, contents.lastModified);
-  if (cached) {
+  const cached = getCachedDocument(contents.slug);
+  if (cached && cached.lastModified !== contents.lastModified) {
     modifyDocument(cached);
     fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
       draft.delete(contents.slug);
@@ -37514,6 +37617,9 @@ const SidebarWrapper = styled$3(Grid$1)(({
     },
     ["ul *, form *, .MuiBox-root *"]: {
       fontSize: "1.2rem !important"
+    },
+    ".MuiTreeItem-label": {
+      wordBreak: "break-word"
     }
   }
 }));
@@ -37525,7 +37631,10 @@ var SIDEBAR_MODE;
 const RenderTreeWrapper = ({
   projectObservable$
 }) => {
-  const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(map(([contents, project]) => {
+  const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(throttleTime(500, void 0, {
+    leading: false,
+    trailing: true
+  }), map(([contents, project]) => {
     try {
       return createTree(contents.get(project.slug), project);
     } catch (e2) {
@@ -38979,15 +39088,21 @@ const loadProjects = async (projects) => {
         projectSlug,
         isOnlyHeading: !path.includes(".md")
       };
+      addOrUpdateContents(__spreadValues({}, item), projectSlug);
       if (!item.isOnlyHeading) {
         const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
         if (lastModified !== false) {
+          const cached = getCachedDocument(item.slug);
+          if (cached) {
+            addOrUpdateContents(__spreadProps(__spreadValues({}, item), {
+              name: cached.name
+            }), projectSlug);
+          }
           item.lastModified = lastModified;
-          addOrUpdateContents(item, projectSlug);
           queueDocument(item, false);
+        } else {
+          removeContents(item.slug, item.projectSlug);
         }
-      } else {
-        addOrUpdateContents(item, projectSlug);
       }
     }
   }));

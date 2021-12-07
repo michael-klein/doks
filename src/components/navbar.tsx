@@ -191,7 +191,7 @@ export function Navbar() {
             </Tooltip>
           )}
           <Tooltip title="create document">
-            <Link to="/editor/">
+            <Link to={"/editor/" + params.projectSlug ?? ""}>
               <NavButton aria-label="editor">
                 <PostAddIcon />
               </NavButton>

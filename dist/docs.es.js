@@ -36308,7 +36308,7 @@ function Navbar() {
         }), /* @__PURE__ */ jsx(Tooltip$1, {
           title: "create document",
           children: /* @__PURE__ */ jsx(Link, {
-            to: "/editor/",
+            to: "/editor/" + params.projectSlug,
             children: /* @__PURE__ */ jsx(NavButton, {
               "aria-label": "editor",
               children: /* @__PURE__ */ jsx(default_1$9, {})
@@ -37582,10 +37582,8 @@ const createTree = (contents, project) => {
 const SidebarWrapper = styled$3(Grid$1)(({
   theme: theme2
 }) => ({
-  height: 270,
   flexGrow: 1,
   maxWidth: 400,
-  overflowY: "auto",
   position: "sticky",
   top: 60,
   "&.editor-sidebar": {
@@ -37594,7 +37592,7 @@ const SidebarWrapper = styled$3(Grid$1)(({
     display: "block",
     width: "200px"
   },
-  [" .menu-button"]: {
+  [".menu-button"]: {
     display: "none",
     position: "fixed",
     right: 20,
@@ -37625,7 +37623,7 @@ const SidebarWrapper = styled$3(Grid$1)(({
     [" .menu-button"]: {
       display: "flex"
     },
-    ["& > *"]: {
+    ["& > * > *"]: {
       width: "100%"
     },
     ["ul *, form *, .MuiBox-root *"]: {
@@ -37642,7 +37640,7 @@ const RenderTreeWrapper = ({
   projectObservable$
 }) => {
   const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(throttleTime(500, void 0, {
-    leading: false,
+    leading: true,
     trailing: true
   }), map(([contents, project]) => {
     try {
@@ -37654,6 +37652,21 @@ const RenderTreeWrapper = ({
   return content ? /* @__PURE__ */ jsx(RenderTree, {
     content
   }) : /* @__PURE__ */ jsx(CircularProgress$1, {});
+};
+const ConditionalCard = ({
+  children,
+  mode
+}) => {
+  if (mode === 1) {
+    return children;
+  }
+  return /* @__PURE__ */ jsx(Card$1, {
+    elevation: 1,
+    sx: {
+      padding: 2
+    },
+    children
+  });
 };
 function Sidebar({
   onNodeSelect,
@@ -37708,68 +37721,71 @@ function Sidebar({
       setShowMobileSidebar(false);
     }
   }, [matches]);
-  return /* @__PURE__ */ jsxs(SidebarWrapper, {
+  return /* @__PURE__ */ jsx(SidebarWrapper, {
     item: true,
     xs: 3,
     className: (showMobileSidebar ? "show" : "") + " " + (mode === 1 ? "editor-sidebar" : "docs-sidebar"),
-    children: [/* @__PURE__ */ jsx(Fab$1, {
-      color: "secondary",
-      "aria-label": "add",
-      className: "menu-button",
-      children: showMobileSidebar ? /* @__PURE__ */ jsx(default_1$5, {
-        onClick: () => setShowMobileSidebar(false)
-      }) : /* @__PURE__ */ jsx(default_1$3, {
-        onClick: () => setShowMobileSidebar(true)
-      })
-    }), projects.size > 1 && /* @__PURE__ */ jsx(Box$1, {
-      sx: {
-        mb: 1
-      },
-      children: /* @__PURE__ */ jsxs(FormControl$1, {
-        fullWidth: true,
-        children: [/* @__PURE__ */ jsx(InputLabel$1, {
-          variant: "standard",
-          htmlFor: "uncontrolled-native",
-          children: "Project"
-        }), project && /* @__PURE__ */ jsx(NativeSelect$1, {
-          defaultValue: project.slug,
-          inputProps: {
-            name: "age",
-            id: "uncontrolled-native"
-          },
-          onChange: (e2) => {
-            onProjectSelect(e2.target.value);
-          },
-          children: Array.from(projects).map(([slug, p2]) => /* @__PURE__ */ jsx("option", {
-            value: slug,
-            children: p2.name
-          }, slug))
-        })]
-      })
-    }), /* @__PURE__ */ jsx(Box$1, {
-      sx: {
-        mb: 1
-      },
-      children: /* @__PURE__ */ jsx(Button$1, {
-        onClick: handleExpandClick,
-        children: expanded.length === 0 ? "Expand all" : "Collapse all"
-      })
-    }), params.contentSlug && /* @__PURE__ */ jsx(TreeView$1, {
-      "aria-label": "controlled",
-      defaultCollapseIcon: /* @__PURE__ */ jsx(default_1$4, {}),
-      defaultExpandIcon: /* @__PURE__ */ jsx(default_1$6, {}),
-      expanded,
-      onNodeToggle: handleToggle,
-      onNodeSelect: (event, nodeId) => {
-        if (event.target.tagName !== "svg") {
-          onNodeSelect(nodeId);
-        }
-      },
-      selected: mode !== 1 ? params.contentSlug : "",
-      children: /* @__PURE__ */ jsx(RenderTreeWrapper, {
-        projectObservable$
-      })
-    })]
+    children: /* @__PURE__ */ jsxs(ConditionalCard, {
+      mode,
+      children: [/* @__PURE__ */ jsx(Fab$1, {
+        color: "secondary",
+        "aria-label": "add",
+        className: "menu-button",
+        children: showMobileSidebar ? /* @__PURE__ */ jsx(default_1$5, {
+          onClick: () => setShowMobileSidebar(false)
+        }) : /* @__PURE__ */ jsx(default_1$3, {
+          onClick: () => setShowMobileSidebar(true)
+        })
+      }), projects.size > 1 && /* @__PURE__ */ jsx(Box$1, {
+        sx: {
+          mb: 1
+        },
+        children: /* @__PURE__ */ jsxs(FormControl$1, {
+          fullWidth: true,
+          children: [/* @__PURE__ */ jsx(InputLabel$1, {
+            variant: "standard",
+            htmlFor: "uncontrolled-native",
+            children: "Project"
+          }), project && /* @__PURE__ */ jsx(NativeSelect$1, {
+            defaultValue: project.slug,
+            inputProps: {
+              name: "age",
+              id: "uncontrolled-native"
+            },
+            onChange: (e2) => {
+              onProjectSelect(e2.target.value);
+            },
+            children: Array.from(projects).map(([slug, p2]) => /* @__PURE__ */ jsx("option", {
+              value: slug,
+              children: p2.name
+            }, slug))
+          })]
+        })
+      }), /* @__PURE__ */ jsx(Box$1, {
+        sx: {
+          mb: 1
+        },
+        children: /* @__PURE__ */ jsx(Button$1, {
+          onClick: handleExpandClick,
+          children: expanded.length === 0 ? "Expand all" : "Collapse all"
+        })
+      }), params.contentSlug && /* @__PURE__ */ jsx(TreeView$1, {
+        "aria-label": "controlled",
+        defaultCollapseIcon: /* @__PURE__ */ jsx(default_1$4, {}),
+        defaultExpandIcon: /* @__PURE__ */ jsx(default_1$6, {}),
+        expanded,
+        onNodeToggle: handleToggle,
+        onNodeSelect: (event, nodeId) => {
+          if (event.target.tagName !== "svg") {
+            onNodeSelect(nodeId);
+          }
+        },
+        selected: mode !== 1 ? params.contentSlug : "",
+        children: /* @__PURE__ */ jsx(RenderTreeWrapper, {
+          projectObservable$
+        })
+      })]
+    })
   });
 }
 const Project = () => {

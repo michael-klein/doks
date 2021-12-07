@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import TreeItem from "@mui/lab/TreeItem";
 import TreeView from "@mui/lab/TreeView";
 import {
+  Card,
   CircularProgress,
   FormControl,
   Grid,
@@ -86,10 +87,8 @@ const createTree = (contents: Map<string, Contents>, project: Project) => {
 };
 
 const SidebarWrapper = styled(Grid)(({ theme }) => ({
-  height: 270,
   flexGrow: 1,
   maxWidth: 400,
-  overflowY: "auto",
   position: "sticky",
   top: 60,
   "&.editor-sidebar": {
@@ -98,7 +97,7 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     display: "block",
     width: "200px",
   },
-  [" .menu-button"]: {
+  [".menu-button"]: {
     display: "none",
     position: "fixed",
     right: 20,
@@ -129,7 +128,7 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     [" .menu-button"]: {
       display: "flex",
     },
-    ["& > *"]: {
+    ["& > * > *"]: {
       width: "100%",
     },
     ["ul *, form *, .MuiBox-root *"]: {
@@ -149,7 +148,7 @@ const RenderTreeWrapper = ({
 }) => {
   const [content] = useObservableState(() =>
     combineLatest([contents$, projectObservable$]).pipe(
-      throttleTime(500, undefined, { leading: false, trailing: true }),
+      throttleTime(500, undefined, { leading: true, trailing: true }),
       map(([contents, project]) => {
         try {
           return createTree(contents.get(project.slug), project);
@@ -163,6 +162,22 @@ const RenderTreeWrapper = ({
     <RenderTree content={content} />
   ) : (
     <CircularProgress></CircularProgress>
+  );
+};
+const ConditionalCard = ({
+  children,
+  mode,
+}: {
+  children: any;
+  mode: SIDEBAR_MODE;
+}) => {
+  if (mode === SIDEBAR_MODE.EDITOR) {
+    return children;
+  }
+  return (
+    <Card elevation={1} sx={{ padding: 2 }}>
+      {children}
+    </Card>
   );
 };
 export function Sidebar({
@@ -263,64 +278,66 @@ export function Sidebar({
         (mode === SIDEBAR_MODE.EDITOR ? "editor-sidebar" : "docs-sidebar")
       }
     >
-      <Fab color="secondary" aria-label="add" className="menu-button">
-        {showMobileSidebar ? (
-          <CloseIcon onClick={() => setShowMobileSidebar(false)} />
-        ) : (
-          <MenuIcon onClick={() => setShowMobileSidebar(true)} />
+      <ConditionalCard mode={mode}>
+        <Fab color="secondary" aria-label="add" className="menu-button">
+          {showMobileSidebar ? (
+            <CloseIcon onClick={() => setShowMobileSidebar(false)} />
+          ) : (
+            <MenuIcon onClick={() => setShowMobileSidebar(true)} />
+          )}
+        </Fab>
+        {projects.size > 1 && (
+          <Box sx={{ mb: 1 }}>
+            <FormControl fullWidth>
+              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                Project
+              </InputLabel>
+              {project && (
+                <NativeSelect
+                  defaultValue={project.slug}
+                  inputProps={{
+                    name: "age",
+                    id: "uncontrolled-native",
+                  }}
+                  onChange={(e) => {
+                    onProjectSelect(e.target.value as string);
+                  }}
+                >
+                  {Array.from(projects).map(([slug, p]) => (
+                    <option key={slug} value={slug}>
+                      {p.name}
+                    </option>
+                  ))}
+                </NativeSelect>
+              )}
+            </FormControl>
+          </Box>
         )}
-      </Fab>
-      {projects.size > 1 && (
         <Box sx={{ mb: 1 }}>
-          <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              Project
-            </InputLabel>
-            {project && (
-              <NativeSelect
-                defaultValue={project.slug}
-                inputProps={{
-                  name: "age",
-                  id: "uncontrolled-native",
-                }}
-                onChange={(e) => {
-                  onProjectSelect(e.target.value as string);
-                }}
-              >
-                {Array.from(projects).map(([slug, p]) => (
-                  <option key={slug} value={slug}>
-                    {p.name}
-                  </option>
-                ))}
-              </NativeSelect>
-            )}
-          </FormControl>
+          <Button onClick={handleExpandClick}>
+            {expanded.length === 0 ? "Expand all" : "Collapse all"}
+          </Button>
         </Box>
-      )}
-      <Box sx={{ mb: 1 }}>
-        <Button onClick={handleExpandClick}>
-          {expanded.length === 0 ? "Expand all" : "Collapse all"}
-        </Button>
-      </Box>
-      {params.contentSlug && (
-        <TreeView
-          aria-label="controlled"
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          expanded={expanded}
-          onNodeToggle={handleToggle}
-          onNodeSelect={(event: any, nodeId: string) => {
-            if (event.target.tagName !== "svg") {
-              onNodeSelect(nodeId);
-            }
-          }}
-          selected={mode !== SIDEBAR_MODE.EDITOR ? params.contentSlug : ""}
-        >
-          <RenderTreeWrapper
-            projectObservable$={projectObservable$}
-          ></RenderTreeWrapper>
-        </TreeView>
-      )}
+        {params.contentSlug && (
+          <TreeView
+            aria-label="controlled"
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            expanded={expanded}
+            onNodeToggle={handleToggle}
+            onNodeSelect={(event: any, nodeId: string) => {
+              if (event.target.tagName !== "svg") {
+                onNodeSelect(nodeId);
+              }
+            }}
+            selected={mode !== SIDEBAR_MODE.EDITOR ? params.contentSlug : ""}
+          >
+            <RenderTreeWrapper
+              projectObservable$={projectObservable$}
+            ></RenderTreeWrapper>
+          </TreeView>
+        )}
+      </ConditionalCard>
     </SidebarWrapper>
   );
 }

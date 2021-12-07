@@ -35,6 +35,7 @@ import { Contents, contents$, Project, projects$ } from "../store/contents";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
+  parent: ContentTree;
 }
 const RenderTree = ({
   projectObservable$,
@@ -77,31 +78,30 @@ const RenderTree = ({
   );
 };
 const createTree = (contents: Map<string, Contents>, project: Project) => {
-  let current: ContentTree[] = [
-    {
-      depth: 0,
-      children: [],
-    },
-  ];
+  const root: ContentTree = {
+    depth: -1,
+    parent: null,
+    children: [],
+  };
+  let current = root;
   contents.forEach((content) => {
     const depth = project.depthMap.get(content.depth);
-    if (depth > current[current.length - 1].depth) {
-      const newItem: ContentTree = { ...content, depth, children: [] };
-      current[current.length - 1].children[
-        current[current.length - 1].children.length - 1
-      ].children.push(newItem);
-      current.push(newItem);
-      return;
-    } else if (depth < current[current.length - 1].depth) {
-      current.pop();
-    }
-    current[current.length - 1].children.push({
+    const newItem: ContentTree = {
       ...content,
       depth,
       children: [],
-    });
+      parent: null,
+    };
+    if (depth <= current.depth) {
+      while (depth <= current.depth) {
+        current = current.parent;
+      }
+    }
+    newItem.parent = current;
+    current.children.push(newItem);
+    current = newItem;
   });
-  return current[0].children;
+  return root.children;
 };
 
 const SidebarWrapper = styled(Grid)(({ theme }) => ({

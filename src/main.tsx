@@ -43,9 +43,12 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
               depth,
               slug: slugify(projectSlug + "-" + path.trim()),
               projectSlug,
+              isOnlyHeading: !path.includes(".md"),
             };
             addOrUpdateContents(item, projectSlug);
-            queueDocument(item, false);
+            if (!item.isOnlyHeading) {
+              queueDocument(item, false);
+            }
           });
         });
     })

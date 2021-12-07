@@ -13,6 +13,7 @@ import { Footer } from "../components/footer";
 import { Navbar } from "../components/navbar";
 import { Sidebar, SIDEBAR_MODE } from "../components/sidebar";
 import { contents$ } from "../store/contents";
+import { documents$ } from "../store/documents";
 const Project = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -36,9 +37,11 @@ const Layout = ({ children }: { children: ReactChild }) => {
   const navigate = useNavigate();
   const onNodeSelect = useCallback(
     (nodeId: string) => {
-      navigate(`/docs/${params.projectSlug}/${nodeId}`, {
-        replace: true,
-      });
+      if (documents$.value.has(nodeId)) {
+        navigate(`/docs/${params.projectSlug}/${nodeId}`, {
+          replace: true,
+        });
+      }
     },
     [params]
   );

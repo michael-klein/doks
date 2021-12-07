@@ -12,25 +12,10 @@ import {
   Contents,
 } from "./store/contents";
 import "./css/reset";
-import { queueDocument } from "./store/documents";
+import { getLastModified, queueDocument } from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { Editor } from "./pages/editor";
-const checkExists = async (src: string) => {
-  try {
-    return await fetch(src, {
-      method: "HEAD",
-    }).then((response) => {
-      if (response.ok) {
-        return true;
-      } else {
-        throw new Error("does not exist");
-      }
-    });
-  } catch (e) {
-    return false;
-  }
-};
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
     projects.map(async (project) => {
@@ -60,8 +45,11 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
           isOnlyHeading: !path.includes(".md"),
         };
         if (!item.isOnlyHeading) {
-          const exists = await checkExists(join(project.root, item.path));
-          if (exists) {
+          const lastModified = await getLastModified(
+            join(project.root, item.path)
+          );
+          if (lastModified !== false) {
+            item.lastModified = lastModified;
             addOrUpdateContents(item, projectSlug);
             queueDocument(item, false);
           }

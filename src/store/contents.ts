@@ -9,6 +9,7 @@ export interface Contents {
   projectSlug: string;
   depth: number;
   isOnlyHeading?: boolean;
+  lastModified?: string;
 }
 export interface Project extends DocOptionsProject {
   path: string;

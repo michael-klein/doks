@@ -4,8 +4,6 @@ import { BehaviorSubject } from "rxjs";
 import DocumentWorker from "../workers/document_worker?worker";
 import { Contents, projects$, updateContents } from "./contents";
 
-const documentWorker = new DocumentWorker();
-
 export interface DoksDocument extends Contents {
   mdx: string;
   plain: string;
@@ -26,7 +24,11 @@ export const queuedDocuments$ = new BehaviorSubject<{
 
 export const fetchingDocuments$ = new BehaviorSubject(new Set<string>());
 
-const CACHE_PREFEX = "doks-cache-1";
+const CACHE_PREFEX = "doks-cache";
+let flushCache = false;
+(window as any).flushCacheOnReload = () => {
+  flushCache = true;
+};
 const getCachedDocument = (slug: string, lastModified: string) => {
   const cachedString = localStorage.getItem(CACHE_PREFEX + slug);
   if (cachedString) {
@@ -61,24 +63,57 @@ export const modifyDocument = (
   );
 };
 
-const cacheDocument = (doc: DoksDocument) =>
-  localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
-
-window.onunload = () => {
-  documents$.value.forEach((doc) => cacheDocument(doc));
-};
-documentWorker.onmessage = (event) => {
-  switch (event.data[0]) {
-    case "fetch_done":
-      const doc = event.data[1];
-      modifyDocument(doc);
-      fetchingDocuments$.next(
-        produce(fetchingDocuments$.value, (draft) => {
-          draft.delete(doc.slug);
-        })
-      );
+const cacheDocument = (doc: DoksDocument) => {
+  if (!flushCache) {
+    localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
   }
 };
+
+window.onunload = () => {
+  if (flushCache) {
+    localStorage.clear();
+  }
+  documents$.value.forEach((doc) => cacheDocument(doc));
+};
+export const getLastModified = async (src: string) => {
+  try {
+    return await fetch(src, {
+      method: "HEAD",
+    }).then((response) => {
+      if (response.ok) {
+        return response.headers.get("Last-Modified");
+      } else {
+        throw new Error("does not exist");
+      }
+    });
+  } catch (e) {
+    return false;
+  }
+};
+
+const workerPool: Worker[] = [];
+const spawnWorker = () => {
+  const worker = new DocumentWorker();
+  worker.onmessage = (event) => {
+    switch (event.data[0]) {
+      case "fetch_done":
+        workerPool.push(worker);
+        const doc = event.data[1];
+        modifyDocument(doc);
+        fetchingDocuments$.next(
+          produce(fetchingDocuments$.value, (draft) => {
+            draft.delete(doc.slug);
+          })
+        );
+    }
+  };
+  return worker;
+};
+const sendToWorker = (type: string, payload: any) => {
+  const worker = workerPool.shift() ?? spawnWorker();
+  worker.postMessage([type, payload]);
+};
+
 const fetchDocument = async (contents: Contents) => {
   const project = projects$.value.get(contents.projectSlug);
   fetchingDocuments$.next(
@@ -87,12 +122,7 @@ const fetchDocument = async (contents: Contents) => {
     })
   );
 
-  const lastModified = await fetch(join(project.root, contents.path), {
-    method: "HEAD",
-  }).then((value) => {
-    return value.headers.get("Last-Modified");
-  });
-  const cached = getCachedDocument(contents.slug, lastModified);
+  const cached = getCachedDocument(contents.slug, contents.lastModified);
   if (cached) {
     modifyDocument(cached);
     fetchingDocuments$.next(
@@ -101,17 +131,17 @@ const fetchDocument = async (contents: Contents) => {
       })
     );
   } else {
-    documentWorker.postMessage([
-      "fetch",
-      { contents: { ...contents, lastModified }, projectRoot: project.root },
-    ]);
+    sendToWorker("fetch", {
+      contents: { ...contents },
+      projectRoot: project.root,
+    });
   }
 };
-
+const MAX_QUEUE = 50;
 const shiftQueue = () => {
   if (
-    fetchingDocuments$.value.size < 4 &&
-    queuedDocuments$.value.order.length > 0
+    queuedDocuments$.value.order.length > 0 &&
+    queuedDocuments$.value.docs.size < MAX_QUEUE
   ) {
     let contents: Contents;
     queuedDocuments$.next(

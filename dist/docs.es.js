@@ -28415,7 +28415,7 @@ const modifyDocument = (doc) => {
     var _a;
     const docNew = __spreadValues(__spreadValues({}, (_a = documents$.value.get(doc.slug)) != null ? _a : {}), doc);
     if (docNew.name === docNew.path) {
-      if (docNew.mdx.startsWith("#")) {
+      if (docNew.mdx.trim().startsWith("#")) {
         docNew.name = docNew.mdx.split("\n")[0].replace("#", "").trim();
       }
     }
@@ -32942,7 +32942,8 @@ const Content = () => {
       elevation: 2,
       sx: {
         padding: 2,
-        textAlign: "justify"
+        textAlign: "justify",
+        overflowX: "auto"
       },
       children: [document2 && /* @__PURE__ */ jsx(CardHeader$1, {
         action: /* @__PURE__ */ jsx(IconButton$1, {
@@ -37599,6 +37600,9 @@ const SidebarWrapper = styled$3(Grid$1)(({
     bottom: 20
   },
   ".MuiTreeItem-label": {
+    paddingTop: "0.25em",
+    paddingBottom: "0.25em",
+    lineHeight: "1.3em",
     wordBreak: "break-word"
   },
   [theme2.breakpoints.down("sm")]: {

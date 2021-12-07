@@ -1,10 +1,5 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import {
-  Card,
-  CardContent,
-  CardHeader, Grid,
-  IconButton
-} from "@mui/material";
+import { Card, CardContent, CardHeader, Grid, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { useObservable, useObservableState } from "observable-hooks";
 import React, { useCallback } from "react";
@@ -38,7 +33,10 @@ export const Content = () => {
   }, [document]);
   return (
     <ContentWrapper item xs={9}>
-      <Card elevation={2} sx={{ padding: 2, textAlign: "justify" }}>
+      <Card
+        elevation={2}
+        sx={{ padding: 2, textAlign: "justify", overflowX: "auto" }}
+      >
         {document && (
           <CardHeader
             action={

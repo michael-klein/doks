@@ -53,7 +53,7 @@ export const modifyDocument = (
         ...doc,
       };
       if (docNew.name === docNew.path) {
-        if (docNew.mdx.startsWith("#")) {
+        if (docNew.mdx.trim().startsWith("#")) {
           docNew.name = docNew.mdx.split("\n")[0].replace("#", "").trim();
         }
       }

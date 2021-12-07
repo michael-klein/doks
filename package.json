@@ -1,6 +1,8 @@
 {
     "name": "doks",
     "version": "0.1.0",
+    "type": "module",
+    "main": "dist/docs.es.min.js",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build && npx terser --compress --mangle -o ./dist/docs.es.min.js -- ./dist/docs.es.js"

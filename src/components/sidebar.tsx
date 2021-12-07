@@ -106,7 +106,7 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
   ".MuiTreeItem-label": {
     paddingTop: "0.25em",
     paddingBottom: "0.25em",
-    lineHeight: "1.3em",
+    lineHeight: "1.3em !important",
     wordBreak: "break-word",
   },
   [theme.breakpoints.down("sm")]: {

@@ -32959,8 +32959,8 @@ const Content = () => {
         subheader: document2.lastModified
       }), /* @__PURE__ */ jsx(CardContent$1, {
         sx: {
-          display: "flex",
-          justifyContent: "center"
+          display: "block",
+          overflow: "auto"
         },
         children: /* @__PURE__ */ jsx(MarkdownRenderer, {
           mdx: document2 == null ? void 0 : document2.mdx
@@ -37602,7 +37602,7 @@ const SidebarWrapper = styled$3(Grid$1)(({
   ".MuiTreeItem-label": {
     paddingTop: "0.25em",
     paddingBottom: "0.25em",
-    lineHeight: "1.3em",
+    lineHeight: "1.3em !important",
     wordBreak: "break-word"
   },
   [theme2.breakpoints.down("sm")]: {

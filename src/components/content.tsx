@@ -48,7 +48,7 @@ export const Content = () => {
             subheader={document.lastModified}
           />
         )}
-        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
+        <CardContent sx={{ display: "block", overflow: "auto" }}>
           <MarkdownRenderer mdx={document?.mdx}></MarkdownRenderer>
         </CardContent>
       </Card>

@@ -2,3 +2,4 @@ Test docs
     test.md
     test2.md | Test document 2
         sub/test3.md
+    doesntexist.md

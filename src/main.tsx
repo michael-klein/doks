@@ -16,7 +16,21 @@ import { queueDocument } from "./store/documents";
 import { DocOptions, DocOptionsProject } from "./interfaces";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { Editor } from "./pages/editor";
-
+const checkExists = async (src: string) => {
+  try {
+    return await fetch(src, {
+      method: "HEAD",
+    }).then((response) => {
+      if (response.ok) {
+        return true;
+      } else {
+        throw new Error("does not exist");
+      }
+    });
+  } catch (e) {
+    return false;
+  }
+};
 const loadProjects = async (projects: DocOptionsProject[]) => {
   await Promise.all(
     projects.map(async (project) => {
@@ -28,29 +42,33 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
         name: project.name,
         depthMap: new Map(),
       });
-      await fetch(join(project.root, "contents.doks"))
-        .then((res) => res.text())
-        .then((contentsText) => {
-          contentsText.split("\n").forEach((c) => {
-            const [path, name] = c.split("|");
-            let depth = 0;
-            while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
-              depth++;
-            }
-            const item: Contents = {
-              path: path.trim(),
-              name: name?.trim() || path.trim(),
-              depth,
-              slug: slugify(projectSlug + "-" + path.trim()),
-              projectSlug,
-              isOnlyHeading: !path.includes(".md"),
-            };
+      const contentsText = await fetch(
+        join(project.root, "contents.doks")
+      ).then((res) => res.text());
+      for (const c of contentsText.split("\n")) {
+        const [path, name] = c.split("|");
+        let depth = 0;
+        while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
+          depth++;
+        }
+        const item: Contents = {
+          path: path.trim(),
+          name: name?.trim() || path.trim(),
+          depth,
+          slug: slugify(projectSlug + "-" + path.trim()),
+          projectSlug,
+          isOnlyHeading: !path.includes(".md"),
+        };
+        if (!item.isOnlyHeading) {
+          const exists = await checkExists(join(project.root, item.path));
+          if (exists) {
             addOrUpdateContents(item, projectSlug);
-            if (!item.isOnlyHeading) {
-              queueDocument(item, false);
-            }
-          });
-        });
+            queueDocument(item, false);
+          }
+        } else {
+          addOrUpdateContents(item, projectSlug);
+        }
+      }
     })
   );
 };

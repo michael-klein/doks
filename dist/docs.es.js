@@ -37529,29 +37529,29 @@ const RenderTree = ({
   });
 };
 const createTree = (contents, project) => {
-  let current = [{
-    depth: 0,
+  const root2 = {
+    depth: -1,
+    parent: null,
     children: []
-  }];
+  };
+  let current = root2;
   contents.forEach((content) => {
     const depth = project.depthMap.get(content.depth);
-    if (depth > current[current.length - 1].depth) {
-      const newItem = __spreadProps(__spreadValues({}, content), {
-        depth,
-        children: []
-      });
-      current[current.length - 1].children[current[current.length - 1].children.length - 1].children.push(newItem);
-      current.push(newItem);
-      return;
-    } else if (depth < current[current.length - 1].depth) {
-      current.pop();
-    }
-    current[current.length - 1].children.push(__spreadProps(__spreadValues({}, content), {
+    const newItem = __spreadProps(__spreadValues({}, content), {
       depth,
-      children: []
-    }));
+      children: [],
+      parent: null
+    });
+    if (depth <= current.depth) {
+      while (depth <= current.depth) {
+        current = current.parent;
+      }
+    }
+    newItem.parent = current;
+    current.children.push(newItem);
+    current = newItem;
   });
-  return current[0].children;
+  return root2.children;
 };
 const SidebarWrapper = styled$3(Grid$1)(({
   theme: theme2
@@ -37745,9 +37745,11 @@ const Layout$1 = ({
   const params = useParams();
   const navigate = useNavigate();
   const onNodeSelect = react.exports.useCallback((nodeId) => {
-    navigate(`/docs/${params.projectSlug}/${nodeId}`, {
-      replace: true
-    });
+    if (documents$.value.has(nodeId)) {
+      navigate(`/docs/${params.projectSlug}/${nodeId}`, {
+        replace: true
+      });
+    }
   }, [params]);
   return /* @__PURE__ */ jsxs(react.exports.Fragment, {
     children: [/* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsx(Container$1, {
@@ -39028,6 +39030,21 @@ const Editor = () => {
     })]
   });
 };
+const checkExists = async (src) => {
+  try {
+    return await fetch(src, {
+      method: "HEAD"
+    }).then((response) => {
+      if (response.ok) {
+        return true;
+      } else {
+        throw new Error("does not exist");
+      }
+    });
+  } catch (e2) {
+    return false;
+  }
+};
 const loadProjects = async (projects) => {
   await Promise.all(projects.map(async (project) => {
     const projectSlug = slugify(project.root);
@@ -39037,24 +39054,31 @@ const loadProjects = async (projects) => {
       name: project.name,
       depthMap: new Map()
     }));
-    await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => res.text()).then((contentsText) => {
-      contentsText.split("\n").forEach((c2) => {
-        const [path, name] = c2.split("|");
-        let depth = 0;
-        while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
-          depth++;
+    const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => res.text());
+    for (const c2 of contentsText.split("\n")) {
+      const [path, name] = c2.split("|");
+      let depth = 0;
+      while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
+        depth++;
+      }
+      const item = {
+        path: path.trim(),
+        name: (name == null ? void 0 : name.trim()) || path.trim(),
+        depth,
+        slug: slugify(projectSlug + "-" + path.trim()),
+        projectSlug,
+        isOnlyHeading: !path.includes(".md")
+      };
+      if (!item.isOnlyHeading) {
+        const exists = await checkExists(pathBrowserify.join(project.root, item.path));
+        if (exists) {
+          addOrUpdateContents(item, projectSlug);
+          queueDocument(item, false);
         }
-        const item = {
-          path: path.trim(),
-          name: (name == null ? void 0 : name.trim()) || path.trim(),
-          depth,
-          slug: slugify(projectSlug + "-" + path.trim()),
-          projectSlug
-        };
+      } else {
         addOrUpdateContents(item, projectSlug);
-        queueDocument(item, false);
-      });
-    });
+      }
+    }
   }));
 };
 const docs = (options) => {

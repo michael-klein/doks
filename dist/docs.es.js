@@ -28476,7 +28476,7 @@ const fetchDocument = async (contents) => {
     draft.add(contents.slug);
   }));
   const cached = getCachedDocument(contents.slug);
-  if (cached && cached.lastModified !== contents.lastModified) {
+  if (cached && cached.lastModified === contents.lastModified) {
     modifyDocument(cached);
     fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
       draft.delete(contents.slug);

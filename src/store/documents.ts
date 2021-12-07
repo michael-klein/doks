@@ -126,7 +126,7 @@ const fetchDocument = async (contents: Contents) => {
   );
 
   const cached = getCachedDocument(contents.slug);
-  if (cached && cached.lastModified !== contents.lastModified) {
+  if (cached && cached.lastModified === contents.lastModified) {
     modifyDocument(cached);
     fetchingDocuments$.next(
       produce(fetchingDocuments$.value, (draft) => {

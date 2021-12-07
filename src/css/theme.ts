@@ -10,3 +10,4 @@ export const theme = createTheme({
     },
   },
 });
+export type DoksTheme = typeof theme;

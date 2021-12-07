@@ -62,6 +62,7 @@ export const modifyDocument = (
 const cacheDocument = (doc: DoksDocument) =>
   localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
 const fetchDocument = async (contents: Contents) => {
+  await new Promise(requestAnimationFrame);
   const project = projects$.value.get(contents.projectSlug);
   fetchingDocuments$.next(
     produce(fetchingDocuments$.value, (draft) => {
@@ -83,21 +84,22 @@ const fetchDocument = async (contents: Contents) => {
       })
     );
   }
-  await fetch(join(project.root, contents.path))
-    .then((res) => res.text())
-    .then((mdx) => {
-      modifyDocument({
-        ...contents,
-        mdx,
-        plain: removeMd(mdx),
-        lastModified,
-      });
-      fetchingDocuments$.next(
-        produce(fetchingDocuments$.value, (draft) => {
-          draft.delete(contents.slug);
-        })
-      );
-    });
+  await new Promise(requestAnimationFrame);
+  const mdx = await fetch(join(project.root, contents.path)).then((res) =>
+    res.text()
+  );
+  await new Promise(requestAnimationFrame);
+  modifyDocument({
+    ...contents,
+    mdx,
+    plain: removeMd(mdx),
+    lastModified,
+  });
+  fetchingDocuments$.next(
+    produce(fetchingDocuments$.value, (draft) => {
+      draft.delete(contents.slug);
+    })
+  );
 };
 
 const shiftQueue = () => {

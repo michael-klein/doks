@@ -42,7 +42,6 @@ export const Content = () => {
       [params]
     )
   );
-  console.log("document", document);
   const toggleFav = useCallback(() => {
     modifyDocument({ ...document, isFavourite: !document.isFavourite });
   }, [document]);

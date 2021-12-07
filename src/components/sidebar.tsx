@@ -58,7 +58,7 @@ const RenderTree = ({
   const renderContent = (contentIn: ContentTree[]) => {
     return contentIn.map((item) => {
       return (
-        <TreeItem nodeId={item.slug} label={item.name}>
+        <TreeItem nodeId={item.slug} label={item.name} key={item.slug}>
           {renderContent(item.children)}
         </TreeItem>
       );
@@ -69,7 +69,7 @@ const RenderTree = ({
     <Fragment>
       {content.map((item) => {
         return (
-          <TreeItem nodeId={item.slug} label={item.name}>
+          <TreeItem nodeId={item.slug} label={item.name} key={item.slug}>
             {renderContent(item.children)}
           </TreeItem>
         );
@@ -216,12 +216,20 @@ export function Sidebar({
 
   if (mode === SIDEBAR_MODE.DOCS) {
     useEffect(() => {
-      if (!params.contentSlug && contents.get(params.projectSlug)) {
+      if (
+        !params.contentSlug &&
+        !params.contentSlug &&
+        contents.get(params.projectSlug)
+      ) {
+        let initDoc = "";
+        for (const content of contents.get(params.projectSlug).values()) {
+          if (!content.isOnlyHeading) {
+            initDoc = content.slug;
+            break;
+          }
+        }
         navigate(
-          `/docs/${params.projectSlug}/${
-            params.contentSlug ||
-            Array.from(contents.get(params.projectSlug).values())[0].slug
-          }`,
+          `/docs/${params.projectSlug}/${params.contentSlug || initDoc}`,
           { replace: true }
         );
       }
@@ -272,7 +280,9 @@ export function Sidebar({
                 }}
               >
                 {Array.from(projects).map(([slug, p]) => (
-                  <option value={slug}>{p.name}</option>
+                  <option key={slug} value={slug}>
+                    {p.name}
+                  </option>
                 ))}
               </NativeSelect>
             )}

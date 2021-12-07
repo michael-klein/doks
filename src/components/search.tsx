@@ -293,7 +293,7 @@ export const SearchOverlay = ({
           timeout: 500,
         }}
       >
-        {renderSearch()}
+        {show ? renderSearch() : <></>}
       </Modal>
     </div>
   );

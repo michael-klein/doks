@@ -28457,6 +28457,7 @@ const modifyDocument = (doc) => {
 };
 const cacheDocument = (doc) => localStorage.setItem(CACHE_PREFEX + doc.slug, JSON.stringify(doc));
 const fetchDocument = async (contents) => {
+  await new Promise(requestAnimationFrame);
   const project = projects$.value.get(contents.projectSlug);
   fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
     draft.add(contents.slug);
@@ -28473,16 +28474,17 @@ const fetchDocument = async (contents) => {
       draft.delete(contents.slug);
     }));
   }
-  await fetch(pathBrowserify.join(project.root, contents.path)).then((res) => res.text()).then((mdx) => {
-    modifyDocument(__spreadProps(__spreadValues({}, contents), {
-      mdx,
-      plain: removeMarkdown(mdx),
-      lastModified
-    }));
-    fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
-      draft.delete(contents.slug);
-    }));
-  });
+  await new Promise(requestAnimationFrame);
+  const mdx = await fetch(pathBrowserify.join(project.root, contents.path)).then((res) => res.text());
+  await new Promise(requestAnimationFrame);
+  modifyDocument(__spreadProps(__spreadValues({}, contents), {
+    mdx,
+    plain: removeMarkdown(mdx),
+    lastModified
+  }));
+  fetchingDocuments$.next(fn2(fetchingDocuments$.value, (draft) => {
+    draft.delete(contents.slug);
+  }));
 };
 const shiftQueue = () => {
   if (fetchingDocuments$.value.size < 4 && queuedDocuments$.value.order.length > 0) {
@@ -32845,36 +32847,55 @@ function htmdx(m2, h2, options) {
 const MDX = ({
   mdx
 }) => {
+  let i2 = 0;
   return /* @__PURE__ */ jsx(React.Fragment, {
-    children: mdx !== void 0 ? htmdx(mdx, React.createElement, {}) : /* @__PURE__ */ jsx(CircularProgress$1, {})
+    children: mdx !== void 0 ? htmdx(mdx, React.createElement, {
+      jsxTransforms: [(type, props, children) => {
+        if (!props) {
+          props = {};
+        }
+        props.key = i2++;
+        return [type, props, children];
+      }]
+    }) : /* @__PURE__ */ jsx(CircularProgress$1, {})
   });
 };
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false
+      hasError: false,
+      error: ""
     };
   }
   static getDerivedStateFromError(error) {
     return {
-      hasError: true
+      hasError: true,
+      error
     };
   }
   render() {
     if (this.state.hasError) {
-      return /* @__PURE__ */ jsx("h1", {
-        children: "MDX error"
+      console.error("mdx error", this.state.error);
+      return /* @__PURE__ */ jsxs(Fragment, {
+        children: [/* @__PURE__ */ jsx("h1", {
+          children: "MDX error:"
+        }), /* @__PURE__ */ jsx("div", {
+          children: this.state.error
+        })]
       });
     }
     return this.props.children;
   }
 }
+const Wrapper = styled$3(Box$3)(({
+  theme: theme2
+}) => __spreadValues({}, theme2.typography.body1));
 const MarkdownRenderer = ({
   mdx
 }) => {
   return /* @__PURE__ */ jsx(ErrorBoundary, {
-    children: /* @__PURE__ */ jsx(Typography$1, {
+    children: /* @__PURE__ */ jsx(Wrapper, {
       sx: {
         textAlign: "justify"
       },
@@ -32899,7 +32920,6 @@ const Content = () => {
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
-  console.log("document", document2);
   const toggleFav = react.exports.useCallback(() => {
     modifyDocument(__spreadProps(__spreadValues({}, document2), {
       isFavourite: !document2.isFavourite
@@ -36083,7 +36103,7 @@ const SearchOverlay = ({
       BackdropProps: {
         timeout: 500
       },
-      children: renderSearch()
+      children: show ? renderSearch() : /* @__PURE__ */ jsx(Fragment, {})
     })
   });
 };
@@ -37515,7 +37535,7 @@ const RenderTree = ({
         nodeId: item.slug,
         label: item.name,
         children: renderContent(item.children)
-      });
+      }, item.slug);
     });
   };
   return /* @__PURE__ */ jsx(react.exports.Fragment, {
@@ -37524,7 +37544,7 @@ const RenderTree = ({
         nodeId: item.slug,
         label: item.name,
         children: renderContent(item.children)
-      });
+      }, item.slug);
     })
   });
 };
@@ -37640,8 +37660,15 @@ function Sidebar({
   }, [project, contents]);
   if (mode === 0) {
     react.exports.useEffect(() => {
-      if (!params.contentSlug && contents.get(params.projectSlug)) {
-        navigate(`/docs/${params.projectSlug}/${params.contentSlug || Array.from(contents.get(params.projectSlug).values())[0].slug}`, {
+      if (!params.contentSlug && !params.contentSlug && contents.get(params.projectSlug)) {
+        let initDoc = "";
+        for (const content of contents.get(params.projectSlug).values()) {
+          if (!content.isOnlyHeading) {
+            initDoc = content.slug;
+            break;
+          }
+        }
+        navigate(`/docs/${params.projectSlug}/${params.contentSlug || initDoc}`, {
           replace: true
         });
       }
@@ -37690,7 +37717,7 @@ function Sidebar({
           children: Array.from(projects).map(([slug, p2]) => /* @__PURE__ */ jsx("option", {
             value: slug,
             children: p2.name
-          }))
+          }, slug))
         })]
       })
     }), /* @__PURE__ */ jsx(Box$1, {

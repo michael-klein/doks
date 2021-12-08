@@ -1,7 +1,14 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { htmdx } from "htmdx";
-import React, { useCallback } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -29,7 +36,7 @@ import { projects$ } from "../store/contents";
 import { useDocOptions } from "../hooks/use_doc_options_context";
 
 class ErrorBoundary extends React.Component<
-  any,
+  { onError: () => void },
   { hasError: boolean; error: string }
 > {
   constructor(props: any) {
@@ -37,8 +44,13 @@ class ErrorBoundary extends React.Component<
     this.state = { hasError: false, error: "" };
   }
 
+  componentDidCatch(error, errorInfo) {
+    this.props.onError();
+  }
+
   static getDerivedStateFromError(error: any) {
-    return { hasError: true, error };
+    console.log("ERROR");
+    return { hasError: true, error: error.message };
   }
 
   render() {
@@ -56,7 +68,38 @@ class ErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
-const MDX = ({ mdx }: { mdx: string }) => {
+const voidElements = [
+  "br",
+  "hr",
+  "img",
+  "area",
+  "base",
+  "col",
+  "embed",
+  "link",
+  "meta",
+  "param",
+  "source",
+  "track",
+  "wbr",
+];
+const removeVoidElements = (mdx: string) => {
+  if (!mdx) {
+    return undefined;
+  }
+  voidElements.forEach((el) => {
+    mdx = mdx.replace(new RegExp(`</${el}.*>`, "ig"), ``);
+    mdx = mdx.replace(new RegExp(`<${el}.*>`, "ig"), `<${el} />`);
+  });
+  return mdx;
+};
+const MDX = ({
+  mdx,
+  onSaveMDX,
+}: {
+  mdx: string;
+  onSaveMDX: (mdx: string) => void;
+}) => {
   let i = 0;
   const [codeTheme] = useObservableState(() => codeTheme$);
   const params = useParams();
@@ -74,7 +117,7 @@ const MDX = ({ mdx }: { mdx: string }) => {
   );
   const getPath = useCallback(
     (src: string) => {
-      if (src.includes("http")) {
+      if (src.includes("http") || !document) {
         return src;
       }
       return join(
@@ -85,10 +128,14 @@ const MDX = ({ mdx }: { mdx: string }) => {
     },
     [document, params]
   );
+  const sanitizedMDX = useMemo(() => removeVoidElements(mdx), [mdx]);
+  useEffect(() => {
+    onSaveMDX(mdx);
+  }, [mdx]);
   return (
-    <ErrorBoundary>
+    <>
       {mdx !== undefined ? (
-        htmdx(mdx, React.createElement, {
+        htmdx(sanitizedMDX, React.createElement, {
           components: {
             code: (props: any) => {
               return (
@@ -127,16 +174,43 @@ const MDX = ({ mdx }: { mdx: string }) => {
       ) : (
         <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
       )}
-    </ErrorBoundary>
+    </>
   );
 };
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
 }));
-export const MarkdownRenderer = ({ mdx }: { mdx: string }) => {
+export const MarkdownRenderer = ({
+  mdx,
+  isEditor,
+}: {
+  mdx: string;
+  isEditor?: boolean;
+}) => {
+  const [currentMDX, setCurrentMDX] = useState(mdx);
+  useLayoutEffect(() => {
+    setCurrentMDX(mdx);
+  }, [mdx]);
+  const saveMDXRef = useRef("");
+  const mdxIdRef = useRef(0);
   return (
     <Wrapper sx={{ textAlign: "justify" }}>
-      <MDX mdx={mdx}></MDX>
+      <ErrorBoundary
+        key={"mdx-" + mdxIdRef.current}
+        onError={() => {
+          if (isEditor) {
+            mdxIdRef.current++;
+            setCurrentMDX(saveMDXRef.current);
+          }
+        }}
+      >
+        <MDX
+          mdx={currentMDX}
+          onSaveMDX={(saveMDX) => {
+            saveMDXRef.current = saveMDX;
+          }}
+        ></MDX>
+      </ErrorBoundary>
     </Wrapper>
   );
 };

@@ -27,7 +27,6 @@ import React, {
 } from "react";
 import { useNavigate, useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
-import { throttleTime } from "rxjs/operators";
 import { map } from "rxjs/operators";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { Contents, contents$, Project, projects$ } from "../store/contents";
@@ -151,7 +150,6 @@ const RenderTreeWrapper = ({
 }) => {
   const [content] = useObservableState(() =>
     combineLatest([contents$, projectObservable$]).pipe(
-      throttleTime(500, undefined, { leading: true, trailing: true }),
       map(([contents, project]) => {
         try {
           return createTree(contents.get(project.slug), project);

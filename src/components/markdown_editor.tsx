@@ -160,7 +160,9 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
             maxWidth: `${50 - 10 * editorFlex}%`,
           }}
         >
-          {!!height && <MarkdownRenderer mdx={mdx}></MarkdownRenderer>}
+          {!!height && (
+            <MarkdownRenderer mdx={mdx} isEditor={true}></MarkdownRenderer>
+          )}
         </ContentBox>
       </Box>
     </EditorWrapper>

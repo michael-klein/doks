@@ -14251,7 +14251,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   });
   const classes = useUtilityClasses$G(ownerState);
   const theme2 = useTheme();
-  const timer2 = react.exports.useRef();
+  const timer = react.exports.useRef();
   const wrapperRef = react.exports.useRef(null);
   const autoTransitionDuration = react.exports.useRef();
   const collapsedSize = typeof collapsedSizeProp === "number" ? `${collapsedSizeProp}px` : collapsedSizeProp;
@@ -14259,7 +14259,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   const size = isHorizontal ? "width" : "height";
   react.exports.useEffect(() => {
     return () => {
-      clearTimeout(timer2.current);
+      clearTimeout(timer.current);
     };
   }, []);
   const nodeRef = react.exports.useRef(null);
@@ -14352,7 +14352,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   });
   const handleAddEndListener = (next2) => {
     if (timeout === "auto") {
-      timer2.current = setTimeout(next2, autoTransitionDuration.current || 0);
+      timer.current = setTimeout(next2, autoTransitionDuration.current || 0);
     }
     if (addEndListener) {
       addEndListener(nodeRef.current, next2);
@@ -19139,7 +19139,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
     timeout = "auto",
     TransitionComponent = Transition$1
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$n);
-  const timer2 = react.exports.useRef();
+  const timer = react.exports.useRef();
   const autoTimeout = react.exports.useRef();
   const theme2 = useTheme();
   const nodeRef = react.exports.useRef(null);
@@ -19226,7 +19226,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
   const handleExited = normalizedTransitionCallback(onExited);
   const handleAddEndListener = (next2) => {
     if (timeout === "auto") {
-      timer2.current = setTimeout(next2, autoTimeout.current || 0);
+      timer.current = setTimeout(next2, autoTimeout.current || 0);
     }
     if (addEndListener) {
       addEndListener(nodeRef.current, next2);
@@ -19234,7 +19234,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
   };
   react.exports.useEffect(() => {
     return () => {
-      clearTimeout(timer2.current);
+      clearTimeout(timer.current);
     };
   }, []);
   return /* @__PURE__ */ jsx(TransitionComponent, _extends$2({
@@ -26964,7 +26964,6 @@ var AsyncScheduler = function(_super) {
   return AsyncScheduler2;
 }(Scheduler);
 var asyncScheduler = new AsyncScheduler(AsyncAction);
-var async = asyncScheduler;
 function isScheduler(value) {
   return value && isFunction$1(value.schedule);
 }
@@ -27335,9 +27334,6 @@ function from(input, scheduler2) {
 function isObservable(obj) {
   return !!obj && (obj instanceof Observable || isFunction$1(obj.lift) && isFunction$1(obj.subscribe));
 }
-function isValidDate(value) {
-  return value instanceof Date && !isNaN(value);
-}
 function map(project, thisArg) {
   return operate(function(source2, subscriber) {
     var index2 = 0;
@@ -27533,39 +27529,6 @@ function concat$C() {
   }
   return concatAll()(from(args, popScheduler(args)));
 }
-function timer(dueTime, intervalOrScheduler, scheduler2) {
-  if (dueTime === void 0) {
-    dueTime = 0;
-  }
-  if (scheduler2 === void 0) {
-    scheduler2 = async;
-  }
-  var intervalDuration = -1;
-  if (intervalOrScheduler != null) {
-    if (isScheduler(intervalOrScheduler)) {
-      scheduler2 = intervalOrScheduler;
-    } else {
-      intervalDuration = intervalOrScheduler;
-    }
-  }
-  return new Observable(function(subscriber) {
-    var due = isValidDate(dueTime) ? +dueTime - scheduler2.now() : dueTime;
-    if (due < 0) {
-      due = 0;
-    }
-    var n2 = 0;
-    return scheduler2.schedule(function() {
-      if (!subscriber.closed) {
-        subscriber.next(n2++);
-        if (0 <= intervalDuration) {
-          this.schedule(void 0, intervalDuration);
-        } else {
-          subscriber.complete();
-        }
-      }
-    }, due);
-  });
-}
 function debounceTime(dueTime, scheduler2) {
   if (scheduler2 === void 0) {
     scheduler2 = asyncScheduler;
@@ -27617,63 +27580,6 @@ function startWith() {
   return operate(function(source2, subscriber) {
     (scheduler2 ? concat$C(values2, source2, scheduler2) : concat$C(values2, source2)).subscribe(subscriber);
   });
-}
-var defaultThrottleConfig = {
-  leading: true,
-  trailing: false
-};
-function throttle(durationSelector, _a2) {
-  var _b = _a2 === void 0 ? defaultThrottleConfig : _a2, leading = _b.leading, trailing = _b.trailing;
-  return operate(function(source2, subscriber) {
-    var hasValue2 = false;
-    var sendValue = null;
-    var throttled = null;
-    var isComplete = false;
-    var endThrottling = function() {
-      throttled === null || throttled === void 0 ? void 0 : throttled.unsubscribe();
-      throttled = null;
-      if (trailing) {
-        send();
-        isComplete && subscriber.complete();
-      }
-    };
-    var cleanupThrottling = function() {
-      throttled = null;
-      isComplete && subscriber.complete();
-    };
-    var startThrottle = function(value) {
-      return throttled = innerFrom(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, endThrottling, cleanupThrottling));
-    };
-    var send = function() {
-      if (hasValue2) {
-        hasValue2 = false;
-        var value = sendValue;
-        sendValue = null;
-        subscriber.next(value);
-        !isComplete && startThrottle(value);
-      }
-    };
-    source2.subscribe(new OperatorSubscriber(subscriber, function(value) {
-      hasValue2 = true;
-      sendValue = value;
-      !(throttled && !throttled.closed) && (leading ? send() : startThrottle(value));
-    }, function() {
-      isComplete = true;
-      !(trailing && hasValue2 && throttled && !throttled.closed) && subscriber.complete();
-    }));
-  });
-}
-function throttleTime(duration2, scheduler2, config2) {
-  if (scheduler2 === void 0) {
-    scheduler2 = asyncScheduler;
-  }
-  if (config2 === void 0) {
-    config2 = defaultThrottleConfig;
-  }
-  var duration$ = timer(duration2, scheduler2);
-  return throttle(function() {
-    return duration$;
-  }, config2);
 }
 function getEmptySubject() {
   return new Subject();
@@ -75960,10 +75866,14 @@ class ErrorBoundary extends React.Component {
       error: ""
     };
   }
+  componentDidCatch(error2, errorInfo) {
+    this.props.onError();
+  }
   static getDerivedStateFromError(error2) {
+    console.log("ERROR");
     return {
       hasError: true,
-      error: error2
+      error: error2.message
     };
   }
   render() {
@@ -75980,8 +75890,20 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+const voidElements = ["br", "hr", "img", "area", "base", "col", "embed", "link", "meta", "param", "source", "track", "wbr"];
+const removeVoidElements = (mdx) => {
+  if (!mdx) {
+    return void 0;
+  }
+  voidElements.forEach((el) => {
+    mdx = mdx.replace(new RegExp(`</${el}.*>`, "ig"), ``);
+    mdx = mdx.replace(new RegExp(`<${el}.*>`, "ig"), `<${el} />`);
+  });
+  return mdx;
+};
 const MDX = ({
-  mdx
+  mdx,
+  onSaveMDX
 }) => {
   let i2 = 0;
   const [codeTheme] = useObservableState(() => codeTheme$);
@@ -75992,13 +75914,17 @@ const MDX = ({
     }));
   }, [params]));
   const getPath2 = react.exports.useCallback((src) => {
-    if (src.includes("http")) {
+    if (src.includes("http") || !document2) {
       return src;
     }
     return pathBrowserify.join(projects$.value.get(document2.projectSlug).root, document2.path.split("/").slice(0, -1).join("/"), src);
   }, [document2, params]);
-  return /* @__PURE__ */ jsx(ErrorBoundary, {
-    children: mdx !== void 0 ? htmdx(mdx, React.createElement, {
+  const sanitizedMDX = react.exports.useMemo(() => removeVoidElements(mdx), [mdx]);
+  react.exports.useEffect(() => {
+    onSaveMDX(mdx);
+  }, [mdx]);
+  return /* @__PURE__ */ jsx(Fragment, {
+    children: mdx !== void 0 ? htmdx(sanitizedMDX, React.createElement, {
       components: {
         code: (props) => {
           var _a2;
@@ -76042,15 +75968,33 @@ const Wrapper = styled$3(Box$3)(({
   theme: theme2
 }) => __spreadValues({}, theme2.typography.body1));
 const MarkdownRenderer = ({
-  mdx
+  mdx,
+  isEditor
 }) => {
+  const [currentMDX, setCurrentMDX] = react.exports.useState(mdx);
+  react.exports.useLayoutEffect(() => {
+    setCurrentMDX(mdx);
+  }, [mdx]);
+  const saveMDXRef = react.exports.useRef("");
+  const mdxIdRef = react.exports.useRef(0);
   return /* @__PURE__ */ jsx(Wrapper, {
     sx: {
       textAlign: "justify"
     },
-    children: /* @__PURE__ */ jsx(MDX, {
-      mdx
-    })
+    children: /* @__PURE__ */ jsx(ErrorBoundary, {
+      onError: () => {
+        if (isEditor) {
+          mdxIdRef.current++;
+          setCurrentMDX(saveMDXRef.current);
+        }
+      },
+      children: /* @__PURE__ */ jsx(MDX, {
+        mdx: currentMDX,
+        onSaveMDX: (saveMDX) => {
+          saveMDXRef.current = saveMDX;
+        }
+      })
+    }, "mdx-" + mdxIdRef.current)
   });
 };
 const ContentWrapper = styled$3(Grid$1)(({
@@ -80836,10 +80780,7 @@ var SIDEBAR_MODE;
 const RenderTreeWrapper = ({
   projectObservable$
 }) => {
-  const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(throttleTime(500, void 0, {
-    leading: true,
-    trailing: true
-  }), map(([contents, project]) => {
+  const [content] = useObservableState(() => combineLatest([contents$, projectObservable$]).pipe(map(([contents, project]) => {
     try {
       return createTree(contents.get(project.slug), project);
     } catch (e2) {
@@ -82230,7 +82171,8 @@ const MarkdownEditor = ({
           maxWidth: `${50 - 10 * editorFlex}%`
         },
         children: !!height2 && /* @__PURE__ */ jsx(MarkdownRenderer, {
-          mdx
+          mdx,
+          isEditor: true
         })
       })]
     })]

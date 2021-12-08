@@ -108,9 +108,9 @@ const NavMenu = ({
   return items?.length > 0 ? (
     <Fragment>
       <Tooltip title={tooltip}>
-        <IconButton aria-label={tooltip} onClick={handleClick}>
+        <NavButton aria-label={tooltip} onClick={handleClick}>
           {children}
-        </IconButton>
+        </NavButton>
       </Tooltip>
       <Menu
         id="fav-menu"
@@ -195,9 +195,7 @@ const SyntaxMenu = () => {
         }) ?? []
       }
     >
-      <NavButton aria-label="syntax">
-        <CodeIcon></CodeIcon>
-      </NavButton>
+      <CodeIcon></CodeIcon>
     </NavMenu>
   );
 };

@@ -47,17 +47,33 @@ export const removeContents = (contentsSlug: string, projectSlug: string) => {
     })
   );
 };
+
 export const addOrUpdateContents = (
   contentsIn: Contents,
   projectSlug: string
 ) => {
-  const project = projects$.value.get(projectSlug);
   contents$.next(
     produce(contents$.value, (draft) => {
       if (!draft.has(projectSlug)) {
         draft.set(projectSlug, new Map());
       }
       draft.get(projectSlug).set(contentsIn.slug, contentsIn);
+    })
+  );
+};
+
+export const addOrUpdateManyContents = (
+  contentsIn: Contents[],
+  projectSlug: string
+) => {
+  contents$.next(
+    produce(contents$.value, (draft) => {
+      if (!draft.has(projectSlug)) {
+        draft.set(projectSlug, new Map());
+      }
+      contentsIn.forEach(contents => {
+        draft.get(projectSlug).set(contents.slug, contents);
+      })
     })
   );
 };

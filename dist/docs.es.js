@@ -28276,12 +28276,21 @@ const removeContents = (contentsSlug, projectSlug) => {
   }));
 };
 const addOrUpdateContents = (contentsIn, projectSlug) => {
-  projects$.value.get(projectSlug);
   contents$.next(fn2(contents$.value, (draft) => {
     if (!draft.has(projectSlug)) {
       draft.set(projectSlug, new Map());
     }
     draft.get(projectSlug).set(contentsIn.slug, contentsIn);
+  }));
+};
+const addOrUpdateManyContents = (contentsIn, projectSlug) => {
+  contents$.next(fn2(contents$.value, (draft) => {
+    if (!draft.has(projectSlug)) {
+      draft.set(projectSlug, new Map());
+    }
+    contentsIn.forEach((contents) => {
+      draft.get(projectSlug).set(contents.slug, contents);
+    });
   }));
 };
 const documents$ = new ValueSubject(new Map());
@@ -79314,7 +79323,7 @@ const NavMenu = ({
   return (items == null ? void 0 : items.length) > 0 ? /* @__PURE__ */ jsxs(react.exports.Fragment, {
     children: [/* @__PURE__ */ jsx(Tooltip$1, {
       title: tooltip,
-      children: /* @__PURE__ */ jsx(IconButton$1, {
+      children: /* @__PURE__ */ jsx(NavButton, {
         "aria-label": tooltip,
         onClick: handleClick,
         children
@@ -79386,10 +79395,7 @@ const SyntaxMenu = () => {
         }
       };
     })) != null ? _a2 : [],
-    children: /* @__PURE__ */ jsx(NavButton, {
-      "aria-label": "syntax",
-      children: /* @__PURE__ */ jsx(default_1$9, {})
-    })
+    children: /* @__PURE__ */ jsx(default_1$9, {})
   });
 };
 const NavAppBar = styled$1(AppBar$1)(({
@@ -82276,48 +82282,67 @@ const Editor = () => {
     })]
   });
 };
+const loadContentsDocument = async (item, project, projectSlug, deletedPaths) => {
+  if (!item.isOnlyHeading) {
+    const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
+    if (lastModified !== false) {
+      const cached = getCachedDocument(item.slug);
+      if (cached) {
+        addOrUpdateContents(__spreadProps(__spreadValues({}, item), {
+          name: cached.name
+        }), projectSlug);
+      }
+      item.lastModified = lastModified;
+      queueDocument(item, false);
+    } else {
+      deletedPaths.push(item.path);
+      removeContents(item.slug, item.projectSlug);
+    }
+  }
+};
 const loadProjects = async (projects) => {
   await Promise.all(projects.map(async (project) => {
+    var _a2;
     const projectSlug = slugify(project.root);
     addOrUpdateProject(__spreadProps(__spreadValues({}, project), {
       path: project.root,
       slug: projectSlug,
       name: project.name
     }));
-    const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => res.text());
+    let lastModified;
+    const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => {
+      lastModified = res.headers.get("last-modified");
+      return res.text();
+    });
+    const cached = JSON.parse((_a2 = localStorage.getItem("CACHE__" + projectSlug)) != null ? _a2 : "{}");
     const deletedPaths = [];
-    await Promise.all(contentsText.split("\n").map(async (c2) => {
-      const [path, name] = c2.split("|");
-      let depth = 0;
-      while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
-        depth++;
-      }
-      const item = {
-        path: path.trim(),
-        name: (name == null ? void 0 : name.trim()) || path.trim(),
-        depth,
-        slug: slugify(projectSlug + "-" + path.trim()),
-        projectSlug,
-        isOnlyHeading: !path.includes(".md")
-      };
-      addOrUpdateContents(__spreadValues({}, item), projectSlug);
-      if (!item.isOnlyHeading) {
-        const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
-        if (lastModified !== false) {
-          const cached = getCachedDocument(item.slug);
-          if (cached) {
-            addOrUpdateContents(__spreadProps(__spreadValues({}, item), {
-              name: cached.name
-            }), projectSlug);
-          }
-          item.lastModified = lastModified;
-          queueDocument(item, false);
-        } else {
-          deletedPaths.push(item.path);
-          removeContents(item.slug, item.projectSlug);
+    if (cached.lastModified === lastModified) {
+      addOrUpdateManyContents(cached.contents, projectSlug);
+      await Promise.all(cached.contents.map((c2) => loadContentsDocument(__spreadValues({}, c2), project, projectSlug, deletedPaths)));
+    } else {
+      await Promise.all(contentsText.split("\n").map(async (c2) => {
+        const [path, name] = c2.split("|");
+        let depth = 0;
+        while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
+          depth++;
         }
-      }
-    }));
+        const item = {
+          path: path.trim(),
+          name: (name == null ? void 0 : name.trim()) || path.trim(),
+          depth,
+          slug: slugify(projectSlug + "-" + path.trim()),
+          projectSlug,
+          isOnlyHeading: !path.includes(".md")
+        };
+        addOrUpdateContents(__spreadValues({}, item), projectSlug);
+        loadContentsDocument(__spreadValues({}, item), project, projectSlug, deletedPaths);
+      }));
+    }
+    const cacheItem = {
+      lastModified,
+      contents: Array.from(contents$.value.get(projectSlug).values())
+    };
+    localStorage.setItem("CACHE__" + projectSlug, JSON.stringify(cacheItem));
     if (deletedPaths.length > 0) {
       console.warn(`The following paths seem to have been deleted in ${project.name}: }`, deletedPaths);
     }

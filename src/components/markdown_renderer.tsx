@@ -188,7 +188,7 @@ export const MarkdownRenderer = ({
     () => new ValueSubject(mdx)
   ) as ValueSubject<string>;
   const [debouncedMDX] = useObservableState(() =>
-    currentMDX$.pipe(debounceTime(300, undefined))
+    isEditor ? currentMDX$.pipe(debounceTime(300, undefined)) : currentMDX$
   );
 
   useLayoutEffect(() => {

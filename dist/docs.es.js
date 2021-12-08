@@ -75972,7 +75972,7 @@ const MarkdownRenderer = ({
   isEditor
 }) => {
   const currentMDX$ = useObservable(() => new ValueSubject(mdx));
-  const [debouncedMDX] = useObservableState(() => currentMDX$.pipe(debounceTime(300, void 0)));
+  const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(300, void 0)) : currentMDX$);
   react.exports.useLayoutEffect(() => {
     currentMDX$.next(mdx);
   }, [mdx]);

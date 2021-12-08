@@ -1,12 +1,12 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { htmdx } from "htmdx";
-import React from "react";
+import React, { useCallback } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { ValueSubject } from "../utils/value_subject";
-import { useObservableState } from "observable-hooks";
+import { useObservable, useObservableState } from "observable-hooks";
 
 const SYNTAX_KEY = "SYNTAX";
 export const codeTheme$ = new ValueSubject(
@@ -21,6 +21,12 @@ codeTheme$.subscribe((theme) => {
 });
 
 import { DoksTheme } from "../css/theme";
+import { combineLatest, map } from "rxjs";
+import { documents$ } from "../store/documents";
+import { useParams } from "react-router";
+import { join } from "path-browserify";
+import { projects$ } from "../store/contents";
+import { useDocOptions } from "../hooks/use_doc_options_context";
 
 class ErrorBoundary extends React.Component<
   any,
@@ -53,6 +59,32 @@ class ErrorBoundary extends React.Component<
 const MDX = ({ mdx }: { mdx: string }) => {
   let i = 0;
   const [codeTheme] = useObservableState(() => codeTheme$);
+  const params = useParams();
+  const document = useObservableState(
+    useObservable(
+      (input$) => {
+        return combineLatest([input$, documents$]).pipe(
+          map(([input, documents]) => {
+            return documents.get(input[0].contentSlug);
+          })
+        );
+      },
+      [params]
+    )
+  );
+  const getPath = useCallback(
+    (src: string) => {
+      if (src.includes("http")) {
+        return src;
+      }
+      return join(
+        projects$.value.get(document.projectSlug).root,
+        document.path.split("/").slice(0, -1).join("/"),
+        src
+      );
+    },
+    [document, params]
+  );
   return (
     <ErrorBoundary>
       {mdx !== undefined ? (
@@ -74,6 +106,12 @@ const MDX = ({ mdx }: { mdx: string }) => {
                   {props.children}
                 </SyntaxHighlighter>
               );
+            },
+            img: (props: any) => {
+              if (props.src) {
+                props = { ...props, src: getPath(props.src) };
+              }
+              return <img {...props} />;
             },
           },
           jsxTransforms: [

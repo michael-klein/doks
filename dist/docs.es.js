@@ -28370,16 +28370,7 @@ const removeContents = (contentsSlug, projectSlug) => {
   }));
 };
 const addOrUpdateContents = (contentsIn, projectSlug) => {
-  const project = projects$.value.get(projectSlug);
-  const depths = new Set(project.depthMap.keys());
-  depths.add(contentsIn.depth);
-  let i2 = 0;
-  depths.forEach((depth) => {
-    projects$.next(fn2(projects$.value, (draft) => {
-      draft.get(projectSlug).depthMap.set(depth, i2);
-    }));
-    i2++;
-  });
+  projects$.value.get(projectSlug);
   contents$.next(fn2(contents$.value, (draft) => {
     if (!draft.has(projectSlug)) {
       draft.set(projectSlug, new Map());
@@ -75994,6 +75985,18 @@ const MDX = ({
 }) => {
   let i2 = 0;
   const [codeTheme] = useObservableState(() => codeTheme$);
+  const params = useParams();
+  const document2 = useObservableState(useObservable((input$) => {
+    return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
+      return documents.get(input[0].contentSlug);
+    }));
+  }, [params]));
+  const getPath2 = react.exports.useCallback((src) => {
+    if (src.includes("http")) {
+      return src;
+    }
+    return pathBrowserify.join(projects$.value.get(document2.projectSlug).root, document2.path.split("/").slice(0, -1).join("/"), src);
+  }, [document2, params]);
   return /* @__PURE__ */ jsx(ErrorBoundary, {
     children: mdx !== void 0 ? htmdx(mdx, React.createElement, {
       components: {
@@ -76011,6 +76014,14 @@ const MDX = ({
             language: (_a2 = props == null ? void 0 : props.className) == null ? void 0 : _a2.replace("language-", ""),
             children: props.children
           });
+        },
+        img: (props) => {
+          if (props.src) {
+            props = __spreadProps(__spreadValues({}, props), {
+              src: getPath2(props.src)
+            });
+          }
+          return /* @__PURE__ */ jsx("img", __spreadValues({}, props));
         }
       },
       jsxTransforms: [(type, props, children) => {
@@ -80745,7 +80756,7 @@ const createTree = (contents, project) => {
   };
   let current = root2;
   contents.forEach((content) => {
-    const depth = project.depthMap.get(content.depth);
+    const depth = content.depth;
     const newItem = __spreadProps(__spreadValues({}, content), {
       depth,
       children: [],
@@ -80879,7 +80890,7 @@ function Sidebar({
     if (project) {
       const content = contents.get(project.slug);
       if (content) {
-        setExpanded(Array.from(content.values()).filter((item) => project.depthMap.get(item.depth) < 3).map((item) => item.slug));
+        setExpanded(Array.from(content.values()).map((item) => item.slug));
       }
     }
   }, [project, contents]);
@@ -82282,11 +82293,11 @@ const loadProjects = async (projects) => {
     addOrUpdateProject(__spreadProps(__spreadValues({}, project), {
       path: project.root,
       slug: projectSlug,
-      name: project.name,
-      depthMap: new Map()
+      name: project.name
     }));
     const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => res.text());
-    for (const c2 of contentsText.split("\n")) {
+    const deletedPaths = [];
+    await Promise.all(contentsText.split("\n").map(async (c2) => {
       const [path, name] = c2.split("|");
       let depth = 0;
       while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
@@ -82313,9 +82324,13 @@ const loadProjects = async (projects) => {
           item.lastModified = lastModified;
           queueDocument(item, false);
         } else {
+          deletedPaths.push(item.path);
           removeContents(item.slug, item.projectSlug);
         }
       }
+    }));
+    if (deletedPaths.length > 0) {
+      console.warn(`The following paths seem to have been deleted in ${project.name}: }`, deletedPaths);
     }
   }));
 };

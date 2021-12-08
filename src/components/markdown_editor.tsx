@@ -1,7 +1,7 @@
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import SaveIcon from "@mui/icons-material/Save";
-import { Card, CardHeader, IconButton } from "@mui/material";
+import { Card, CardHeader, IconButton, Tooltip } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -9,6 +9,8 @@ import { documents$ } from "../store/documents";
 import { EditorRenderer } from "./editor_renderer";
 import { MarkdownRenderer } from "./markdown_renderer";
 import { Sidebar, SIDEBAR_MODE } from "./sidebar";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const EditorWrapper = styled(Card)({
   width: "100%",
@@ -74,6 +76,7 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
     },
     [params]
   );
+  const [showPreview, setShowPreview] = useState(true);
   return (
     <EditorWrapper>
       <EditorHeader
@@ -108,6 +111,21 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
             >
               <ArrowRightIcon sx={{ fontSize: 32 }} />
             </IconButton>
+            <Tooltip title="toggle preview">
+              <IconButton
+                sx={{ color: "inherit", marginRight: "10px" }}
+                aria-label="toggle preview"
+                onClick={() => {
+                  setShowPreview((value) => !value);
+                }}
+              >
+                {!showPreview ? (
+                  <VisibilityIcon sx={{ fontSize: 22 }} />
+                ) : (
+                  <VisibilityOffIcon sx={{ fontSize: 22 }} />
+                )}
+              </IconButton>
+            </Tooltip>
           </React.Fragment>
         }
       ></EditorHeader>
@@ -141,7 +159,7 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
           ref={boxRef}
           sx={{
             flex: "auto",
-            maxWidth: `${50 + 10 * editorFlex}%`,
+            maxWidth: !showPreview ? "100%" : `${50 + 10 * editorFlex}%`,
             background: "black",
           }}
         >
@@ -153,17 +171,19 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
             setMDX={setMDX}
           ></EditorRenderer>
         </Box>
-        <ContentBox
-          sx={{
-            height: height + "px",
-            flex: "auto",
-            maxWidth: `${50 - 10 * editorFlex}%`,
-          }}
-        >
-          {!!height && (
-            <MarkdownRenderer mdx={mdx} isEditor={true}></MarkdownRenderer>
-          )}
-        </ContentBox>
+        {showPreview && (
+          <ContentBox
+            sx={{
+              height: height + "px",
+              flex: "auto",
+              maxWidth: `${50 - 10 * editorFlex}%`,
+            }}
+          >
+            {!!height && (
+              <MarkdownRenderer mdx={mdx} isEditor={true}></MarkdownRenderer>
+            )}
+          </ContentBox>
+        )}
       </Box>
     </EditorWrapper>
   );

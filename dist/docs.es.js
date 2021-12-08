@@ -27760,17 +27760,17 @@ var require$$0 = /* @__PURE__ */ getAugmentedNamespace(utils);
   var _utils = require$$0;
 })(createSvgIcon);
 var require$$2 = /* @__PURE__ */ getAugmentedNamespace(jsxRuntime);
-var _interopRequireDefault$c = interopRequireDefault.exports;
+var _interopRequireDefault$e = interopRequireDefault.exports;
 Object.defineProperty(Favorite, "__esModule", {
   value: true
 });
-var default_1$c = Favorite.default = void 0;
-var _createSvgIcon$c = _interopRequireDefault$c(createSvgIcon);
-var _jsxRuntime$c = require$$2;
-var _default$d = (0, _createSvgIcon$c.default)(/* @__PURE__ */ (0, _jsxRuntime$c.jsx)("path", {
+var default_1$e = Favorite.default = void 0;
+var _createSvgIcon$e = _interopRequireDefault$e(createSvgIcon);
+var _jsxRuntime$e = require$$2;
+var _default$f = (0, _createSvgIcon$e.default)(/* @__PURE__ */ (0, _jsxRuntime$e.jsx)("path", {
   d: "m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
 }), "Favorite");
-default_1$c = Favorite.default = _default$d;
+default_1$e = Favorite.default = _default$f;
 function n$1(n2) {
   for (var t2 = arguments.length, r2 = Array(t2 > 1 ? t2 - 1 : 0), e2 = 1; e2 < t2; e2++)
     r2[e2 - 1] = arguments[e2];
@@ -33341,8 +33341,8 @@ function deepFreeze(obj) {
   return obj;
 }
 var deepFreezeEs6 = deepFreeze;
-var _default$c = deepFreeze;
-deepFreezeEs6.default = _default$c;
+var _default$e = deepFreeze;
+deepFreezeEs6.default = _default$e;
 class Response {
   constructor(mode) {
     if (mode.data === void 0)
@@ -75901,7 +75901,7 @@ const removeVoidElements = (mdx) => {
   });
   return mdx;
 };
-const MDX = ({
+const MDX = react.exports.memo(({
   mdx,
   onSaveMDX
 }) => {
@@ -75963,7 +75963,7 @@ const MDX = ({
       }
     })
   });
-};
+});
 const Wrapper = styled$3(Box$3)(({
   theme: theme2
 }) => __spreadValues({}, theme2.typography.body1));
@@ -75971,9 +75971,10 @@ const MarkdownRenderer = ({
   mdx,
   isEditor
 }) => {
-  const [currentMDX, setCurrentMDX] = react.exports.useState(mdx);
+  const currentMDX$ = useObservable(() => new ValueSubject(mdx));
+  const [debouncedMDX] = useObservableState(() => currentMDX$.pipe(debounceTime(300, void 0)));
   react.exports.useLayoutEffect(() => {
-    setCurrentMDX(mdx);
+    currentMDX$.next(mdx);
   }, [mdx]);
   const saveMDXRef = react.exports.useRef("");
   const mdxIdRef = react.exports.useRef(0);
@@ -75983,13 +75984,13 @@ const MarkdownRenderer = ({
     },
     children: /* @__PURE__ */ jsx(ErrorBoundary, {
       onError: () => {
+        mdxIdRef.current++;
         if (isEditor) {
-          mdxIdRef.current++;
-          setCurrentMDX(saveMDXRef.current);
+          currentMDX$.next(saveMDXRef.current);
         }
       },
       children: /* @__PURE__ */ jsx(MDX, {
-        mdx: currentMDX,
+        mdx: debouncedMDX,
         onSaveMDX: (saveMDX) => {
           saveMDXRef.current = saveMDX;
         }
@@ -76031,7 +76032,7 @@ const Content = () => {
         action: /* @__PURE__ */ jsx(IconButton$1, {
           "aria-label": "favourite",
           onClick: toggleFav,
-          children: /* @__PURE__ */ jsx(default_1$c, {
+          children: /* @__PURE__ */ jsx(default_1$e, {
             sx: {
               color: document2.isFavourite && "red"
             }
@@ -76052,17 +76053,17 @@ const Content = () => {
   });
 };
 var KeyboardArrowUp = {};
-var _interopRequireDefault$b = interopRequireDefault.exports;
+var _interopRequireDefault$d = interopRequireDefault.exports;
 Object.defineProperty(KeyboardArrowUp, "__esModule", {
   value: true
 });
-var default_1$b = KeyboardArrowUp.default = void 0;
-var _createSvgIcon$b = _interopRequireDefault$b(createSvgIcon);
-var _jsxRuntime$b = require$$2;
-var _default$b = (0, _createSvgIcon$b.default)(/* @__PURE__ */ (0, _jsxRuntime$b.jsx)("path", {
+var default_1$d = KeyboardArrowUp.default = void 0;
+var _createSvgIcon$d = _interopRequireDefault$d(createSvgIcon);
+var _jsxRuntime$d = require$$2;
+var _default$d = (0, _createSvgIcon$d.default)(/* @__PURE__ */ (0, _jsxRuntime$d.jsx)("path", {
   d: "M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"
 }), "KeyboardArrowUp");
-default_1$b = KeyboardArrowUp.default = _default$b;
+default_1$d = KeyboardArrowUp.default = _default$d;
 const StyledFooter = styled$3("footer")(({
   theme: theme2
 }) => ({
@@ -76082,48 +76083,48 @@ const Footer = () => {
       onClick: () => {
         window.scrollTo(0, 0);
       },
-      children: [/* @__PURE__ */ jsx(default_1$b, {}), "up"]
+      children: [/* @__PURE__ */ jsx(default_1$d, {}), "up"]
     })
   });
 };
 var PostAdd = {};
-var _interopRequireDefault$a = interopRequireDefault.exports;
+var _interopRequireDefault$c = interopRequireDefault.exports;
 Object.defineProperty(PostAdd, "__esModule", {
   value: true
 });
-var default_1$a = PostAdd.default = void 0;
-var _createSvgIcon$a = _interopRequireDefault$a(createSvgIcon);
-var _jsxRuntime$a = require$$2;
-var _default$a = (0, _createSvgIcon$a.default)([/* @__PURE__ */ (0, _jsxRuntime$a.jsx)("path", {
+var default_1$c = PostAdd.default = void 0;
+var _createSvgIcon$c = _interopRequireDefault$c(createSvgIcon);
+var _jsxRuntime$c = require$$2;
+var _default$c = (0, _createSvgIcon$c.default)([/* @__PURE__ */ (0, _jsxRuntime$c.jsx)("path", {
   d: "M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
-}, "0"), /* @__PURE__ */ (0, _jsxRuntime$a.jsx)("path", {
+}, "0"), /* @__PURE__ */ (0, _jsxRuntime$c.jsx)("path", {
   d: "M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
 }, "1")], "PostAdd");
-default_1$a = PostAdd.default = _default$a;
+default_1$c = PostAdd.default = _default$c;
 var Search = {};
-var _interopRequireDefault$9 = interopRequireDefault.exports;
+var _interopRequireDefault$b = interopRequireDefault.exports;
 Object.defineProperty(Search, "__esModule", {
   value: true
 });
-var default_1$9 = Search.default = void 0;
-var _createSvgIcon$9 = _interopRequireDefault$9(createSvgIcon);
-var _jsxRuntime$9 = require$$2;
-var _default$9 = (0, _createSvgIcon$9.default)(/* @__PURE__ */ (0, _jsxRuntime$9.jsx)("path", {
+var default_1$b = Search.default = void 0;
+var _createSvgIcon$b = _interopRequireDefault$b(createSvgIcon);
+var _jsxRuntime$b = require$$2;
+var _default$b = (0, _createSvgIcon$b.default)(/* @__PURE__ */ (0, _jsxRuntime$b.jsx)("path", {
   d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
 }), "Search");
-default_1$9 = Search.default = _default$9;
+default_1$b = Search.default = _default$b;
 var Edit = {};
-var _interopRequireDefault$8 = interopRequireDefault.exports;
+var _interopRequireDefault$a = interopRequireDefault.exports;
 Object.defineProperty(Edit, "__esModule", {
   value: true
 });
-var default_1$8 = Edit.default = void 0;
-var _createSvgIcon$8 = _interopRequireDefault$8(createSvgIcon);
-var _jsxRuntime$8 = require$$2;
-var _default$8 = (0, _createSvgIcon$8.default)(/* @__PURE__ */ (0, _jsxRuntime$8.jsx)("path", {
+var default_1$a = Edit.default = void 0;
+var _createSvgIcon$a = _interopRequireDefault$a(createSvgIcon);
+var _jsxRuntime$a = require$$2;
+var _default$a = (0, _createSvgIcon$a.default)(/* @__PURE__ */ (0, _jsxRuntime$a.jsx)("path", {
   d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
 }), "Edit");
-default_1$8 = Edit.default = _default$8;
+default_1$a = Edit.default = _default$a;
 var main = { exports: {} };
 (function(module) {
   module.exports = function(modules) {
@@ -79220,17 +79221,17 @@ const DocOptionsContextProvider = (props) => {
 };
 const useDocOptions = () => react.exports.useContext(docOptionsContext);
 var Code = {};
-var _interopRequireDefault$7 = interopRequireDefault.exports;
+var _interopRequireDefault$9 = interopRequireDefault.exports;
 Object.defineProperty(Code, "__esModule", {
   value: true
 });
-var default_1$7 = Code.default = void 0;
-var _createSvgIcon$7 = _interopRequireDefault$7(createSvgIcon);
-var _jsxRuntime$7 = require$$2;
-var _default$7 = (0, _createSvgIcon$7.default)(/* @__PURE__ */ (0, _jsxRuntime$7.jsx)("path", {
+var default_1$9 = Code.default = void 0;
+var _createSvgIcon$9 = _interopRequireDefault$9(createSvgIcon);
+var _jsxRuntime$9 = require$$2;
+var _default$9 = (0, _createSvgIcon$9.default)(/* @__PURE__ */ (0, _jsxRuntime$9.jsx)("path", {
   d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
 }), "Code");
-default_1$7 = Code.default = _default$7;
+default_1$9 = Code.default = _default$9;
 const SearchInputWrapper = styled$1("div")(({
   theme: theme2
 }) => ({
@@ -79281,7 +79282,7 @@ const Progress = styled$1(LinearProgress$1)(({
   left: 0
 }));
 const showSearch$ = new ValueSubject(false);
-const FavButton = styled$1(default_1$c)(({
+const FavButton = styled$1(default_1$e)(({
   theme: theme2
 }) => ({
   color: theme2.palette.getContrastText(theme2.palette.primary.main),
@@ -79387,7 +79388,7 @@ const SyntaxMenu = () => {
     })) != null ? _a2 : [],
     children: /* @__PURE__ */ jsx(NavButton, {
       "aria-label": "syntax",
-      children: /* @__PURE__ */ jsx(default_1$7, {})
+      children: /* @__PURE__ */ jsx(default_1$9, {})
     })
   });
 };
@@ -79440,7 +79441,7 @@ function Navbar() {
             to: `/editor/${params.projectSlug}/${params.contentSlug}`,
             children: /* @__PURE__ */ jsx(NavButton, {
               "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$8, {})
+              children: /* @__PURE__ */ jsx(default_1$a, {})
             })
           })
         }), /* @__PURE__ */ jsx(Tooltip$1, {
@@ -79449,7 +79450,7 @@ function Navbar() {
             to: "/editor/" + params.projectSlug,
             children: /* @__PURE__ */ jsx(NavButton, {
               "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$a, {})
+              children: /* @__PURE__ */ jsx(default_1$c, {})
             })
           })
         }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsxs(SearchInputWrapper, {
@@ -79461,7 +79462,7 @@ function Navbar() {
             showSearch$.next(true);
           },
           children: [/* @__PURE__ */ jsx(SearchIconWrapper, {
-            children: /* @__PURE__ */ jsx(default_1$9, {})
+            children: /* @__PURE__ */ jsx(default_1$b, {})
           }), /* @__PURE__ */ jsx(StyledInputBase, {
             onFocus: (e2) => {
               e2.target.blur();
@@ -79480,53 +79481,53 @@ function Navbar() {
   });
 }
 var ChevronRight = {};
-var _interopRequireDefault$6 = interopRequireDefault.exports;
+var _interopRequireDefault$8 = interopRequireDefault.exports;
 Object.defineProperty(ChevronRight, "__esModule", {
   value: true
 });
-var default_1$6 = ChevronRight.default = void 0;
-var _createSvgIcon$6 = _interopRequireDefault$6(createSvgIcon);
-var _jsxRuntime$6 = require$$2;
-var _default$6 = (0, _createSvgIcon$6.default)(/* @__PURE__ */ (0, _jsxRuntime$6.jsx)("path", {
+var default_1$8 = ChevronRight.default = void 0;
+var _createSvgIcon$8 = _interopRequireDefault$8(createSvgIcon);
+var _jsxRuntime$8 = require$$2;
+var _default$8 = (0, _createSvgIcon$8.default)(/* @__PURE__ */ (0, _jsxRuntime$8.jsx)("path", {
   d: "M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
 }), "ChevronRight");
-default_1$6 = ChevronRight.default = _default$6;
+default_1$8 = ChevronRight.default = _default$8;
 var Close = {};
-var _interopRequireDefault$5 = interopRequireDefault.exports;
+var _interopRequireDefault$7 = interopRequireDefault.exports;
 Object.defineProperty(Close, "__esModule", {
   value: true
 });
-var default_1$5 = Close.default = void 0;
-var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
-var _jsxRuntime$5 = require$$2;
-var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
+var default_1$7 = Close.default = void 0;
+var _createSvgIcon$7 = _interopRequireDefault$7(createSvgIcon);
+var _jsxRuntime$7 = require$$2;
+var _default$7 = (0, _createSvgIcon$7.default)(/* @__PURE__ */ (0, _jsxRuntime$7.jsx)("path", {
   d: "M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
 }), "Close");
-default_1$5 = Close.default = _default$5;
+default_1$7 = Close.default = _default$7;
 var ExpandMore = {};
-var _interopRequireDefault$4 = interopRequireDefault.exports;
+var _interopRequireDefault$6 = interopRequireDefault.exports;
 Object.defineProperty(ExpandMore, "__esModule", {
   value: true
 });
-var default_1$4 = ExpandMore.default = void 0;
-var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
-var _jsxRuntime$4 = require$$2;
-var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
+var default_1$6 = ExpandMore.default = void 0;
+var _createSvgIcon$6 = _interopRequireDefault$6(createSvgIcon);
+var _jsxRuntime$6 = require$$2;
+var _default$6 = (0, _createSvgIcon$6.default)(/* @__PURE__ */ (0, _jsxRuntime$6.jsx)("path", {
   d: "M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
 }), "ExpandMore");
-default_1$4 = ExpandMore.default = _default$4;
+default_1$6 = ExpandMore.default = _default$6;
 var Menu2 = {};
-var _interopRequireDefault$3 = interopRequireDefault.exports;
+var _interopRequireDefault$5 = interopRequireDefault.exports;
 Object.defineProperty(Menu2, "__esModule", {
   value: true
 });
-var default_1$3 = Menu2.default = void 0;
-var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
-var _jsxRuntime$3 = require$$2;
-var _default$3 = (0, _createSvgIcon$3.default)(/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+var default_1$5 = Menu2.default = void 0;
+var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
+var _jsxRuntime$5 = require$$2;
+var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
   d: "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
 }), "Menu");
-default_1$3 = Menu2.default = _default$3;
+default_1$5 = Menu2.default = _default$5;
 const TreeViewContext = /* @__PURE__ */ react.exports.createContext({});
 var TreeViewContext$1 = TreeViewContext;
 const _excluded$3 = ["element"];
@@ -80869,9 +80870,9 @@ function Sidebar({
         color: "secondary",
         "aria-label": "add",
         className: "menu-button",
-        children: showMobileSidebar ? /* @__PURE__ */ jsx(default_1$5, {
+        children: showMobileSidebar ? /* @__PURE__ */ jsx(default_1$7, {
           onClick: () => setShowMobileSidebar(false)
-        }) : /* @__PURE__ */ jsx(default_1$3, {
+        }) : /* @__PURE__ */ jsx(default_1$5, {
           onClick: () => setShowMobileSidebar(true)
         })
       }), projects.size > 1 && /* @__PURE__ */ jsx(Box$1, {
@@ -80909,8 +80910,8 @@ function Sidebar({
         })
       }), params.contentSlug && /* @__PURE__ */ jsx(TreeView$1, {
         "aria-label": "controlled",
-        defaultCollapseIcon: /* @__PURE__ */ jsx(default_1$4, {}),
-        defaultExpandIcon: /* @__PURE__ */ jsx(default_1$6, {}),
+        defaultCollapseIcon: /* @__PURE__ */ jsx(default_1$6, {}),
+        defaultExpandIcon: /* @__PURE__ */ jsx(default_1$8, {}),
         expanded,
         onNodeToggle: handleToggle,
         onNodeSelect: (event, nodeId) => {
@@ -81203,41 +81204,41 @@ css`
   }
 `;
 var ArrowLeft = {};
-var _interopRequireDefault$2 = interopRequireDefault.exports;
+var _interopRequireDefault$4 = interopRequireDefault.exports;
 Object.defineProperty(ArrowLeft, "__esModule", {
   value: true
 });
-var default_1$2 = ArrowLeft.default = void 0;
-var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
-var _jsxRuntime$2 = require$$2;
-var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
+var default_1$4 = ArrowLeft.default = void 0;
+var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
+var _jsxRuntime$4 = require$$2;
+var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
   d: "m14 7-5 5 5 5V7z"
 }), "ArrowLeft");
-default_1$2 = ArrowLeft.default = _default$2;
+default_1$4 = ArrowLeft.default = _default$4;
 var ArrowRight = {};
-var _interopRequireDefault$1 = interopRequireDefault.exports;
+var _interopRequireDefault$3 = interopRequireDefault.exports;
 Object.defineProperty(ArrowRight, "__esModule", {
   value: true
 });
-var default_1$1 = ArrowRight.default = void 0;
-var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
-var _jsxRuntime$1 = require$$2;
-var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
+var default_1$3 = ArrowRight.default = void 0;
+var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
+var _jsxRuntime$3 = require$$2;
+var _default$3 = (0, _createSvgIcon$3.default)(/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
   d: "m10 17 5-5-5-5v10z"
 }), "ArrowRight");
-default_1$1 = ArrowRight.default = _default$1;
+default_1$3 = ArrowRight.default = _default$3;
 var Save = {};
-var _interopRequireDefault = interopRequireDefault.exports;
+var _interopRequireDefault$2 = interopRequireDefault.exports;
 Object.defineProperty(Save, "__esModule", {
   value: true
 });
-var default_1 = Save.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon);
-var _jsxRuntime = require$$2;
-var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+var default_1$2 = Save.default = void 0;
+var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
+var _jsxRuntime$2 = require$$2;
+var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
   d: "M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"
 }), "Save");
-default_1 = Save.default = _default;
+default_1$2 = Save.default = _default$2;
 function _defineProperty$1(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -82027,6 +82028,30 @@ const EditorRenderer = ({
     }
   });
 };
+var Visibility = {};
+var _interopRequireDefault$1 = interopRequireDefault.exports;
+Object.defineProperty(Visibility, "__esModule", {
+  value: true
+});
+var default_1$1 = Visibility.default = void 0;
+var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
+var _jsxRuntime$1 = require$$2;
+var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
+  d: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+}), "Visibility");
+default_1$1 = Visibility.default = _default$1;
+var VisibilityOff = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(VisibilityOff, "__esModule", {
+  value: true
+});
+var default_1 = VisibilityOff.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78 3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"
+}), "VisibilityOff");
+default_1 = VisibilityOff.default = _default;
 const EditorWrapper = styled$3(Card$1)({
   width: "100%",
   flex: "auto",
@@ -82081,6 +82106,7 @@ const MarkdownEditor = ({
     var _a2;
     navigate(`/editor/${projectSlug}/${(_a2 = params.contentSlug) != null ? _a2 : ""}`);
   }, [params]);
+  const [showPreview, setShowPreview] = react.exports.useState(true);
   return /* @__PURE__ */ jsxs(EditorWrapper, {
     children: [/* @__PURE__ */ jsx(EditorHeader, {
       action: /* @__PURE__ */ jsxs(React.Fragment, {
@@ -82090,7 +82116,7 @@ const MarkdownEditor = ({
           },
           "aria-label": "increase preview size",
           onClick: saveMDX,
-          children: /* @__PURE__ */ jsx(default_1, {
+          children: /* @__PURE__ */ jsx(default_1$2, {
             sx: {
               fontSize: 22
             }
@@ -82103,7 +82129,7 @@ const MarkdownEditor = ({
           onClick: () => {
             setEditorFlex((value) => Math.max(-(MAX_FLEX_DIFF - 1), value - 1));
           },
-          children: /* @__PURE__ */ jsx(default_1$2, {
+          children: /* @__PURE__ */ jsx(default_1$4, {
             sx: {
               fontSize: 32
             }
@@ -82116,10 +82142,31 @@ const MarkdownEditor = ({
           onClick: () => {
             setEditorFlex((value) => Math.min(MAX_FLEX_DIFF - 1, value + 1));
           },
-          children: /* @__PURE__ */ jsx(default_1$1, {
+          children: /* @__PURE__ */ jsx(default_1$3, {
             sx: {
               fontSize: 32
             }
+          })
+        }), /* @__PURE__ */ jsx(Tooltip$1, {
+          title: "toggle preview",
+          children: /* @__PURE__ */ jsx(IconButton$1, {
+            sx: {
+              color: "inherit",
+              marginRight: "10px"
+            },
+            "aria-label": "toggle preview",
+            onClick: () => {
+              setShowPreview((value) => !value);
+            },
+            children: !showPreview ? /* @__PURE__ */ jsx(default_1$1, {
+              sx: {
+                fontSize: 22
+              }
+            }) : /* @__PURE__ */ jsx(default_1, {
+              sx: {
+                fontSize: 22
+              }
+            })
           })
         })]
       })
@@ -82154,7 +82201,7 @@ const MarkdownEditor = ({
         ref: boxRef,
         sx: {
           flex: "auto",
-          maxWidth: `${50 + 10 * editorFlex}%`,
+          maxWidth: !showPreview ? "100%" : `${50 + 10 * editorFlex}%`,
           background: "black"
         },
         children: /* @__PURE__ */ jsx(EditorRenderer, {
@@ -82164,7 +82211,7 @@ const MarkdownEditor = ({
           setHeight,
           setMDX
         })
-      }), /* @__PURE__ */ jsx(ContentBox, {
+      }), showPreview && /* @__PURE__ */ jsx(ContentBox, {
         sx: {
           height: height2 + "px",
           flex: "auto",

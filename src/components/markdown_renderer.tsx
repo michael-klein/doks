@@ -2,6 +2,7 @@ import { CircularProgress, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { htmdx } from "htmdx";
 import React, {
+  memo,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -28,7 +29,7 @@ codeTheme$.subscribe((theme) => {
 });
 
 import { DoksTheme } from "../css/theme";
-import { combineLatest, map } from "rxjs";
+import { combineLatest, debounceTime, map, throttleTime } from "rxjs";
 import { documents$ } from "../store/documents";
 import { useParams } from "react-router";
 import { join } from "path-browserify";
@@ -93,90 +94,86 @@ const removeVoidElements = (mdx: string) => {
   });
   return mdx;
 };
-const MDX = ({
-  mdx,
-  onSaveMDX,
-}: {
-  mdx: string;
-  onSaveMDX: (mdx: string) => void;
-}) => {
-  let i = 0;
-  const [codeTheme] = useObservableState(() => codeTheme$);
-  const params = useParams();
-  const document = useObservableState(
-    useObservable(
-      (input$) => {
-        return combineLatest([input$, documents$]).pipe(
-          map(([input, documents]) => {
-            return documents.get(input[0].contentSlug);
-          })
+const MDX = memo(
+  ({ mdx, onSaveMDX }: { mdx: string; onSaveMDX: (mdx: string) => void }) => {
+    let i = 0;
+    const [codeTheme] = useObservableState(() => codeTheme$);
+    const params = useParams();
+    const document = useObservableState(
+      useObservable(
+        (input$) => {
+          return combineLatest([input$, documents$]).pipe(
+            map(([input, documents]) => {
+              return documents.get(input[0].contentSlug);
+            })
+          );
+        },
+        [params]
+      )
+    );
+    const getPath = useCallback(
+      (src: string) => {
+        if (src.includes("http") || !document) {
+          return src;
+        }
+        return join(
+          projects$.value.get(document.projectSlug).root,
+          document.path.split("/").slice(0, -1).join("/"),
+          src
         );
       },
-      [params]
-    )
-  );
-  const getPath = useCallback(
-    (src: string) => {
-      if (src.includes("http") || !document) {
-        return src;
-      }
-      return join(
-        projects$.value.get(document.projectSlug).root,
-        document.path.split("/").slice(0, -1).join("/"),
-        src
-      );
-    },
-    [document, params]
-  );
-  const sanitizedMDX = useMemo(() => removeVoidElements(mdx), [mdx]);
-  useEffect(() => {
-    onSaveMDX(mdx);
-  }, [mdx]);
-  return (
-    <>
-      {mdx !== undefined ? (
-        htmdx(sanitizedMDX, React.createElement, {
-          components: {
-            code: (props: any) => {
-              return (
-                <SyntaxHighlighter
-                  style={codeTheme}
-                  customStyle={{
-                    marginLeft: "-10px",
-                    marginRight: "-10px",
-                    paddingLeft: "11px",
-                    paddingRight: "11px",
-                    borderRadius: "3px",
-                  }}
-                  language={props?.className?.replace("language-", "")}
-                >
-                  {props.children}
-                </SyntaxHighlighter>
-              );
+      [document, params]
+    );
+    const sanitizedMDX = useMemo(() => removeVoidElements(mdx), [mdx]);
+    useEffect(() => {
+      onSaveMDX(mdx);
+    }, [mdx]);
+    return (
+      <>
+        {mdx !== undefined ? (
+          htmdx(sanitizedMDX, React.createElement, {
+            components: {
+              code: (props: any) => {
+                return (
+                  <SyntaxHighlighter
+                    style={codeTheme}
+                    customStyle={{
+                      marginLeft: "-10px",
+                      marginRight: "-10px",
+                      paddingLeft: "11px",
+                      paddingRight: "11px",
+                      borderRadius: "3px",
+                    }}
+                    language={props?.className?.replace("language-", "")}
+                  >
+                    {props.children}
+                  </SyntaxHighlighter>
+                );
+              },
+              img: (props: any) => {
+                if (props.src) {
+                  props = { ...props, src: getPath(props.src) };
+                }
+                return <img {...props} />;
+              },
             },
-            img: (props: any) => {
-              if (props.src) {
-                props = { ...props, src: getPath(props.src) };
-              }
-              return <img {...props} />;
-            },
-          },
-          jsxTransforms: [
-            (type, props, children) => {
-              if (!props) {
-                props = {};
-              }
-              props.key = i++;
-              return [type, props, children];
-            },
-          ],
-        })
-      ) : (
-        <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
-      )}
-    </>
-  );
-};
+            jsxTransforms: [
+              (type, props, children) => {
+                if (!props) {
+                  props = {};
+                }
+                props.key = i++;
+                return [type, props, children];
+              },
+            ],
+          })
+        ) : (
+          <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
+        )}
+      </>
+    );
+  }
+);
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
 }));
@@ -187,9 +184,15 @@ export const MarkdownRenderer = ({
   mdx: string;
   isEditor?: boolean;
 }) => {
-  const [currentMDX, setCurrentMDX] = useState(mdx);
+  const currentMDX$ = useObservable(
+    () => new ValueSubject(mdx)
+  ) as ValueSubject<string>;
+  const [debouncedMDX] = useObservableState(() =>
+    currentMDX$.pipe(debounceTime(300, undefined))
+  );
+
   useLayoutEffect(() => {
-    setCurrentMDX(mdx);
+    currentMDX$.next(mdx);
   }, [mdx]);
   const saveMDXRef = useRef("");
   const mdxIdRef = useRef(0);
@@ -198,14 +201,14 @@ export const MarkdownRenderer = ({
       <ErrorBoundary
         key={"mdx-" + mdxIdRef.current}
         onError={() => {
+          mdxIdRef.current++;
           if (isEditor) {
-            mdxIdRef.current++;
-            setCurrentMDX(saveMDXRef.current);
+            currentMDX$.next(saveMDXRef.current);
           }
         }}
       >
         <MDX
-          mdx={currentMDX}
+          mdx={debouncedMDX}
           onSaveMDX={(saveMDX) => {
             saveMDXRef.current = saveMDX;
           }}

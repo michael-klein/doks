@@ -30,41 +30,53 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
         path: project.root,
         slug: projectSlug,
         name: project.name,
-        depthMap: new Map(),
       });
       const contentsText = await fetch(
         join(project.root, "contents.doks")
       ).then((res) => res.text());
-      for (const c of contentsText.split("\n")) {
-        const [path, name] = c.split("|");
-        let depth = 0;
-        while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
-          depth++;
-        }
-        const item: Contents = {
-          path: path.trim(),
-          name: name?.trim() || path.trim(),
-          depth,
-          slug: slugify(projectSlug + "-" + path.trim()),
-          projectSlug,
-          isOnlyHeading: !path.includes(".md"),
-        };
-        addOrUpdateContents({ ...item }, projectSlug);
-        if (!item.isOnlyHeading) {
-          const lastModified = await getLastModified(
-            join(project.root, item.path)
-          );
-          if (lastModified !== false) {
-            const cached = getCachedDocument(item.slug);
-            if (cached) {
-              addOrUpdateContents({ ...item, name: cached.name }, projectSlug);
-            }
-            item.lastModified = lastModified;
-            queueDocument(item, false);
-          } else {
-            removeContents(item.slug, item.projectSlug);
+      const deletedPaths: string[] = [];
+      await Promise.all(
+        contentsText.split("\n").map(async (c) => {
+          const [path, name] = c.split("|");
+          let depth = 0;
+          while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
+            depth++;
           }
-        }
+          const item: Contents = {
+            path: path.trim(),
+            name: name?.trim() || path.trim(),
+            depth,
+            slug: slugify(projectSlug + "-" + path.trim()),
+            projectSlug,
+            isOnlyHeading: !path.includes(".md"),
+          };
+          addOrUpdateContents({ ...item }, projectSlug);
+          if (!item.isOnlyHeading) {
+            const lastModified = await getLastModified(
+              join(project.root, item.path)
+            );
+            if (lastModified !== false) {
+              const cached = getCachedDocument(item.slug);
+              if (cached) {
+                addOrUpdateContents(
+                  { ...item, name: cached.name },
+                  projectSlug
+                );
+              }
+              item.lastModified = lastModified;
+              queueDocument(item, false);
+            } else {
+              deletedPaths.push(item.path);
+              removeContents(item.slug, item.projectSlug);
+            }
+          }
+        })
+      );
+      if (deletedPaths.length > 0) {
+        console.warn(
+          `The following paths seem to have been deleted in ${project.name}: }`,
+          deletedPaths
+        );
       }
     })
   );

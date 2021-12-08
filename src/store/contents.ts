@@ -15,7 +15,6 @@ export interface Project extends DocOptionsProject {
   path: string;
   name: string;
   slug: string;
-  depthMap: Map<number, number>;
 }
 export const projects$ = new ValueSubject<Map<string, Project>>(new Map());
 export const contents$ = new ValueSubject<Map<string, Map<string, Contents>>>(
@@ -53,17 +52,6 @@ export const addOrUpdateContents = (
   projectSlug: string
 ) => {
   const project = projects$.value.get(projectSlug);
-  const depths = new Set(project.depthMap.keys());
-  depths.add(contentsIn.depth);
-  let i = 0;
-  depths.forEach((depth) => {
-    projects$.next(
-      produce(projects$.value, (draft) => {
-        draft.get(projectSlug).depthMap.set(depth, i);
-      })
-    );
-    i++;
-  });
   contents$.next(
     produce(contents$.value, (draft) => {
       if (!draft.has(projectSlug)) {

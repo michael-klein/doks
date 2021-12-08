@@ -67,7 +67,7 @@ const createTree = (contents: Map<string, Contents>, project: Project) => {
   };
   let current = root;
   contents.forEach((content) => {
-    const depth = project.depthMap.get(content.depth);
+    const depth = content.depth;
     const newItem: ContentTree = {
       ...content,
       depth,
@@ -231,11 +231,7 @@ export function Sidebar({
     if (project) {
       const content = contents.get(project.slug);
       if (content) {
-        setExpanded(
-          Array.from(content.values())
-            .filter((item) => project.depthMap.get(item.depth) < 3)
-            .map((item) => item.slug)
-        );
+        setExpanded(Array.from(content.values()).map((item) => item.slug));
       }
     }
   }, [project, contents]);

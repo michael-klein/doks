@@ -1,4 +1,5 @@
-import { CircularProgress, Container, Grid } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import { useObservableState } from "observable-hooks";
 import React, { Fragment, ReactChild, useCallback, useEffect } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";

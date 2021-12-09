@@ -1,16 +1,20 @@
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import SaveIcon from "@mui/icons-material/Save";
-import { Card, CardHeader, IconButton, Tooltip } from "@mui/material";
-import { Box, styled } from "@mui/system";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/system/Box";
+import styled from "@mui/system/styled";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { documents$ } from "../store/documents";
 import { EditorRenderer } from "./editor_renderer";
 import { MarkdownRenderer } from "./markdown_renderer";
 import { Sidebar, SIDEBAR_MODE } from "./sidebar";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const EditorWrapper = styled(Card)({
   width: "100%",

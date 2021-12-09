@@ -1,17 +1,25 @@
-import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
+import CodeIcon from "@mui/icons-material/Code";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import SearchIcon from "@mui/icons-material/Search";
+import LinearProgress from "@mui/material/LinearProgress";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import { alpha, styled } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useObservableState } from "observable-hooks";
+import React, { Fragment, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
-import EditIcon from "@mui/icons-material/Edit";
-import { SearchOverlay } from "./search";
-import { LinearProgress, Menu, MenuItem, Tooltip } from "@mui/material";
+import { useDocOptions } from "../hooks/use_doc_options_context";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import {
   documents$,
@@ -19,16 +27,109 @@ import {
   fetchingDocuments$,
   queuedDocuments$,
 } from "../store/documents";
-import { useDocOptions } from "../hooks/use_doc_options_context";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Fragment } from "react";
-import { useObservableState } from "observable-hooks";
-import { useNavigate, useParams, useLocation } from "react-router";
-import { Link } from "react-router-dom";
-import CodeIcon from "@mui/icons-material/Code";
 import { ValueSubject } from "../utils/value_subject";
-import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { codeTheme$ } from "./markdown_renderer";
+import { SearchOverlay } from "./search";
+
+const syntaxThemes = [
+  "a11yDark",
+  "a11yLight",
+  "agate",
+  "anOldHope",
+  "androidstudio",
+  "arduinoLight",
+  "arta",
+  "ascetic",
+  "atelierCaveDark",
+  "atelierCaveLight",
+  "atelierDuneDark",
+  "atelierDuneLight",
+  "atelierEstuaryDark",
+  "atelierEstuaryLight",
+  "atelierForestDark",
+  "atelierForestLight",
+  "atelierHeathDark",
+  "atelierHeathLight",
+  "atelierLakesideDark",
+  "atelierLakesideLight",
+  "atelierPlateauDark",
+  "atelierPlateauLight",
+  "atelierSavannaDark",
+  "atelierSavannaLight",
+  "atelierSeasideDark",
+  "atelierSeasideLight",
+  "atelierSulphurpoolDark",
+  "atelierSulphurpoolLight",
+  "atomOneDark",
+  "atomOneDarkReasonable",
+  "atomOneLight",
+  "brownPaper",
+  "codepenEmbed",
+  "colorBrewer",
+  "darcula",
+  "dark",
+  "defaultStyle",
+  "docco",
+  "dracula",
+  "far",
+  "foundation",
+  "github",
+  "githubGist",
+  "gml",
+  "googlecode",
+  "gradientDark",
+  "gradientLight",
+  "grayscale",
+  "gruvboxDark",
+  "gruvboxLight",
+  "hopscotch",
+  "hybrid",
+  "idea",
+  "irBlack",
+  "isblEditorDark",
+  "isblEditorLight",
+  "kimbieDark",
+  "kimbieLight",
+  "lightfair",
+  "lioshi",
+  "magula",
+  "monoBlue",
+  "monokai",
+  "monokaiSublime",
+  "nightOwl",
+  "nnfx",
+  "nnfxDark",
+  "nord",
+  "obsidian",
+  "ocean",
+  "paraisoDark",
+  "paraisoLight",
+  "pojoaque",
+  "purebasic",
+  "qtcreatorDark",
+  "qtcreatorLight",
+  "railscasts",
+  "rainbow",
+  "routeros",
+  "schoolBook",
+  "shadesOfPurple",
+  "solarizedDark",
+  "solarizedLight",
+  "srcery",
+  "stackoverflowDark",
+  "stackoverflowLight",
+  "sunburst",
+  "tomorrow",
+  "tomorrowNight",
+  "tomorrowNightBlue",
+  "tomorrowNightBright",
+  "tomorrowNightEighties",
+  "vs",
+  "vs2015",
+  "xcode",
+  "xt256",
+  "zenburn",
+];
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
   position: "relative",
@@ -183,11 +284,10 @@ const SyntaxMenu = () => {
     <NavMenu
       tooltip="Syntax theme"
       items={
-        Object.keys(SyntaxThemes).map((key) => {
-          const theme = SyntaxThemes[key];
+        syntaxThemes.map((theme) => {
           return {
-            key,
-            label: key,
+            key: theme,
+            label: theme,
             onClick: () => {
               codeTheme$.next(theme);
             },

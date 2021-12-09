@@ -1,4 +1,5 @@
-import { CircularProgress, Container } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Container from "@mui/material/Container";
 import React, { Fragment, ReactChild } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";

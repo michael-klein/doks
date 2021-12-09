@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import { styled } from "@mui/system";
+import Button from "@mui/material/Button";
+import styled from "@mui/system/styled";
 import React from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 

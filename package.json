@@ -3,7 +3,7 @@
     "version": "0.1.7",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build && npx terser --compress --mangle -o ./dist/docs.es.min.js -- ./dist/docs.es.js"
+        "build": "tsc && vite build && npx uglifyjs-folder dist -eo dist/min"
     },
     "dependencies": {
         "@emotion/css": "^11.5.0",

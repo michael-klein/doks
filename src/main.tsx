@@ -1,30 +1,23 @@
-import { ThemeProvider } from "@mui/material";
 import slugify from "@sindresorhus/slugify";
 import { join } from "path-browserify";
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Routes } from "react-router-dom";
-import { theme } from "./css/theme";
-import { Docs } from "./pages/docs";
+import "./css/reset";
+import { DocOptions, DocOptionsProject } from "./interfaces";
 import {
   addOrUpdateContents,
   addOrUpdateManyContents,
   addOrUpdateProject,
   Contents,
   contents$,
-  Project,
   removeContents,
 } from "./store/contents";
-import "./css/reset";
 import {
   getCachedDocument,
   getLastModified,
   queueDocument,
 } from "./store/documents";
-import { DocOptions, DocOptionsProject } from "./interfaces";
-import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
-import { Editor } from "./pages/editor";
-import produce from "immer";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface ProjectCacheItem {
   contents: Contents[];
@@ -119,6 +112,7 @@ const loadProjects = async (projects: DocOptionsProject[]) => {
     })
   );
 };
+const Doks = lazy(() => import("./doks"));
 export const docs = (options: DocOptions) => {
   const link = document.createElement("link");
   link.setAttribute("ref", "stylesheet");
@@ -132,17 +126,15 @@ export const docs = (options: DocOptions) => {
   loadProjects(projects);
 
   ReactDOM.render(
-    <ThemeProvider theme={theme}>
-      <DocOptionsContextProvider options={options}>
-        <HashRouter>
-          <Routes>
-            <Route path="/editor/*" element={<Editor></Editor>}></Route>
-            <Route path="/docs/*" element={<Docs></Docs>}></Route>
-            <Route path="*" element={<Docs></Docs>}></Route>
-          </Routes>
-        </HashRouter>
-      </DocOptionsContextProvider>
-    </ThemeProvider>,
+    <Suspense
+      fallback={
+        <CircularProgress
+          sx={{ position: "absolute", top: "50%", left: "50%" }}
+        ></CircularProgress>
+      }
+    >
+      <Doks {...options}></Doks>
+    </Suspense>,
     targetNode
   );
 };

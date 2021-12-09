@@ -1,6 +1,10 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Card, CardContent, CardHeader, Grid, IconButton } from "@mui/material";
-import { styled } from "@mui/system";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
 import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";

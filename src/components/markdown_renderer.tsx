@@ -1,8 +1,13 @@
-import { CircularProgress, Typography } from "@mui/material";
-import { Box, styled } from "@mui/system";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/system/Box";
+import styled from "@mui/system/styled";
 import { htmdx } from "htmdx";
+import { useObservable, useObservableState } from "observable-hooks";
+import { join } from "path-browserify";
 import React, {
+  lazy,
   memo,
+  Suspense,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -10,32 +15,26 @@ import React, {
   useRef,
   useState,
 } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import * as SyntaxThemes from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { useParams } from "react-router";
+import { combineLatest, debounceTime, map } from "rxjs";
+import { DoksTheme } from "../css/theme";
+import { projects$ } from "../store/contents";
+import { documents$ } from "../store/documents";
 import { ValueSubject } from "../utils/value_subject";
-import { useObservable, useObservableState } from "observable-hooks";
+
+const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
 const SYNTAX_KEY = "SYNTAX";
-export const codeTheme$ = new ValueSubject(
-  SyntaxThemes[localStorage.getItem(SYNTAX_KEY)] ?? atomOneDark
-);
+export const codeTheme$ = new ValueSubject("atomOneDark");
 
+/*
 codeTheme$.subscribe((theme) => {
   localStorage.setItem(
     SYNTAX_KEY,
     Object.keys(SyntaxThemes).find((key) => SyntaxThemes[key] === theme)
   );
 });
-
-import { DoksTheme } from "../css/theme";
-import { combineLatest, debounceTime, map, throttleTime } from "rxjs";
-import { documents$ } from "../store/documents";
-import { useParams } from "react-router";
-import { join } from "path-browserify";
-import { projects$ } from "../store/contents";
-import { useDocOptions } from "../hooks/use_doc_options_context";
-
+*/
 class ErrorBoundary extends React.Component<
   { onError: () => void },
   { hasError: boolean; error: string }
@@ -94,10 +93,11 @@ const removeVoidElements = (mdx: string) => {
   });
   return mdx;
 };
+
 const MDX = memo(
   ({ mdx, onSaveMDX }: { mdx: string; onSaveMDX: (mdx: string) => void }) => {
     let i = 0;
-    const [codeTheme] = useObservableState(() => codeTheme$);
+    const [theme] = useObservableState(() => codeTheme$);
     const params = useParams();
     const document = useObservableState(
       useObservable(
@@ -135,19 +135,14 @@ const MDX = memo(
             components: {
               code: (props: any) => {
                 return (
-                  <SyntaxHighlighter
-                    style={codeTheme}
-                    customStyle={{
-                      marginLeft: "-10px",
-                      marginRight: "-10px",
-                      paddingLeft: "11px",
-                      paddingRight: "11px",
-                      borderRadius: "3px",
-                    }}
-                    language={props?.className?.replace("language-", "")}
-                  >
-                    {props.children}
-                  </SyntaxHighlighter>
+                  <Suspense fallback={props.children}>
+                    <CodeSyntaxHighlighter
+                      theme={theme}
+                      language={props?.className?.replace("language-", "")}
+                    >
+                      {props.children}
+                    </CodeSyntaxHighlighter>
+                  </Suspense>
                 );
               },
               img: (props: any) => {

@@ -13,7 +13,6 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import { useParams } from "react-router";
 import { combineLatest, debounceTime, map } from "rxjs";
@@ -25,16 +24,13 @@ import { ValueSubject } from "../utils/value_subject";
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
 const SYNTAX_KEY = "SYNTAX";
-export const codeTheme$ = new ValueSubject("atomOneDark");
+export const codeTheme$ = new ValueSubject(
+  localStorage.getItem(SYNTAX_KEY) ?? "atomOneDark"
+);
 
-/*
 codeTheme$.subscribe((theme) => {
-  localStorage.setItem(
-    SYNTAX_KEY,
-    Object.keys(SyntaxThemes).find((key) => SyntaxThemes[key] === theme)
-  );
+  localStorage.setItem(SYNTAX_KEY, theme);
 });
-*/
 class ErrorBoundary extends React.Component<
   { onError: () => void },
   { hasError: boolean; error: string }

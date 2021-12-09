@@ -29,6 +29,7 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
+var _a;
 import { i as isFunction$1, _ as __extends, S as Subscriber, a as Subscription, b as __spreadArray, c as __read, d as arrRemove, o as observable, e as __asyncGenerator, f as __generator, g as __await, O as Observable, r as reportUnhandledError, h as __awaiter, j as __values, k as __asyncValues, l as identity, P as PropTypes, m as react, n as deepmerge, p as formatMuiErrorMessage, q as capitalize, s as _extends$3, t as generateUtilityClass, u as generateUtilityClasses, v as _objectWithoutPropertiesLoose$1, w as composeClasses, x as jsx, y as clsx, z as reactDom, A as jsxs, B as propToStyleFunction, C as styleFunctionSx$1, D as createTheme$1, E as useTheme$1, T as ThemeContext, F as styled$2, G as useTheme$2, H as ThemeContext$1, I as useTheme$3, J as defaultTheme$1, K as createTheme$2, L as styled$3, M as useThemeProps, N as resolveBreakpointValues, Q as handleBreakpoints, R as Subject, U as BehaviorSubject, V as ClassNameGenerator, W as getAugmentedNamespace, X as jsxRuntime, Y as alpha, Z as React, $ as ReactDOM, a0 as keyframes, a1 as styledEngine, a2 as getDefaultExportFromCjs, a3 as ValueSubject, a4 as Fragment, a5 as pathBrowserify, a6 as projects$, a7 as CircularProgress, a8 as documents$, a9 as modifyDocument, aa as rootShouldForwardProp, ab as css, ac as lighten, ad as darken, ae as duration, af as GlobalStyles$1, ag as slotShouldForwardProp, ah as queuedDocuments$, ai as fetchingDocuments$, aj as getThemeProps, ak as contents$ } from "./main.js";
 function hasLift(source) {
   return isFunction$1(source === null || source === void 0 ? void 0 : source.lift);
@@ -80,10 +81,10 @@ var OperatorSubscriber = function(_super) {
     return _this;
   }
   OperatorSubscriber2.prototype.unsubscribe = function() {
-    var _a;
+    var _a2;
     var closed = this.closed;
     _super.prototype.unsubscribe.call(this);
-    !closed && ((_a = this.onFinalize) === null || _a === void 0 ? void 0 : _a.call(this));
+    !closed && ((_a2 = this.onFinalize) === null || _a2 === void 0 ? void 0 : _a2.call(this));
   };
   return OperatorSubscriber2;
 }(Subscriber);
@@ -189,7 +190,7 @@ var AsyncAction = function(_super) {
   };
   AsyncAction2.prototype.unsubscribe = function() {
     if (!this.closed) {
-      var _a = this, id = _a.id, scheduler = _a.scheduler;
+      var _a2 = this, id = _a2.id, scheduler = _a2.scheduler;
       var actions = scheduler.actions;
       this.work = this.state = this.scheduler = null;
       this.pending = false;
@@ -295,7 +296,7 @@ function isIterable(input) {
 }
 function readableStreamLikeToAsyncGenerator(readableStream) {
   return __asyncGenerator(this, arguments, function readableStreamLikeToAsyncGenerator_1() {
-    var reader, _a, value, done;
+    var reader, _a2, value, done;
     return __generator(this, function(_b) {
       switch (_b.label) {
         case 0:
@@ -307,7 +308,7 @@ function readableStreamLikeToAsyncGenerator(readableStream) {
         case 2:
           return [4, __await(reader.read())];
         case 3:
-          _a = _b.sent(), value = _a.value, done = _a.done;
+          _a2 = _b.sent(), value = _a2.value, done = _a2.done;
           if (!done)
             return [3, 5];
           return [4, __await(void 0)];
@@ -391,7 +392,7 @@ function fromPromise(promise) {
 }
 function fromIterable(iterable) {
   return new Observable(function(subscriber) {
-    var e_1, _a;
+    var e_1, _a2;
     try {
       for (var iterable_1 = __values(iterable), iterable_1_1 = iterable_1.next(); !iterable_1_1.done; iterable_1_1 = iterable_1.next()) {
         var value = iterable_1_1.value;
@@ -404,8 +405,8 @@ function fromIterable(iterable) {
       e_1 = { error: e_1_1 };
     } finally {
       try {
-        if (iterable_1_1 && !iterable_1_1.done && (_a = iterable_1.return))
-          _a.call(iterable_1);
+        if (iterable_1_1 && !iterable_1_1.done && (_a2 = iterable_1.return))
+          _a2.call(iterable_1);
       } finally {
         if (e_1)
           throw e_1.error;
@@ -426,7 +427,7 @@ function fromReadableStreamLike(readableStream) {
 }
 function process(asyncIterable, subscriber) {
   var asyncIterable_1, asyncIterable_1_1;
-  var e_2, _a;
+  var e_2, _a2;
   return __awaiter(this, void 0, void 0, function() {
     var value, e_2_1;
     return __generator(this, function(_b) {
@@ -456,9 +457,9 @@ function process(asyncIterable, subscriber) {
           return [3, 11];
         case 6:
           _b.trys.push([6, , 9, 10]);
-          if (!(asyncIterable_1_1 && !asyncIterable_1_1.done && (_a = asyncIterable_1.return)))
+          if (!(asyncIterable_1_1 && !asyncIterable_1_1.done && (_a2 = asyncIterable_1.return)))
             return [3, 8];
-          return [4, _a.call(asyncIterable_1)];
+          return [4, _a2.call(asyncIterable_1)];
         case 7:
           _b.sent();
           _b.label = 8;
@@ -554,11 +555,11 @@ function scheduleIterable(input, scheduler) {
     executeSchedule(subscriber, scheduler, function() {
       iterator$1 = input[iterator]();
       executeSchedule(subscriber, scheduler, function() {
-        var _a;
+        var _a2;
         var value;
         var done;
         try {
-          _a = iterator$1.next(), value = _a.value, done = _a.done;
+          _a2 = iterator$1.next(), value = _a2.value, done = _a2.done;
         } catch (err) {
           subscriber.error(err);
           return;
@@ -678,7 +679,7 @@ function combineLatest() {
   }
   var scheduler = popScheduler(args);
   var resultSelector = popResultSelector(args);
-  var _a = argsArgArrayOrObject(args), observables = _a.args, keys = _a.keys;
+  var _a2 = argsArgArrayOrObject(args), observables = _a2.args, keys = _a2.keys;
   if (observables.length === 0) {
     return from([], scheduler);
   }
@@ -5667,21 +5668,21 @@ function useSubscriptionInternal(useCustomEffect, args) {
     var input$ = argsRef.current[0];
     var subscription = input$.subscribe({
       next: function(value) {
-        var _a;
+        var _a2;
         if (input$ !== argsRef.current[0]) {
           return;
         }
-        var nextObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.next) || argsRef.current[1];
+        var nextObserver = ((_a2 = argsRef.current[1]) === null || _a2 === void 0 ? void 0 : _a2.next) || argsRef.current[1];
         if (nextObserver) {
           return nextObserver(value);
         }
       },
       error: function(error) {
-        var _a;
+        var _a2;
         if (input$ !== argsRef.current[0]) {
           return;
         }
-        var errorObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.error) || argsRef.current[2];
+        var errorObserver = ((_a2 = argsRef.current[1]) === null || _a2 === void 0 ? void 0 : _a2.error) || argsRef.current[2];
         if (errorObserver) {
           errorRef.current = null;
           return errorObserver(error);
@@ -5690,11 +5691,11 @@ function useSubscriptionInternal(useCustomEffect, args) {
         forceUpdate();
       },
       complete: function() {
-        var _a;
+        var _a2;
         if (input$ !== argsRef.current[0]) {
           return;
         }
-        var completeObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.complete) || argsRef.current[3];
+        var completeObserver = ((_a2 = argsRef.current[1]) === null || _a2 === void 0 ? void 0 : _a2.complete) || argsRef.current[3];
         if (completeObserver) {
           return completeObserver();
         }
@@ -5729,7 +5730,7 @@ function useLayoutSubscription(input$, observerOrNext$, error, complete) {
 function useObservableStateInternal(useSubscription2, state$OrInit, initialState) {
   if (isObservable(state$OrInit)) {
     var state$_1 = state$OrInit;
-    var _a = react.exports.useState(function() {
+    var _a2 = react.exports.useState(function() {
       if (state$_1 instanceof BehaviorSubject || state$_1.value !== void 0) {
         return state$_1.value;
       }
@@ -5737,7 +5738,7 @@ function useObservableStateInternal(useSubscription2, state$OrInit, initialState
         return initialState();
       }
       return initialState;
-    }), state = _a[0], setState2 = _a[1];
+    }), state = _a2[0], setState2 = _a2[1];
     useSubscription2(state$_1, setState2);
     react.exports.useDebugValue(state);
     return state;
@@ -12019,7 +12020,11 @@ function htmdx(m2, h2, options) {
   return markedToReact(esmEntry(m2), h2, options);
 }
 const CodeSyntaxHighlighter = react.exports.lazy(() => import("./syntax_highlighter.js"));
-const codeTheme$ = new ValueSubject("atomOneDark");
+const SYNTAX_KEY = "SYNTAX";
+const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != null ? _a : "atomOneDark");
+codeTheme$.subscribe((theme2) => {
+  localStorage.setItem(SYNTAX_KEY, theme2);
+});
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -12089,12 +12094,12 @@ const MDX = react.exports.memo(({
     children: mdx !== void 0 ? htmdx(sanitizedMDX, React.createElement, {
       components: {
         code: (props) => {
-          var _a;
+          var _a2;
           return /* @__PURE__ */ jsx(react.exports.Suspense, {
             fallback: props.children,
             children: /* @__PURE__ */ jsx(CodeSyntaxHighlighter, {
               theme: theme2,
-              language: (_a = props == null ? void 0 : props.className) == null ? void 0 : _a.replace("language-", ""),
+              language: (_a2 = props == null ? void 0 : props.className) == null ? void 0 : _a2.replace("language-", ""),
               children: props.children
             })
           });
@@ -21530,11 +21535,11 @@ const ProjectToggle = default_1$e(FormGroup$1)(({
   color: "primary"
 }));
 function PopperComponent(props) {
-  const _a = props, {
+  const _a2 = props, {
     disablePortal,
     anchorEl,
     open
-  } = _a, other = __objRest(_a, [
+  } = _a2, other = __objRest(_a2, [
     "disablePortal",
     "anchorEl",
     "open"
@@ -21543,7 +21548,7 @@ function PopperComponent(props) {
 }
 const excerptCache = new Map();
 const getExcerpts = (text, query) => {
-  var _a;
+  var _a2;
   const cacheId = text + query;
   if (excerptCache.has(cacheId)) {
     return excerptCache.get(cacheId);
@@ -21555,7 +21560,7 @@ const getExcerpts = (text, query) => {
   let lastHit;
   const maxHits = 3;
   for (const sentence of text.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|")) {
-    if (((_a = sentence.match(queryRegExp)) == null ? void 0 : _a.length) > 0) {
+    if (((_a2 = sentence.match(queryRegExp)) == null ? void 0 : _a2.length) > 0) {
       lastHit = prevSentences.join("") + sentence;
       prevSentences = [];
       lastSeenHitIndex = 0;
@@ -21617,8 +21622,8 @@ const SearchOverlay = ({
           PopperComponent,
           options: hits,
           getOptionLabel: (option) => {
-            var _a;
-            return (_a = option == null ? void 0 : option.name) != null ? _a : "";
+            var _a2;
+            return (_a2 = option == null ? void 0 : option.name) != null ? _a2 : "";
           },
           renderOption: (props, option, {
             selected
@@ -21803,7 +21808,7 @@ const NavMenu = ({
   }) : /* @__PURE__ */ jsx(Fragment, {});
 };
 const FavMenu = () => {
-  var _a;
+  var _a2;
   const [favDocs] = useObservableState(() => documents$.pipe(map((docs) => Array.from(docs.values()).filter((doc) => doc.isFavourite))));
   const navigate = useNavigate();
   const onFavClicked = (doc) => {
@@ -21813,19 +21818,19 @@ const FavMenu = () => {
   };
   return /* @__PURE__ */ jsx(NavMenu, {
     tooltip: "Favourites",
-    items: (_a = favDocs == null ? void 0 : favDocs.map((doc) => ({
+    items: (_a2 = favDocs == null ? void 0 : favDocs.map((doc) => ({
       key: doc.slug,
       label: doc.name,
       onClick: () => onFavClicked(doc)
-    }))) != null ? _a : [],
+    }))) != null ? _a2 : [],
     children: /* @__PURE__ */ jsx(FavButton, {})
   });
 };
 const SyntaxMenu = () => {
-  var _a;
+  var _a2;
   return /* @__PURE__ */ jsx(NavMenu, {
     tooltip: "Syntax theme",
-    items: (_a = syntaxThemes.map((theme2) => {
+    items: (_a2 = syntaxThemes.map((theme2) => {
       return {
         key: theme2,
         label: theme2,
@@ -21833,7 +21838,7 @@ const SyntaxMenu = () => {
           codeTheme$.next(theme2);
         }
       };
-    })) != null ? _a : [],
+    })) != null ? _a2 : [],
     children: /* @__PURE__ */ jsx(default_1$c, {})
   });
 };
@@ -24840,8 +24845,8 @@ const MarkdownEditor = ({
   const navigate = useNavigate();
   const params = useParams();
   const onProjectSelected = react.exports.useCallback((projectSlug) => {
-    var _a;
-    navigate(`/editor/${projectSlug}/${(_a = params.contentSlug) != null ? _a : ""}`);
+    var _a2;
+    navigate(`/editor/${projectSlug}/${(_a2 = params.contentSlug) != null ? _a2 : ""}`);
   }, [params]);
   const [showPreview, setShowPreview] = react.exports.useState(true);
   return /* @__PURE__ */ jsxs(EditorWrapper, {
@@ -24966,8 +24971,8 @@ const DocumentEditor = () => {
   const params = useParams();
   const [document2] = useObservableAndState((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
-      var _a;
-      return documents.get((_a = input[0]) == null ? void 0 : _a.contentSlug);
+      var _a2;
+      return documents.get((_a2 = input[0]) == null ? void 0 : _a2.contentSlug);
     }));
   }, [params]);
   const shouldHaveDocument = !!params.contentSlug;

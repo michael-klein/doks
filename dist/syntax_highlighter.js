@@ -1,5 +1,7 @@
-import { a2 as getDefaultExportFromCjs, v as _objectWithoutPropertiesLoose, Z as React, s as _extends, x as jsx } from "./main.js";
+import { Z as getDefaultExportFromCjs, u as _objectWithoutPropertiesLoose, q as _extends, w as jsx } from "./main.js";
 import { i as interopRequireDefault } from "./doks.js";
+import React__default from "react";
+import "react-dom";
 function _mergeNamespaces(n, m) {
   m.forEach(function(e) {
     e && typeof e !== "string" && !Array.isArray(e) && Object.keys(e).forEach(function(k) {
@@ -11813,7 +11815,7 @@ function createElement(_ref) {
       });
     }
     var children = childrenCreator(node.children);
-    return React.createElement(TagName, _extends({
+    return React__default.createElement(TagName, _extends({
       key
     }, props), children);
   }
@@ -11830,7 +11832,7 @@ function getAllLineNumbers(_ref) {
   var lines = _ref.lines, startingLineNumber = _ref.startingLineNumber, style = _ref.style;
   return lines.map(function(_, i) {
     var number = i + startingLineNumber;
-    return React.createElement("span", {
+    return React__default.createElement("span", {
       key: "line-".concat(i),
       className: "react-syntax-highlighter-line-number",
       style: typeof style === "function" ? style(number) : style
@@ -11842,7 +11844,7 @@ function AllLineNumbers(_ref2) {
     float: "left",
     paddingRight: "10px"
   } : _ref2$containerStyle, _ref2$numberStyle = _ref2.numberStyle, numberStyle = _ref2$numberStyle === void 0 ? {} : _ref2$numberStyle, startingLineNumber = _ref2.startingLineNumber;
-  return React.createElement("code", {
+  return React__default.createElement("code", {
     style: Object.assign({}, codeStyle, containerStyle)
   }, getAllLineNumbers({
     lines: codeString.replace(/\n$/, "").split("\n"),
@@ -12055,7 +12057,7 @@ function highlight$2(defaultAstGenerator, defaultStyle2) {
       style: _objectSpread({}, style['code[class*="language-"]'], style['code[class*="language-'.concat(language, '"]')])
     } : _ref7$codeTagProps, _ref7$useInlineStyles = _ref7.useInlineStyles, useInlineStyles = _ref7$useInlineStyles === void 0 ? true : _ref7$useInlineStyles, _ref7$showLineNumbers = _ref7.showLineNumbers, showLineNumbers = _ref7$showLineNumbers === void 0 ? false : _ref7$showLineNumbers, _ref7$showInlineLineN = _ref7.showInlineLineNumbers, showInlineLineNumbers = _ref7$showInlineLineN === void 0 ? true : _ref7$showInlineLineN, _ref7$startingLineNum = _ref7.startingLineNumber, startingLineNumber = _ref7$startingLineNum === void 0 ? 1 : _ref7$startingLineNum, lineNumberContainerStyle = _ref7.lineNumberContainerStyle, _ref7$lineNumberStyle = _ref7.lineNumberStyle, lineNumberStyle = _ref7$lineNumberStyle === void 0 ? {} : _ref7$lineNumberStyle, wrapLines = _ref7.wrapLines, _ref7$wrapLongLines = _ref7.wrapLongLines, wrapLongLines = _ref7$wrapLongLines === void 0 ? false : _ref7$wrapLongLines, _ref7$lineProps = _ref7.lineProps, lineProps = _ref7$lineProps === void 0 ? {} : _ref7$lineProps, renderer = _ref7.renderer, _ref7$PreTag = _ref7.PreTag, PreTag = _ref7$PreTag === void 0 ? "pre" : _ref7$PreTag, _ref7$CodeTag = _ref7.CodeTag, CodeTag = _ref7$CodeTag === void 0 ? "code" : _ref7$CodeTag, _ref7$code = _ref7.code, code = _ref7$code === void 0 ? Array.isArray(children) ? children[0] : children : _ref7$code, astGenerator = _ref7.astGenerator, rest = _objectWithoutProperties(_ref7, ["language", "children", "style", "customStyle", "codeTagProps", "useInlineStyles", "showLineNumbers", "showInlineLineNumbers", "startingLineNumber", "lineNumberContainerStyle", "lineNumberStyle", "wrapLines", "wrapLongLines", "lineProps", "renderer", "PreTag", "CodeTag", "code", "astGenerator"]);
     astGenerator = astGenerator || defaultAstGenerator;
-    var allLineNumbers = showLineNumbers ? React.createElement(AllLineNumbers, {
+    var allLineNumbers = showLineNumbers ? React__default.createElement(AllLineNumbers, {
       containerStyle: lineNumberContainerStyle,
       codeStyle: codeTagProps.style || {},
       numberStyle: lineNumberStyle,
@@ -12073,7 +12075,7 @@ function highlight$2(defaultAstGenerator, defaultStyle2) {
       style: Object.assign({}, customStyle)
     });
     if (!astGenerator) {
-      return React.createElement(PreTag, preProps, allLineNumbers, React.createElement(CodeTag, codeTagProps, code));
+      return React__default.createElement(PreTag, preProps, allLineNumbers, React__default.createElement(CodeTag, codeTagProps, code));
     }
     if (wrapLines === void 0 && renderer || wrapLongLines)
       wrapLines = true;
@@ -12102,7 +12104,7 @@ function highlight$2(defaultAstGenerator, defaultStyle2) {
         whiteSpace: "pre"
       });
     }
-    return React.createElement(PreTag, preProps, React.createElement(CodeTag, codeTagProps, !showInlineLineNumbers && allLineNumbers, renderer({
+    return React__default.createElement(PreTag, preProps, React__default.createElement(CodeTag, codeTagProps, !showInlineLineNumbers && allLineNumbers, renderer({
       rows,
       stylesheet: style,
       useInlineStyles

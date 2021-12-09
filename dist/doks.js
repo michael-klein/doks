@@ -30,7 +30,11 @@ var __objRest = (source, exclude) => {
   return target;
 };
 var _a;
-import { i as isFunction$1, _ as __extends, S as Subscriber, a as Subscription, b as __spreadArray, c as __read, d as arrRemove, o as observable, e as __asyncGenerator, f as __generator, g as __await, O as Observable, r as reportUnhandledError, h as __awaiter, j as __values, k as __asyncValues, l as identity, P as PropTypes, m as react, n as deepmerge, p as formatMuiErrorMessage, q as capitalize, s as _extends$3, t as generateUtilityClass, u as generateUtilityClasses, v as _objectWithoutPropertiesLoose$1, w as composeClasses, x as jsx, y as clsx, z as reactDom, A as jsxs, B as propToStyleFunction, C as styleFunctionSx$1, D as createTheme$1, E as useTheme$1, T as ThemeContext, F as styled$2, G as useTheme$2, H as ThemeContext$1, I as useTheme$3, J as defaultTheme$1, K as createTheme$2, L as styled$3, M as useThemeProps, N as resolveBreakpointValues, Q as handleBreakpoints, R as Subject, U as BehaviorSubject, V as ClassNameGenerator, W as getAugmentedNamespace, X as jsxRuntime, Y as alpha, Z as React, $ as ReactDOM, a0 as keyframes, a1 as styledEngine, a2 as getDefaultExportFromCjs, a3 as ValueSubject, a4 as Fragment, a5 as pathBrowserify, a6 as projects$, a7 as CircularProgress, a8 as documents$, a9 as modifyDocument, aa as rootShouldForwardProp, ab as css, ac as lighten, ad as darken, ae as duration, af as GlobalStyles$1, ag as slotShouldForwardProp, ah as queuedDocuments$, ai as fetchingDocuments$, aj as getThemeProps, ak as contents$ } from "./main.js";
+import * as React from "react";
+import React__default, { useContext, Children, isValidElement, Fragment, createElement, createContext, useMemo, useRef, useEffect, useCallback, useState, useLayoutEffect, forwardRef, useDebugValue, cloneElement, lazy, memo, Suspense } from "react";
+import { i as isFunction$1, _ as __extends, S as Subscriber, a as Subscription, b as __spreadArray, c as __read, d as arrRemove, o as observable, e as __asyncGenerator, f as __generator, g as __await, O as Observable, r as reportUnhandledError, h as __awaiter, j as __values, k as __asyncValues, l as identity, P as PropTypes, m as deepmerge, n as formatMuiErrorMessage, p as capitalize, q as _extends$3, s as generateUtilityClass, t as generateUtilityClasses, u as _objectWithoutPropertiesLoose$1, v as composeClasses, w as jsx, x as clsx, y as jsxs, z as propToStyleFunction, A as styleFunctionSx$1, B as createTheme$1, C as useTheme$1, T as ThemeContext, D as styled$2, E as useTheme$2, F as ThemeContext$1, G as useTheme$3, H as defaultTheme$1, I as createTheme$2, J as styled$3, K as useThemeProps, L as resolveBreakpointValues, M as handleBreakpoints, N as Subject, Q as BehaviorSubject, R as ClassNameGenerator, U as getAugmentedNamespace, V as jsxRuntime, W as alpha, X as keyframes, Y as styledEngine, Z as getDefaultExportFromCjs, $ as ValueSubject, a0 as Fragment$1, a1 as pathBrowserify, a2 as projects$, a3 as CircularProgress, a4 as documents$, a5 as modifyDocument, a6 as rootShouldForwardProp, a7 as css, a8 as lighten, a9 as darken, aa as duration, ab as GlobalStyles$1, ac as slotShouldForwardProp, ad as queuedDocuments$, ae as fetchingDocuments$, af as getThemeProps, ag as contents$ } from "./main.js";
+import * as ReactDOM from "react-dom";
+import ReactDOM__default from "react-dom";
 function hasLift(source) {
   return isFunction$1(source === null || source === void 0 ? void 0 : source.lift);
 }
@@ -1081,7 +1085,7 @@ function deprecatedPropType(validator, reason) {
   }
 }
 function isMuiElement(element, muiNames) {
-  return /* @__PURE__ */ react.exports.isValidElement(element) && muiNames.indexOf(element.type.muiName) !== -1;
+  return /* @__PURE__ */ React.isValidElement(element) && muiNames.indexOf(element.type.muiName) !== -1;
 }
 function ownerDocument(node) {
   return node && node.ownerDocument || document;
@@ -1102,12 +1106,12 @@ function setRef(ref, value) {
     ref.current = value;
   }
 }
-const useEnhancedEffect = typeof window !== "undefined" ? react.exports.useLayoutEffect : react.exports.useEffect;
+const useEnhancedEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 var useEnhancedEffect$1 = useEnhancedEffect;
 function useId(idOverride) {
-  const [defaultId, setDefaultId] = react.exports.useState(idOverride);
+  const [defaultId, setDefaultId] = React.useState(idOverride);
   const id = idOverride || defaultId;
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (defaultId == null) {
       setDefaultId(`mui-${Math.round(Math.random() * 1e9)}`);
     }
@@ -1127,10 +1131,10 @@ function useControlled({
 }) {
   const {
     current: isControlled
-  } = react.exports.useRef(controlled !== void 0);
-  const [valueState, setValue] = react.exports.useState(defaultProp);
+  } = React.useRef(controlled !== void 0);
+  const [valueState, setValue] = React.useState(defaultProp);
   const value = isControlled ? controlled : valueState;
-  const setValueIfUncontrolled = react.exports.useCallback((newValue) => {
+  const setValueIfUncontrolled = React.useCallback((newValue) => {
     if (!isControlled) {
       setValue(newValue);
     }
@@ -1138,14 +1142,14 @@ function useControlled({
   return [value, setValueIfUncontrolled];
 }
 function useEventCallback(fn2) {
-  const ref = react.exports.useRef(fn2);
+  const ref = React.useRef(fn2);
   useEnhancedEffect$1(() => {
     ref.current = fn2;
   });
-  return react.exports.useCallback((...args) => (0, ref.current)(...args), []);
+  return React.useCallback((...args) => (0, ref.current)(...args), []);
 }
 function useForkRef(refA, refB) {
-  return react.exports.useMemo(() => {
+  return React.useMemo(() => {
     if (refA == null && refB == null) {
       return null;
     }
@@ -1223,12 +1227,12 @@ function isFocusVisible(event) {
   return hadKeyboardEvent || focusTriggersKeyboardModality(target);
 }
 function useIsFocusVisible() {
-  const ref = react.exports.useCallback((node) => {
+  const ref = React.useCallback((node) => {
     if (node != null) {
       prepare(node.ownerDocument);
     }
   }, []);
-  const isFocusVisibleRef = react.exports.useRef(false);
+  const isFocusVisibleRef = React.useRef(false);
   function handleBlurVisible() {
     if (isFocusVisibleRef.current) {
       hadFocusVisibleRecently = true;
@@ -1305,8 +1309,8 @@ function getNormalizedScrollLeft(element, direction) {
   }
 }
 const usePreviousProps = (value) => {
-  const ref = react.exports.useRef({});
-  react.exports.useEffect(() => {
+  const ref = React.useRef({});
+  React.useEffect(() => {
     ref.current = value;
   });
   return ref.current;
@@ -1461,14 +1465,14 @@ function useAutocomplete(props) {
     }
     return optionLabel;
   };
-  const ignoreFocus = react.exports.useRef(false);
-  const firstFocus = react.exports.useRef(true);
-  const inputRef = react.exports.useRef(null);
-  const listboxRef = react.exports.useRef(null);
-  const [anchorEl, setAnchorEl] = react.exports.useState(null);
-  const [focusedTag, setFocusedTag] = react.exports.useState(-1);
+  const ignoreFocus = React.useRef(false);
+  const firstFocus = React.useRef(true);
+  const inputRef = React.useRef(null);
+  const listboxRef = React.useRef(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [focusedTag, setFocusedTag] = React.useState(-1);
   const defaultHighlighted = autoHighlight ? 0 : -1;
-  const highlightedIndexRef = react.exports.useRef(defaultHighlighted);
+  const highlightedIndexRef = React.useRef(defaultHighlighted);
   const [value, setValueState] = useControlled({
     controlled: valueProp,
     default: defaultValue,
@@ -1480,8 +1484,8 @@ function useAutocomplete(props) {
     name: componentName,
     state: "inputValue"
   });
-  const [focused, setFocused] = react.exports.useState(false);
-  const resetInputValue = react.exports.useCallback((event, newValue) => {
+  const [focused, setFocused] = React.useState(false);
+  const resetInputValue = React.useCallback((event, newValue) => {
     const isOptionSelected = multiple ? value.length < newValue.length : newValue !== null;
     if (!isOptionSelected && !clearOnBlur) {
       return;
@@ -1503,8 +1507,8 @@ function useAutocomplete(props) {
       onInputChange(event, newInputValue, "reset");
     }
   }, [getOptionLabel, inputValue, multiple, onInputChange, setInputValueState, clearOnBlur, value]);
-  const prevValue = react.exports.useRef();
-  react.exports.useEffect(() => {
+  const prevValue = React.useRef();
+  React.useEffect(() => {
     const valueChange = value !== prevValue.current;
     prevValue.current = value;
     if (focused && !valueChange) {
@@ -1521,7 +1525,7 @@ function useAutocomplete(props) {
     name: componentName,
     state: "open"
   });
-  const [inputPristine, setInputPristine] = react.exports.useState(true);
+  const [inputPristine, setInputPristine] = React.useState(true);
   const inputValueIsSelectedValue = !multiple && value != null && inputValue === getOptionLabel(value);
   const popupOpen = open;
   const filteredOptions = popupOpen ? filterOptions(options.filter((option) => {
@@ -1541,7 +1545,7 @@ function useAutocomplete(props) {
       anchorEl.querySelector(`[data-tag-index="${tagToFocus}"]`).focus();
     }
   });
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (multiple && focusedTag > value.length - 1) {
       setFocusedTag(-1);
       focusTag(-1);
@@ -1674,7 +1678,7 @@ function useAutocomplete(props) {
       }
     }
   });
-  const syncHighlightedIndex = react.exports.useCallback(() => {
+  const syncHighlightedIndex = React.useCallback(() => {
     if (!popupOpen) {
       return;
     }
@@ -1731,7 +1735,7 @@ function useAutocomplete(props) {
     }
     syncHighlightedIndex();
   });
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     syncHighlightedIndex();
   }, [syncHighlightedIndex]);
   const handleOpen = (event) => {
@@ -1762,7 +1766,7 @@ function useAutocomplete(props) {
     }
     setValueState(newValue);
   };
-  const isTouch = react.exports.useRef(false);
+  const isTouch = React.useRef(false);
   const selectNewValue = (event, option, reasonProp = "selectOption", origin = "options") => {
     let reason = reasonProp;
     let newValue = option;
@@ -2170,7 +2174,7 @@ const useUtilityClasses$I = (ownerState) => {
   };
   return composeClasses(slots, getBackdropUtilityClass, classes);
 };
-const BackdropUnstyled = /* @__PURE__ */ react.exports.forwardRef(function BackdropUnstyled2(props, ref) {
+const BackdropUnstyled = /* @__PURE__ */ React.forwardRef(function BackdropUnstyled2(props, ref) {
   const {
     classes: classesProp,
     className,
@@ -2211,14 +2215,14 @@ function appendOwnerState(elementType, existingProps, ownerState) {
 function getContainer$1(container) {
   return typeof container === "function" ? container() : container;
 }
-const Portal = /* @__PURE__ */ react.exports.forwardRef(function Portal2(props, ref) {
+const Portal = /* @__PURE__ */ React.forwardRef(function Portal2(props, ref) {
   const {
     children,
     container,
     disablePortal = false
   } = props;
-  const [mountNode, setMountNode] = react.exports.useState(null);
-  const handleRef = useForkRef(/* @__PURE__ */ react.exports.isValidElement(children) ? children.ref : null, ref);
+  const [mountNode, setMountNode] = React.useState(null);
+  const handleRef = useForkRef(/* @__PURE__ */ React.isValidElement(children) ? children.ref : null, ref);
   useEnhancedEffect$1(() => {
     if (!disablePortal) {
       setMountNode(getContainer$1(container) || document.body);
@@ -2234,14 +2238,14 @@ const Portal = /* @__PURE__ */ react.exports.forwardRef(function Portal2(props, 
     return void 0;
   }, [ref, mountNode, disablePortal]);
   if (disablePortal) {
-    if (/* @__PURE__ */ react.exports.isValidElement(children)) {
-      return /* @__PURE__ */ react.exports.cloneElement(children, {
+    if (/* @__PURE__ */ React.isValidElement(children)) {
+      return /* @__PURE__ */ React.cloneElement(children, {
         ref: handleRef
       });
     }
     return children;
   }
-  return mountNode ? /* @__PURE__ */ reactDom.exports.createPortal(children, mountNode) : mountNode;
+  return mountNode ? /* @__PURE__ */ ReactDOM.createPortal(children, mountNode) : mountNode;
 });
 var Portal$1 = Portal;
 function isOverflowing(container) {
@@ -2478,22 +2482,22 @@ function Unstable_TrapFocus(props) {
     isEnabled = defaultIsEnabled,
     open
   } = props;
-  const ignoreNextEnforceFocus = react.exports.useRef();
-  const sentinelStart = react.exports.useRef(null);
-  const sentinelEnd = react.exports.useRef(null);
-  const nodeToRestore = react.exports.useRef(null);
-  const reactFocusEventTarget = react.exports.useRef(null);
-  const activated = react.exports.useRef(false);
-  const rootRef = react.exports.useRef(null);
+  const ignoreNextEnforceFocus = React.useRef();
+  const sentinelStart = React.useRef(null);
+  const sentinelEnd = React.useRef(null);
+  const nodeToRestore = React.useRef(null);
+  const reactFocusEventTarget = React.useRef(null);
+  const activated = React.useRef(false);
+  const rootRef = React.useRef(null);
   const handleRef = useForkRef(children.ref, rootRef);
-  const lastKeydown = react.exports.useRef(null);
-  react.exports.useEffect(() => {
+  const lastKeydown = React.useRef(null);
+  React.useEffect(() => {
     if (!open || !rootRef.current) {
       return;
     }
     activated.current = !disableAutoFocus;
   }, [disableAutoFocus, open]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!open || !rootRef.current) {
       return;
     }
@@ -2516,7 +2520,7 @@ function Unstable_TrapFocus(props) {
       }
     };
   }, [open]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!open || !rootRef.current) {
       return;
     }
@@ -2600,13 +2604,13 @@ function Unstable_TrapFocus(props) {
     }
     activated.current = true;
   };
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [/* @__PURE__ */ jsx("div", {
       tabIndex: 0,
       onFocus: handleFocusSentinel,
       ref: sentinelStart,
       "data-test": "sentinelStart"
-    }), /* @__PURE__ */ react.exports.cloneElement(children, {
+    }), /* @__PURE__ */ React.cloneElement(children, {
       ref: handleRef,
       onFocus
     }), /* @__PURE__ */ jsx("div", {
@@ -2640,7 +2644,7 @@ function getHasTransition(props) {
   return props.children ? props.children.props.hasOwnProperty("in") : false;
 }
 const defaultManager = new ModalManager();
-const ModalUnstyled = /* @__PURE__ */ react.exports.forwardRef(function ModalUnstyled2(props, ref) {
+const ModalUnstyled = /* @__PURE__ */ React.forwardRef(function ModalUnstyled2(props, ref) {
   const {
     BackdropComponent,
     BackdropProps,
@@ -2669,10 +2673,10 @@ const ModalUnstyled = /* @__PURE__ */ react.exports.forwardRef(function ModalUns
     onTransitionEnter,
     onTransitionExited
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$X);
-  const [exited, setExited] = react.exports.useState(true);
-  const modal = react.exports.useRef({});
-  const mountNodeRef = react.exports.useRef(null);
-  const modalRef = react.exports.useRef(null);
+  const [exited, setExited] = React.useState(true);
+  const modal = React.useRef({});
+  const mountNodeRef = React.useRef(null);
+  const modalRef = React.useRef(null);
   const handleRef = useForkRef(modalRef, ref);
   const hasTransition = getHasTransition(props);
   const getDoc = () => ownerDocument(mountNodeRef.current);
@@ -2694,7 +2698,7 @@ const ModalUnstyled = /* @__PURE__ */ react.exports.forwardRef(function ModalUns
       handleMounted();
     }
   });
-  const isTopModal = react.exports.useCallback(() => manager.isTopModal(getModal()), [manager]);
+  const isTopModal = React.useCallback(() => manager.isTopModal(getModal()), [manager]);
   const handlePortalRef = useEventCallback((node) => {
     mountNodeRef.current = node;
     if (!node) {
@@ -2706,15 +2710,15 @@ const ModalUnstyled = /* @__PURE__ */ react.exports.forwardRef(function ModalUns
       ariaHidden(modalRef.current, true);
     }
   });
-  const handleClose = react.exports.useCallback(() => {
+  const handleClose = React.useCallback(() => {
     manager.remove(getModal());
   }, [manager]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     return () => {
       handleClose();
     };
   }, [handleClose]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (open) {
       handleOpen();
     } else if (!hasTransition || !closeAfterTransition) {
@@ -2811,7 +2815,7 @@ const ModalUnstyled = /* @__PURE__ */ react.exports.forwardRef(function ModalUns
         disableRestoreFocus,
         isEnabled: isTopModal,
         open,
-        children: /* @__PURE__ */ react.exports.cloneElement(children, childProps)
+        children: /* @__PURE__ */ React.cloneElement(children, childProps)
       })]
     }))
   });
@@ -2870,7 +2874,7 @@ function ThemeProvider$1(props) {
     theme: localTheme
   } = props;
   const outerTheme = useTheme$1();
-  const theme2 = react.exports.useMemo(() => {
+  const theme2 = React.useMemo(() => {
     const output = outerTheme === null ? localTheme : mergeOuterLocalTheme(outerTheme, localTheme);
     if (output != null) {
       output[nested] = outerTheme !== null;
@@ -2888,7 +2892,7 @@ function createBox(options = {}) {
     defaultTheme: defaultTheme2
   } = options;
   const BoxRoot = styled$2("div")(styleFunctionSx$1);
-  const Box2 = /* @__PURE__ */ react.exports.forwardRef(function Box3(inProps, ref) {
+  const Box2 = /* @__PURE__ */ React.forwardRef(function Box3(inProps, ref) {
     const theme2 = useTheme$2(defaultTheme2);
     const _extendSxProp = extendSxProp(inProps), {
       className,
@@ -4197,7 +4201,7 @@ function resolveAnchorEl$1(anchorEl) {
   return typeof anchorEl === "function" ? anchorEl() : anchorEl;
 }
 const defaultPopperOptions = {};
-const PopperTooltip = /* @__PURE__ */ react.exports.forwardRef(function PopperTooltip2(props, ref) {
+const PopperTooltip = /* @__PURE__ */ React.forwardRef(function PopperTooltip2(props, ref) {
   const {
     anchorEl,
     children,
@@ -4209,19 +4213,19 @@ const PopperTooltip = /* @__PURE__ */ react.exports.forwardRef(function PopperTo
     popperRef: popperRefProp,
     TransitionProps
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$U);
-  const tooltipRef = react.exports.useRef(null);
+  const tooltipRef = React.useRef(null);
   const ownRef = useForkRef(tooltipRef, ref);
-  const popperRef = react.exports.useRef(null);
+  const popperRef = React.useRef(null);
   const handlePopperRef = useForkRef(popperRef, popperRefProp);
-  const handlePopperRefRef = react.exports.useRef(handlePopperRef);
+  const handlePopperRefRef = React.useRef(handlePopperRef);
   useEnhancedEffect$1(() => {
     handlePopperRefRef.current = handlePopperRef;
   }, [handlePopperRef]);
-  react.exports.useImperativeHandle(popperRefProp, () => popperRef.current, []);
+  React.useImperativeHandle(popperRefProp, () => popperRef.current, []);
   const theme2 = useTheme$3();
   const rtlPlacement = flipPlacement(initialPlacement, theme2);
-  const [placement, setPlacement] = react.exports.useState(rtlPlacement);
-  react.exports.useEffect(() => {
+  const [placement, setPlacement] = React.useState(rtlPlacement);
+  React.useEffect(() => {
     if (popperRef.current) {
       popperRef.current.forceUpdate();
     }
@@ -4284,7 +4288,7 @@ const PopperTooltip = /* @__PURE__ */ react.exports.forwardRef(function PopperTo
     children: typeof children === "function" ? children(childProps) : children
   }));
 });
-const Popper = /* @__PURE__ */ react.exports.forwardRef(function Popper2(props, ref) {
+const Popper = /* @__PURE__ */ React.forwardRef(function Popper2(props, ref) {
   const {
     anchorEl,
     children,
@@ -4299,7 +4303,7 @@ const Popper = /* @__PURE__ */ react.exports.forwardRef(function Popper2(props, 
     style: style2,
     transition = false
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded2$5);
-  const [exited, setExited] = react.exports.useState(true);
+  const [exited, setExited] = React.useState(true);
   const handleEnter = () => {
     setExited(false);
   };
@@ -4354,7 +4358,7 @@ const styles$3 = {
     transform: "translateZ(0)"
   }
 };
-const TextareaAutosize = /* @__PURE__ */ react.exports.forwardRef(function TextareaAutosize2(props, ref) {
+const TextareaAutosize = /* @__PURE__ */ React.forwardRef(function TextareaAutosize2(props, ref) {
   const {
     onChange,
     maxRows,
@@ -4364,13 +4368,13 @@ const TextareaAutosize = /* @__PURE__ */ react.exports.forwardRef(function Texta
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$T);
   const {
     current: isControlled
-  } = react.exports.useRef(value != null);
-  const inputRef = react.exports.useRef(null);
+  } = React.useRef(value != null);
+  const inputRef = React.useRef(null);
   const handleRef = useForkRef(ref, inputRef);
-  const shadowRef = react.exports.useRef(null);
-  const renders = react.exports.useRef(0);
-  const [state, setState2] = react.exports.useState({});
-  const syncHeight = react.exports.useCallback(() => {
+  const shadowRef = React.useRef(null);
+  const renders = React.useRef(0);
+  const [state, setState2] = React.useState({});
+  const syncHeight = React.useCallback(() => {
     const input = inputRef.current;
     const containerWindow = ownerWindow(input);
     const computedStyle = containerWindow.getComputedStyle(input);
@@ -4410,7 +4414,7 @@ const TextareaAutosize = /* @__PURE__ */ react.exports.forwardRef(function Texta
       return prevState;
     });
   }, [maxRows, minRows, props.placeholder]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     const handleResize = debounce$1(() => {
       renders.current = 0;
       syncHeight();
@@ -4433,7 +4437,7 @@ const TextareaAutosize = /* @__PURE__ */ react.exports.forwardRef(function Texta
   useEnhancedEffect$1(() => {
     syncHeight();
   });
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     renders.current = 0;
   }, [value]);
   const handleChange = (event) => {
@@ -4445,7 +4449,7 @@ const TextareaAutosize = /* @__PURE__ */ react.exports.forwardRef(function Texta
       onChange(event);
     }
   };
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [/* @__PURE__ */ jsx("textarea", _extends$3({
       value,
       onChange: handleChange,
@@ -4643,9 +4647,9 @@ function invariant(cond, message) {
   if (!cond)
     throw new Error(message);
 }
-const NavigationContext = /* @__PURE__ */ react.exports.createContext(null);
-const LocationContext = /* @__PURE__ */ react.exports.createContext(null);
-const RouteContext = /* @__PURE__ */ react.exports.createContext({
+const NavigationContext = /* @__PURE__ */ createContext(null);
+const LocationContext = /* @__PURE__ */ createContext(null);
+const RouteContext = /* @__PURE__ */ createContext({
   outlet: null,
   matches: []
 });
@@ -4666,7 +4670,7 @@ function Router(_ref3) {
   } = _ref3;
   !!useInRouterContext() ? invariant(false) : void 0;
   let basename = normalizePathname(basenameProp);
-  let navigationContext = react.exports.useMemo(() => ({
+  let navigationContext = useMemo(() => ({
     basename,
     navigator: navigator2,
     static: staticProp
@@ -4681,7 +4685,7 @@ function Router(_ref3) {
     state = null,
     key = "default"
   } = locationProp;
-  let location = react.exports.useMemo(() => {
+  let location = useMemo(() => {
     let trailingPathname = stripBasename(pathname, basename);
     if (trailingPathname == null) {
       return null;
@@ -4697,9 +4701,9 @@ function Router(_ref3) {
   if (location == null) {
     return null;
   }
-  return /* @__PURE__ */ react.exports.createElement(NavigationContext.Provider, {
+  return /* @__PURE__ */ createElement(NavigationContext.Provider, {
     value: navigationContext
-  }, /* @__PURE__ */ react.exports.createElement(LocationContext.Provider, {
+  }, /* @__PURE__ */ createElement(LocationContext.Provider, {
     children,
     value: {
       location,
@@ -4719,7 +4723,7 @@ function useHref(to) {
   let {
     basename,
     navigator: navigator2
-  } = react.exports.useContext(NavigationContext);
+  } = useContext(NavigationContext);
   let {
     hash: hash2,
     pathname,
@@ -4738,30 +4742,30 @@ function useHref(to) {
   });
 }
 function useInRouterContext() {
-  return react.exports.useContext(LocationContext) != null;
+  return useContext(LocationContext) != null;
 }
 function useLocation() {
   !useInRouterContext() ? invariant(false) : void 0;
-  return react.exports.useContext(LocationContext).location;
+  return useContext(LocationContext).location;
 }
 function useNavigate() {
   !useInRouterContext() ? invariant(false) : void 0;
   let {
     basename,
     navigator: navigator2
-  } = react.exports.useContext(NavigationContext);
+  } = useContext(NavigationContext);
   let {
     matches
-  } = react.exports.useContext(RouteContext);
+  } = useContext(RouteContext);
   let {
     pathname: locationPathname
   } = useLocation();
   let routePathnamesJson = JSON.stringify(matches.map((match) => match.pathnameBase));
-  let activeRef = react.exports.useRef(false);
-  react.exports.useEffect(() => {
+  let activeRef = useRef(false);
+  useEffect(() => {
     activeRef.current = true;
   });
-  let navigate = react.exports.useCallback(function(to, options) {
+  let navigate = useCallback(function(to, options) {
     if (options === void 0) {
       options = {};
     }
@@ -4780,30 +4784,30 @@ function useNavigate() {
   return navigate;
 }
 function useOutlet() {
-  return react.exports.useContext(RouteContext).outlet;
+  return useContext(RouteContext).outlet;
 }
 function useParams() {
   let {
     matches
-  } = react.exports.useContext(RouteContext);
+  } = useContext(RouteContext);
   let routeMatch = matches[matches.length - 1];
   return routeMatch ? routeMatch.params : {};
 }
 function useResolvedPath(to) {
   let {
     matches
-  } = react.exports.useContext(RouteContext);
+  } = useContext(RouteContext);
   let {
     pathname: locationPathname
   } = useLocation();
   let routePathnamesJson = JSON.stringify(matches.map((match) => match.pathnameBase));
-  return react.exports.useMemo(() => resolveTo(to, JSON.parse(routePathnamesJson), locationPathname), [to, routePathnamesJson, locationPathname]);
+  return useMemo(() => resolveTo(to, JSON.parse(routePathnamesJson), locationPathname), [to, routePathnamesJson, locationPathname]);
 }
 function useRoutes(routes, locationArg) {
   !useInRouterContext() ? invariant(false) : void 0;
   let {
     matches: parentMatches
-  } = react.exports.useContext(RouteContext);
+  } = useContext(RouteContext);
   let routeMatch = parentMatches[parentMatches.length - 1];
   let parentParams = routeMatch ? routeMatch.params : {};
   routeMatch ? routeMatch.pathname : "/";
@@ -4832,11 +4836,11 @@ function useRoutes(routes, locationArg) {
 }
 function createRoutesFromChildren(children) {
   let routes = [];
-  react.exports.Children.forEach(children, (element) => {
-    if (!/* @__PURE__ */ react.exports.isValidElement(element)) {
+  Children.forEach(children, (element) => {
+    if (!/* @__PURE__ */ isValidElement(element)) {
       return;
     }
-    if (element.type === react.exports.Fragment) {
+    if (element.type === Fragment) {
       routes.push.apply(routes, createRoutesFromChildren(element.props.children));
       return;
     }
@@ -4974,8 +4978,8 @@ function _renderMatches(matches, parentMatches) {
   if (matches == null)
     return null;
   return matches.reduceRight((outlet, match, index2) => {
-    return /* @__PURE__ */ react.exports.createElement(RouteContext.Provider, {
-      children: match.route.element !== void 0 ? match.route.element : /* @__PURE__ */ react.exports.createElement(Outlet, null),
+    return /* @__PURE__ */ createElement(RouteContext.Provider, {
+      children: match.route.element !== void 0 ? match.route.element : /* @__PURE__ */ createElement(Outlet, null),
       value: {
         outlet,
         matches: parentMatches.concat(matches.slice(0, index2 + 1))
@@ -4998,13 +5002,13 @@ function matchPath(pattern, pathname) {
   let matchedPathname = match[0];
   let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
   let captureGroups = match.slice(1);
-  let params = paramNames.reduce((memo, paramName, index2) => {
+  let params = paramNames.reduce((memo2, paramName, index2) => {
     if (paramName === "*") {
       let splatValue = captureGroups[index2] || "";
       pathnameBase = matchedPathname.slice(0, matchedPathname.length - splatValue.length).replace(/(.)\/+$/, "$1");
     }
-    memo[paramName] = safelyDecodeURIComponent(captureGroups[index2] || "");
-    return memo;
+    memo2[paramName] = safelyDecodeURIComponent(captureGroups[index2] || "");
+    return memo2;
   }, {});
   return {
     params,
@@ -5158,19 +5162,19 @@ function HashRouter(_ref2) {
     children,
     window: window2
   } = _ref2;
-  let historyRef = react.exports.useRef();
+  let historyRef = useRef();
   if (historyRef.current == null) {
     historyRef.current = createHashHistory({
       window: window2
     });
   }
   let history = historyRef.current;
-  let [state, setState2] = react.exports.useState({
+  let [state, setState2] = useState({
     action: history.action,
     location: history.location
   });
-  react.exports.useLayoutEffect(() => history.listen(setState2), [history]);
-  return /* @__PURE__ */ react.exports.createElement(Router, {
+  useLayoutEffect(() => history.listen(setState2), [history]);
+  return /* @__PURE__ */ createElement(Router, {
     basename,
     children,
     location: state.location,
@@ -5181,7 +5185,7 @@ function HashRouter(_ref2) {
 function isModifiedEvent(event) {
   return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 }
-const Link = /* @__PURE__ */ react.exports.forwardRef(function LinkWithRef(_ref3, ref) {
+const Link = /* @__PURE__ */ forwardRef(function LinkWithRef(_ref3, ref) {
   let {
     onClick,
     replace = false,
@@ -5202,7 +5206,7 @@ const Link = /* @__PURE__ */ react.exports.forwardRef(function LinkWithRef(_ref3
       internalOnClick(event);
     }
   }
-  return /* @__PURE__ */ react.exports.createElement("a", _extends$2({}, rest, {
+  return /* @__PURE__ */ createElement("a", _extends$2({}, rest, {
     href,
     onClick: handleClick,
     ref,
@@ -5218,7 +5222,7 @@ function useLinkClickHandler(to, _temp) {
   let navigate = useNavigate();
   let location = useLocation();
   let path = useResolvedPath(to);
-  return react.exports.useCallback((event) => {
+  return useCallback((event) => {
     if (event.button === 0 && (!target || target === "_self") && !isModifiedEvent(event)) {
       event.preventDefault();
       let replace = !!replaceProp || I$1(location) === I$1(path);
@@ -5239,7 +5243,7 @@ const theme = createTheme$2({
     }
   }
 });
-const docOptionsContext = react.exports.createContext(void 0);
+const docOptionsContext = createContext(void 0);
 const {
   Provider
 } = docOptionsContext;
@@ -5249,7 +5253,7 @@ const DocOptionsContextProvider = (props) => {
     children: props.children
   });
 };
-const useDocOptions = () => react.exports.useContext(docOptionsContext);
+const useDocOptions = () => useContext(docOptionsContext);
 function getContainerUtilityClass(slot) {
   return generateUtilityClass("MuiContainer", slot);
 }
@@ -5315,7 +5319,7 @@ const ContainerRoot = styled$3("div", {
     maxWidth: `${theme2.breakpoints.values[ownerState.maxWidth]}${theme2.breakpoints.unit}`
   }
 }));
-const Container = /* @__PURE__ */ react.exports.forwardRef(function Container2(inProps, ref) {
+const Container = /* @__PURE__ */ React.forwardRef(function Container2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiContainer"
@@ -5342,7 +5346,7 @@ const Container = /* @__PURE__ */ react.exports.forwardRef(function Container2(i
   }, other));
 });
 var Container$1 = Container;
-const GridContext = /* @__PURE__ */ react.exports.createContext();
+const GridContext = /* @__PURE__ */ React.createContext();
 var GridContext$1 = GridContext;
 function getGridUtilityClass(slot) {
   return generateUtilityClass("MuiGrid", slot);
@@ -5554,7 +5558,7 @@ const useUtilityClasses$F = (ownerState) => {
   };
   return composeClasses(slots, getGridUtilityClass, classes);
 };
-const Grid = /* @__PURE__ */ react.exports.forwardRef(function Grid2(inProps, ref) {
+const Grid = /* @__PURE__ */ React.forwardRef(function Grid2(inProps, ref) {
   const themeProps = useThemeProps({
     props: inProps,
     name: "MuiGrid"
@@ -5580,7 +5584,7 @@ const Grid = /* @__PURE__ */ react.exports.forwardRef(function Grid2(inProps, re
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$Q);
   const rowSpacing = rowSpacingProp || spacing;
   const columnSpacing = columnSpacingProp || spacing;
-  const columnsContext = react.exports.useContext(GridContext$1);
+  const columnsContext = React.useContext(GridContext$1);
   const columns = columnsProp || columnsContext || 12;
   const ownerState = _extends$3({}, props, {
     columns,
@@ -5614,8 +5618,8 @@ function getEmptySubject() {
   return new Subject();
 }
 function useRefFn(init2) {
-  var firstRef = react.exports.useRef(true);
-  var ref = react.exports.useRef(null);
+  var firstRef = useRef(true);
+  var ref = useRef(null);
   if (firstRef.current) {
     firstRef.current = false;
     ref.current = init2();
@@ -5623,15 +5627,15 @@ function useRefFn(init2) {
   return ref;
 }
 function useForceUpdate() {
-  var updateState2 = react.exports.useState(0)[1];
-  return react.exports.useRef(function() {
+  var updateState2 = useState(0)[1];
+  return useRef(function() {
     return updateState2(increment);
   }).current;
 }
 function increment(n2) {
   return (n2 + 1) % 1e6;
 }
-var useIsomorphicLayoutEffect = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined" ? react.exports.useLayoutEffect : react.exports.useEffect;
+var useIsomorphicLayoutEffect = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined" ? useLayoutEffect : useEffect;
 function useObservableInternal(useCustomEffect, init2, inputs) {
   if (!inputs) {
     return useRefFn(init2).current;
@@ -5642,7 +5646,7 @@ function useObservableInternal(useCustomEffect, init2, inputs) {
   var source$Ref = useRefFn(function() {
     return init2(inputs$Ref.current);
   });
-  var firstEffectRef = react.exports.useRef(true);
+  var firstEffectRef = useRef(true);
   useCustomEffect(function() {
     if (firstEffectRef.current) {
       firstEffectRef.current = false;
@@ -5653,13 +5657,13 @@ function useObservableInternal(useCustomEffect, init2, inputs) {
   return source$Ref.current;
 }
 function useObservable(init2, inputs) {
-  return useObservableInternal(react.exports.useEffect, init2, inputs);
+  return useObservableInternal(useEffect, init2, inputs);
 }
 function useSubscriptionInternal(useCustomEffect, args) {
   var forceUpdate = useForceUpdate();
-  var argsRef = react.exports.useRef(args);
-  var errorRef = react.exports.useRef();
-  var subscriptionRef = react.exports.useRef();
+  var argsRef = useRef(args);
+  var errorRef = useRef();
+  var subscriptionRef = useRef();
   useIsomorphicLayoutEffect(function() {
     argsRef.current = args;
   });
@@ -5712,7 +5716,7 @@ function useSubscriptionInternal(useCustomEffect, args) {
   return subscriptionRef;
 }
 function useSubscription(input$, observerOrNext$, error, complete) {
-  return useSubscriptionInternal(react.exports.useEffect, [
+  return useSubscriptionInternal(useEffect, [
     input$,
     observerOrNext$,
     error,
@@ -5730,7 +5734,7 @@ function useLayoutSubscription(input$, observerOrNext$, error, complete) {
 function useObservableStateInternal(useSubscription2, state$OrInit, initialState) {
   if (isObservable(state$OrInit)) {
     var state$_1 = state$OrInit;
-    var _a2 = react.exports.useState(function() {
+    var _a2 = useState(function() {
       if (state$_1 instanceof BehaviorSubject || state$_1.value !== void 0) {
         return state$_1.value;
       }
@@ -5740,20 +5744,20 @@ function useObservableStateInternal(useSubscription2, state$OrInit, initialState
       return initialState;
     }), state = _a2[0], setState2 = _a2[1];
     useSubscription2(state$_1, setState2);
-    react.exports.useDebugValue(state);
+    useDebugValue(state);
     return state;
   } else {
     var init_1 = state$OrInit;
-    var _b = react.exports.useState(initialState), state_1 = _b[0], setState2 = _b[1];
+    var _b = useState(initialState), state_1 = _b[0], setState2 = _b[1];
     var input$Ref_1 = useRefFn(getEmptySubject);
     var state$ = useRefFn(function() {
       return init_1(input$Ref_1.current, state_1);
     }).current;
-    var callback = react.exports.useRef(function(state2) {
+    var callback = useRef(function(state2) {
       return input$Ref_1.current.next(state2);
     }).current;
     useSubscription2(state$, setState2);
-    react.exports.useDebugValue(state_1);
+    useDebugValue(state_1);
     return [state_1, callback];
   }
 }
@@ -5828,7 +5832,7 @@ const SvgIconRoot = styled$3("svg", {
     }[ownerState.color]
   };
 });
-const SvgIcon = /* @__PURE__ */ react.exports.forwardRef(function SvgIcon2(inProps, ref) {
+const SvgIcon = /* @__PURE__ */ React.forwardRef(function SvgIcon2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiSvgIcon"
@@ -5876,7 +5880,7 @@ function createSvgIcon(path, displayName) {
     children: path
   }));
   Component.muiName = SvgIcon$1.muiName;
-  return /* @__PURE__ */ react.exports.memo(/* @__PURE__ */ react.exports.forwardRef(Component));
+  return /* @__PURE__ */ React.memo(/* @__PURE__ */ React.forwardRef(Component));
 }
 var utils = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -5976,7 +5980,7 @@ const PaperRoot = styled$3("div", {
 }, theme2.palette.mode === "dark" && {
   backgroundImage: `linear-gradient(${alpha("#fff", getOverlayAlpha(ownerState.elevation))}, ${alpha("#fff", getOverlayAlpha(ownerState.elevation))})`
 })));
-const Paper = /* @__PURE__ */ react.exports.forwardRef(function Paper2(inProps, ref) {
+const Paper = /* @__PURE__ */ React.forwardRef(function Paper2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiPaper"
@@ -6026,7 +6030,7 @@ const CardRoot = styled$3(Paper$1, {
     overflow: "hidden"
   };
 });
-const Card = /* @__PURE__ */ react.exports.forwardRef(function Card2(inProps, ref) {
+const Card = /* @__PURE__ */ React.forwardRef(function Card2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiCard"
@@ -6073,7 +6077,7 @@ const CardContentRoot = styled$3("div", {
     }
   };
 });
-const CardContent = /* @__PURE__ */ react.exports.forwardRef(function CardContent2(inProps, ref) {
+const CardContent = /* @__PURE__ */ React.forwardRef(function CardContent2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiCardContent"
@@ -6161,7 +6165,7 @@ const colorTransformations = {
 const transformDeprecatedColors = (color) => {
   return colorTransformations[color] || color;
 };
-const Typography = /* @__PURE__ */ react.exports.forwardRef(function Typography2(inProps, ref) {
+const Typography = /* @__PURE__ */ React.forwardRef(function Typography2(inProps, ref) {
   const themeProps = useThemeProps({
     props: inProps,
     name: "MuiTypography"
@@ -6260,7 +6264,7 @@ const CardHeaderContent = styled$3("div", {
 })({
   flex: "1 1 auto"
 });
-const CardHeader = /* @__PURE__ */ react.exports.forwardRef(function CardHeader2(inProps, ref) {
+const CardHeader = /* @__PURE__ */ React.forwardRef(function CardHeader2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiCardHeader"
@@ -6341,7 +6345,7 @@ function _inheritsLoose(subClass, superClass) {
 var config$2 = {
   disabled: false
 };
-var TransitionGroupContext = React.createContext(null);
+var TransitionGroupContext = React__default.createContext(null);
 var UNMOUNTED = "unmounted";
 var EXITED = "exited";
 var ENTERING = "entering";
@@ -6444,7 +6448,7 @@ var Transition = /* @__PURE__ */ function(_React$Component) {
     var _this2 = this;
     var enter = this.props.enter;
     var appearing = this.context ? this.context.isMounting : mounting;
-    var _ref2 = this.props.nodeRef ? [appearing] : [ReactDOM.findDOMNode(this), appearing], maybeNode = _ref2[0], maybeAppearing = _ref2[1];
+    var _ref2 = this.props.nodeRef ? [appearing] : [ReactDOM__default.findDOMNode(this), appearing], maybeNode = _ref2[0], maybeAppearing = _ref2[1];
     var timeouts = this.getTimeouts();
     var enterTimeout = appearing ? timeouts.appear : timeouts.enter;
     if (!mounting && !enter || config$2.disabled) {
@@ -6473,7 +6477,7 @@ var Transition = /* @__PURE__ */ function(_React$Component) {
     var _this3 = this;
     var exit = this.props.exit;
     var timeouts = this.getTimeouts();
-    var maybeNode = this.props.nodeRef ? void 0 : ReactDOM.findDOMNode(this);
+    var maybeNode = this.props.nodeRef ? void 0 : ReactDOM__default.findDOMNode(this);
     if (!exit || config$2.disabled) {
       this.safeSetState({
         status: EXITED
@@ -6523,7 +6527,7 @@ var Transition = /* @__PURE__ */ function(_React$Component) {
   };
   _proto.onTransitionEnd = function onTransitionEnd(timeout, handler) {
     this.setNextCallback(handler);
-    var node = this.props.nodeRef ? this.props.nodeRef.current : ReactDOM.findDOMNode(this);
+    var node = this.props.nodeRef ? this.props.nodeRef.current : ReactDOM__default.findDOMNode(this);
     var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
     if (!node || doesNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0);
@@ -6559,12 +6563,12 @@ var Transition = /* @__PURE__ */ function(_React$Component) {
     _this$props.onExited;
     _this$props.nodeRef;
     var childProps = _objectWithoutPropertiesLoose$1(_this$props, ["children", "in", "mountOnEnter", "unmountOnExit", "appear", "enter", "exit", "timeout", "addEndListener", "onEnter", "onEntering", "onEntered", "onExit", "onExiting", "onExited", "nodeRef"]);
-    return /* @__PURE__ */ React.createElement(TransitionGroupContext.Provider, {
+    return /* @__PURE__ */ React__default.createElement(TransitionGroupContext.Provider, {
       value: null
-    }, typeof children === "function" ? children(status, childProps) : React.cloneElement(React.Children.only(children), childProps));
+    }, typeof children === "function" ? children(status, childProps) : React__default.cloneElement(React__default.Children.only(children), childProps));
   };
   return Transition2;
-}(React.Component);
+}(React__default.Component);
 Transition.contextType = TransitionGroupContext;
 Transition.propTypes = {};
 function noop$2() {
@@ -6597,11 +6601,11 @@ function _assertThisInitialized(self2) {
 }
 function getChildMapping(children, mapFn) {
   var mapper = function mapper2(child) {
-    return mapFn && react.exports.isValidElement(child) ? mapFn(child) : child;
+    return mapFn && isValidElement(child) ? mapFn(child) : child;
   };
   var result = Object.create(null);
   if (children)
-    react.exports.Children.map(children, function(c2) {
+    Children.map(children, function(c2) {
       return c2;
     }).forEach(function(child) {
       result[child.key] = mapper(child);
@@ -6647,7 +6651,7 @@ function getProp(child, prop, props) {
 }
 function getInitialChildMapping(props, onExited) {
   return getChildMapping(props.children, function(child) {
-    return react.exports.cloneElement(child, {
+    return cloneElement(child, {
       onExited: onExited.bind(null, child),
       in: true,
       appear: getProp(child, "appear", props),
@@ -6661,25 +6665,25 @@ function getNextChildMapping(nextProps, prevChildMapping, onExited) {
   var children = mergeChildMappings(prevChildMapping, nextChildMapping);
   Object.keys(children).forEach(function(key) {
     var child = children[key];
-    if (!react.exports.isValidElement(child))
+    if (!isValidElement(child))
       return;
     var hasPrev = key in prevChildMapping;
     var hasNext = key in nextChildMapping;
     var prevChild = prevChildMapping[key];
-    var isLeaving = react.exports.isValidElement(prevChild) && !prevChild.props.in;
+    var isLeaving = isValidElement(prevChild) && !prevChild.props.in;
     if (hasNext && (!hasPrev || isLeaving)) {
-      children[key] = react.exports.cloneElement(child, {
+      children[key] = cloneElement(child, {
         onExited: onExited.bind(null, child),
         in: true,
         exit: getProp(child, "exit", nextProps),
         enter: getProp(child, "enter", nextProps)
       });
     } else if (!hasNext && hasPrev && !isLeaving) {
-      children[key] = react.exports.cloneElement(child, {
+      children[key] = cloneElement(child, {
         in: false
       });
-    } else if (hasNext && hasPrev && react.exports.isValidElement(prevChild)) {
-      children[key] = react.exports.cloneElement(child, {
+    } else if (hasNext && hasPrev && isValidElement(prevChild)) {
+      children[key] = cloneElement(child, {
         onExited: onExited.bind(null, child),
         in: prevChild.props.in,
         exit: getProp(child, "exit", nextProps),
@@ -6759,16 +6763,16 @@ var TransitionGroup = /* @__PURE__ */ function(_React$Component) {
     delete props.enter;
     delete props.exit;
     if (Component === null) {
-      return /* @__PURE__ */ React.createElement(TransitionGroupContext.Provider, {
+      return /* @__PURE__ */ React__default.createElement(TransitionGroupContext.Provider, {
         value: contextValue
       }, children);
     }
-    return /* @__PURE__ */ React.createElement(TransitionGroupContext.Provider, {
+    return /* @__PURE__ */ React__default.createElement(TransitionGroupContext.Provider, {
       value: contextValue
-    }, /* @__PURE__ */ React.createElement(Component, props, children));
+    }, /* @__PURE__ */ React__default.createElement(Component, props, children));
   };
   return TransitionGroup2;
-}(React.Component);
+}(React__default.Component);
 TransitionGroup.propTypes = {};
 TransitionGroup.defaultProps = defaultProps;
 var TransitionGroup$1 = TransitionGroup;
@@ -6784,7 +6788,7 @@ function Ripple(props) {
     onExited,
     timeout
   } = props;
-  const [leaving, setLeaving] = react.exports.useState(false);
+  const [leaving, setLeaving] = React.useState(false);
   const rippleClassName = clsx(className, classes.ripple, classes.rippleVisible, pulsate && classes.ripplePulsate);
   const rippleStyles = {
     width: rippleSize,
@@ -6796,7 +6800,7 @@ function Ripple(props) {
   if (!inProp && !leaving) {
     setLeaving(true);
   }
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!inProp && onExited != null) {
       const timeoutId = setTimeout(onExited, timeout);
       return () => {
@@ -6922,7 +6926,7 @@ const TouchRippleRipple = styled$3(Ripple, {
 }) => theme2.transitions.easing.easeInOut, touchRippleClasses$1.childPulsate, pulsateKeyframe, ({
   theme: theme2
 }) => theme2.transitions.easing.easeInOut);
-const TouchRipple = /* @__PURE__ */ react.exports.forwardRef(function TouchRipple2(inProps, ref) {
+const TouchRipple = /* @__PURE__ */ React.forwardRef(function TouchRipple2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiTouchRipple"
@@ -6932,25 +6936,25 @@ const TouchRipple = /* @__PURE__ */ react.exports.forwardRef(function TouchRippl
     classes = {},
     className
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$J);
-  const [ripples, setRipples] = react.exports.useState([]);
-  const nextKey = react.exports.useRef(0);
-  const rippleCallback = react.exports.useRef(null);
-  react.exports.useEffect(() => {
+  const [ripples, setRipples] = React.useState([]);
+  const nextKey = React.useRef(0);
+  const rippleCallback = React.useRef(null);
+  React.useEffect(() => {
     if (rippleCallback.current) {
       rippleCallback.current();
       rippleCallback.current = null;
     }
   }, [ripples]);
-  const ignoringMouseDown = react.exports.useRef(false);
-  const startTimer = react.exports.useRef(null);
-  const startTimerCommit = react.exports.useRef(null);
-  const container = react.exports.useRef(null);
-  react.exports.useEffect(() => {
+  const ignoringMouseDown = React.useRef(false);
+  const startTimer = React.useRef(null);
+  const startTimerCommit = React.useRef(null);
+  const container = React.useRef(null);
+  React.useEffect(() => {
     return () => {
       clearTimeout(startTimer.current);
     };
   }, []);
-  const startCommit = react.exports.useCallback((params) => {
+  const startCommit = React.useCallback((params) => {
     const {
       pulsate: pulsate2,
       rippleX,
@@ -6976,7 +6980,7 @@ const TouchRipple = /* @__PURE__ */ react.exports.forwardRef(function TouchRippl
     nextKey.current += 1;
     rippleCallback.current = cb;
   }, [classes]);
-  const start2 = react.exports.useCallback((event = {}, options = {}, cb) => {
+  const start2 = React.useCallback((event = {}, options = {}, cb) => {
     const {
       pulsate: pulsate2 = false,
       center = centerProp || options.pulsate,
@@ -7048,12 +7052,12 @@ const TouchRipple = /* @__PURE__ */ react.exports.forwardRef(function TouchRippl
       });
     }
   }, [centerProp, startCommit]);
-  const pulsate = react.exports.useCallback(() => {
+  const pulsate = React.useCallback(() => {
     start2({}, {
       pulsate: true
     });
   }, [start2]);
-  const stop = react.exports.useCallback((event, cb) => {
+  const stop = React.useCallback((event, cb) => {
     clearTimeout(startTimer.current);
     if (event.type === "touchend" && startTimerCommit.current) {
       startTimerCommit.current();
@@ -7072,7 +7076,7 @@ const TouchRipple = /* @__PURE__ */ react.exports.forwardRef(function TouchRippl
     });
     rippleCallback.current = cb;
   }, []);
-  react.exports.useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     pulsate,
     start: start2,
     stop
@@ -7146,7 +7150,7 @@ const ButtonBaseRoot = styled$3("button", {
     colorAdjust: "exact"
   }
 });
-const ButtonBase = /* @__PURE__ */ react.exports.forwardRef(function ButtonBase2(inProps, ref) {
+const ButtonBase = /* @__PURE__ */ React.forwardRef(function ButtonBase2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiButtonBase"
@@ -7180,25 +7184,25 @@ const ButtonBase = /* @__PURE__ */ react.exports.forwardRef(function ButtonBase2
     TouchRippleProps,
     type
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$I);
-  const buttonRef = react.exports.useRef(null);
-  const rippleRef = react.exports.useRef(null);
+  const buttonRef = React.useRef(null);
+  const rippleRef = React.useRef(null);
   const {
     isFocusVisibleRef,
     onFocus: handleFocusVisible,
     onBlur: handleBlurVisible,
     ref: focusVisibleRef
   } = useIsFocusVisible();
-  const [focusVisible, setFocusVisible] = react.exports.useState(false);
+  const [focusVisible, setFocusVisible] = React.useState(false);
   if (disabled && focusVisible) {
     setFocusVisible(false);
   }
-  react.exports.useImperativeHandle(action, () => ({
+  React.useImperativeHandle(action, () => ({
     focusVisible: () => {
       setFocusVisible(true);
       buttonRef.current.focus();
     }
   }), []);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (focusVisible && focusRipple && !disableRipple) {
       rippleRef.current.pulsate();
     }
@@ -7258,7 +7262,7 @@ const ButtonBase = /* @__PURE__ */ react.exports.forwardRef(function ButtonBase2
     const button = buttonRef.current;
     return component && component !== "button" && !(button.tagName === "A" && button.href);
   };
-  const keydownRef = react.exports.useRef(false);
+  const keydownRef = React.useRef(false);
   const handleKeyDown2 = useEventCallback((event) => {
     if (focusRipple && !keydownRef.current && focusVisible && rippleRef.current && event.key === " ") {
       keydownRef.current = true;
@@ -7311,8 +7315,8 @@ const ButtonBase = /* @__PURE__ */ react.exports.forwardRef(function ButtonBase2
   }
   const handleOwnRef = useForkRef(focusVisibleRef, buttonRef);
   const handleRef = useForkRef(ref, handleOwnRef);
-  const [mountedState, setMountedState] = react.exports.useState(false);
-  react.exports.useEffect(() => {
+  const [mountedState, setMountedState] = React.useState(false);
+  React.useEffect(() => {
     setMountedState(true);
   }, []);
   const enableTouchRipple = mountedState && !disableRipple && !disabled;
@@ -7432,7 +7436,7 @@ const IconButtonRoot = styled$3(ButtonBase$1, {
     color: theme2.palette.action.disabled
   }
 }));
-const IconButton = /* @__PURE__ */ react.exports.forwardRef(function IconButton2(inProps, ref) {
+const IconButton = /* @__PURE__ */ React.forwardRef(function IconButton2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiIconButton"
@@ -12019,13 +12023,13 @@ function htmdx(m2, h2, options) {
   });
   return markedToReact(esmEntry(m2), h2, options);
 }
-const CodeSyntaxHighlighter = react.exports.lazy(() => import("./syntax_highlighter.js"));
+const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter.js"));
 const SYNTAX_KEY = "SYNTAX";
 const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != null ? _a : "atomOneDark");
 codeTheme$.subscribe((theme2) => {
   localStorage.setItem(SYNTAX_KEY, theme2);
 });
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React__default.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12046,7 +12050,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       console.error("mdx error", this.state.error);
-      return /* @__PURE__ */ jsxs(Fragment, {
+      return /* @__PURE__ */ jsxs(Fragment$1, {
         children: [/* @__PURE__ */ jsx("h1", {
           children: "MDX error:"
         }), /* @__PURE__ */ jsx("div", {
@@ -12068,7 +12072,7 @@ const removeVoidElements = (mdx) => {
   });
   return mdx;
 };
-const MDX = react.exports.memo(({
+const MDX = memo(({
   mdx,
   onSaveMDX
 }) => {
@@ -12080,22 +12084,22 @@ const MDX = react.exports.memo(({
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
-  const getPath = react.exports.useCallback((src) => {
+  const getPath = useCallback((src) => {
     if (src.includes("http") || !document2) {
       return src;
     }
     return pathBrowserify.join(projects$.value.get(document2.projectSlug).root, document2.path.split("/").slice(0, -1).join("/"), src);
   }, [document2, params]);
-  const sanitizedMDX = react.exports.useMemo(() => removeVoidElements(mdx), [mdx]);
-  react.exports.useEffect(() => {
+  const sanitizedMDX = useMemo(() => removeVoidElements(mdx), [mdx]);
+  useEffect(() => {
     onSaveMDX(mdx);
   }, [mdx]);
-  return /* @__PURE__ */ jsx(Fragment, {
-    children: mdx !== void 0 ? htmdx(sanitizedMDX, React.createElement, {
+  return /* @__PURE__ */ jsx(Fragment$1, {
+    children: mdx !== void 0 ? htmdx(sanitizedMDX, React__default.createElement, {
       components: {
         code: (props) => {
           var _a2;
-          return /* @__PURE__ */ jsx(react.exports.Suspense, {
+          return /* @__PURE__ */ jsx(Suspense, {
             fallback: props.children,
             children: /* @__PURE__ */ jsx(CodeSyntaxHighlighter, {
               theme: theme2,
@@ -12136,11 +12140,11 @@ const MarkdownRenderer = ({
 }) => {
   const currentMDX$ = useObservable(() => new ValueSubject(mdx));
   const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(300, void 0)) : currentMDX$);
-  react.exports.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     currentMDX$.next(mdx);
   }, [mdx]);
-  const saveMDXRef = react.exports.useRef("");
-  const mdxIdRef = react.exports.useRef(0);
+  const saveMDXRef = useRef("");
+  const mdxIdRef = useRef(0);
   return /* @__PURE__ */ jsx(Wrapper, {
     sx: {
       textAlign: "justify"
@@ -12176,7 +12180,7 @@ const Content = () => {
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
-  const toggleFav = react.exports.useCallback(() => {
+  const toggleFav = useCallback(() => {
     modifyDocument(__spreadProps(__spreadValues({}, document2), {
       isFavourite: !document2.isFavourite
     }));
@@ -12412,7 +12416,7 @@ const ButtonEndIcon = styled$3("span", {
 }, ownerState.size === "small" && {
   marginRight: -2
 }, commonIconStyles(ownerState)));
-const Button = /* @__PURE__ */ react.exports.forwardRef(function Button2(inProps, ref) {
+const Button = /* @__PURE__ */ React.forwardRef(function Button2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiButton"
@@ -12761,7 +12765,7 @@ const LinearProgressBar2 = styled$3("span", {
       width: auto;
       animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
     `), indeterminate2Keyframe));
-const LinearProgress = /* @__PURE__ */ react.exports.forwardRef(function LinearProgress2(inProps, ref) {
+const LinearProgress = /* @__PURE__ */ React.forwardRef(function LinearProgress2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiLinearProgress"
@@ -12941,7 +12945,7 @@ reactIs_production_min.isValidElementType = function(a) {
   return typeof a === "string" || typeof a === "function" || a === d || a === f || a === v || a === e || a === l || a === m || a === w || typeof a === "object" && a !== null && (a.$$typeof === p || a.$$typeof === n || a.$$typeof === g || a.$$typeof === h || a.$$typeof === k || a.$$typeof === u || a.$$typeof === q || a[0] === r) ? true : false;
 };
 reactIs_production_min.typeOf = y;
-const ListContext = /* @__PURE__ */ react.exports.createContext({});
+const ListContext = /* @__PURE__ */ React.createContext({});
 var ListContext$1 = ListContext;
 function getListUtilityClass(slot) {
   return generateUtilityClass("MuiList", slot);
@@ -12982,7 +12986,7 @@ const ListRoot = styled$3("ul", {
 }, ownerState.subheader && {
   paddingTop: 0
 }));
-const List = /* @__PURE__ */ react.exports.forwardRef(function List2(inProps, ref) {
+const List = /* @__PURE__ */ React.forwardRef(function List2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiList"
@@ -12995,7 +12999,7 @@ const List = /* @__PURE__ */ react.exports.forwardRef(function List2(inProps, re
     disablePadding = false,
     subheader
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$C);
-  const context = react.exports.useMemo(() => ({
+  const context = React.useMemo(() => ({
     dense
   }), [dense]);
   const ownerState = _extends$3({}, props, {
@@ -13073,7 +13077,7 @@ function moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, 
   }
   return false;
 }
-const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(props, ref) {
+const MenuList = /* @__PURE__ */ React.forwardRef(function MenuList2(props, ref) {
   const {
     actions,
     autoFocus = false,
@@ -13085,8 +13089,8 @@ const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(pro
     onKeyDown,
     variant = "selectedMenu"
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$B);
-  const listRef = react.exports.useRef(null);
-  const textCriteriaRef = react.exports.useRef({
+  const listRef = React.useRef(null);
+  const textCriteriaRef = React.useRef({
     keys: [],
     repeating: true,
     previousKeyMatched: true,
@@ -13097,7 +13101,7 @@ const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(pro
       listRef.current.focus();
     }
   }, [autoFocus]);
-  react.exports.useImperativeHandle(actions, () => ({
+  React.useImperativeHandle(actions, () => ({
     adjustStyleForScrollbar: (containerElement, theme2) => {
       const noExplicitWidth = !listRef.current.style.width;
       if (containerElement.clientHeight < listRef.current.clientHeight && noExplicitWidth) {
@@ -13152,8 +13156,8 @@ const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(pro
   };
   const handleRef = useForkRef(listRef, ref);
   let activeItemIndex = -1;
-  react.exports.Children.forEach(children, (child, index2) => {
-    if (!/* @__PURE__ */ react.exports.isValidElement(child)) {
+  React.Children.forEach(children, (child, index2) => {
+    if (!/* @__PURE__ */ React.isValidElement(child)) {
       return;
     }
     if (!child.props.disabled) {
@@ -13164,7 +13168,7 @@ const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(pro
       }
     }
   });
-  const items = react.exports.Children.map(children, (child, index2) => {
+  const items = React.Children.map(children, (child, index2) => {
     if (index2 === activeItemIndex) {
       const newChildProps = {};
       if (autoFocusItem) {
@@ -13173,7 +13177,7 @@ const MenuList = /* @__PURE__ */ react.exports.forwardRef(function MenuList2(pro
       if (child.props.tabIndex === void 0 && variant === "selectedMenu") {
         newChildProps.tabIndex = 0;
       }
-      return /* @__PURE__ */ react.exports.cloneElement(child, newChildProps);
+      return /* @__PURE__ */ React.cloneElement(child, newChildProps);
     }
     return child;
   });
@@ -13216,7 +13220,7 @@ const styles$2 = {
     transform: "none"
   }
 };
-const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref) {
+const Grow = /* @__PURE__ */ React.forwardRef(function Grow2(props, ref) {
   const {
     addEndListener,
     appear = true,
@@ -13233,10 +13237,10 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
     timeout = "auto",
     TransitionComponent = Transition$1
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$A);
-  const timer = react.exports.useRef();
-  const autoTimeout = react.exports.useRef();
+  const timer = React.useRef();
+  const autoTimeout = React.useRef();
   const theme2 = useTheme();
-  const nodeRef = react.exports.useRef(null);
+  const nodeRef = React.useRef(null);
   const foreignRef = useForkRef(children.ref, ref);
   const handleRef = useForkRef(nodeRef, foreignRef);
   const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
@@ -13326,7 +13330,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
       addEndListener(nodeRef.current, next);
     }
   };
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     return () => {
       clearTimeout(timer.current);
     };
@@ -13345,7 +13349,7 @@ const Grow = /* @__PURE__ */ react.exports.forwardRef(function Grow2(props, ref)
     timeout: timeout === "auto" ? null : timeout
   }, other, {
     children: (state, childProps) => {
-      return /* @__PURE__ */ react.exports.cloneElement(children, _extends$3({
+      return /* @__PURE__ */ React.cloneElement(children, _extends$3({
         style: _extends$3({
           opacity: 0,
           transform: getScale(0.75),
@@ -13371,7 +13375,7 @@ const defaultTimeout = {
   enter: duration.enteringScreen,
   exit: duration.leavingScreen
 };
-const Fade = /* @__PURE__ */ react.exports.forwardRef(function Fade2(props, ref) {
+const Fade = /* @__PURE__ */ React.forwardRef(function Fade2(props, ref) {
   const {
     addEndListener,
     appear = true,
@@ -13389,7 +13393,7 @@ const Fade = /* @__PURE__ */ react.exports.forwardRef(function Fade2(props, ref)
     TransitionComponent = Transition$1
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$z);
   const theme2 = useTheme();
-  const nodeRef = react.exports.useRef(null);
+  const nodeRef = React.useRef(null);
   const foreignRef = useForkRef(children.ref, ref);
   const handleRef = useForkRef(nodeRef, foreignRef);
   const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
@@ -13454,7 +13458,7 @@ const Fade = /* @__PURE__ */ react.exports.forwardRef(function Fade2(props, ref)
     timeout
   }, other, {
     children: (state, childProps) => {
-      return /* @__PURE__ */ react.exports.cloneElement(children, _extends$3({
+      return /* @__PURE__ */ React.cloneElement(children, _extends$3({
         style: _extends$3({
           opacity: 0,
           visibility: state === "exited" && !inProp ? "hidden" : void 0
@@ -13497,7 +13501,7 @@ const BackdropRoot = styled$3("div", {
 }, ownerState.invisible && {
   backgroundColor: "transparent"
 }));
-const Backdrop = /* @__PURE__ */ react.exports.forwardRef(function Backdrop2(inProps, ref) {
+const Backdrop = /* @__PURE__ */ React.forwardRef(function Backdrop2(inProps, ref) {
   var _componentsProps$root;
   const props = useThemeProps({
     props: inProps,
@@ -13574,7 +13578,7 @@ const ModalBackdrop = styled$3(Backdrop$1, {
 })({
   zIndex: -1
 });
-const Modal = /* @__PURE__ */ react.exports.forwardRef(function Modal2(inProps, ref) {
+const Modal = /* @__PURE__ */ React.forwardRef(function Modal2(inProps, ref) {
   var _componentsProps$root;
   const props = useThemeProps({
     name: "MuiModal",
@@ -13595,7 +13599,7 @@ const Modal = /* @__PURE__ */ react.exports.forwardRef(function Modal2(inProps, 
     hideBackdrop = false,
     keepMounted = false
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$x);
-  const [exited, setExited] = react.exports.useState(true);
+  const [exited, setExited] = React.useState(true);
   const commonProps = {
     closeAfterTransition,
     disableAutoFocus,
@@ -13693,7 +13697,7 @@ const PopoverPaper = styled$3(Paper$1, {
   maxHeight: "calc(100% - 32px)",
   outline: 0
 });
-const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inProps, ref) {
+const Popover = /* @__PURE__ */ React.forwardRef(function Popover2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiPopover"
@@ -13724,7 +13728,7 @@ const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inPro
       onEntering
     } = {}
   } = props, TransitionProps = _objectWithoutPropertiesLoose$1(props.TransitionProps, _excluded$w), other = _objectWithoutPropertiesLoose$1(props, _excluded2$3);
-  const paperRef = react.exports.useRef();
+  const paperRef = React.useRef();
   const handlePaperRef = useForkRef(paperRef, PaperProps.ref);
   const ownerState = _extends$3({}, props, {
     anchorOrigin,
@@ -13738,7 +13742,7 @@ const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inPro
     TransitionProps
   });
   const classes = useUtilityClasses$t(ownerState);
-  const getAnchorOffset = react.exports.useCallback(() => {
+  const getAnchorOffset = React.useCallback(() => {
     if (anchorReference === "anchorPosition") {
       return anchorPosition;
     }
@@ -13750,13 +13754,13 @@ const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inPro
       left: anchorRect.left + getOffsetLeft(anchorRect, anchorOrigin.horizontal)
     };
   }, [anchorEl, anchorOrigin.horizontal, anchorOrigin.vertical, anchorPosition, anchorReference]);
-  const getTransformOrigin = react.exports.useCallback((elemRect) => {
+  const getTransformOrigin = React.useCallback((elemRect) => {
     return {
       vertical: getOffsetTop(elemRect, transformOrigin.vertical),
       horizontal: getOffsetLeft(elemRect, transformOrigin.horizontal)
     };
   }, [transformOrigin.horizontal, transformOrigin.vertical]);
-  const getPositioningStyle = react.exports.useCallback((element) => {
+  const getPositioningStyle = React.useCallback((element) => {
     const elemRect = {
       width: element.offsetWidth,
       height: element.offsetHeight
@@ -13801,7 +13805,7 @@ const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inPro
       transformOrigin: getTransformOriginValue(elemTransformOrigin)
     };
   }, [anchorEl, anchorReference, getAnchorOffset, getTransformOrigin, marginThreshold]);
-  const setPositioningStyles = react.exports.useCallback(() => {
+  const setPositioningStyles = React.useCallback(() => {
     const element = paperRef.current;
     if (!element) {
       return;
@@ -13821,17 +13825,17 @@ const Popover = /* @__PURE__ */ react.exports.forwardRef(function Popover2(inPro
     }
     setPositioningStyles();
   };
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (open) {
       setPositioningStyles();
     }
   });
-  react.exports.useImperativeHandle(action, () => open ? {
+  React.useImperativeHandle(action, () => open ? {
     updatePosition: () => {
       setPositioningStyles();
     }
   } : null, [open, setPositioningStyles]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!open) {
       return void 0;
     }
@@ -13922,7 +13926,7 @@ const MenuMenuList = styled$3(MenuList$1, {
 })({
   outline: 0
 });
-const Menu$1 = /* @__PURE__ */ react.exports.forwardRef(function Menu(inProps, ref) {
+const Menu$1 = /* @__PURE__ */ React.forwardRef(function Menu(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiMenu"
@@ -13956,7 +13960,7 @@ const Menu$1 = /* @__PURE__ */ react.exports.forwardRef(function Menu(inProps, r
   });
   const classes = useUtilityClasses$s(ownerState);
   const autoFocusItem = autoFocus && !disableAutoFocusItem && open;
-  const menuListActionsRef = react.exports.useRef(null);
+  const menuListActionsRef = React.useRef(null);
   const handleEntering = (element, isAppearing) => {
     if (menuListActionsRef.current) {
       menuListActionsRef.current.adjustStyleForScrollbar(element, theme2);
@@ -13974,8 +13978,8 @@ const Menu$1 = /* @__PURE__ */ react.exports.forwardRef(function Menu(inProps, r
     }
   };
   let activeItemIndex = -1;
-  react.exports.Children.map(children, (child, index2) => {
-    if (!/* @__PURE__ */ react.exports.isValidElement(child)) {
+  React.Children.map(children, (child, index2) => {
+    if (!/* @__PURE__ */ React.isValidElement(child)) {
       return;
     }
     if (!child.props.disabled) {
@@ -14137,7 +14141,7 @@ const MenuItemRoot = styled$3(ButtonBase$1, {
     fontSize: "1.25rem"
   }
 })));
-const MenuItem = /* @__PURE__ */ react.exports.forwardRef(function MenuItem2(inProps, ref) {
+const MenuItem = /* @__PURE__ */ React.forwardRef(function MenuItem2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiMenuItem"
@@ -14152,12 +14156,12 @@ const MenuItem = /* @__PURE__ */ react.exports.forwardRef(function MenuItem2(inP
     role = "menuitem",
     tabIndex: tabIndexProp
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$u);
-  const context = react.exports.useContext(ListContext$1);
+  const context = React.useContext(ListContext$1);
   const childContext = {
     dense: dense || context.dense || false,
     disableGutters
   };
-  const menuItemRef = react.exports.useRef(null);
+  const menuItemRef = React.useRef(null);
   useEnhancedEffect$1(() => {
     if (autoFocus) {
       if (menuItemRef.current) {
@@ -14377,7 +14381,7 @@ function composeEventHandler(handler, eventHandler) {
     handler(event);
   };
 }
-const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inProps, ref) {
+const Tooltip = /* @__PURE__ */ React.forwardRef(function Tooltip2(inProps, ref) {
   var _components$Popper, _ref, _components$Transitio, _components$Tooltip, _components$Arrow, _componentsProps$popp;
   const props = useThemeProps({
     props: inProps,
@@ -14412,14 +14416,14 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$t);
   const theme2 = useTheme();
   const isRtl = theme2.direction === "rtl";
-  const [childNode, setChildNode] = react.exports.useState();
-  const [arrowRef, setArrowRef] = react.exports.useState(null);
-  const ignoreNonTouchEvents = react.exports.useRef(false);
+  const [childNode, setChildNode] = React.useState();
+  const [arrowRef, setArrowRef] = React.useState(null);
+  const ignoreNonTouchEvents = React.useRef(false);
   const disableInteractive = disableInteractiveProp || followCursor;
-  const closeTimer = react.exports.useRef();
-  const enterTimer = react.exports.useRef();
-  const leaveTimer = react.exports.useRef();
-  const touchTimer = react.exports.useRef();
+  const closeTimer = React.useRef();
+  const enterTimer = React.useRef();
+  const leaveTimer = React.useRef();
+  const touchTimer = React.useRef();
   const [openState, setOpenState] = useControlled({
     controlled: openProp,
     default: false,
@@ -14428,15 +14432,15 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
   });
   let open = openState;
   const id = useId(idProp);
-  const prevUserSelect = react.exports.useRef();
-  const stopTouchInteraction = react.exports.useCallback(() => {
+  const prevUserSelect = React.useRef();
+  const stopTouchInteraction = React.useCallback(() => {
     if (prevUserSelect.current !== void 0) {
       document.body.style.WebkitUserSelect = prevUserSelect.current;
       prevUserSelect.current = void 0;
     }
     clearTimeout(touchTimer.current);
   }, []);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     return () => {
       clearTimeout(closeTimer.current);
       clearTimeout(enterTimer.current);
@@ -14496,7 +14500,7 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
     onFocus: handleFocusVisible,
     ref: focusVisibleRef
   } = useIsFocusVisible();
-  const [, setChildIsFocusVisible] = react.exports.useState(false);
+  const [, setChildIsFocusVisible] = React.useState(false);
   const handleBlur = (event) => {
     handleBlurVisible(event);
     if (isFocusVisibleRef.current === false) {
@@ -14545,7 +14549,7 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
       handleClose(event);
     }, leaveTouchDelay);
   };
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!open) {
       return void 0;
     }
@@ -14565,11 +14569,11 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
   if (title === "") {
     open = false;
   }
-  const positionRef = react.exports.useRef({
+  const positionRef = React.useRef({
     x: 0,
     y: 0
   });
-  const popperRef = react.exports.useRef();
+  const popperRef = React.useRef();
   const handleMouseMove = (event) => {
     const childrenProps2 = children.props;
     if (childrenProps2.onMouseMove) {
@@ -14620,7 +14624,7 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
       interactiveWrapperListeners.onBlur = handleBlur;
     }
   }
-  const popperOptions = react.exports.useMemo(() => {
+  const popperOptions = React.useMemo(() => {
     var _PopperProps$popperOp;
     let tooltipModifiers = [{
       name: "arrow",
@@ -14654,8 +14658,8 @@ const Tooltip = /* @__PURE__ */ react.exports.forwardRef(function Tooltip2(inPro
   const transitionProps = appendOwnerState(TransitionComponent, _extends$3({}, TransitionProps, componentsProps.transition), ownerState);
   const tooltipProps = appendOwnerState(TooltipComponent, _extends$3({}, componentsProps.tooltip), ownerState);
   const tooltipArrowProps = appendOwnerState(ArrowComponent, _extends$3({}, componentsProps.arrow), ownerState);
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
-    children: [/* @__PURE__ */ react.exports.cloneElement(children, childrenProps), /* @__PURE__ */ jsx(PopperComponent2, _extends$3({
+  return /* @__PURE__ */ jsxs(React.Fragment, {
+    children: [/* @__PURE__ */ React.cloneElement(children, childrenProps), /* @__PURE__ */ jsx(PopperComponent2, _extends$3({
       as: PopperComponentProp != null ? PopperComponentProp : Popper$1,
       placement,
       anchorEl: followCursor ? {
@@ -14774,7 +14778,7 @@ const AppBarRoot = styled$3(Paper$1, {
     backgroundImage: "none"
   }));
 });
-const AppBar = /* @__PURE__ */ react.exports.forwardRef(function AppBar2(inProps, ref) {
+const AppBar = /* @__PURE__ */ React.forwardRef(function AppBar2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiAppBar"
@@ -14821,10 +14825,10 @@ function formControlState({
     return acc;
   }, {});
 }
-const FormControlContext = /* @__PURE__ */ react.exports.createContext();
+const FormControlContext = /* @__PURE__ */ React.createContext();
 var FormControlContext$1 = FormControlContext;
 function useFormControl() {
-  return react.exports.useContext(FormControlContext$1);
+  return React.useContext(FormControlContext$1);
 }
 function GlobalStyles(props) {
   return /* @__PURE__ */ jsx(GlobalStyles$1, _extends$3({}, props, {
@@ -15001,7 +15005,7 @@ const inputGlobalStyles = /* @__PURE__ */ jsx(GlobalStyles, {
     }
   }
 });
-const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(inProps, ref) {
+const InputBase = /* @__PURE__ */ React.forwardRef(function InputBase2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiInputBase"
@@ -15042,14 +15046,14 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
   const value = inputPropsProp.value != null ? inputPropsProp.value : valueProp;
   const {
     current: isControlled
-  } = react.exports.useRef(value != null);
-  const inputRef = react.exports.useRef();
-  const handleInputRefWarning = react.exports.useCallback((instance) => {
+  } = React.useRef(value != null);
+  const inputRef = React.useRef();
+  const handleInputRefWarning = React.useCallback((instance) => {
   }, []);
   const handleInputPropsRefProp = useForkRef(inputPropsProp.ref, handleInputRefWarning);
   const handleInputRefProp = useForkRef(inputRefProp, handleInputPropsRefProp);
   const handleInputRef = useForkRef(inputRef, handleInputRefProp);
-  const [focused, setFocused] = react.exports.useState(false);
+  const [focused, setFocused] = React.useState(false);
   const muiFormControl = useFormControl();
   const fcs = formControlState({
     props,
@@ -15057,7 +15061,7 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
     states: ["color", "disabled", "error", "hiddenLabel", "size", "required", "filled"]
   });
   fcs.focused = muiFormControl ? muiFormControl.focused : focused;
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (!muiFormControl && disabled && focused) {
       setFocused(false);
       if (onBlur) {
@@ -15067,7 +15071,7 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
   }, [muiFormControl, disabled, focused, onBlur]);
   const onFilled = muiFormControl && muiFormControl.onFilled;
   const onEmpty = muiFormControl && muiFormControl.onEmpty;
-  const checkDirty = react.exports.useCallback((obj) => {
+  const checkDirty = React.useCallback((obj) => {
     if (isFilled(obj)) {
       if (onFilled) {
         onFilled();
@@ -15130,7 +15134,7 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
       onChange(event, ...args);
     }
   };
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     checkDirty(inputRef.current);
   }, []);
   const handleClick = (event) => {
@@ -15164,7 +15168,7 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
       value: "x"
     });
   };
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (muiFormControl) {
       muiFormControl.setAdornedStart(Boolean(startAdornment));
     }
@@ -15188,7 +15192,7 @@ const InputBase = /* @__PURE__ */ react.exports.forwardRef(function InputBase2(i
   const rootProps = componentsProps.root || {};
   const Input3 = components.Input || InputBaseComponent;
   inputProps = _extends$3({}, inputProps, componentsProps.input);
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [inputGlobalStyles, /* @__PURE__ */ jsxs(Root, _extends$3({}, rootProps, !isHostComponent(Root) && {
       ownerState: _extends$3({}, ownerState, rootProps.ownerState)
     }, {
@@ -15279,7 +15283,7 @@ const ToolbarRoot = styled$3("div", {
   theme: theme2,
   ownerState
 }) => ownerState.variant === "regular" && theme2.mixins.toolbar);
-const Toolbar = /* @__PURE__ */ react.exports.forwardRef(function Toolbar2(inProps, ref) {
+const Toolbar = /* @__PURE__ */ React.forwardRef(function Toolbar2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiToolbar"
@@ -15361,7 +15365,7 @@ const ListSubheaderRoot = styled$3("li", {
   zIndex: 1,
   backgroundColor: theme2.palette.background.paper
 }));
-const ListSubheader = /* @__PURE__ */ react.exports.forwardRef(function ListSubheader2(inProps, ref) {
+const ListSubheader = /* @__PURE__ */ React.forwardRef(function ListSubheader2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiListSubheader"
@@ -15642,7 +15646,7 @@ const ChipLabel = styled$3("span", {
 function isDeleteKeyboardEvent(keyboardEvent) {
   return keyboardEvent.key === "Backspace" || keyboardEvent.key === "Delete";
 }
-const Chip = /* @__PURE__ */ react.exports.forwardRef(function Chip2(inProps, ref) {
+const Chip = /* @__PURE__ */ React.forwardRef(function Chip2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiChip"
@@ -15664,7 +15668,7 @@ const Chip = /* @__PURE__ */ react.exports.forwardRef(function Chip2(inProps, re
     size = "medium",
     variant = "filled"
   } = props, other = _objectWithoutPropertiesLoose$1(props, _excluded$o);
-  const chipRef = react.exports.useRef(null);
+  const chipRef = React.useRef(null);
   const handleRef = useForkRef(chipRef, ref);
   const handleDeleteIconClick = (event) => {
     event.stopPropagation();
@@ -15714,7 +15718,7 @@ const Chip = /* @__PURE__ */ react.exports.forwardRef(function Chip2(inProps, re
   let deleteIcon = null;
   if (onDelete) {
     const customClasses = clsx(color !== "default" && (variant === "outlined" ? classes[`deleteIconOutlinedColor${capitalize(color)}`] : classes[`deleteIconColor${capitalize(color)}`]), small && classes.deleteIconSmall);
-    deleteIcon = deleteIconProp && /* @__PURE__ */ react.exports.isValidElement(deleteIconProp) ? /* @__PURE__ */ react.exports.cloneElement(deleteIconProp, {
+    deleteIcon = deleteIconProp && /* @__PURE__ */ React.isValidElement(deleteIconProp) ? /* @__PURE__ */ React.cloneElement(deleteIconProp, {
       className: clsx(deleteIconProp.props.className, classes.deleteIcon, customClasses),
       onClick: handleDeleteIconClick
     }) : /* @__PURE__ */ jsx(CancelIcon, {
@@ -15723,14 +15727,14 @@ const Chip = /* @__PURE__ */ react.exports.forwardRef(function Chip2(inProps, re
     });
   }
   let avatar = null;
-  if (avatarProp && /* @__PURE__ */ react.exports.isValidElement(avatarProp)) {
-    avatar = /* @__PURE__ */ react.exports.cloneElement(avatarProp, {
+  if (avatarProp && /* @__PURE__ */ React.isValidElement(avatarProp)) {
+    avatar = /* @__PURE__ */ React.cloneElement(avatarProp, {
       className: clsx(classes.avatar, avatarProp.props.className)
     });
   }
   let icon = null;
-  if (iconProp && /* @__PURE__ */ react.exports.isValidElement(iconProp)) {
-    icon = /* @__PURE__ */ react.exports.cloneElement(iconProp, {
+  if (iconProp && /* @__PURE__ */ React.isValidElement(iconProp)) {
+    icon = /* @__PURE__ */ React.cloneElement(iconProp, {
       className: clsx(classes.icon, iconProp.props.className)
     });
   }
@@ -16089,7 +16093,7 @@ const AutocompleteGroupUl = styled$3("ul", {
     paddingLeft: 24
   }
 });
-const Autocomplete = /* @__PURE__ */ react.exports.forwardRef(function Autocomplete2(inProps, ref) {
+const Autocomplete = /* @__PURE__ */ React.forwardRef(function Autocomplete2(inProps, ref) {
   var _componentsProps$clea;
   const props = useThemeProps({
     props: inProps,
@@ -16239,7 +16243,7 @@ const Autocomplete = /* @__PURE__ */ react.exports.forwardRef(function Autocompl
       inputValue
     });
   };
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [/* @__PURE__ */ jsx(AutocompleteRoot, _extends$3({
       ref,
       className: clsx(classes.root, className),
@@ -16372,7 +16376,7 @@ const FormControlRoot = styled$3("div", {
 }, ownerState.fullWidth && {
   width: "100%"
 }));
-const FormControl = /* @__PURE__ */ react.exports.forwardRef(function FormControl2(inProps, ref) {
+const FormControl = /* @__PURE__ */ React.forwardRef(function FormControl2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFormControl"
@@ -16405,10 +16409,10 @@ const FormControl = /* @__PURE__ */ react.exports.forwardRef(function FormContro
     variant
   });
   const classes = useUtilityClasses$j(ownerState);
-  const [adornedStart, setAdornedStart] = react.exports.useState(() => {
+  const [adornedStart, setAdornedStart] = React.useState(() => {
     let initialAdornedStart = false;
     if (children) {
-      react.exports.Children.forEach(children, (child) => {
+      React.Children.forEach(children, (child) => {
         if (!isMuiElement(child, ["Input", "Select"])) {
           return;
         }
@@ -16420,10 +16424,10 @@ const FormControl = /* @__PURE__ */ react.exports.forwardRef(function FormContro
     }
     return initialAdornedStart;
   });
-  const [filled, setFilled] = react.exports.useState(() => {
+  const [filled, setFilled] = React.useState(() => {
     let initialFilled = false;
     if (children) {
-      react.exports.Children.forEach(children, (child) => {
+      React.Children.forEach(children, (child) => {
         if (!isMuiElement(child, ["Input", "Select"])) {
           return;
         }
@@ -16434,16 +16438,16 @@ const FormControl = /* @__PURE__ */ react.exports.forwardRef(function FormContro
     }
     return initialFilled;
   });
-  const [focusedState, setFocused] = react.exports.useState(false);
+  const [focusedState, setFocused] = React.useState(false);
   if (disabled && focusedState) {
     setFocused(false);
   }
   const focused = visuallyFocused !== void 0 && !disabled ? visuallyFocused : focusedState;
   let registerEffect;
-  const onFilled = react.exports.useCallback(() => {
+  const onFilled = React.useCallback(() => {
     setFilled(true);
   }, []);
-  const onEmpty = react.exports.useCallback(() => {
+  const onEmpty = React.useCallback(() => {
     setFilled(false);
   }, []);
   const childContext = {
@@ -16542,7 +16546,7 @@ const FormControlLabelRoot = styled$3("label", {
     }
   }
 }));
-const FormControlLabel = /* @__PURE__ */ react.exports.forwardRef(function FormControlLabel2(inProps, ref) {
+const FormControlLabel = /* @__PURE__ */ React.forwardRef(function FormControlLabel2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFormControlLabel"
@@ -16583,7 +16587,7 @@ const FormControlLabel = /* @__PURE__ */ react.exports.forwardRef(function FormC
     ownerState,
     ref
   }, other, {
-    children: [/* @__PURE__ */ react.exports.cloneElement(control, controlProps), label.type === Typography$1 || disableTypography ? label : /* @__PURE__ */ jsx(Typography$1, _extends$3({
+    children: [/* @__PURE__ */ React.cloneElement(control, controlProps), label.type === Typography$1 || disableTypography ? label : /* @__PURE__ */ jsx(Typography$1, _extends$3({
       component: "span",
       className: classes.label
     }, componentsProps.typography, {
@@ -16625,7 +16629,7 @@ const FormGroupRoot = styled$3("div", {
 }, ownerState.row && {
   flexDirection: "row"
 }));
-const FormGroup = /* @__PURE__ */ react.exports.forwardRef(function FormGroup2(inProps, ref) {
+const FormGroup = /* @__PURE__ */ React.forwardRef(function FormGroup2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFormGroup"
@@ -16689,7 +16693,7 @@ const SwitchBaseInput = styled$3("input", {
   padding: 0,
   zIndex: 1
 });
-const SwitchBase = /* @__PURE__ */ react.exports.forwardRef(function SwitchBase2(props, ref) {
+const SwitchBase = /* @__PURE__ */ React.forwardRef(function SwitchBase2(props, ref) {
   const {
     autoFocus,
     checked: checkedProp,
@@ -16958,7 +16962,7 @@ const SwitchThumb = styled$3("span", {
   height: 20,
   borderRadius: "50%"
 }));
-const Switch = /* @__PURE__ */ react.exports.forwardRef(function Switch2(inProps, ref) {
+const Switch = /* @__PURE__ */ React.forwardRef(function Switch2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiSwitch"
@@ -17086,7 +17090,7 @@ const InputInput = styled$3(InputBaseComponent, {
   slot: "Input",
   overridesResolver: inputOverridesResolver
 })({});
-const Input = /* @__PURE__ */ react.exports.forwardRef(function Input2(inProps, ref) {
+const Input = /* @__PURE__ */ React.forwardRef(function Input2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiInput"
@@ -17270,7 +17274,7 @@ const FilledInputInput = styled$3(InputBaseComponent, {
   paddingTop: 8,
   paddingBottom: 9
 }));
-const FilledInput = /* @__PURE__ */ react.exports.forwardRef(function FilledInput2(inProps, ref) {
+const FilledInput = /* @__PURE__ */ React.forwardRef(function FilledInput2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFilledInput"
@@ -17485,7 +17489,7 @@ const OutlinedInputInput = styled$3(InputBaseComponent, {
 }, ownerState.endAdornment && {
   paddingRight: 0
 }));
-const OutlinedInput = /* @__PURE__ */ react.exports.forwardRef(function OutlinedInput2(inProps, ref) {
+const OutlinedInput = /* @__PURE__ */ React.forwardRef(function OutlinedInput2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiOutlinedInput"
@@ -17583,7 +17587,7 @@ const AsteriskComponent = styled$3("span", {
     color: theme2.palette.error.main
   }
 }));
-const FormLabel = /* @__PURE__ */ react.exports.forwardRef(function FormLabel2(inProps, ref) {
+const FormLabel = /* @__PURE__ */ React.forwardRef(function FormLabel2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFormLabel"
@@ -17707,7 +17711,7 @@ const InputLabelRoot = styled$3(FormLabel$1, {
   maxWidth: "calc(133% - 24px)",
   transform: "translate(14px, -9px) scale(0.75)"
 })));
-const InputLabel = /* @__PURE__ */ react.exports.forwardRef(function InputLabel2(inProps, ref) {
+const InputLabel = /* @__PURE__ */ React.forwardRef(function InputLabel2(inProps, ref) {
   const props = useThemeProps({
     name: "MuiInputLabel",
     props: inProps
@@ -17798,7 +17802,7 @@ const FormHelperTextRoot = styled$3("p", {
   marginLeft: 14,
   marginRight: 14
 }));
-const FormHelperText = /* @__PURE__ */ react.exports.forwardRef(function FormHelperText2(inProps, ref) {
+const FormHelperText = /* @__PURE__ */ React.forwardRef(function FormHelperText2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFormHelperText"
@@ -17941,7 +17945,7 @@ const NativeSelectIcon = styled$3("svg", {
     return [styles2.icon, ownerState.variant && styles2[`icon${capitalize(ownerState.variant)}`], ownerState.open && styles2.iconOpen];
   }
 })(nativeSelectIconStyles);
-const NativeSelectInput = /* @__PURE__ */ react.exports.forwardRef(function NativeSelectInput2(props, ref) {
+const NativeSelectInput = /* @__PURE__ */ React.forwardRef(function NativeSelectInput2(props, ref) {
   const {
     className,
     disabled,
@@ -17954,7 +17958,7 @@ const NativeSelectInput = /* @__PURE__ */ react.exports.forwardRef(function Nati
     variant
   });
   const classes = useUtilityClasses$8(ownerState);
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [/* @__PURE__ */ jsx(NativeSelectSelect, _extends$3({
       ownerState,
       className: clsx(classes.select, className),
@@ -18045,7 +18049,7 @@ const useUtilityClasses$7 = (ownerState) => {
   };
   return composeClasses(slots, getSelectUtilityClasses, classes);
 };
-const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInput2(props, ref) {
+const SelectInput = /* @__PURE__ */ React.forwardRef(function SelectInput2(props, ref) {
   const {
     "aria-describedby": ariaDescribedby,
     "aria-label": ariaLabel,
@@ -18080,34 +18084,34 @@ const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInpu
     default: defaultValue,
     name: "Select"
   });
-  const inputRef = react.exports.useRef(null);
-  const displayRef = react.exports.useRef(null);
-  const [displayNode, setDisplayNode] = react.exports.useState(null);
+  const inputRef = React.useRef(null);
+  const displayRef = React.useRef(null);
+  const [displayNode, setDisplayNode] = React.useState(null);
   const {
     current: isOpenControlled
-  } = react.exports.useRef(openProp != null);
-  const [menuMinWidthState, setMenuMinWidthState] = react.exports.useState();
-  const [openState, setOpenState] = react.exports.useState(false);
+  } = React.useRef(openProp != null);
+  const [menuMinWidthState, setMenuMinWidthState] = React.useState();
+  const [openState, setOpenState] = React.useState(false);
   const handleRef = useForkRef(ref, inputRefProp);
-  const handleDisplayRef = react.exports.useCallback((node) => {
+  const handleDisplayRef = React.useCallback((node) => {
     displayRef.current = node;
     if (node) {
       setDisplayNode(node);
     }
   }, []);
-  react.exports.useImperativeHandle(handleRef, () => ({
+  React.useImperativeHandle(handleRef, () => ({
     focus: () => {
       displayRef.current.focus();
     },
     node: inputRef.current,
     value
   }), [value]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (autoFocus) {
       displayRef.current.focus();
     }
   }, [autoFocus]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     const label = ownerDocument(displayRef.current).getElementById(labelId);
     if (label) {
       const handler = () => {
@@ -18146,7 +18150,7 @@ const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInpu
   const handleClose = (event) => {
     update(false, event);
   };
-  const childrenArray = react.exports.Children.toArray(children);
+  const childrenArray = React.Children.toArray(children);
   const handleChange = (event) => {
     const index2 = childrenArray.map((child2) => child2.props.value).indexOf(event.target.value);
     if (index2 === -1) {
@@ -18238,7 +18242,7 @@ const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInpu
     }
   }
   const items = childrenArray.map((child) => {
-    if (!/* @__PURE__ */ react.exports.isValidElement(child)) {
+    if (!/* @__PURE__ */ React.isValidElement(child)) {
       return null;
     }
     let selected;
@@ -18256,7 +18260,7 @@ const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInpu
         displaySingle = child.props.children;
       }
     }
-    return /* @__PURE__ */ react.exports.cloneElement(child, {
+    return /* @__PURE__ */ React.cloneElement(child, {
       "aria-selected": selected ? "true" : void 0,
       onClick: handleItemClick(child),
       onKeyUp: (event) => {
@@ -18293,7 +18297,7 @@ const SelectInput = /* @__PURE__ */ react.exports.forwardRef(function SelectInpu
     open
   });
   const classes = useUtilityClasses$7(ownerState);
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(React.Fragment, {
     children: [/* @__PURE__ */ jsx(SelectSelect, _extends$3({
       ref: handleDisplayRef,
       tabIndex,
@@ -18373,7 +18377,7 @@ const useUtilityClasses$6 = (ownerState) => {
   };
   return composeClasses(slots, getSelectUtilityClasses, classes);
 };
-const Select = /* @__PURE__ */ react.exports.forwardRef(function Select2(inProps, ref) {
+const Select = /* @__PURE__ */ React.forwardRef(function Select2(inProps, ref) {
   const props = useThemeProps({
     name: "MuiSelect",
     props: inProps
@@ -18421,7 +18425,7 @@ const Select = /* @__PURE__ */ react.exports.forwardRef(function Select2(inProps
   const classes = useUtilityClasses$6(ownerState);
   const otherClasses = _objectWithoutPropertiesLoose$1(classesProp, _excluded2$1);
   const inputComponentRef = useForkRef(ref, InputComponent.ref);
-  return /* @__PURE__ */ react.exports.cloneElement(InputComponent, _extends$3({
+  return /* @__PURE__ */ React.cloneElement(InputComponent, _extends$3({
     inputComponent,
     inputProps: _extends$3({
       children,
@@ -18479,7 +18483,7 @@ const TextFieldRoot = styled$3(FormControl$1, {
   slot: "Root",
   overridesResolver: (props, styles2) => styles2.root
 })({});
-const TextField = /* @__PURE__ */ react.exports.forwardRef(function TextField2(inProps, ref) {
+const TextField = /* @__PURE__ */ React.forwardRef(function TextField2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiTextField"
@@ -18538,7 +18542,7 @@ const TextField = /* @__PURE__ */ react.exports.forwardRef(function TextField2(i
     if (label) {
       var _InputLabelProps$requ;
       const displayRequired = (_InputLabelProps$requ = InputLabelProps == null ? void 0 : InputLabelProps.required) != null ? _InputLabelProps$requ : required;
-      InputMore.label = /* @__PURE__ */ jsxs(react.exports.Fragment, {
+      InputMore.label = /* @__PURE__ */ jsxs(React.Fragment, {
         children: [label, displayRequired && "\xA0*"]
       });
     }
@@ -19106,7 +19110,7 @@ var main = { exports: {} };
         var assign = __webpack_require__(10);
         var ReactPropTypesSecret = __webpack_require__(11);
         var checkPropTypes = __webpack_require__(12);
-        module2.exports = function(isValidElement, throwOnDirectAccess) {
+        module2.exports = function(isValidElement2, throwOnDirectAccess) {
           var ITERATOR_SYMBOL = typeof Symbol === "function" && Symbol.iterator;
           var FAUX_ITERATOR_SYMBOL = "@@iterator";
           function getIteratorFn(maybeIterable) {
@@ -19210,7 +19214,7 @@ var main = { exports: {} };
           function createElementTypeChecker() {
             function validate(props, propName, componentName, location, propFullName) {
               var propValue = props[propName];
-              if (!isValidElement(propValue)) {
+              if (!isValidElement2(propValue)) {
                 var propType = getPropType(propValue);
                 return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + propType + "` supplied to `" + componentName + "`, expected a single ReactElement."));
               }
@@ -19353,7 +19357,7 @@ var main = { exports: {} };
                 if (Array.isArray(propValue)) {
                   return propValue.every(isNode);
                 }
-                if (propValue === null || isValidElement(propValue)) {
+                if (propValue === null || isValidElement2(propValue)) {
                   return true;
                 }
                 var iteratorFn = getIteratorFn(propValue);
@@ -19614,7 +19618,7 @@ var main = { exports: {} };
       };
     },
     function(module2, exports) {
-      module2.exports = react.exports;
+      module2.exports = React__default;
     },
     function(module2, exports) {
       var simpleIsEqual = function simpleIsEqual2(a, b2) {
@@ -19920,20 +19924,20 @@ var lunr$1 = { exports: {} };
       var stackLength = this._stack.length;
       for (var i = 0; i < stackLength; i++) {
         var fn2 = this._stack[i];
-        var memo = [];
+        var memo2 = [];
         for (var j = 0; j < tokens.length; j++) {
           var result = fn2(tokens[j], j, tokens);
           if (result === null || result === void 0 || result === "")
             continue;
           if (Array.isArray(result)) {
             for (var k2 = 0; k2 < result.length; k2++) {
-              memo.push(result[k2]);
+              memo2.push(result[k2]);
             }
           } else {
-            memo.push(result);
+            memo2.push(result);
           }
         }
-        tokens = memo;
+        tokens = memo2;
       }
       return tokens;
     };
@@ -20218,9 +20222,9 @@ var lunr$1 = { exports: {} };
      * Copyright (C) 2020 Oliver Nightingale
      */
     lunr2.generateStopWordFilter = function(stopWords) {
-      var words = stopWords.reduce(function(memo, stopWord) {
-        memo[stopWord] = stopWord;
-        return memo;
+      var words = stopWords.reduce(function(memo2, stopWord) {
+        memo2[stopWord] = stopWord;
+        return memo2;
       }, {});
       return function(token) {
         if (token && words[token.toString()] !== token.toString())
@@ -21584,19 +21588,19 @@ const SearchOverlay = ({
 }) => {
   const show = useLayoutObservableState(show$);
   const handleClose = () => show$.next(false);
-  const inputRef = react.exports.useRef();
+  const inputRef = useRef();
   const navigate = useNavigate();
   const params = useParams();
   const [searchAll, searchAll$] = useObservableAndState(() => new ValueSubject(true));
   const query$ = useObservable(() => new ValueSubject(""));
   const searchProject$ = useObservable((inputs$) => combineLatest([inputs$, searchAll$]).pipe(map(([inputs, searchAll2]) => !searchAll2 ? inputs[0].projectSlug : void 0)), [params]);
   const [hits] = useObservableState((input$) => combineLatest([query$, searchProject$]).pipe(debounceTime(300), map(([query, searchProject]) => searchDocuments(query, searchProject)), startWith([])));
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (show$.value !== false) {
       show$.next(false);
     }
   }, [params]);
-  const onChange = react.exports.useCallback((e2, option) => {
+  const onChange = useCallback((e2, option) => {
     if (option instanceof Object) {
       navigate(`/docs/${option.projectSlug}/${option.slug}`, {
         replace: true
@@ -21681,7 +21685,7 @@ const SearchOverlay = ({
       BackdropProps: {
         timeout: 500
       },
-      children: show ? renderSearch() : /* @__PURE__ */ jsx(Fragment, {})
+      children: show ? renderSearch() : /* @__PURE__ */ jsx(Fragment$1, {})
     })
   });
 };
@@ -21757,7 +21761,7 @@ const NavMenu = ({
   children,
   tooltip
 }) => {
-  const [anchorEl, setAnchorEl] = react.exports.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.target);
@@ -21765,7 +21769,7 @@ const NavMenu = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  return (items == null ? void 0 : items.length) > 0 ? /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return (items == null ? void 0 : items.length) > 0 ? /* @__PURE__ */ jsxs(Fragment, {
     children: [/* @__PURE__ */ jsx(Tooltip$1, {
       title: tooltip,
       children: /* @__PURE__ */ jsx(NavButton, {
@@ -21805,7 +21809,7 @@ const NavMenu = ({
         children: label
       }, key))
     })]
-  }) : /* @__PURE__ */ jsx(Fragment, {});
+  }) : /* @__PURE__ */ jsx(Fragment$1, {});
 };
 const FavMenu = () => {
   var _a2;
@@ -22050,7 +22054,7 @@ const CollapseWrapperInner = styled$3("div", {
   width: "auto",
   height: "100%"
 }));
-const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inProps, ref) {
+const Collapse = /* @__PURE__ */ React.forwardRef(function Collapse2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiCollapse"
@@ -22080,18 +22084,18 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
   });
   const classes = useUtilityClasses$4(ownerState);
   const theme2 = useTheme();
-  const timer = react.exports.useRef();
-  const wrapperRef = react.exports.useRef(null);
-  const autoTransitionDuration = react.exports.useRef();
+  const timer = React.useRef();
+  const wrapperRef = React.useRef(null);
+  const autoTransitionDuration = React.useRef();
   const collapsedSize = typeof collapsedSizeProp === "number" ? `${collapsedSizeProp}px` : collapsedSizeProp;
   const isHorizontal = orientation === "horizontal";
   const size = isHorizontal ? "width" : "height";
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     return () => {
       clearTimeout(timer.current);
     };
   }, []);
-  const nodeRef = react.exports.useRef(null);
+  const nodeRef = React.useRef(null);
   const handleRef = useForkRef(ref, nodeRef);
   const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
     if (callback) {
@@ -22232,7 +22236,7 @@ const Collapse = /* @__PURE__ */ react.exports.forwardRef(function Collapse2(inP
 });
 Collapse.muiSupportAuto = true;
 var Collapse$1 = Collapse;
-const TreeViewContext = /* @__PURE__ */ react.exports.createContext({});
+const TreeViewContext = /* @__PURE__ */ React.createContext({});
 var TreeViewContext$1 = TreeViewContext;
 const _excluded$5 = ["element"];
 function findIndex(array, comp) {
@@ -22259,10 +22263,10 @@ function binaryFindElement(array, element) {
   }
   return start2;
 }
-const DescendantContext = /* @__PURE__ */ react.exports.createContext({});
+const DescendantContext = /* @__PURE__ */ React.createContext({});
 function usePrevious$1(value) {
-  const ref = react.exports.useRef(null);
-  react.exports.useEffect(() => {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
     ref.current = value;
   }, [value]);
   return ref.current;
@@ -22270,13 +22274,13 @@ function usePrevious$1(value) {
 const noop$1 = () => {
 };
 function useDescendant(descendant) {
-  const [, forceUpdate] = react.exports.useState();
+  const [, forceUpdate] = React.useState();
   const {
     registerDescendant = noop$1,
     unregisterDescendant = noop$1,
     descendants = [],
     parentId = null
-  } = react.exports.useContext(DescendantContext);
+  } = React.useContext(DescendantContext);
   const index2 = findIndex(descendants, (item) => item.element === descendant.element);
   const previousDescendants = usePrevious$1(descendants);
   const someDescendantsHaveChanged = descendants.some((newDescendant, position) => {
@@ -22304,8 +22308,8 @@ function DescendantProvider(props) {
     children,
     id
   } = props;
-  const [items, set] = react.exports.useState([]);
-  const registerDescendant = react.exports.useCallback((_ref) => {
+  const [items, set] = React.useState([]);
+  const registerDescendant = React.useCallback((_ref) => {
     let {
       element
     } = _ref, other = _objectWithoutPropertiesLoose$1(_ref, _excluded$5);
@@ -22334,10 +22338,10 @@ function DescendantProvider(props) {
       return newItems;
     });
   }, []);
-  const unregisterDescendant = react.exports.useCallback((element) => {
+  const unregisterDescendant = React.useCallback((element) => {
     set((oldItems) => oldItems.filter((item) => element !== item.element));
   }, []);
-  const value = react.exports.useMemo(() => ({
+  const value = React.useMemo(() => ({
     descendants: items,
     registerDescendant,
     unregisterDescendant,
@@ -22360,7 +22364,7 @@ function useTreeItem(nodeId) {
     selectNode,
     selectRange,
     toggleExpansion
-  } = react.exports.useContext(TreeViewContext$1);
+  } = React.useContext(TreeViewContext$1);
   const expandable = isExpandable ? isExpandable(nodeId) : false;
   const expanded = isExpanded ? isExpanded(nodeId) : false;
   const focused = isFocused ? isFocused(nodeId) : false;
@@ -22412,7 +22416,7 @@ function useTreeItem(nodeId) {
   };
 }
 const _excluded$4 = ["classes", "className", "displayIcon", "expansionIcon", "icon", "label", "nodeId", "onClick", "onMouseDown"];
-const TreeItemContent = /* @__PURE__ */ react.exports.forwardRef(function TreeItemContent2(props, ref) {
+const TreeItemContent = /* @__PURE__ */ React.forwardRef(function TreeItemContent2(props, ref) {
   const {
     classes,
     className,
@@ -22566,7 +22570,7 @@ const TreeItemGroup = styled$3(Collapse$1, {
   padding: 0,
   marginLeft: 17
 });
-const TreeItem = /* @__PURE__ */ react.exports.forwardRef(function TreeItem2(inProps, ref) {
+const TreeItem = /* @__PURE__ */ React.forwardRef(function TreeItem2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiTreeItem"
@@ -22603,17 +22607,17 @@ const TreeItem = /* @__PURE__ */ react.exports.forwardRef(function TreeItem2(inP
     registerNode,
     unregisterNode,
     treeId
-  } = react.exports.useContext(TreeViewContext$1);
+  } = React.useContext(TreeViewContext$1);
   let id = null;
   if (idProp != null) {
     id = idProp;
   } else if (treeId && nodeId) {
     id = `${treeId}-${nodeId}`;
   }
-  const [treeitemElement, setTreeitemElement] = react.exports.useState(null);
-  const contentRef = react.exports.useRef(null);
+  const [treeitemElement, setTreeitemElement] = React.useState(null);
+  const contentRef = React.useRef(null);
   const handleRef = useForkRef(setTreeitemElement, ref);
-  const descendant = react.exports.useMemo(() => ({
+  const descendant = React.useMemo(() => ({
     element: treeitemElement,
     id: nodeId
   }), [nodeId, treeitemElement]);
@@ -22647,7 +22651,7 @@ const TreeItem = /* @__PURE__ */ react.exports.forwardRef(function TreeItem2(inP
   } else {
     displayIcon = endIcon || contextIcons.defaultEndIcon;
   }
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (registerNode && unregisterNode && index2 !== -1) {
       registerNode({
         id: nodeId,
@@ -22663,7 +22667,7 @@ const TreeItem = /* @__PURE__ */ react.exports.forwardRef(function TreeItem2(inP
     }
     return void 0;
   }, [registerNode, unregisterNode, parentId, index2, nodeId, expandable, disabledProp, id]);
-  react.exports.useEffect(() => {
+  React.useEffect(() => {
     if (mapFirstChar && unMapFirstChar && label) {
       mapFirstChar(nodeId, contentRef.current.textContent.substring(0, 1).toLowerCase());
       return () => {
@@ -22777,7 +22781,7 @@ function noopSelection() {
 }
 const defaultDefaultExpanded = [];
 const defaultDefaultSelected = [];
-const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inProps, ref) {
+const TreeView = /* @__PURE__ */ React.forwardRef(function TreeView2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiTreeView"
@@ -22815,11 +22819,11 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
   });
   const classes = useUtilityClasses$2(ownerState);
   const treeId = useId(idProp);
-  const treeRef = react.exports.useRef(null);
+  const treeRef = React.useRef(null);
   const handleRef = useForkRef(treeRef, ref);
-  const [focusedNodeId, setFocusedNodeId] = react.exports.useState(null);
-  const nodeMap = react.exports.useRef({});
-  const firstCharMap = react.exports.useRef({});
+  const [focusedNodeId, setFocusedNodeId] = React.useState(null);
+  const nodeMap = React.useRef({});
+  const firstCharMap = React.useRef({});
   const [expanded, setExpandedState] = useControlled({
     controlled: expandedProp,
     default: defaultExpanded,
@@ -22832,10 +22836,10 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
     name: "TreeView",
     state: "selected"
   });
-  const isExpanded = react.exports.useCallback((id) => Array.isArray(expanded) ? expanded.indexOf(id) !== -1 : false, [expanded]);
-  const isExpandable = react.exports.useCallback((id) => nodeMap.current[id] && nodeMap.current[id].expandable, []);
-  const isSelected = react.exports.useCallback((id) => Array.isArray(selected) ? selected.indexOf(id) !== -1 : selected === id, [selected]);
-  const isDisabled = react.exports.useCallback((id) => {
+  const isExpanded = React.useCallback((id) => Array.isArray(expanded) ? expanded.indexOf(id) !== -1 : false, [expanded]);
+  const isExpandable = React.useCallback((id) => nodeMap.current[id] && nodeMap.current[id].expandable, []);
+  const isSelected = React.useCallback((id) => Array.isArray(selected) ? selected.indexOf(id) !== -1 : selected === id, [selected]);
+  const isDisabled = React.useCallback((id) => {
     let node = nodeMap.current[id];
     if (!node) {
       return false;
@@ -23014,9 +23018,9 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
       }
     }
   };
-  const lastSelectedNode = react.exports.useRef(null);
-  const lastSelectionWasRange = react.exports.useRef(false);
-  const currentRangeSelection = react.exports.useRef([]);
+  const lastSelectedNode = React.useRef(null);
+  const lastSelectionWasRange = React.useRef(false);
+  const currentRangeSelection = React.useRef([]);
   const handleRangeArrowSelect = (event, nodes) => {
     let base = selected.slice();
     const {
@@ -23161,7 +23165,7 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
       end: getLastNode()
     });
   };
-  const registerNode = react.exports.useCallback((node) => {
+  const registerNode = React.useCallback((node) => {
     const {
       id,
       index: index2,
@@ -23179,7 +23183,7 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
       disabled
     };
   }, []);
-  const unregisterNode = react.exports.useCallback((id) => {
+  const unregisterNode = React.useCallback((id) => {
     const newMap = _extends$3({}, nodeMap.current);
     delete newMap[id];
     nodeMap.current = newMap;
@@ -23190,10 +23194,10 @@ const TreeView = /* @__PURE__ */ react.exports.forwardRef(function TreeView2(inP
       return oldFocusedNodeId;
     });
   }, []);
-  const mapFirstChar = react.exports.useCallback((id, firstChar) => {
+  const mapFirstChar = React.useCallback((id, firstChar) => {
     firstCharMap.current[id] = firstChar;
   }, []);
-  const unMapFirstChar = react.exports.useCallback((id) => {
+  const unMapFirstChar = React.useCallback((id) => {
     const newMap = _extends$3({}, firstCharMap.current);
     delete newMap[id];
     firstCharMap.current = newMap;
@@ -23485,7 +23489,7 @@ const FabRoot = styled$3(ButtonBase$1, {
     }
   }
 }));
-const Fab = /* @__PURE__ */ react.exports.forwardRef(function Fab2(inProps, ref) {
+const Fab = /* @__PURE__ */ React.forwardRef(function Fab2(inProps, ref) {
   const props = useThemeProps({
     props: inProps,
     name: "MuiFab"
@@ -23534,7 +23538,7 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getNativeSelectUtilityClasses, classes);
 };
 const defaultInput = /* @__PURE__ */ jsx(Input$1, {});
-const NativeSelect = /* @__PURE__ */ react.exports.forwardRef(function NativeSelect2(inProps, ref) {
+const NativeSelect = /* @__PURE__ */ React.forwardRef(function NativeSelect2(inProps, ref) {
   const props = useThemeProps({
     name: "MuiNativeSelect",
     props: inProps
@@ -23558,7 +23562,7 @@ const NativeSelect = /* @__PURE__ */ react.exports.forwardRef(function NativeSel
   });
   const classes = useUtilityClasses(ownerState);
   const otherClasses = _objectWithoutPropertiesLoose$1(classesProp, _excluded2);
-  return /* @__PURE__ */ react.exports.cloneElement(input, _extends$3({
+  return /* @__PURE__ */ React.cloneElement(input, _extends$3({
     inputComponent: NativeSelectInput$1,
     inputProps: _extends$3({
       children,
@@ -23589,7 +23593,7 @@ function useMediaQuery(queryInput, options = {}) {
   });
   let query = typeof queryInput === "function" ? queryInput(theme2) : queryInput;
   query = query.replace(/^@media( ?)/m, "");
-  const [match, setMatch] = react.exports.useState(() => {
+  const [match, setMatch] = React.useState(() => {
     if (noSsr && supportMatchMedia) {
       return matchMedia(query).matches;
     }
@@ -23618,7 +23622,7 @@ function useMediaQuery(queryInput, options = {}) {
   }, [query, matchMedia, supportMatchMedia]);
   return match;
 }
-const RenderTree = React.memo(({
+const RenderTree = React__default.memo(({
   content
 }) => {
   const renderContent = (contentIn) => {
@@ -23630,7 +23634,7 @@ const RenderTree = React.memo(({
       }, item.slug);
     });
   };
-  return /* @__PURE__ */ jsx(react.exports.Fragment, {
+  return /* @__PURE__ */ jsx(Fragment, {
     children: content.map((item) => {
       return /* @__PURE__ */ jsx(TreeItem$1, {
         nodeId: item.slug,
@@ -23759,7 +23763,7 @@ function Sidebar({
   mode,
   onProjectSelect
 }) {
-  const [expanded, setExpanded] = react.exports.useState([]);
+  const [expanded, setExpanded] = useState([]);
   const params = useParams();
   const handleToggle = (event, nodeIds) => {
     if (event.target.tagName === "svg") {
@@ -23768,14 +23772,14 @@ function Sidebar({
   };
   const [projects] = useObservableAndState(() => projects$);
   const [project, projectObservable$] = useObservableAndState((inputs$) => combineLatest(projects$, inputs$).pipe(map(([projects2, [currentProject]]) => projects2.get(currentProject))), [params.projectSlug]);
-  const handleExpandClick = react.exports.useCallback(() => {
+  const handleExpandClick = useCallback(() => {
     if (project) {
       setExpanded((oldExpanded) => oldExpanded.length === 0 ? Array.from(contents$.value.get(project.slug).values()).map((i) => i.slug) : []);
     }
   }, [project]);
   const navigate = useNavigate();
   const contents = useObservableState(contents$);
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (project) {
       const content = contents.get(project.slug);
       if (content) {
@@ -23784,7 +23788,7 @@ function Sidebar({
     }
   }, [project, contents]);
   if (mode === 0) {
-    react.exports.useEffect(() => {
+    useEffect(() => {
       if (!params.contentSlug && !params.contentSlug && contents.get(params.projectSlug)) {
         let initDoc = "";
         for (const content of contents.get(params.projectSlug).values()) {
@@ -23801,8 +23805,8 @@ function Sidebar({
   }
   const theme2 = useTheme();
   const matches = useMediaQuery(theme2.breakpoints.down("sm"));
-  const [showMobileSidebar, setShowMobileSidebar] = react.exports.useState(false);
-  react.exports.useLayoutEffect(() => {
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  useLayoutEffect(() => {
     if (!matches) {
       setShowMobileSidebar(false);
     }
@@ -23878,14 +23882,14 @@ const Project = () => {
   const params = useParams();
   const navigate = useNavigate();
   const contents = useObservableState(contents$);
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (!params.projectSlug && contents.size > 0) {
       navigate(`/docs/${Array.from(contents.keys())[0]}`, {
         replace: true
       });
     }
   }, [params, contents]);
-  return /* @__PURE__ */ jsx(Fragment, {
+  return /* @__PURE__ */ jsx(Fragment$1, {
     children: params.contentSlug && /* @__PURE__ */ jsx(Content, {})
   });
 };
@@ -23894,14 +23898,14 @@ const Layout$1 = ({
 }) => {
   const params = useParams();
   const navigate = useNavigate();
-  const onNodeSelect = react.exports.useCallback((nodeId) => {
+  const onNodeSelect = useCallback((nodeId) => {
     if (documents$.value.has(nodeId)) {
       navigate(`/docs/${params.projectSlug}/${nodeId}`, {
         replace: true
       });
     }
   }, [params]);
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(Fragment, {
     children: [/* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsx(Container$1, {
       maxWidth: "lg",
       sx: {
@@ -24482,7 +24486,7 @@ const loadingStyles = {
 function Loading({
   content
 }) {
-  return /* @__PURE__ */ React.createElement("div", {
+  return /* @__PURE__ */ React__default.createElement("div", {
     style: loadingStyles
   }, content);
 }
@@ -24508,14 +24512,14 @@ function MonacoContainer$1({
   className,
   wrapperProps
 }) {
-  return /* @__PURE__ */ React.createElement("section", _extends({
+  return /* @__PURE__ */ React__default.createElement("section", _extends({
     style: __spreadProps(__spreadValues({}, styles.wrapper), {
       width,
       height
     })
-  }, wrapperProps), !isEditorReady && /* @__PURE__ */ React.createElement(Loading, {
+  }, wrapperProps), !isEditorReady && /* @__PURE__ */ React__default.createElement(Loading, {
     content: loading
-  }), /* @__PURE__ */ React.createElement("div", {
+  }), /* @__PURE__ */ React__default.createElement("div", {
     ref: _ref,
     style: __spreadValues(__spreadValues({}, styles.fullWidth), !isEditorReady && styles.hide),
     className
@@ -24529,13 +24533,13 @@ MonacoContainer$1.propTypes = {
   className: PropTypes.string,
   wrapperProps: PropTypes.object
 };
-var MonacoContainer = /* @__PURE__ */ react.exports.memo(MonacoContainer$1);
+var MonacoContainer = /* @__PURE__ */ memo(MonacoContainer$1);
 function useMount(effect2) {
-  react.exports.useEffect(effect2, []);
+  useEffect(effect2, []);
 }
 function useUpdate(effect2, deps, applyChanges = true) {
-  const isInitialMount = react.exports.useRef(true);
-  react.exports.useEffect(isInitialMount.current || !applyChanges ? () => {
+  const isInitialMount = useRef(true);
+  useEffect(isInitialMount.current || !applyChanges ? () => {
     isInitialMount.current = false;
   } : effect2, deps);
 }
@@ -24577,8 +24581,8 @@ function isUndefined(input) {
   onMount: PropTypes.func
 });
 function usePrevious(value) {
-  const ref = react.exports.useRef();
-  react.exports.useEffect(() => {
+  const ref = useRef();
+  useEffect(() => {
     ref.current = value;
   }, [value]);
   return ref.current;
@@ -24607,15 +24611,15 @@ function Editor$1({
   onChange,
   onValidate
 }) {
-  const [isEditorReady, setIsEditorReady] = react.exports.useState(false);
-  const [isMonacoMounting, setIsMonacoMounting] = react.exports.useState(true);
-  const monacoRef = react.exports.useRef(null);
-  const editorRef = react.exports.useRef(null);
-  const containerRef = react.exports.useRef(null);
-  const onMountRef = react.exports.useRef(onMount);
-  const beforeMountRef = react.exports.useRef(beforeMount);
-  const subscriptionRef = react.exports.useRef(null);
-  const valueRef = react.exports.useRef(value);
+  const [isEditorReady, setIsEditorReady] = useState(false);
+  const [isMonacoMounting, setIsMonacoMounting] = useState(true);
+  const monacoRef = useRef(null);
+  const editorRef = useRef(null);
+  const containerRef = useRef(null);
+  const onMountRef = useRef(onMount);
+  const beforeMountRef = useRef(beforeMount);
+  const subscriptionRef = useRef(null);
+  const valueRef = useRef(value);
   const previousPath = usePrevious(path);
   useMount(() => {
     const cancelable = loader.init();
@@ -24658,7 +24662,7 @@ function Editor$1({
   useUpdate(() => {
     monacoRef.current.editor.setTheme(theme2);
   }, [theme2], isEditorReady);
-  const createEditor = react.exports.useCallback(() => {
+  const createEditor = useCallback(() => {
     beforeMountRef.current(monacoRef.current);
     const autoCreatedModelPath = path || defaultPath;
     const defaultModel = getOrCreateModel(monacoRef.current, value || defaultValue, defaultLanguage || language, autoCreatedModelPath);
@@ -24670,16 +24674,16 @@ function Editor$1({
     monacoRef.current.editor.setTheme(theme2);
     setIsEditorReady(true);
   }, [defaultValue, defaultLanguage, defaultPath, value, language, path, options, overrideServices, saveViewState, theme2]);
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (isEditorReady) {
       onMountRef.current(editorRef.current, monacoRef.current);
     }
   }, [isEditorReady]);
-  react.exports.useEffect(() => {
+  useEffect(() => {
     !isMonacoMounting && !isEditorReady && createEditor();
   }, [isMonacoMounting, isEditorReady, createEditor]);
   valueRef.current = value;
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (isEditorReady && onChange) {
       var _subscriptionRef$curr, _editorRef$current;
       (_subscriptionRef$curr = subscriptionRef.current) === null || _subscriptionRef$curr === void 0 ? void 0 : _subscriptionRef$curr.dispose();
@@ -24691,7 +24695,7 @@ function Editor$1({
       });
     }
   }, [isEditorReady, onChange]);
-  react.exports.useEffect(() => {
+  useEffect(() => {
     if (isEditorReady) {
       const changeMarkersListener = monacoRef.current.editor.onDidChangeMarkers((uris) => {
         var _editorRef$current$ge;
@@ -24769,7 +24773,7 @@ Editor$1.defaultProps = {
   onMount: noop,
   onValidate: noop
 };
-var index = /* @__PURE__ */ react.exports.memo(Editor$1);
+var index = /* @__PURE__ */ memo(Editor$1);
 const EditorRenderer = ({
   setHeight,
   setMDX,
@@ -24828,12 +24832,12 @@ const MAX_FLEX_DIFF = 4;
 const MarkdownEditor = ({
   initial
 }) => {
-  const [mdx, setMDX] = react.exports.useState(initial);
-  const [height, setHeight] = react.exports.useState(0);
-  const [editorFlex, setEditorFlex] = react.exports.useState(-1);
-  const boxRef = react.exports.useRef();
-  const editorRef = react.exports.useRef();
-  const saveMDX = react.exports.useCallback(() => {
+  const [mdx, setMDX] = useState(initial);
+  const [height, setHeight] = useState(0);
+  const [editorFlex, setEditorFlex] = useState(-1);
+  const boxRef = useRef();
+  const editorRef = useRef();
+  const saveMDX = useCallback(() => {
     const element = document.createElement("a");
     element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(mdx));
     element.setAttribute("download", "document.mdx");
@@ -24844,14 +24848,14 @@ const MarkdownEditor = ({
   }, [mdx]);
   const navigate = useNavigate();
   const params = useParams();
-  const onProjectSelected = react.exports.useCallback((projectSlug) => {
+  const onProjectSelected = useCallback((projectSlug) => {
     var _a2;
     navigate(`/editor/${projectSlug}/${(_a2 = params.contentSlug) != null ? _a2 : ""}`);
   }, [params]);
-  const [showPreview, setShowPreview] = react.exports.useState(true);
+  const [showPreview, setShowPreview] = useState(true);
   return /* @__PURE__ */ jsxs(EditorWrapper, {
     children: [/* @__PURE__ */ jsx(EditorHeader, {
-      action: /* @__PURE__ */ jsxs(React.Fragment, {
+      action: /* @__PURE__ */ jsxs(React__default.Fragment, {
         children: [/* @__PURE__ */ jsx(IconButton$1, {
           sx: {
             color: "inherit"
@@ -24976,7 +24980,7 @@ const DocumentEditor = () => {
     }));
   }, [params]);
   const shouldHaveDocument = !!params.contentSlug;
-  return /* @__PURE__ */ jsx(Fragment, {
+  return /* @__PURE__ */ jsx(Fragment$1, {
     children: shouldHaveDocument && !document2 ? /* @__PURE__ */ jsx(CircularProgress, {}) : /* @__PURE__ */ jsx(MarkdownEditor, {
       initial: shouldHaveDocument ? document2.mdx : "# hello world"
     }, shouldHaveDocument ? document2.mdx : "# hello world")
@@ -24985,7 +24989,7 @@ const DocumentEditor = () => {
 const Layout = ({
   children
 }) => {
-  return /* @__PURE__ */ jsxs(react.exports.Fragment, {
+  return /* @__PURE__ */ jsxs(Fragment, {
     children: [/* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsx(Container$1, {
       sx: {
         marginTop: 3,

@@ -16,6 +16,15 @@ export default defineConfig({
     minify: true,
     rollupOptions: {
       plugins: [del({ targets: "dist/*", hook: "generateBundle" })],
+      external: ["react", "react-dom"],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
     },
   },
 });

@@ -3,7 +3,7 @@
     "version": "0.1.7",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build && npx uglifyjs-folder dist -eo dist/min"
+        "build": "tsc && vite build && npx uglifyjs-folder dist -eo dist/min -x .js "
     },
     "dependencies": {
         "@emotion/css": "^11.5.0",

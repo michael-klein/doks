@@ -44428,3 +44428,4 @@ const CodeSyntaxHighlighter = ({
   });
 };
 export { CodeSyntaxHighlighter, CodeSyntaxHighlighter as default };
+//# sourceMappingURL=syntax_highlighter.js.map

@@ -7,6 +7,7 @@ import del from "rollup-plugin-delete";
 export default defineConfig({
   plugins: [react()],
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, "src/main.tsx"),
       name: "MyLib",

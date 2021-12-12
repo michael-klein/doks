@@ -88,6 +88,15 @@ const loadProjects = async (
       );
       let contents: Contents[];
       if (cached.lastModified === lastModified) {
+        if (mode === "docs" && !currentContentSlug) {
+          for (const item of cached.contents) {
+            if (!currentContentSlug && !item.isOnlyHeading) {
+              currentContentSlug = item.slug;
+              shouldNavigate = true;
+              break;
+            }
+          }
+        }
         addOrUpdateManyContents(cached.contents, projectSlug);
         contents = cached.contents;
       } else {
@@ -127,12 +136,14 @@ const loadProjects = async (
           replace: true,
         });
       }
-      await loadContentsDocument(
-        { ...firstContent },
-        project,
-        projectSlug,
-        deletedPaths
-      );
+      if (firstContent) {
+        await loadContentsDocument(
+          { ...firstContent },
+          project,
+          projectSlug,
+          deletedPaths
+        );
+      }
       await Promise.all(
         contents.map((c) =>
           loadContentsDocument({ ...c }, project, projectSlug, deletedPaths)
@@ -154,7 +165,15 @@ const loadProjects = async (
 };
 
 let startedLoading = false;
-
+const getFirstRealContent = (contents: Map<string, Contents>) => {
+  for (const content of contents.values()) {
+    if (content.isOnlyHeading) {
+      continue;
+    }
+    return content;
+  }
+  return undefined;
+};
 export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
   const { projects } = useDocOptions();
   const params = useParams();
@@ -169,6 +188,26 @@ export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
         mode,
         navigate
       );
+    } else {
+      if (mode === "docs" && (!params.projectSlug || !params.contentSlug)) {
+        let currentContents: Contents;
+        if (params.projectSlug) {
+          currentContents = getFirstRealContent(
+            contents$.value.get(params.projectSlug)
+          );
+        } else {
+          for (const contents of contents$.value.values()) {
+            currentContents = getFirstRealContent(contents);
+            if (currentContents) {
+              break;
+            }
+          }
+        }
+
+        navigate(`/${currentContents.projectSlug}/${currentContents.slug}/`, {
+          replace: true,
+        });
+      }
     }
   }, []);
   return <></>;

@@ -6,12 +6,13 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
 import { MarkdownRenderer } from "./markdown_renderer";
+import { formatDate } from "../utils/format_date";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     maxWidth: "100%",
@@ -49,7 +50,7 @@ export const Content = () => {
               </IconButton>
             }
             title={document.name}
-            subheader={document.lastModified}
+            subheader={formatDate(document.lastModified)}
           />
         )}
         <CardContent sx={{ display: "block", overflow: "auto" }}>

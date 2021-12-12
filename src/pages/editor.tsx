@@ -1,10 +1,12 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
-import React, { Fragment, lazy, ReactChild } from "react";
+import { join } from "path-browserify";
+import React, { Fragment, lazy, ReactChild, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
 import { MarkdownEditor } from "../components/markdown_editor";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
+import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
 const Navbar = lazy(() => import("../components/navbar"));
@@ -22,6 +24,12 @@ const DocumentEditor = () => {
     [params]
   );
   const shouldHaveDocument = !!params.contentSlug;
+  const path: string = useMemo(() => {
+    if (document) {
+      return join(projects$.value.get(params.projectSlug).path, document.path);
+    }
+    return undefined;
+  }, [document, params]);
   return (
     <>
       {shouldHaveDocument && !document ? (
@@ -30,6 +38,7 @@ const DocumentEditor = () => {
         <MarkdownEditor
           key={shouldHaveDocument ? document.mdx : "# hello world"}
           initial={shouldHaveDocument ? document.mdx : "# hello world"}
+          path={path}
         ></MarkdownEditor>
       )}
     </>

@@ -359,17 +359,11 @@ export function Navbar() {
           </Tooltip>
           <SyntaxMenu />
           <FavMenu />
-          <NavButton aria-label="toggle dark mode">
+          <NavButton aria-label="toggle dark mode" onClick={toggleColorMode}>
             {mode === "light" ? (
-              <Brightness4Icon
-                onClick={toggleColorMode}
-                sx={{ fontSize: 20 }}
-              />
+              <Brightness4Icon sx={{ fontSize: 20 }} />
             ) : (
-              <Brightness7Icon
-                onClick={toggleColorMode}
-                sx={{ fontSize: 20 }}
-              />
+              <Brightness7Icon sx={{ fontSize: 20 }} />
             )}
           </NavButton>
           <SearchInputWrapper

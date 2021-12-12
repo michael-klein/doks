@@ -46,13 +46,15 @@ const createIndex = () => {
 };
 
 export const searchDocuments = (query: string, projectSlug?: string) => {
-  createIndex();
-  const indexToSeach = projectSlug ? projectIndizes.get(projectSlug) : index;
-  if (indexToSeach && query.length > 2) {
-    const result = indexToSeach.search(query).map((result) => {
-      return documents$.value.get(result.ref);
-    });
-    return result;
+  if (query.length > 2) {
+    createIndex();
+    const indexToSeach = projectSlug ? projectIndizes.get(projectSlug) : index;
+    if (indexToSeach) {
+      const result = indexToSeach.search(query).map((result) => {
+        return documents$.value.get(result.ref);
+      });
+      return result;
+    }
   }
   return [];
 };

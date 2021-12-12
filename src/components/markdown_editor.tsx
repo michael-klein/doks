@@ -34,6 +34,10 @@ const EditorHeader = styled(CardHeader)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.primary.dark),
   padding: 2,
   height: "44px",
+  paddingLeft: 10,
+  ".MuiCardHeader-title": {
+    fontSize: "1rem",
+  },
 }));
 
 const ContentBox = styled(Box)({
@@ -50,7 +54,13 @@ const SidebarBox = styled(Box)({
 
 const MAX_FLEX_DIFF = 4;
 
-export const MarkdownEditor = ({ initial }: { initial: string }) => {
+export const MarkdownEditor = ({
+  initial,
+  path,
+}: {
+  initial: string;
+  path: string;
+}) => {
   const [mdx, setMDX] = useState(initial);
   const [height, setHeight] = useState(0);
   const [editorFlex, setEditorFlex] = useState(-1);
@@ -84,6 +94,7 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
   return (
     <EditorWrapper>
       <EditorHeader
+        title={path ?? "New document"}
         action={
           <React.Fragment>
             <IconButton
@@ -137,27 +148,28 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
         {
           <SidebarBox>
             <Suspense fallback={<></>}>
-            <Sidebar
-              mode={"editor"}
-              onNodeSelect={(node) => {
-                const doc = documents$.value.get(node);
-                console.log(doc);
-                const line = editorRef.current.getPosition();
-                const id = { major: 1, minor: 1 };
-                const text = `[${doc.name}](/docs/${doc.projectSlug}/${doc.slug})`;
-                const op = {
-                  identifier: id,
-                  range: {
-                    startLineNumber: line.lineNumber,
-                    endLineNumber: line.lineNumber,
-                  },
-                  text: text,
-                  forceMoveMarkers: true,
-                };
-                editorRef.current.executeEdits("my-source", [op]);
-              }}
-              onProjectSelect={onProjectSelected}
-            ></Sidebar></Suspense>
+              <Sidebar
+                mode={"editor"}
+                onNodeSelect={(node) => {
+                  const doc = documents$.value.get(node);
+                  console.log(doc);
+                  const line = editorRef.current.getPosition();
+                  const id = { major: 1, minor: 1 };
+                  const text = `[${doc.name}](/docs/${doc.projectSlug}/${doc.slug})`;
+                  const op = {
+                    identifier: id,
+                    range: {
+                      startLineNumber: line.lineNumber,
+                      endLineNumber: line.lineNumber,
+                    },
+                    text: text,
+                    forceMoveMarkers: true,
+                  };
+                  editorRef.current.executeEdits("my-source", [op]);
+                }}
+                onProjectSelect={onProjectSelected}
+              ></Sidebar>
+            </Suspense>
           </SidebarBox>
         }
         <Box

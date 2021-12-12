@@ -1,12 +1,14 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
-import React, { Fragment, ReactChild } from "react";
+import React, { Fragment, lazy, ReactChild } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
 import { MarkdownEditor } from "../components/markdown_editor";
-import { Navbar } from "../components/navbar";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { documents$ } from "../store/documents";
+const DocFetcher = lazy(() => import("../components/doc_fetcher"));
+const Navbar = lazy(() => import("../components/navbar"));
+
 const DocumentEditor = () => {
   const params = useParams();
   const [document] = useObservableAndState(
@@ -37,6 +39,7 @@ const DocumentEditor = () => {
 const Layout = ({ children }: { children: ReactChild }) => {
   return (
     <Fragment>
+      <DocFetcher mode="editor"></DocFetcher>
       <Navbar></Navbar>
       <Container
         sx={{
@@ -83,3 +86,4 @@ export const Editor = () => {
     </Routes>
   );
 };
+export default Editor;

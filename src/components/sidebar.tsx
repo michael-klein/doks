@@ -137,10 +137,7 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     },
   },
 }));
-export enum SIDEBAR_MODE {
-  DOCS,
-  EDITOR,
-}
+export type SIDEBAR_MODE = "docs" | "editor";
 
 const RenderTreeWrapper = ({
   projectObservable$,
@@ -171,7 +168,7 @@ const ConditionalCard = ({
   children: any;
   mode: SIDEBAR_MODE;
 }) => {
-  if (mode === SIDEBAR_MODE.EDITOR) {
+  if (mode === "editor") {
     return children;
   }
   return (
@@ -233,28 +230,6 @@ export function Sidebar({
     }
   }, [project, contents]);
 
-  if (mode === SIDEBAR_MODE.DOCS) {
-    useEffect(() => {
-      if (
-        !params.contentSlug &&
-        !params.contentSlug &&
-        contents.get(params.projectSlug)
-      ) {
-        let initDoc = "";
-        for (const content of contents.get(params.projectSlug).values()) {
-          if (!content.isOnlyHeading) {
-            initDoc = content.slug;
-            break;
-          }
-        }
-        navigate(
-          `/docs/${params.projectSlug}/${params.contentSlug || initDoc}`,
-          { replace: true }
-        );
-      }
-    }, [contents, params]);
-  }
-
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -271,7 +246,7 @@ export function Sidebar({
       className={
         (showMobileSidebar ? "show" : "") +
         " " +
-        (mode === SIDEBAR_MODE.EDITOR ? "editor-sidebar" : "docs-sidebar")
+        (mode === "editor" ? "editor-sidebar" : "docs-sidebar")
       }
     >
       <ConditionalCard mode={mode}>
@@ -326,7 +301,7 @@ export function Sidebar({
                 onNodeSelect(nodeId);
               }
             }}
-            selected={mode !== SIDEBAR_MODE.EDITOR ? params.contentSlug : ""}
+            selected={mode !== "editor" ? params.contentSlug : ""}
           >
             <RenderTreeWrapper
               projectObservable$={projectObservable$}
@@ -337,3 +312,4 @@ export function Sidebar({
     </SidebarWrapper>
   );
 }
+export default Sidebar;

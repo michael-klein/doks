@@ -4,9 +4,9 @@ declare module "doks" {
     name: string;
   }
   export interface DocOptions {
-    title?: string;
+    title?: string | JSX.Element | React.ReactNode;
     targetNode?: HTMLElement;
     projects: DocOptionsProject[];
   }
-  export default function (options: DocOptions): void;
+  export function docs(options: DocOptions): void;
 }

@@ -59,3 +59,4 @@ export const Content = () => {
     </ContentWrapper>
   );
 };
+export default Content;

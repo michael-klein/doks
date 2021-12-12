@@ -1,12 +1,12 @@
 import { ThemeProvider } from "@mui/material/styles";
-import React from "react";
+import { lazy } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "./css/reset";
 import { theme } from "./css/theme";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { DocOptions } from "./interfaces";
-import { Docs } from "./pages/docs";
-import { Editor } from "./pages/editor";
+const Docs = lazy(() => import("./pages/docs"));
+const Editor = lazy(() => import("./pages/editor"));
 
 export const Doks = (options: DocOptions) => {
   return (

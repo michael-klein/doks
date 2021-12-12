@@ -1,14 +1,25 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { useObservableState } from "observable-hooks";
-import React, { Fragment, ReactChild, useCallback, useEffect } from "react";
+import {
+  Fragment,
+  lazy,
+  ReactChild,
+  Suspense,
+  useCallback,
+  useEffect,
+} from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { Content } from "../components/content";
 import { Footer } from "../components/footer";
-import { Navbar } from "../components/navbar";
-import { Sidebar, SIDEBAR_MODE } from "../components/sidebar";
 import { contents$ } from "../store/contents";
 import { documents$ } from "../store/documents";
+
+const DocFetcher = lazy(() => import("../components/doc_fetcher"));
+const Sidebar = lazy(() => import("../components/sidebar"));
+const Content = lazy(() => import("../components/content"));
+const Navbar = lazy(() => import("../components/navbar"));
+
 const Project = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -20,7 +31,21 @@ const Project = () => {
       });
     }
   }, [params, contents]);
-  return <>{params.contentSlug && <Content></Content>}</>;
+  return (
+    <>
+      {params.contentSlug && (
+        <Suspense
+          fallback={
+            <CircularProgress
+              sx={{ position: "absolute", top: "50%", left: "50%" }}
+            ></CircularProgress>
+          }
+        >
+          <Content></Content>
+        </Suspense>
+      )}
+    </>
+  );
 };
 
 const Layout = ({ children }: { children: ReactChild }) => {
@@ -38,6 +63,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
   );
   return (
     <Fragment>
+      <DocFetcher mode="docs"></DocFetcher>
       <Navbar></Navbar>
       <Container
         maxWidth="lg"
@@ -51,7 +77,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
               });
             }}
             onNodeSelect={onNodeSelect}
-            mode={SIDEBAR_MODE.DOCS}
+            mode={"docs"}
           ></Sidebar>
           {children}
         </Grid>
@@ -91,3 +117,4 @@ export const Docs = () => {
     </Routes>
   );
 };
+export default Docs;

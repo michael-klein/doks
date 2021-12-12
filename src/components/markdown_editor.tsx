@@ -9,12 +9,12 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
-import React, { useCallback, useRef, useState } from "react";
+import React, { lazy, Suspense, useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { documents$ } from "../store/documents";
 import { EditorRenderer } from "./editor_renderer";
 import { MarkdownRenderer } from "./markdown_renderer";
-import { Sidebar, SIDEBAR_MODE } from "./sidebar";
+const Sidebar = lazy(() => import("./sidebar"));
 
 const EditorWrapper = styled(Card)({
   width: "100%",
@@ -136,8 +136,9 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
       <Box className="editor">
         {
           <SidebarBox>
+            <Suspense fallback={<></>}>
             <Sidebar
-              mode={SIDEBAR_MODE.EDITOR}
+              mode={"editor"}
               onNodeSelect={(node) => {
                 const doc = documents$.value.get(node);
                 console.log(doc);
@@ -156,7 +157,7 @@ export const MarkdownEditor = ({ initial }: { initial: string }) => {
                 editorRef.current.executeEdits("my-source", [op]);
               }}
               onProjectSelect={onProjectSelected}
-            ></Sidebar>
+            ></Sidebar></Suspense>
           </SidebarBox>
         }
         <Box

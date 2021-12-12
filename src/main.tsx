@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import "./css/reset";
 import { DocOptions } from "./interfaces";
 
+
 const Doks = lazy(() => import("./doks"));
 export const docs = (options: DocOptions) => {
   const link = document.createElement("link");

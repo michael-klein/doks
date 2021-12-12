@@ -1,6 +1,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import styled from "@mui/system/styled";
 import { useObservableState } from "observable-hooks";
 import {
   Fragment,
@@ -11,6 +12,7 @@ import {
   useEffect,
 } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { Background } from "../components/background";
 import { Footer } from "../components/footer";
 import { contents$ } from "../store/contents";
 import { documents$ } from "../store/documents";
@@ -47,7 +49,6 @@ const Project = () => {
     </>
   );
 };
-
 const Layout = ({ children }: { children: ReactChild }) => {
   const params = useParams();
   const navigate = useNavigate();
@@ -62,12 +63,16 @@ const Layout = ({ children }: { children: ReactChild }) => {
     [params]
   );
   return (
-    <Fragment>
+    <Background>
       <DocFetcher mode="docs"></DocFetcher>
       <Navbar></Navbar>
       <Container
         maxWidth="lg"
-        sx={{ marginTop: 10, marginBottom: 10, flex: "auto" }}
+        sx={{
+          paddingTop: 10,
+          marginBottom: 10,
+          flex: "auto",
+        }}
       >
         <Grid container spacing={2}>
           <Sidebar
@@ -83,7 +88,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
         </Grid>
       </Container>
       <Footer></Footer>
-    </Fragment>
+    </Background>
   );
 };
 

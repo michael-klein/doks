@@ -1,8 +1,7 @@
-import { ThemeProvider } from "@mui/material/styles";
 import { lazy } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "./css/reset";
-import { theme } from "./css/theme";
+import { DocsThemeProvider } from "./css/theme";
 import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { DocOptions } from "./interfaces";
 const Docs = lazy(() => import("./pages/docs"));
@@ -10,7 +9,7 @@ const Editor = lazy(() => import("./pages/editor"));
 
 export const Doks = (options: DocOptions) => {
   return (
-    <ThemeProvider theme={theme}>
+    <DocsThemeProvider>
       <DocOptionsContextProvider options={options}>
         <HashRouter>
           <Routes>
@@ -20,7 +19,7 @@ export const Doks = (options: DocOptions) => {
           </Routes>
         </HashRouter>
       </DocOptionsContextProvider>
-    </ThemeProvider>
+    </DocsThemeProvider>
   );
 };
 export default Doks;

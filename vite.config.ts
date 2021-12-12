@@ -6,6 +6,7 @@ import del from "rollup-plugin-delete";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: { port: 3004 },
   build: {
     sourcemap: true,
     lib: {

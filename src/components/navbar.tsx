@@ -30,6 +30,9 @@ import {
 import { ValueSubject } from "../utils/value_subject";
 import { codeTheme$ } from "./markdown_renderer";
 import { SearchOverlay } from "./search";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useColorModeContext } from "../css/theme";
 
 const syntaxThemes = [
   "a11yDark",
@@ -320,6 +323,7 @@ export function Navbar() {
   const { title = "documentation" } = useDocOptions();
   const params = useParams();
   const location = useLocation();
+  const { mode, toggleColorMode } = useColorModeContext();
   return (
     <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
       {hasDocumentsFetching && <Progress />}
@@ -355,6 +359,19 @@ export function Navbar() {
           </Tooltip>
           <SyntaxMenu />
           <FavMenu />
+          <NavButton aria-label="toggle dark mode">
+            {mode === "light" ? (
+              <Brightness4Icon
+                onClick={toggleColorMode}
+                sx={{ fontSize: 20 }}
+              />
+            ) : (
+              <Brightness7Icon
+                onClick={toggleColorMode}
+                sx={{ fontSize: 20 }}
+              />
+            )}
+          </NavButton>
           <SearchInputWrapper
             sx={{ cursor: "text" }}
             onClick={(e: React.MouseEvent<HTMLInputElement>) => {

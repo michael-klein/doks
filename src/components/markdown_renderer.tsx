@@ -5,6 +5,7 @@ import { htmdx } from "htmdx";
 import { useObservable, useObservableState } from "observable-hooks";
 import { join } from "path-browserify";
 import React, {
+  createElement,
   lazy,
   memo,
   Suspense,
@@ -91,7 +92,15 @@ const removeVoidElements = (mdx: string) => {
 };
 
 const MDX = memo(
-  ({ mdx, onSaveMDX }: { mdx: string; onSaveMDX: (mdx: string) => void }) => {
+  ({
+    mdx,
+    onSaveMDX,
+    onAfterRender,
+  }: {
+    mdx: string;
+    onSaveMDX: (mdx: string) => void;
+    onAfterRender?: () => void;
+  }) => {
     let i = 0;
     const [theme] = useObservableState(() => codeTheme$);
     const params = useParams();
@@ -124,11 +133,25 @@ const MDX = memo(
     useEffect(() => {
       onSaveMDX(mdx);
     }, [mdx]);
+    useEffect(() => {
+      requestAnimationFrame(() => {
+        onAfterRender?.();
+      });
+    });
+    let hIndex = 0;
     return (
       <>
         {mdx !== undefined ? (
           htmdx(sanitizedMDX, React.createElement, {
             components: {
+              ...[1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo, i) => {
+                memo[`h${i}`] = (props) => {
+                  props = { ...props, id: `heading-` + hIndex };
+                  hIndex++;
+                  return createElement(`h` + i, props);
+                };
+                return memo;
+              }, {}),
               code: (props: any) => {
                 return (
                   <Suspense fallback={props.children}>
@@ -171,9 +194,11 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export const MarkdownRenderer = ({
   mdx,
   isEditor,
+  onAfterRender,
 }: {
   mdx: string;
   isEditor?: boolean;
+  onAfterRender?: () => void;
 }) => {
   const currentMDX$ = useObservable(
     () => new ValueSubject(mdx)
@@ -199,6 +224,7 @@ export const MarkdownRenderer = ({
         }}
       >
         <MDX
+          onAfterRender={onAfterRender}
           mdx={debouncedMDX}
           onSaveMDX={(saveMDX) => {
             saveMDXRef.current = saveMDX;

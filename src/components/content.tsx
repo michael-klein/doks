@@ -6,19 +6,24 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
-import { useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
-import { MarkdownRenderer } from "./markdown_renderer";
 import { formatDate } from "../utils/format_date";
+import { MarkdownRenderer } from "./markdown_renderer";
+import { TableOfContents } from "./table_of_contents";
+import { useParams } from "react-router-dom";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
+  display: "flex",
+  alignItems: "start",
+  flexDirection: "row",
   [theme.breakpoints.down("sm")]: {
     maxWidth: "100%",
     flexBasis: "initial",
   },
 }));
+
 export const Content = () => {
   const params = useParams();
   const document = useObservableState(
@@ -36,6 +41,27 @@ export const Content = () => {
   const toggleFav = useCallback(() => {
     modifyDocument({ ...document, isFavourite: !document.isFavourite });
   }, [document]);
+
+  const contentRef = useRef<HTMLDivElement>();
+  const onAfterRender = useCallback(() => {
+    if (params.headingIndex !== undefined) {
+      const element = contentRef.current?.querySelector(
+        `#heading-${params.headingIndex}`
+      );
+      if (element) {
+        const offset = 60;
+        const bodyRect = window.document.body.getBoundingClientRect().top;
+        const elementRect = element.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+        console.log(offsetPosition);
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [params.headingIndex]);
   return (
     <ContentWrapper item xs={9}>
       <Card
@@ -53,10 +79,35 @@ export const Content = () => {
             subheader={formatDate(document.lastModified)}
           />
         )}
-        <CardContent sx={{ display: "block", overflow: "auto" }}>
-          <MarkdownRenderer mdx={document?.mdx}></MarkdownRenderer>
+        <CardContent
+          ref={contentRef}
+          sx={{ display: "block", overflow: "auto" }}
+        >
+          <MarkdownRenderer
+            mdx={document?.mdx}
+            onAfterRender={onAfterRender}
+          ></MarkdownRenderer>
         </CardContent>
       </Card>
+      {document?.mdx?.includes("#") && (
+        <Card
+          elevation={2}
+          sx={{
+            padding: 2,
+            textAlign: "justify",
+            overflowX: "auto",
+            marginTop: "20px",
+            marginBottom: "20px",
+            marginLeft: "-10px",
+            whiteSpace: "pre",
+            overflow: "visible",
+            position: "sticky",
+            top: "80px",
+          }}
+        >
+          <TableOfContents mdx={document?.mdx}></TableOfContents>
+        </Card>
+      )}
     </ContentWrapper>
   );
 };

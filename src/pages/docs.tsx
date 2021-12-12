@@ -1,20 +1,10 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import styled from "@mui/system/styled";
-import { useObservableState } from "observable-hooks";
-import {
-  Fragment,
-  lazy,
-  ReactChild,
-  Suspense,
-  useCallback,
-  useEffect,
-} from "react";
+import { lazy, ReactChild, Suspense, useCallback } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/background";
 import { Footer } from "../components/footer";
-import { contents$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
@@ -24,15 +14,6 @@ const Navbar = lazy(() => import("../components/navbar"));
 
 const Project = () => {
   const params = useParams();
-  const navigate = useNavigate();
-  const contents = useObservableState(contents$);
-  useEffect(() => {
-    if (!params.projectSlug && contents.size > 0) {
-      navigate(`/docs/${Array.from(contents.keys())[0]}`, {
-        replace: true,
-      });
-    }
-  }, [params, contents]);
   return (
     <>
       {params.contentSlug && (
@@ -105,6 +86,14 @@ export const Docs = () => {
       ></Route>
       <Route
         path="/:projectSlug/:contentSlug"
+        element={
+          <Layout>
+            <Project></Project>
+          </Layout>
+        }
+      ></Route>
+      <Route
+        path="/:projectSlug/:contentSlug/:headingIndex"
         element={
           <Layout>
             <Project></Project>

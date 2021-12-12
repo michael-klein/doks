@@ -13,9 +13,9 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "@mui/system/styled";
-import { useTheme } from "@mui/material/styles";
 import { useObservableState } from "observable-hooks";
 import React, {
   Fragment,
@@ -24,7 +24,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
@@ -172,7 +172,7 @@ const ConditionalCard = ({
     return children;
   }
   return (
-    <Card elevation={1} sx={{ padding: 2 }}>
+    <Card elevation={1} sx={{ padding: 2, position: "sticky", top: "80px" }}>
       {children}
     </Card>
   );
@@ -219,7 +219,6 @@ export function Sidebar({
     }
   }, [project]);
 
-  const navigate = useNavigate();
   const contents = useObservableState(contents$);
   useEffect(() => {
     if (project) {

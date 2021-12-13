@@ -20,7 +20,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 import { d as default_1$2 } from "./Favorite.js";
 import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$1, B as Box, H as modifyDocument, a as documents$ } from "./documents.js";
 import * as React from "react";
-import React__default, { memo, useMemo, useCallback, useRef, useEffect } from "react";
+import React__default, { memo, useMemo, useRef, useCallback, useEffect } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { h as htmdx, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
@@ -94,6 +94,31 @@ var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)(
   d: "m19 15-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
 }), "SubdirectoryArrowRight");
 default_1 = SubdirectoryArrowRight.default = _default;
+var removeMarkdown = function(md, options) {
+  options = options || {};
+  options.listUnicodeChar = options.hasOwnProperty("listUnicodeChar") ? options.listUnicodeChar : false;
+  options.stripListLeaders = options.hasOwnProperty("stripListLeaders") ? options.stripListLeaders : true;
+  options.gfm = options.hasOwnProperty("gfm") ? options.gfm : true;
+  options.useImgAltText = options.hasOwnProperty("useImgAltText") ? options.useImgAltText : true;
+  var output = md || "";
+  output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "");
+  try {
+    if (options.stripListLeaders) {
+      if (options.listUnicodeChar)
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, options.listUnicodeChar + " $1");
+      else
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, "$1");
+    }
+    if (options.gfm) {
+      output = output.replace(/\n={2,}/g, "\n").replace(/~{3}.*\n/g, "").replace(/~~/g, "").replace(/`{3}.*\n/g, "");
+    }
+    output = output.replace(/<[^>]*>/g, "").replace(/^[=\-]{2,}\s*$/g, "").replace(/\[\^.+?\](\: .*?$)?/g, "").replace(/\s{0,2}\[.*?\]: .*?$/g, "").replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? "$1" : "").replace(/\[(.*?)\][\[\(].*?[\]\)]/g, "$1").replace(/^\s{0,3}>\s?/g, "").replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "").replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, "$1$2$3").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/(`{3,})(.*?)\1/gm, "$2").replace(/`(.+?)`/g, "$1").replace(/\n{2,}/g, "\n\n");
+  } catch (e) {
+    console.error(e);
+    return md;
+  }
+  return output;
+};
 class ErrorBoundary extends React__default.Component {
   constructor(props) {
     super(props);
@@ -146,25 +171,39 @@ const TOCListItem = default_1$1("li")({
 });
 const getListItem = (level) => (props) => {
   const params = useParams();
+  const linkRef = useRef();
   return /* @__PURE__ */ jsxs(TOCListItem, {
     sx: {
-      marginLeft: 10 * (level - 1) + "px"
+      marginLeft: 10 * (level - 1) + "px",
+      display: "flex"
     },
-    children: [/* @__PURE__ */ jsx(default_1, {
-      sx: {
-        fontSize: ".8em",
-        marginRight: ".2em"
-      },
-      className: "sub-icon"
-    }), /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
-      to: `/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`
-    }))]
+    children: [/* @__PURE__ */ jsx(Box, {
+      children: /* @__PURE__ */ jsx(default_1, {
+        sx: {
+          fontSize: ".8em",
+          marginRight: ".2em"
+        },
+        className: "sub-icon"
+      })
+    }), /* @__PURE__ */ jsx(Box, {
+      children: /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
+        ref: linkRef,
+        to: `/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`
+      }))
+    })]
   });
 };
 const TOC = memo(({
   mdx
 }) => {
-  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.includes("#")).join("\n"), [mdx]);
+  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.startsWith("#")).map((line) => {
+    for (let i2 = 0; i2 < line.length; i2++) {
+      if (line.charAt(i2) !== "#") {
+        return line.substr(0, i2 - 1) + removeMarkdown(line.substr(i2));
+      }
+    }
+    return line;
+  }).join("\n"), [mdx]);
   let i = 0;
   let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment, {

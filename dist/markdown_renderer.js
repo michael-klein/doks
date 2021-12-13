@@ -4670,16 +4670,18 @@ const MDX = memo(({
         memo2[`h${i2}`] = (props) => {
           props = __spreadProps(__spreadValues({}, props), {
             id: `heading-` + hIndex,
-            children: [/* @__PURE__ */ jsx(HWrapper, {
-              children: props.children
-            }), /* @__PURE__ */ jsx(Link$1, {
-              to: `/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`,
-              children: /* @__PURE__ */ jsx(default_1, {
-                sx: {
-                  fontSize: "1.5rem"
-                }
-              })
-            })]
+            children: /* @__PURE__ */ jsxs(Fragment, {
+              children: [/* @__PURE__ */ jsx(HWrapper, {
+                children: props.children
+              }), /* @__PURE__ */ jsx(Link$1, {
+                to: `/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`,
+                children: /* @__PURE__ */ jsx(default_1, {
+                  sx: {
+                    fontSize: "1.5rem"
+                  }
+                })
+              })]
+            })
           });
           hIndex++;
           return createElement(`h` + i2, props);

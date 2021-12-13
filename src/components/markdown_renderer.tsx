@@ -152,18 +152,20 @@ const MDX = memo(
                   props = {
                     ...props,
                     id: `heading-` + hIndex,
-                    children: [
-                      <HWrapper>{props.children}</HWrapper>,
-                      <Link
-                        to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
-                      >
-                        <LinkIcon
-                          sx={{
-                            fontSize: "1.5rem",
-                          }}
-                        ></LinkIcon>
-                      </Link>,
-                    ],
+                    children: (
+                      <>
+                        <HWrapper>{props.children}</HWrapper>
+                        <Link
+                          to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
+                        >
+                          <LinkIcon
+                            sx={{
+                              fontSize: "1.5rem",
+                            }}
+                          ></LinkIcon>
+                        </Link>
+                      </>
+                    ),
                   };
                   hIndex++;
                   return createElement(`h` + i, props);

@@ -1,7 +1,14 @@
 import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
 import { htmdx } from "htmdx";
-import React, { memo, ReactChild, useMemo } from "react";
+import React, {
+  memo,
+  ReactChild,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Link } from "react-router-dom";
 import { DoksTheme } from "../css/theme";
 import { useParams } from "react-router";
@@ -61,16 +68,23 @@ const TOCListItem = styled("li")({
 });
 const getListItem = (level: number) => (props: any) => {
   const params = useParams();
+  const linkRef = useRef<HTMLAnchorElement>();
+
   return (
-    <TOCListItem sx={{ marginLeft: 10 * (level - 1) + "px" }}>
-      <SubdirectoryArrowRightIcon
-        sx={{ fontSize: ".8em", marginRight: ".2em" }}
-        className="sub-icon"
-      ></SubdirectoryArrowRightIcon>
-      <Link
-        {...props}
-        to={`/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`}
-      ></Link>
+    <TOCListItem sx={{ marginLeft: 10 * (level - 1) + "px", display: "flex" }}>
+      <Box>
+        <SubdirectoryArrowRightIcon
+          sx={{ fontSize: ".8em", marginRight: ".2em" }}
+          className="sub-icon"
+        ></SubdirectoryArrowRightIcon>
+      </Box>
+      <Box>
+        <Link
+          {...props}
+          ref={linkRef}
+          to={`/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`}
+        ></Link>
+      </Box>
     </TOCListItem>
   );
 };
@@ -80,7 +94,15 @@ const TOC = memo(({ mdx }: { mdx: string }) => {
       mdx
         ?.replace(/(<([^>]+)>)/gi, "")
         .split("\n")
-        .filter((line) => line.includes("#"))
+        .filter((line) => line.startsWith("#"))
+        .map((line) => {
+          for (let i = 0; i < line.length; i++) {
+            if (line.charAt(i) !== "#") {
+              return line.substr(0, i - 1) + removeMd(line.substr(i));
+            }
+          }
+          return line;
+        })
         .join("\n"),
     [mdx]
   );
@@ -111,6 +133,7 @@ const TOC = memo(({ mdx }: { mdx: string }) => {
                   hIndex++;
                 }
                 props.key = i++;
+
                 return [type, props, children];
               },
             ],

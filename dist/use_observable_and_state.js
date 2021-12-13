@@ -1,8 +1,8 @@
 import React__default from "react";
-import { a as useTheme$1, B as defaultTheme, h as _objectWithoutPropertiesLoose } from "./main.js";
-import { _ as _inheritsLoose, T as TransitionGroupContext, u as useObservableState } from "./documents.js";
+import { a as useTheme$1, D as defaultTheme, h as _objectWithoutPropertiesLoose } from "./main.js";
+import { _ as _inheritsLoose, T as TransitionGroupContext } from "./documents.js";
 import ReactDOM__default from "react-dom";
-import { u as useObservable } from "./Paper.js";
+import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
 function isHostComponent(element) {
   return typeof element === "string";
 }

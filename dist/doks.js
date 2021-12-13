@@ -16,7 +16,7 @@ function ThemeProvider$1(props) {
     theme: localTheme
   } = props;
   const outerTheme = useTheme();
-  const theme2 = React.useMemo(() => {
+  const theme = React.useMemo(() => {
     const output = outerTheme === null ? localTheme : mergeOuterLocalTheme(outerTheme, localTheme);
     if (output != null) {
       output[nested] = outerTheme !== null;
@@ -24,14 +24,14 @@ function ThemeProvider$1(props) {
     return output;
   }, [localTheme, outerTheme]);
   return /* @__PURE__ */ jsx(ThemeContext.Provider, {
-    value: theme2,
+    value: theme,
     children
   });
 }
 function InnerThemeProvider(props) {
-  const theme2 = useTheme$1();
+  const theme = useTheme$1();
   return /* @__PURE__ */ jsx(ThemeContext$1.Provider, {
-    value: typeof theme2 === "object" ? theme2 : {},
+    value: typeof theme === "object" ? theme : {},
     children: props.children
   });
 }
@@ -804,8 +804,9 @@ function useLinkClickHandler(to, _temp) {
     }
   }, [location, navigate, path, replaceProp, state, target, to]);
 }
-const theme = createTheme({
+createTheme({
   palette: {
+    mode: "light",
     primary: {
       main: "#0d47a1"
     },
@@ -814,6 +815,50 @@ const theme = createTheme({
     }
   }
 });
+const ColorModeContext = createContext({
+  toggleColorMode: () => {
+  },
+  mode: void 0
+});
+const useColorModeContext = () => {
+  return useContext(ColorModeContext);
+};
+const COLOR_MODE_KEY = "color-mode";
+const DocsThemeProvider = ({
+  children
+}) => {
+  var _a;
+  const [mode, setMode] = useState((_a = localStorage.getItem(COLOR_MODE_KEY)) != null ? _a : "light");
+  useEffect(() => {
+    localStorage.setItem(COLOR_MODE_KEY, mode);
+  }, [mode]);
+  const value = useMemo(() => {
+    return {
+      toggleColorMode: () => {
+        setMode((m) => m === "light" ? "dark" : "light");
+      },
+      mode
+    };
+  }, [mode]);
+  const theme2 = useMemo(() => createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: "#0d47a1"
+      },
+      secondary: {
+        main: "#ad1457"
+      }
+    }
+  }), [mode]);
+  return /* @__PURE__ */ jsx(ColorModeContext.Provider, {
+    value,
+    children: /* @__PURE__ */ jsx(ThemeProvider, {
+      theme: theme2,
+      children
+    })
+  });
+};
 const docOptionsContext = createContext(void 0);
 const {
   Provider
@@ -828,8 +873,7 @@ const useDocOptions = () => useContext(docOptionsContext);
 const Docs = lazy(() => import("./docs.js"));
 const Editor = lazy(() => import("./editor.js"));
 const Doks = (options) => {
-  return /* @__PURE__ */ jsx(ThemeProvider, {
-    theme,
+  return /* @__PURE__ */ jsx(DocsThemeProvider, {
     children: /* @__PURE__ */ jsx(DocOptionsContextProvider, {
       options,
       children: /* @__PURE__ */ jsx(HashRouter, {
@@ -855,5 +899,5 @@ var doks = /* @__PURE__ */ Object.freeze({
   Doks,
   "default": Doks
 });
-export { Link as L, Routes as R, Route as a, useNavigate as b, useDocOptions as c, useLocation as d, doks as e, useParams as u };
+export { Link as L, Routes as R, Route as a, useNavigate as b, useDocOptions as c, useLocation as d, useColorModeContext as e, doks as f, useParams as u };
 //# sourceMappingURL=doks.js.map

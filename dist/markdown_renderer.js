@@ -18,16 +18,14 @@ var __spreadValues = (a, b) => {
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var _a;
-import { k as generateUtilityClass, l as generateUtilityClasses, m as styled, g as capitalize, _ as _extends, n as useThemeProps, h as _objectWithoutPropertiesLoose, o as composeClasses, j as jsx, q as clsx, A as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, B as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import * as React from "react";
-import React__default, { lazy, memo, useCallback, useMemo, useEffect, Suspense, useLayoutEffect, useRef } from "react";
-import { e as extendSxProp, B as ButtonBase, g as getDefaultExportFromCjs, V as ValueSubject, u as useObservableState, p as projects$, d as default_1, b as documents$ } from "./documents.js";
+import React__default, { lazy, memo, useCallback, useMemo, useEffect, createElement, Suspense, useLayoutEffect, useRef } from "react";
+import { e as extendSxProp, b as ButtonBase, g as getDefaultExportFromCjs, V as ValueSubject, p as projects$, d as default_1, B as Box, a as documents$ } from "./documents.js";
 import { p as pathBrowserify } from "./index.js";
 import { u as useParams } from "./doks.js";
 import { combineLatest, map, debounceTime } from "rxjs";
-import { c as createBox, u as useObservable } from "./Paper.js";
-const Box = createBox();
-var Box$1 = Box;
+import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
 function getTypographyUtilityClass(slot) {
   return generateUtilityClass("MuiTypography", slot);
 }
@@ -4624,7 +4622,8 @@ const removeVoidElements = (mdx) => {
 };
 const MDX = memo(({
   mdx,
-  onSaveMDX
+  onSaveMDX,
+  onAfterRender
 }) => {
   let i = 0;
   const [theme] = useObservableState(() => codeTheme$);
@@ -4644,9 +4643,24 @@ const MDX = memo(({
   useEffect(() => {
     onSaveMDX(mdx);
   }, [mdx]);
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      onAfterRender == null ? void 0 : onAfterRender();
+    });
+  });
+  let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment, {
     children: mdx !== void 0 ? htmdx(sanitizedMDX, React__default.createElement, {
-      components: {
+      components: __spreadProps(__spreadValues({}, [1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo2, i2) => {
+        memo2[`h${i2}`] = (props) => {
+          props = __spreadProps(__spreadValues({}, props), {
+            id: `heading-` + hIndex
+          });
+          hIndex++;
+          return createElement(`h` + i2, props);
+        };
+        return memo2;
+      }, {})), {
         code: (props) => {
           var _a2;
           return /* @__PURE__ */ jsx(Suspense, {
@@ -4666,7 +4680,7 @@ const MDX = memo(({
           }
           return /* @__PURE__ */ jsx("img", __spreadValues({}, props));
         }
-      },
+      }),
       jsxTransforms: [(type, props, children) => {
         if (!props) {
           props = {};
@@ -4681,15 +4695,16 @@ const MDX = memo(({
     })
   });
 });
-const Wrapper = default_1(Box$1)(({
+const Wrapper = default_1(Box)(({
   theme
 }) => __spreadValues({}, theme.typography.body1));
 const MarkdownRenderer = ({
   mdx,
-  isEditor
+  isEditor,
+  onAfterRender
 }) => {
   const currentMDX$ = useObservable(() => new ValueSubject(mdx));
-  const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(300, void 0)) : currentMDX$);
+  const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(500, void 0)) : currentMDX$);
   useLayoutEffect(() => {
     currentMDX$.next(mdx);
   }, [mdx]);
@@ -4707,6 +4722,7 @@ const MarkdownRenderer = ({
         }
       },
       children: /* @__PURE__ */ jsx(MDX, {
+        onAfterRender,
         mdx: debouncedMDX,
         onSaveMDX: (saveMDX) => {
           saveMDXRef.current = saveMDX;
@@ -4715,5 +4731,5 @@ const MarkdownRenderer = ({
     }, "mdx-" + mdxIdRef.current)
   });
 };
-export { Box$1 as B, IconButton$1 as I, MarkdownRenderer as M, Typography$1 as T, codeTheme$ as c };
+export { IconButton$1 as I, MarkdownRenderer as M, Typography$1 as T, codeTheme$ as c, htmdx as h };
 //# sourceMappingURL=markdown_renderer.js.map

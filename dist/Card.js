@@ -1,6 +1,6 @@
-import { k as generateUtilityClass, l as generateUtilityClasses, m as styled, n as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, o as composeClasses, j as jsx, q as clsx } from "./main.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx } from "./main.js";
 import * as React from "react";
-import { P as Paper } from "./Paper.js";
+import { P as Paper } from "./use-observable-state.js";
 function getCardUtilityClass(slot) {
   return generateUtilityClass("MuiCard", slot);
 }

@@ -17,13 +17,12 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { q as commonjsGlobal, t as addOrUpdateProject, v as addOrUpdateManyContents, w as addOrUpdateContents, a as contents$, x as getLastModified, y as getCachedDocument, z as queueDocument, A as removeContents } from "./documents.js";
+import { m as commonjsGlobal, n as contents$, q as addOrUpdateProject, t as addOrUpdateManyContents, v as addOrUpdateContents, w as getLastModified, x as getCachedDocument, y as queueDocument, z as removeContents } from "./documents.js";
 import { p as pathBrowserify } from "./index.js";
 import { useEffect } from "react";
 import { c as useDocOptions, u as useParams, b as useNavigate } from "./doks.js";
 import { j as jsx, F as Fragment } from "./main.js";
 import "rxjs";
-import "rxjs/operators";
 import "react-dom";
 function escapeStringRegexp$1(string) {
   if (typeof string !== "string") {
@@ -2334,6 +2333,15 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     const cached = JSON.parse((_a = localStorage.getItem("CACHE__" + projectSlug)) != null ? _a : "{}");
     let contents;
     if (cached.lastModified === lastModified) {
+      if (mode === "docs" && !currentContentSlug) {
+        for (const item of cached.contents) {
+          if (!currentContentSlug && !item.isOnlyHeading) {
+            currentContentSlug = item.slug;
+            shouldNavigate = true;
+            break;
+          }
+        }
+      }
       addOrUpdateManyContents(cached.contents, projectSlug);
       contents = cached.contents;
     } else {
@@ -2372,7 +2380,9 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
         replace: true
       });
     }
-    await loadContentsDocument(__spreadValues({}, firstContent), project, projectSlug, deletedPaths);
+    if (firstContent) {
+      await loadContentsDocument(__spreadValues({}, firstContent), project, projectSlug, deletedPaths);
+    }
     await Promise.all(contents.map((c) => loadContentsDocument(__spreadValues({}, c), project, projectSlug, deletedPaths)));
     const cacheItem = {
       lastModified,
@@ -2385,6 +2395,15 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
   }));
 };
 let startedLoading = false;
+const getFirstRealContent = (contents) => {
+  for (const content of contents.values()) {
+    if (content.isOnlyHeading) {
+      continue;
+    }
+    return content;
+  }
+  return void 0;
+};
 const DocFetcher = ({
   mode
 }) => {
@@ -2397,6 +2416,23 @@ const DocFetcher = ({
     if (!startedLoading) {
       startedLoading = true;
       loadProjects(projects, params.projectSlug, params.contentSlug, mode, navigate);
+    } else {
+      if (mode === "docs" && (!params.projectSlug || !params.contentSlug)) {
+        let currentContents;
+        if (params.projectSlug) {
+          currentContents = getFirstRealContent(contents$.value.get(params.projectSlug));
+        } else {
+          for (const contents of contents$.value.values()) {
+            currentContents = getFirstRealContent(contents);
+            if (currentContents) {
+              break;
+            }
+          }
+        }
+        navigate(`/docs/${currentContents.projectSlug}/${currentContents.slug}/`, {
+          replace: true
+        });
+      }
     }
   }, []);
   return /* @__PURE__ */ jsx(Fragment, {});

@@ -14,11 +14,10 @@ var __spreadValues = (a2, b2) => {
     }
   return a2;
 };
-import { P as PropTypes, e as deepmerge, f as formatMuiErrorMessage, g as capitalize, h as _objectWithoutPropertiesLoose, _ as _extends$1, p as propToStyleFunction, s as styleFunctionSx$1, i as createTheme$1, k as generateUtilityClass, l as generateUtilityClasses, m as styled$2, n as useThemeProps, o as composeClasses, j as jsx, q as clsx, r as keyframes, d as jsxs, t as styledEngine, v as ClassNameGenerator, w as jsxRuntime } from "./main.js";
+import { P as PropTypes, e as deepmerge, f as formatMuiErrorMessage, g as capitalize, h as _objectWithoutPropertiesLoose, _ as _extends$1, p as propToStyleFunction, s as styleFunctionSx$1, i as createTheme$1, k as styled$2, a as useTheme, j as jsx, l as clsx, m as generateUtilityClass, n as generateUtilityClasses, o as styled$3, q as useThemeProps, r as composeClasses, t as styledEngine, v as keyframes, d as jsxs, w as ClassNameGenerator, x as jsxRuntime } from "./main.js";
 import * as React from "react";
-import React__default, { useRef, useState, useLayoutEffect, useEffect, useDebugValue, Children, isValidElement, cloneElement } from "react";
-import { Subject, isObservable, BehaviorSubject } from "rxjs";
-import "rxjs/operators";
+import React__default, { Children, isValidElement, cloneElement } from "react";
+import { BehaviorSubject } from "rxjs";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function getDefaultExportFromCjs(x2) {
   return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
@@ -529,7 +528,7 @@ var esm = /* @__PURE__ */ Object.freeze({
   visuallyHidden: visuallyHidden$1,
   integerPropType
 });
-const _excluded$6 = ["sx"];
+const _excluded$7 = ["sx"];
 const splitProps = (props) => {
   const result = {
     systemProps: {},
@@ -547,7 +546,7 @@ const splitProps = (props) => {
 function extendSxProp(props) {
   const {
     sx: inSx
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$6);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$7);
   const {
     systemProps,
     otherProps
@@ -567,6 +566,29 @@ var createTheme = /* @__PURE__ */ Object.freeze({
   [Symbol.toStringTag]: "Module",
   "default": createTheme$1
 });
+const _excluded$6 = ["className", "component"];
+function createBox(options = {}) {
+  const {
+    defaultTheme
+  } = options;
+  const BoxRoot = styled$2("div")(styleFunctionSx$1);
+  const Box2 = /* @__PURE__ */ React.forwardRef(function Box3(inProps, ref) {
+    const theme = useTheme(defaultTheme);
+    const _extendSxProp = extendSxProp(inProps), {
+      className,
+      component = "div"
+    } = _extendSxProp, other = _objectWithoutPropertiesLoose(_extendSxProp, _excluded$6);
+    return /* @__PURE__ */ jsx(BoxRoot, _extends$1({
+      as: component,
+      ref,
+      className: clsx(className, "MuiBox-root"),
+      theme
+    }, other));
+  });
+  return Box2;
+}
+const Box = createBox();
+var Box$1 = Box;
 function getContainerUtilityClass(slot) {
   return generateUtilityClass("MuiContainer", slot);
 }
@@ -584,7 +606,7 @@ const useUtilityClasses$2 = (ownerState) => {
   };
   return composeClasses(slots, getContainerUtilityClass, classes);
 };
-const ContainerRoot = styled$2("div", {
+const ContainerRoot = styled$3("div", {
   name: "MuiContainer",
   slot: "Root",
   overridesResolver: (props, styles) => {
@@ -659,125 +681,242 @@ const Container = /* @__PURE__ */ React.forwardRef(function Container2(inProps, 
   }, other));
 });
 var Container$1 = Container;
-function getEmptySubject() {
-  return new Subject();
-}
-function useRefFn(init) {
-  var firstRef = useRef(true);
-  var ref = useRef(null);
-  if (firstRef.current) {
-    firstRef.current = false;
-    ref.current = init();
+var styled$1 = {};
+var interopRequireDefault = { exports: {} };
+(function(module) {
+  function _interopRequireDefault2(obj) {
+    return obj && obj.__esModule ? obj : {
+      "default": obj
+    };
   }
-  return ref;
+  module.exports = _interopRequireDefault2;
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+})(interopRequireDefault);
+var createStyled$1 = {};
+var _extends = { exports: {} };
+(function(module) {
+  function _extends3() {
+    module.exports = _extends3 = Object.assign || function(target) {
+      for (var i2 = 1; i2 < arguments.length; i2++) {
+        var source = arguments[i2];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    module.exports["default"] = module.exports, module.exports.__esModule = true;
+    return _extends3.apply(this, arguments);
+  }
+  module.exports = _extends3;
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+})(_extends);
+var objectWithoutPropertiesLoose = { exports: {} };
+(function(module) {
+  function _objectWithoutPropertiesLoose3(source, excluded) {
+    if (source == null)
+      return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i2;
+    for (i2 = 0; i2 < sourceKeys.length; i2++) {
+      key = sourceKeys[i2];
+      if (excluded.indexOf(key) >= 0)
+        continue;
+      target[key] = source[key];
+    }
+    return target;
+  }
+  module.exports = _objectWithoutPropertiesLoose3;
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+})(objectWithoutPropertiesLoose);
+var require$$3 = /* @__PURE__ */ getAugmentedNamespace(styledEngine);
+var require$$4 = /* @__PURE__ */ getAugmentedNamespace(esm);
+var require$$5 = /* @__PURE__ */ getAugmentedNamespace(createTheme);
+var require$$6 = /* @__PURE__ */ getAugmentedNamespace(styleFunctionSx);
+var propsToClassKey$1 = {};
+var _interopRequireDefault$2 = interopRequireDefault.exports;
+Object.defineProperty(propsToClassKey$1, "__esModule", {
+  value: true
+});
+propsToClassKey$1.default = propsToClassKey;
+var _objectWithoutPropertiesLoose2$1 = _interopRequireDefault$2(objectWithoutPropertiesLoose.exports);
+var _utils = require$$4;
+const _excluded$4 = ["variant"];
+function isEmpty$1(string) {
+  return string.length === 0;
 }
-function useForceUpdate() {
-  var updateState = useState(0)[1];
-  return useRef(function() {
-    return updateState(increment);
-  }).current;
-}
-function increment(n2) {
-  return (n2 + 1) % 1e6;
-}
-var useIsomorphicLayoutEffect = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined" ? useLayoutEffect : useEffect;
-function useSubscriptionInternal(useCustomEffect, args) {
-  var forceUpdate = useForceUpdate();
-  var argsRef = useRef(args);
-  var errorRef = useRef();
-  var subscriptionRef = useRef();
-  useIsomorphicLayoutEffect(function() {
-    argsRef.current = args;
+function propsToClassKey(props) {
+  const {
+    variant
+  } = props, other = (0, _objectWithoutPropertiesLoose2$1.default)(props, _excluded$4);
+  let classKey = variant || "";
+  Object.keys(other).sort().forEach((key) => {
+    if (key === "color") {
+      classKey += isEmpty$1(classKey) ? props[key] : (0, _utils.unstable_capitalize)(props[key]);
+    } else {
+      classKey += `${isEmpty$1(classKey) ? key : (0, _utils.unstable_capitalize)(key)}${(0, _utils.unstable_capitalize)(props[key].toString())}`;
+    }
   });
-  useCustomEffect(function() {
-    errorRef.current = null;
-    var input$ = argsRef.current[0];
-    var subscription = input$.subscribe({
-      next: function(value) {
-        var _a;
-        if (input$ !== argsRef.current[0]) {
-          return;
+  return classKey;
+}
+var _interopRequireDefault$1 = interopRequireDefault.exports;
+Object.defineProperty(createStyled$1, "__esModule", {
+  value: true
+});
+createStyled$1.default = createStyled;
+createStyled$1.shouldForwardProp = shouldForwardProp;
+createStyled$1.systemDefaultTheme = void 0;
+var _extends2 = _interopRequireDefault$1(_extends.exports);
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault$1(objectWithoutPropertiesLoose.exports);
+var _styledEngine = _interopRequireDefault$1(require$$3);
+var _createTheme = _interopRequireDefault$1(require$$5);
+var _styleFunctionSx = _interopRequireDefault$1(require$$6);
+var _propsToClassKey = _interopRequireDefault$1(propsToClassKey$1);
+const _excluded$3 = ["name", "slot", "skipVariantsResolver", "skipSx", "overridesResolver"], _excluded2 = ["theme"], _excluded3 = ["theme"];
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+const getStyleOverrides = (name, theme) => {
+  if (theme.components && theme.components[name] && theme.components[name].styleOverrides) {
+    return theme.components[name].styleOverrides;
+  }
+  return null;
+};
+const getVariantStyles = (name, theme) => {
+  let variants = [];
+  if (theme && theme.components && theme.components[name] && theme.components[name].variants) {
+    variants = theme.components[name].variants;
+  }
+  const variantsStyles = {};
+  variants.forEach((definition) => {
+    const key = (0, _propsToClassKey.default)(definition.props);
+    variantsStyles[key] = definition.style;
+  });
+  return variantsStyles;
+};
+const variantsResolver = (props, styles, theme, name) => {
+  var _theme$components, _theme$components$nam;
+  const {
+    ownerState = {}
+  } = props;
+  const variantsStyles = [];
+  const themeVariants = theme == null ? void 0 : (_theme$components = theme.components) == null ? void 0 : (_theme$components$nam = _theme$components[name]) == null ? void 0 : _theme$components$nam.variants;
+  if (themeVariants) {
+    themeVariants.forEach((themeVariant) => {
+      let isMatch = true;
+      Object.keys(themeVariant.props).forEach((key) => {
+        if (ownerState[key] !== themeVariant.props[key] && props[key] !== themeVariant.props[key]) {
+          isMatch = false;
         }
-        var nextObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.next) || argsRef.current[1];
-        if (nextObserver) {
-          return nextObserver(value);
-        }
-      },
-      error: function(error) {
-        var _a;
-        if (input$ !== argsRef.current[0]) {
-          return;
-        }
-        var errorObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.error) || argsRef.current[2];
-        if (errorObserver) {
-          errorRef.current = null;
-          return errorObserver(error);
-        }
-        errorRef.current = error;
-        forceUpdate();
-      },
-      complete: function() {
-        var _a;
-        if (input$ !== argsRef.current[0]) {
-          return;
-        }
-        var completeObserver = ((_a = argsRef.current[1]) === null || _a === void 0 ? void 0 : _a.complete) || argsRef.current[3];
-        if (completeObserver) {
-          return completeObserver();
-        }
+      });
+      if (isMatch) {
+        variantsStyles.push(styles[(0, _propsToClassKey.default)(themeVariant.props)]);
       }
     });
-    subscriptionRef.current = subscription;
-    return function() {
-      subscription.unsubscribe();
+  }
+  return variantsStyles;
+};
+function shouldForwardProp(prop) {
+  return prop !== "ownerState" && prop !== "theme" && prop !== "sx" && prop !== "as";
+}
+const systemDefaultTheme = (0, _createTheme.default)();
+createStyled$1.systemDefaultTheme = systemDefaultTheme;
+function createStyled(input = {}) {
+  const {
+    defaultTheme = systemDefaultTheme,
+    rootShouldForwardProp = shouldForwardProp,
+    slotShouldForwardProp = shouldForwardProp
+  } = input;
+  return (tag, inputOptions = {}) => {
+    const {
+      name: componentName,
+      slot: componentSlot,
+      skipVariantsResolver: inputSkipVariantsResolver,
+      skipSx: inputSkipSx,
+      overridesResolver
+    } = inputOptions, options = (0, _objectWithoutPropertiesLoose2.default)(inputOptions, _excluded$3);
+    const skipVariantsResolver = inputSkipVariantsResolver !== void 0 ? inputSkipVariantsResolver : componentSlot && componentSlot !== "Root" || false;
+    const skipSx = inputSkipSx || false;
+    let label;
+    let shouldForwardPropOption = shouldForwardProp;
+    if (componentSlot === "Root") {
+      shouldForwardPropOption = rootShouldForwardProp;
+    } else if (componentSlot) {
+      shouldForwardPropOption = slotShouldForwardProp;
+    }
+    const defaultStyledResolver = (0, _styledEngine.default)(tag, (0, _extends2.default)({
+      shouldForwardProp: shouldForwardPropOption,
+      label
+    }, options));
+    const muiStyledResolver = (styleArg, ...expressions) => {
+      const expressionsWithDefaultTheme = expressions ? expressions.map((stylesArg) => {
+        return typeof stylesArg === "function" && stylesArg.__emotion_real !== stylesArg ? (_ref) => {
+          let {
+            theme: themeInput
+          } = _ref, other = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded2);
+          return stylesArg((0, _extends2.default)({
+            theme: isEmpty(themeInput) ? defaultTheme : themeInput
+          }, other));
+        } : stylesArg;
+      }) : [];
+      let transformedStyleArg = styleArg;
+      if (componentName && overridesResolver) {
+        expressionsWithDefaultTheme.push((props) => {
+          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
+          const styleOverrides = getStyleOverrides(componentName, theme);
+          if (styleOverrides) {
+            return overridesResolver(props, styleOverrides);
+          }
+          return null;
+        });
+      }
+      if (componentName && !skipVariantsResolver) {
+        expressionsWithDefaultTheme.push((props) => {
+          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
+          return variantsResolver(props, getVariantStyles(componentName, theme), theme, componentName);
+        });
+      }
+      if (!skipSx) {
+        expressionsWithDefaultTheme.push((props) => {
+          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
+          return (0, _styleFunctionSx.default)((0, _extends2.default)({}, props, {
+            theme
+          }));
+        });
+      }
+      const numOfCustomFnsApplied = expressionsWithDefaultTheme.length - expressions.length;
+      if (Array.isArray(styleArg) && numOfCustomFnsApplied > 0) {
+        const placeholders = new Array(numOfCustomFnsApplied).fill("");
+        transformedStyleArg = [...styleArg, ...placeholders];
+        transformedStyleArg.raw = [...styleArg.raw, ...placeholders];
+      } else if (typeof styleArg === "function") {
+        transformedStyleArg = (_ref2) => {
+          let {
+            theme: themeInput
+          } = _ref2, other = (0, _objectWithoutPropertiesLoose2.default)(_ref2, _excluded3);
+          return styleArg((0, _extends2.default)({
+            theme: isEmpty(themeInput) ? defaultTheme : themeInput
+          }, other));
+        };
+      }
+      const Component = defaultStyledResolver(transformedStyleArg, ...expressionsWithDefaultTheme);
+      return Component;
     };
-  }, [args[0]]);
-  if (errorRef.current) {
-    throw errorRef.current;
-  }
-  return subscriptionRef;
+    return muiStyledResolver;
+  };
 }
-function useSubscription(input$, observerOrNext$, error, complete) {
-  return useSubscriptionInternal(useEffect, [
-    input$,
-    observerOrNext$,
-    error,
-    complete
-  ]);
-}
-function useObservableStateInternal(useSubscription2, state$OrInit, initialState) {
-  if (isObservable(state$OrInit)) {
-    var state$_1 = state$OrInit;
-    var _a = useState(function() {
-      if (state$_1 instanceof BehaviorSubject || state$_1.value !== void 0) {
-        return state$_1.value;
-      }
-      if (typeof initialState === "function") {
-        return initialState();
-      }
-      return initialState;
-    }), state = _a[0], setState = _a[1];
-    useSubscription2(state$_1, setState);
-    useDebugValue(state);
-    return state;
-  } else {
-    var init_1 = state$OrInit;
-    var _b = useState(initialState), state_1 = _b[0], setState = _b[1];
-    var input$Ref_1 = useRefFn(getEmptySubject);
-    var state$ = useRefFn(function() {
-      return init_1(input$Ref_1.current, state_1);
-    }).current;
-    var callback = useRef(function(state2) {
-      return input$Ref_1.current.next(state2);
-    }).current;
-    useSubscription2(state$, setState);
-    useDebugValue(state_1);
-    return [state_1, callback];
-  }
-}
-function useObservableState(state$OrInit, initialState) {
-  return useObservableStateInternal(useSubscription, state$OrInit, initialState);
-}
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(styled$1, "__esModule", {
+  value: true
+});
+var default_1 = styled$1.default = void 0;
+var _createStyled = _interopRequireDefault(createStyled$1);
+const styled = (0, _createStyled.default)();
+var _default = styled;
+default_1 = styled$1.default = _default;
 function _setPrototypeOf(o2, p2) {
   _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o3, p3) {
     o3.__proto__ = p3;
@@ -1017,7 +1156,7 @@ function Ripple(props) {
 }
 const touchRippleClasses = generateUtilityClasses("MuiTouchRipple", ["root", "ripple", "rippleVisible", "ripplePulsate", "child", "childLeaving", "childPulsate"]);
 var touchRippleClasses$1 = touchRippleClasses;
-const _excluded$4 = ["center", "classes", "className"];
+const _excluded$2 = ["center", "classes", "className"];
 let _$1 = (t2) => t2, _t, _t2, _t3, _t4;
 const DURATION = 550;
 const DELAY_RIPPLE = 80;
@@ -1054,7 +1193,7 @@ const pulsateKeyframe = keyframes(_t3 || (_t3 = _$1`
     transform: scale(1);
   }
 `));
-const TouchRippleRoot = styled$2("span", {
+const TouchRippleRoot = styled$3("span", {
   name: "MuiTouchRipple",
   slot: "Root",
   skipSx: true
@@ -1069,7 +1208,7 @@ const TouchRippleRoot = styled$2("span", {
   left: 0,
   borderRadius: "inherit"
 });
-const TouchRippleRipple = styled$2(Ripple, {
+const TouchRippleRipple = styled$3(Ripple, {
   name: "MuiTouchRipple",
   slot: "Ripple"
 })(_t4 || (_t4 = _$1`
@@ -1133,7 +1272,7 @@ const TouchRipple = /* @__PURE__ */ React.forwardRef(function TouchRipple2(inPro
     center: centerProp = false,
     classes = {},
     className
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$4);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
   const [ripples, setRipples] = React.useState([]);
   const nextKey = React.useRef(0);
   const rippleCallback = React.useRef(null);
@@ -1296,7 +1435,7 @@ function getButtonBaseUtilityClass(slot) {
 }
 const buttonBaseClasses = generateUtilityClasses("MuiButtonBase", ["root", "disabled", "focusVisible"]);
 var buttonBaseClasses$1 = buttonBaseClasses;
-const _excluded$3 = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "type"];
+const _excluded$1 = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "type"];
 const useUtilityClasses$1 = (ownerState) => {
   const {
     disabled,
@@ -1313,7 +1452,7 @@ const useUtilityClasses$1 = (ownerState) => {
   }
   return composedClasses;
 };
-const ButtonBaseRoot = styled$2("button", {
+const ButtonBaseRoot = styled$3("button", {
   name: "MuiButtonBase",
   slot: "Root",
   overridesResolver: (props, styles) => styles.root
@@ -1381,7 +1520,7 @@ const ButtonBase = /* @__PURE__ */ React.forwardRef(function ButtonBase2(inProps
     tabIndex = 0,
     TouchRippleProps,
     type
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const buttonRef = React.useRef(null);
   const rippleRef = React.useRef(null);
   const {
@@ -1557,242 +1696,6 @@ const ButtonBase = /* @__PURE__ */ React.forwardRef(function ButtonBase2(inProps
   }));
 });
 var ButtonBase$1 = ButtonBase;
-var styled$1 = {};
-var interopRequireDefault = { exports: {} };
-(function(module) {
-  function _interopRequireDefault2(obj) {
-    return obj && obj.__esModule ? obj : {
-      "default": obj
-    };
-  }
-  module.exports = _interopRequireDefault2;
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-})(interopRequireDefault);
-var createStyled$1 = {};
-var _extends = { exports: {} };
-(function(module) {
-  function _extends3() {
-    module.exports = _extends3 = Object.assign || function(target) {
-      for (var i2 = 1; i2 < arguments.length; i2++) {
-        var source = arguments[i2];
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-      return target;
-    };
-    module.exports["default"] = module.exports, module.exports.__esModule = true;
-    return _extends3.apply(this, arguments);
-  }
-  module.exports = _extends3;
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-})(_extends);
-var objectWithoutPropertiesLoose = { exports: {} };
-(function(module) {
-  function _objectWithoutPropertiesLoose3(source, excluded) {
-    if (source == null)
-      return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i2;
-    for (i2 = 0; i2 < sourceKeys.length; i2++) {
-      key = sourceKeys[i2];
-      if (excluded.indexOf(key) >= 0)
-        continue;
-      target[key] = source[key];
-    }
-    return target;
-  }
-  module.exports = _objectWithoutPropertiesLoose3;
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-})(objectWithoutPropertiesLoose);
-var require$$3 = /* @__PURE__ */ getAugmentedNamespace(styledEngine);
-var require$$4 = /* @__PURE__ */ getAugmentedNamespace(esm);
-var require$$5 = /* @__PURE__ */ getAugmentedNamespace(createTheme);
-var require$$6 = /* @__PURE__ */ getAugmentedNamespace(styleFunctionSx);
-var propsToClassKey$1 = {};
-var _interopRequireDefault$2 = interopRequireDefault.exports;
-Object.defineProperty(propsToClassKey$1, "__esModule", {
-  value: true
-});
-propsToClassKey$1.default = propsToClassKey;
-var _objectWithoutPropertiesLoose2$1 = _interopRequireDefault$2(objectWithoutPropertiesLoose.exports);
-var _utils = require$$4;
-const _excluded$2 = ["variant"];
-function isEmpty$1(string) {
-  return string.length === 0;
-}
-function propsToClassKey(props) {
-  const {
-    variant
-  } = props, other = (0, _objectWithoutPropertiesLoose2$1.default)(props, _excluded$2);
-  let classKey = variant || "";
-  Object.keys(other).sort().forEach((key) => {
-    if (key === "color") {
-      classKey += isEmpty$1(classKey) ? props[key] : (0, _utils.unstable_capitalize)(props[key]);
-    } else {
-      classKey += `${isEmpty$1(classKey) ? key : (0, _utils.unstable_capitalize)(key)}${(0, _utils.unstable_capitalize)(props[key].toString())}`;
-    }
-  });
-  return classKey;
-}
-var _interopRequireDefault$1 = interopRequireDefault.exports;
-Object.defineProperty(createStyled$1, "__esModule", {
-  value: true
-});
-createStyled$1.default = createStyled;
-createStyled$1.shouldForwardProp = shouldForwardProp;
-createStyled$1.systemDefaultTheme = void 0;
-var _extends2 = _interopRequireDefault$1(_extends.exports);
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault$1(objectWithoutPropertiesLoose.exports);
-var _styledEngine = _interopRequireDefault$1(require$$3);
-var _createTheme = _interopRequireDefault$1(require$$5);
-var _styleFunctionSx = _interopRequireDefault$1(require$$6);
-var _propsToClassKey = _interopRequireDefault$1(propsToClassKey$1);
-const _excluded$1 = ["name", "slot", "skipVariantsResolver", "skipSx", "overridesResolver"], _excluded2 = ["theme"], _excluded3 = ["theme"];
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
-const getStyleOverrides = (name, theme) => {
-  if (theme.components && theme.components[name] && theme.components[name].styleOverrides) {
-    return theme.components[name].styleOverrides;
-  }
-  return null;
-};
-const getVariantStyles = (name, theme) => {
-  let variants = [];
-  if (theme && theme.components && theme.components[name] && theme.components[name].variants) {
-    variants = theme.components[name].variants;
-  }
-  const variantsStyles = {};
-  variants.forEach((definition) => {
-    const key = (0, _propsToClassKey.default)(definition.props);
-    variantsStyles[key] = definition.style;
-  });
-  return variantsStyles;
-};
-const variantsResolver = (props, styles, theme, name) => {
-  var _theme$components, _theme$components$nam;
-  const {
-    ownerState = {}
-  } = props;
-  const variantsStyles = [];
-  const themeVariants = theme == null ? void 0 : (_theme$components = theme.components) == null ? void 0 : (_theme$components$nam = _theme$components[name]) == null ? void 0 : _theme$components$nam.variants;
-  if (themeVariants) {
-    themeVariants.forEach((themeVariant) => {
-      let isMatch = true;
-      Object.keys(themeVariant.props).forEach((key) => {
-        if (ownerState[key] !== themeVariant.props[key] && props[key] !== themeVariant.props[key]) {
-          isMatch = false;
-        }
-      });
-      if (isMatch) {
-        variantsStyles.push(styles[(0, _propsToClassKey.default)(themeVariant.props)]);
-      }
-    });
-  }
-  return variantsStyles;
-};
-function shouldForwardProp(prop) {
-  return prop !== "ownerState" && prop !== "theme" && prop !== "sx" && prop !== "as";
-}
-const systemDefaultTheme = (0, _createTheme.default)();
-createStyled$1.systemDefaultTheme = systemDefaultTheme;
-function createStyled(input = {}) {
-  const {
-    defaultTheme = systemDefaultTheme,
-    rootShouldForwardProp = shouldForwardProp,
-    slotShouldForwardProp = shouldForwardProp
-  } = input;
-  return (tag, inputOptions = {}) => {
-    const {
-      name: componentName,
-      slot: componentSlot,
-      skipVariantsResolver: inputSkipVariantsResolver,
-      skipSx: inputSkipSx,
-      overridesResolver
-    } = inputOptions, options = (0, _objectWithoutPropertiesLoose2.default)(inputOptions, _excluded$1);
-    const skipVariantsResolver = inputSkipVariantsResolver !== void 0 ? inputSkipVariantsResolver : componentSlot && componentSlot !== "Root" || false;
-    const skipSx = inputSkipSx || false;
-    let label;
-    let shouldForwardPropOption = shouldForwardProp;
-    if (componentSlot === "Root") {
-      shouldForwardPropOption = rootShouldForwardProp;
-    } else if (componentSlot) {
-      shouldForwardPropOption = slotShouldForwardProp;
-    }
-    const defaultStyledResolver = (0, _styledEngine.default)(tag, (0, _extends2.default)({
-      shouldForwardProp: shouldForwardPropOption,
-      label
-    }, options));
-    const muiStyledResolver = (styleArg, ...expressions) => {
-      const expressionsWithDefaultTheme = expressions ? expressions.map((stylesArg) => {
-        return typeof stylesArg === "function" && stylesArg.__emotion_real !== stylesArg ? (_ref) => {
-          let {
-            theme: themeInput
-          } = _ref, other = (0, _objectWithoutPropertiesLoose2.default)(_ref, _excluded2);
-          return stylesArg((0, _extends2.default)({
-            theme: isEmpty(themeInput) ? defaultTheme : themeInput
-          }, other));
-        } : stylesArg;
-      }) : [];
-      let transformedStyleArg = styleArg;
-      if (componentName && overridesResolver) {
-        expressionsWithDefaultTheme.push((props) => {
-          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
-          const styleOverrides = getStyleOverrides(componentName, theme);
-          if (styleOverrides) {
-            return overridesResolver(props, styleOverrides);
-          }
-          return null;
-        });
-      }
-      if (componentName && !skipVariantsResolver) {
-        expressionsWithDefaultTheme.push((props) => {
-          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
-          return variantsResolver(props, getVariantStyles(componentName, theme), theme, componentName);
-        });
-      }
-      if (!skipSx) {
-        expressionsWithDefaultTheme.push((props) => {
-          const theme = isEmpty(props.theme) ? defaultTheme : props.theme;
-          return (0, _styleFunctionSx.default)((0, _extends2.default)({}, props, {
-            theme
-          }));
-        });
-      }
-      const numOfCustomFnsApplied = expressionsWithDefaultTheme.length - expressions.length;
-      if (Array.isArray(styleArg) && numOfCustomFnsApplied > 0) {
-        const placeholders = new Array(numOfCustomFnsApplied).fill("");
-        transformedStyleArg = [...styleArg, ...placeholders];
-        transformedStyleArg.raw = [...styleArg.raw, ...placeholders];
-      } else if (typeof styleArg === "function") {
-        transformedStyleArg = (_ref2) => {
-          let {
-            theme: themeInput
-          } = _ref2, other = (0, _objectWithoutPropertiesLoose2.default)(_ref2, _excluded3);
-          return styleArg((0, _extends2.default)({
-            theme: isEmpty(themeInput) ? defaultTheme : themeInput
-          }, other));
-        };
-      }
-      const Component = defaultStyledResolver(transformedStyleArg, ...expressionsWithDefaultTheme);
-      return Component;
-    };
-    return muiStyledResolver;
-  };
-}
-var _interopRequireDefault = interopRequireDefault.exports;
-Object.defineProperty(styled$1, "__esModule", {
-  value: true
-});
-var default_1 = styled$1.default = void 0;
-var _createStyled = _interopRequireDefault(createStyled$1);
-const styled = (0, _createStyled.default)();
-var _default = styled;
-default_1 = styled$1.default = _default;
 var createSvgIcon$1 = {};
 function getSvgIconUtilityClass(slot) {
   return generateUtilityClass("MuiSvgIcon", slot);
@@ -1810,7 +1713,7 @@ const useUtilityClasses = (ownerState) => {
   };
   return composeClasses(slots, getSvgIconUtilityClass, classes);
 };
-const SvgIconRoot = styled$2("svg", {
+const SvgIconRoot = styled$3("svg", {
   name: "MuiSvgIcon",
   slot: "Root",
   overridesResolver: (props, styles) => {
@@ -2413,6 +2316,11 @@ class ValueSubject extends BehaviorSubject {
     }
   }
 }
+function WorkerWrapper() {
+  return new Worker("/assets/document_worker.4dcf3d91.js", {
+    "type": "module"
+  });
+}
 C();
 const projects$ = new ValueSubject(new Map());
 const contents$ = new ValueSubject(new Map());
@@ -2450,11 +2358,6 @@ const addOrUpdateManyContents = (contentsIn, projectSlug) => {
     });
   }));
 };
-function WorkerWrapper() {
-  return new Worker("/assets/document_worker.4dcf3d91.js", {
-    "type": "module"
-  });
-}
 const documents$ = new ValueSubject(new Map());
 const queuedDocuments$ = new ValueSubject({
   docs: new Map(),
@@ -2592,5 +2495,5 @@ const queueDocument = (contents, prioritize = false) => {
   }));
   shiftQueue();
 };
-export { removeContents as A, ButtonBase$1 as B, Container$1 as C, ownerWindow as D, debounce as E, isMuiElement as F, createSvgIcon as G, modifyDocument as H, getScrollbarSize as I, createChainedFunction as J, useSubscriptionInternal as K, useIsomorphicLayoutEffect as L, useObservableStateInternal as M, queuedDocuments$ as N, fetchingDocuments$ as O, TransitionGroupContext as T, ValueSubject as V, _inheritsLoose as _, contents$ as a, documents$ as b, createSvgIcon$1 as c, default_1 as d, extendSxProp as e, useForkRef as f, getDefaultExportFromCjs as g, useEnhancedEffect$1 as h, interopRequireDefault as i, useControlled as j, useId as k, useEventCallback as l, useIsFocusVisible as m, useRefFn as n, ownerDocument as o, projects$ as p, commonjsGlobal as q, require$$2 as r, setRef as s, addOrUpdateProject as t, useObservableState as u, addOrUpdateManyContents as v, addOrUpdateContents as w, getLastModified as x, getCachedDocument as y, queueDocument as z };
+export { ownerWindow as A, Box$1 as B, Container$1 as C, debounce as D, createBox as E, isMuiElement as F, createSvgIcon as G, modifyDocument as H, getScrollbarSize as I, createChainedFunction as J, queuedDocuments$ as K, fetchingDocuments$ as L, TransitionGroupContext as T, ValueSubject as V, _inheritsLoose as _, documents$ as a, ButtonBase$1 as b, createSvgIcon$1 as c, default_1 as d, extendSxProp as e, useEnhancedEffect$1 as f, getDefaultExportFromCjs as g, useControlled as h, interopRequireDefault as i, useId as j, useEventCallback as k, useIsFocusVisible as l, commonjsGlobal as m, contents$ as n, ownerDocument as o, projects$ as p, addOrUpdateProject as q, require$$2 as r, setRef as s, addOrUpdateManyContents as t, useForkRef as u, addOrUpdateContents as v, getLastModified as w, getCachedDocument as x, queueDocument as y, removeContents as z };
 //# sourceMappingURL=documents.js.map

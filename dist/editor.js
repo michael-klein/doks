@@ -17,20 +17,20 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import React__default, { memo, useEffect, useRef, useState, useCallback, lazy, Suspense, Fragment as Fragment$1 } from "react";
+import { p as pathBrowserify } from "./index.js";
+import React__default, { memo, useEffect, useRef, useState, useCallback, lazy, Suspense, useMemo, Fragment as Fragment$1 } from "react";
 import { combineLatest, map } from "rxjs";
-import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$5, b as documents$, C as Container } from "./documents.js";
+import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$5, B as Box, a as documents$, p as projects$, C as Container } from "./documents.js";
 import { P as PropTypes, j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import { b as useNavigate, u as useParams, R as Routes, a as Route } from "./doks.js";
-import { B as Box, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
+import { I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
 import { C as Card } from "./Card.js";
 import { C as CardHeader } from "./CardHeader.js";
 import { T as Tooltip } from "./Tooltip.js";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
-import "rxjs/operators";
 import "react-dom";
-import "./index.js";
-import "./Paper.js";
+import "./use-observable-state.js";
+import "rxjs/operators";
 var ArrowLeft = {};
 var _interopRequireDefault$4 = interopRequireDefault.exports;
 Object.defineProperty(ArrowLeft, "__esModule", {
@@ -899,7 +899,11 @@ const EditorHeader = default_1$5(CardHeader)(({
   background: theme.palette.primary.dark,
   color: theme.palette.getContrastText(theme.palette.primary.dark),
   padding: 2,
-  height: "44px"
+  height: "44px",
+  paddingLeft: 10,
+  ".MuiCardHeader-title": {
+    fontSize: "1rem"
+  }
 }));
 const ContentBox = default_1$5(Box)({
   overflow: "auto",
@@ -913,7 +917,8 @@ const SidebarBox = default_1$5(Box)({
 });
 const MAX_FLEX_DIFF = 4;
 const MarkdownEditor = ({
-  initial
+  initial,
+  path
 }) => {
   const [mdx, setMDX] = useState(initial);
   const [height, setHeight] = useState(0);
@@ -938,6 +943,7 @@ const MarkdownEditor = ({
   const [showPreview, setShowPreview] = useState(true);
   return /* @__PURE__ */ jsxs(EditorWrapper, {
     children: [/* @__PURE__ */ jsx(EditorHeader, {
+      title: path != null ? path : "New document",
       action: /* @__PURE__ */ jsxs(React__default.Fragment, {
         children: [/* @__PURE__ */ jsx(IconButton, {
           sx: {
@@ -1068,9 +1074,16 @@ const DocumentEditor = () => {
     }));
   }, [params]);
   const shouldHaveDocument = !!params.contentSlug;
+  const path = useMemo(() => {
+    if (document2) {
+      return pathBrowserify.join(projects$.value.get(params.projectSlug).path, document2.path);
+    }
+    return void 0;
+  }, [document2, params]);
   return /* @__PURE__ */ jsx(Fragment, {
     children: shouldHaveDocument && !document2 ? /* @__PURE__ */ jsx(CircularProgress, {}) : /* @__PURE__ */ jsx(MarkdownEditor, {
-      initial: shouldHaveDocument ? document2.mdx : "# hello world"
+      initial: shouldHaveDocument ? document2.mdx : "# hello world",
+      path
     }, shouldHaveDocument ? document2.mdx : "# hello world")
   });
 };

@@ -17,19 +17,19 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, f as useForkRef, h as useEnhancedEffect, o as ownerDocument, k as useId, j as useControlled, B as ButtonBase, d as default_1$4, p as projects$, a as contents$, u as useObservableState } from "./documents.js";
-import { k as generateUtilityClass, l as generateUtilityClasses, m as styled, _ as _extends, n as useThemeProps, G as duration, h as _objectWithoutPropertiesLoose, o as composeClasses, j as jsx, q as clsx, d as jsxs, A as alpha, g as capitalize, D as useTheme$1, H as getThemeProps, C as CircularProgress } from "./main.js";
+import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, u as useForkRef, f as useEnhancedEffect, o as ownerDocument, j as useId, h as useControlled, b as ButtonBase, d as default_1$4, p as projects$, n as contents$ } from "./documents.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, q as useThemeProps, G as duration, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, B as alpha, g as capitalize, E as useTheme$1, H as getThemeProps, C as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { Fragment, useState, useCallback, useEffect, useLayoutEffect } from "react";
-import { u as useParams, b as useNavigate } from "./doks.js";
+import { u as useParams } from "./doks.js";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { T as Transition, a as useTheme, g as getTransitionProps, u as useObservableAndState } from "./use_observable_and_state.js";
 import { G as Grid, B as Button } from "./Button.js";
+import { u as useObservableState } from "./use-observable-state.js";
 import { u as useFormControl, f as formControlState, g as getNativeSelectUtilityClasses, N as NativeSelectInput, A as ArrowDropDownIcon, I as Input, B as Box, F as FormControl, a as InputLabel } from "./Input.js";
 import { C as Card } from "./Card.js";
 import "react-dom";
-import "./Paper.js";
 var ChevronRight = {};
 var _interopRequireDefault$3 = interopRequireDefault.exports;
 Object.defineProperty(ChevronRight, "__esModule", {
@@ -1844,7 +1844,9 @@ const ConditionalCard = ({
   return /* @__PURE__ */ jsx(Card, {
     elevation: 1,
     sx: {
-      padding: 2
+      padding: 2,
+      position: "sticky",
+      top: "80px"
     },
     children
   });
@@ -1868,7 +1870,6 @@ function Sidebar({
       setExpanded((oldExpanded) => oldExpanded.length === 0 ? Array.from(contents$.value.get(project.slug).values()).map((i) => i.slug) : []);
     }
   }, [project]);
-  useNavigate();
   const contents = useObservableState(contents$);
   useEffect(() => {
     if (project) {

@@ -1,11 +1,18 @@
-import { lazy, useEffect, Suspense, useCallback, Fragment as Fragment$1 } from "react";
-import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$1, u as useObservableState, a as contents$, b as documents$, C as Container } from "./documents.js";
+import { lazy, Suspense, useCallback } from "react";
+import { d as default_1$1, B as Box, c as createSvgIcon, i as interopRequireDefault, r as require$$2, a as documents$, C as Container } from "./documents.js";
 import { j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import { B as Button, G as Grid } from "./Button.js";
 import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
 import "rxjs";
-import "rxjs/operators";
 import "react-dom";
+const Background = default_1$1(Box)(({
+  theme
+}) => ({
+  background: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[100],
+  flex: "auto",
+  flexDirection: "column",
+  display: "flex"
+}));
 var KeyboardArrowUp = {};
 var _interopRequireDefault = interopRequireDefault.exports;
 Object.defineProperty(KeyboardArrowUp, "__esModule", {
@@ -47,15 +54,6 @@ const Content = lazy(() => import("./content.js"));
 const Navbar = lazy(() => import("./navbar.js"));
 const Project = () => {
   const params = useParams();
-  const navigate = useNavigate();
-  const contents = useObservableState(contents$);
-  useEffect(() => {
-    if (!params.projectSlug && contents.size > 0) {
-      navigate(`/docs/${Array.from(contents.keys())[0]}`, {
-        replace: true
-      });
-    }
-  }, [params, contents]);
   return /* @__PURE__ */ jsx(Fragment, {
     children: params.contentSlug && /* @__PURE__ */ jsx(Suspense, {
       fallback: /* @__PURE__ */ jsx(CircularProgress, {
@@ -81,13 +79,13 @@ const Layout = ({
       });
     }
   }, [params]);
-  return /* @__PURE__ */ jsxs(Fragment$1, {
+  return /* @__PURE__ */ jsxs(Background, {
     children: [/* @__PURE__ */ jsx(DocFetcher, {
       mode: "docs"
     }), /* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsx(Container, {
       maxWidth: "lg",
       sx: {
-        marginTop: 10,
+        paddingTop: 10,
         marginBottom: 10,
         flex: "auto"
       },
@@ -116,6 +114,11 @@ const Docs = () => {
       })
     }), /* @__PURE__ */ jsx(Route, {
       path: "/:projectSlug/:contentSlug",
+      element: /* @__PURE__ */ jsx(Layout, {
+        children: /* @__PURE__ */ jsx(Project, {})
+      })
+    }), /* @__PURE__ */ jsx(Route, {
+      path: "/:projectSlug/:contentSlug/:headingIndex",
       element: /* @__PURE__ */ jsx(Layout, {
         children: /* @__PURE__ */ jsx(Project, {})
       })

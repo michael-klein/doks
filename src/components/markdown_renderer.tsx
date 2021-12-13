@@ -21,7 +21,8 @@ import { DoksTheme } from "../css/theme";
 import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 import { ValueSubject } from "../utils/value_subject";
-
+import LinkIcon from "@mui/icons-material/Link";
+import { Link } from "react-router-dom";
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
 const SYNTAX_KEY = "SYNTAX";
@@ -90,7 +91,9 @@ const removeVoidElements = (mdx: string) => {
   });
   return mdx;
 };
-
+const HWrapper = styled("span")({
+  display: "inline-block",
+});
 const MDX = memo(
   ({
     mdx,
@@ -146,7 +149,22 @@ const MDX = memo(
             components: {
               ...[1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo, i) => {
                 memo[`h${i}`] = (props) => {
-                  props = { ...props, id: `heading-` + hIndex };
+                  props = {
+                    ...props,
+                    id: `heading-` + hIndex,
+                    children: [
+                      <HWrapper>{props.children}</HWrapper>,
+                      <Link
+                        to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
+                      >
+                        <LinkIcon
+                          sx={{
+                            fontSize: "1.5rem",
+                          }}
+                        ></LinkIcon>
+                      </Link>,
+                    ],
+                  };
                   hIndex++;
                   return createElement(`h` + i, props);
                 };
@@ -190,6 +208,19 @@ const MDX = memo(
 );
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
+  "h1, h2, h3, h4, h5, h6, h7, h8, h9, h10": {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    "a,a:hover,a:link,a:active": {
+      color: "inherit",
+      textDecoration: "none",
+      textAlign: "left",
+    },
+    "a:hover": {
+      textDecoration: "underline",
+    },
+  },
 }));
 export const MarkdownRenderer = ({
   mdx,

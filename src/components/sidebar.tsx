@@ -95,6 +95,10 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     display: "block",
     width: "200px",
   },
+  "&:not(.edit-sidebar) > .MuiPaper-root": {
+    maxHeight: "calc(100vh - 180px)",
+    overflow: "auto",
+  },
   [".menu-button"]: {
     display: "none",
     position: "fixed",

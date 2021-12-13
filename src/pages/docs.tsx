@@ -48,7 +48,6 @@ const Layout = ({ children }: { children: ReactChild }) => {
       <DocFetcher mode="docs"></DocFetcher>
       <Navbar></Navbar>
       <Container
-        maxWidth="lg"
         sx={{
           paddingTop: 10,
           marginBottom: 10,

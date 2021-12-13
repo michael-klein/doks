@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
@@ -43,25 +43,41 @@ export const Content = () => {
   }, [document]);
 
   const contentRef = useRef<HTMLDivElement>();
+  const scrollTimeOutRef = useRef<NodeJS.Timeout>();
   const onAfterRender = useCallback(() => {
     if (params.headingIndex !== undefined) {
       const element = contentRef.current?.querySelector(
         `#heading-${params.headingIndex}`
       );
       if (element) {
-        const offset = 60;
-        const bodyRect = window.document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-        console.log(offsetPosition);
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
+        clearTimeout(scrollTimeOutRef.current);
+        scrollTimeOutRef.current = setInterval(() => {
+          requestAnimationFrame(() => {
+            const offset = 60;
+            const bodyRect = window.document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+            if (offsetPosition > 0) {
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+              clearTimeout(scrollTimeOutRef.current);
+            }
+          });
+        }, 100);
       }
     }
   }, [params.headingIndex]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    return () => {
+      clearTimeout(scrollTimeOutRef.current);
+    };
+  }, [params.contentSlug]);
+
   return (
     <ContentWrapper item xs={9}>
       <Card
@@ -89,20 +105,20 @@ export const Content = () => {
           ></MarkdownRenderer>
         </CardContent>
       </Card>
-      {document?.mdx?.includes("#") && (
+      {(document?.mdx?.match(/#/g) || []).length > 1 && (
         <Card
           elevation={2}
           sx={{
-            padding: 2,
             textAlign: "justify",
             overflowX: "auto",
             marginTop: "20px",
             marginBottom: "20px",
             marginLeft: "-10px",
-            whiteSpace: "pre",
             overflow: "visible",
             position: "sticky",
-            top: "80px",
+            padding: "10px",
+            paddingRight: 0,
+            top: "100px",
           }}
         >
           <TableOfContents mdx={document?.mdx}></TableOfContents>

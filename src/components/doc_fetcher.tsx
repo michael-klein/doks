@@ -204,9 +204,12 @@ export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
           }
         }
 
-        navigate(`/${currentContents.projectSlug}/${currentContents.slug}/`, {
-          replace: true,
-        });
+        navigate(
+          `/docs/${currentContents.projectSlug}/${currentContents.slug}/`,
+          {
+            replace: true,
+          }
+        );
       }
     }
   }, []);

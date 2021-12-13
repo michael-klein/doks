@@ -83,7 +83,6 @@ const Layout = ({
     children: [/* @__PURE__ */ jsx(DocFetcher, {
       mode: "docs"
     }), /* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsx(Container, {
-      maxWidth: "lg",
       sx: {
         paddingTop: 10,
         marginBottom: 10,

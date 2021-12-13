@@ -17,10 +17,10 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { d as default_1$1 } from "./Favorite.js";
-import { d as default_1, B as Box, H as modifyDocument, a as documents$ } from "./documents.js";
+import { d as default_1$2 } from "./Favorite.js";
+import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$1, B as Box, H as modifyDocument, a as documents$ } from "./documents.js";
 import * as React from "react";
-import React__default, { memo, useMemo, useCallback, useRef } from "react";
+import React__default, { memo, useMemo, useCallback, useRef, useEffect } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { h as htmdx, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
@@ -82,6 +82,18 @@ var CardContent$1 = CardContent;
 const formatDate = (date) => {
   return new Date(date).toLocaleString();
 };
+var SubdirectoryArrowRight = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(SubdirectoryArrowRight, "__esModule", {
+  value: true
+});
+var default_1 = SubdirectoryArrowRight.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "m19 15-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
+}), "SubdirectoryArrowRight");
+default_1 = SubdirectoryArrowRight.default = _default;
 class ErrorBoundary extends React__default.Component {
   constructor(props) {
     super(props);
@@ -112,17 +124,21 @@ class ErrorBoundary extends React__default.Component {
     return this.props.children;
   }
 }
-const TOCList = default_1("ul")({
+const TOCList = default_1$1("ul")({
   listStyle: "none",
   margin: 0,
   padding: 10,
-  lineHeight: "1.6em"
+  paddingLeft: 0,
+  lineHeight: "1.3em",
+  maxHeight: "calc(60vh)",
+  overflowY: "auto"
 });
-const TOCListItem = default_1("li")({
-  fontSize: "1.1em",
+const TOCListItem = default_1$1("li")({
+  fontSize: ".9em",
   "a,a:hover,a:link,a:active": {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
+    textAlign: "left"
   },
   "a:hover": {
     textDecoration: "underline"
@@ -130,13 +146,19 @@ const TOCListItem = default_1("li")({
 });
 const getListItem = (level) => (props) => {
   const params = useParams();
-  return /* @__PURE__ */ jsx(TOCListItem, {
+  return /* @__PURE__ */ jsxs(TOCListItem, {
     sx: {
-      paddingLeft: 10 * (level - 1) + "px"
+      marginLeft: 10 * (level - 1) + "px"
     },
-    children: /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
-      to: `/${params.projectSlug}/${params.contentSlug}/${props.index}`
-    }))
+    children: [/* @__PURE__ */ jsx(default_1, {
+      sx: {
+        fontSize: ".8em",
+        marginRight: ".2em"
+      },
+      className: "sub-icon"
+    }), /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
+      to: `/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`
+    }))]
   });
 };
 const TOC = memo(({
@@ -173,11 +195,14 @@ const TOC = memo(({
     }) : /* @__PURE__ */ jsx(Fragment, {})
   });
 });
-const Wrapper = default_1(Box)(({
+const Wrapper = default_1$1(Box)(({
   theme
-}) => __spreadValues({}, theme.typography.body1));
-const Header = default_1("h1")({
-  fontSize: "1.2em",
+}) => __spreadProps(__spreadValues({}, theme.typography.body1), {
+  width: "220px"
+}));
+const Header = default_1$1("h1")({
+  fontSize: "1em",
+  marginBottom: "-.7em",
   fontWeight: "bold"
 });
 const TableOfContents = ({
@@ -193,7 +218,7 @@ const TableOfContents = ({
     }, "toc-" + mdx)]
   });
 };
-const ContentWrapper = default_1(Grid)(({
+const ContentWrapper = default_1$1(Grid)(({
   theme
 }) => ({
   display: "flex",
@@ -218,24 +243,38 @@ const Content = () => {
     }));
   }, [document]);
   const contentRef = useRef();
+  const scrollTimeOutRef = useRef();
   const onAfterRender = useCallback(() => {
     var _a2;
     if (params.headingIndex !== void 0) {
       const element = (_a2 = contentRef.current) == null ? void 0 : _a2.querySelector(`#heading-${params.headingIndex}`);
       if (element) {
-        const offset = 60;
-        const bodyRect = window.document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-        console.log(offsetPosition);
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth"
-        });
+        clearTimeout(scrollTimeOutRef.current);
+        scrollTimeOutRef.current = setInterval(() => {
+          requestAnimationFrame(() => {
+            const offset = 60;
+            const bodyRect = window.document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+            if (offsetPosition > 0) {
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+              });
+              clearTimeout(scrollTimeOutRef.current);
+            }
+          });
+        }, 100);
       }
     }
   }, [params.headingIndex]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    return () => {
+      clearTimeout(scrollTimeOutRef.current);
+    };
+  }, [params.contentSlug]);
   return /* @__PURE__ */ jsxs(ContentWrapper, {
     item: true,
     xs: 9,
@@ -250,7 +289,7 @@ const Content = () => {
         action: /* @__PURE__ */ jsx(IconButton, {
           "aria-label": "favourite",
           onClick: toggleFav,
-          children: /* @__PURE__ */ jsx(default_1$1, {
+          children: /* @__PURE__ */ jsx(default_1$2, {
             sx: {
               color: document.isFavourite && "red"
             }
@@ -269,19 +308,19 @@ const Content = () => {
           onAfterRender
         })
       })]
-    }), ((_a = document == null ? void 0 : document.mdx) == null ? void 0 : _a.includes("#")) && /* @__PURE__ */ jsx(Card, {
+    }), (((_a = document == null ? void 0 : document.mdx) == null ? void 0 : _a.match(/#/g)) || []).length > 1 && /* @__PURE__ */ jsx(Card, {
       elevation: 2,
       sx: {
-        padding: 2,
         textAlign: "justify",
         overflowX: "auto",
         marginTop: "20px",
         marginBottom: "20px",
         marginLeft: "-10px",
-        whiteSpace: "pre",
         overflow: "visible",
         position: "sticky",
-        top: "80px"
+        padding: "10px",
+        paddingRight: 0,
+        top: "100px"
       },
       children: /* @__PURE__ */ jsx(TableOfContents, {
         mdx: document == null ? void 0 : document.mdx

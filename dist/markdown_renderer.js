@@ -21,9 +21,9 @@ var _a;
 import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, B as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { lazy, memo, useCallback, useMemo, useEffect, createElement, Suspense, useLayoutEffect, useRef } from "react";
-import { e as extendSxProp, b as ButtonBase, g as getDefaultExportFromCjs, V as ValueSubject, p as projects$, d as default_1, B as Box, a as documents$ } from "./documents.js";
+import { e as extendSxProp, b as ButtonBase, g as getDefaultExportFromCjs, c as createSvgIcon, i as interopRequireDefault, r as require$$2, V as ValueSubject, d as default_1$1, p as projects$, B as Box, a as documents$ } from "./documents.js";
 import { p as pathBrowserify } from "./index.js";
-import { u as useParams } from "./doks.js";
+import { u as useParams, L as Link$1 } from "./doks.js";
 import { combineLatest, map, debounceTime } from "rxjs";
 import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
 function getTypographyUtilityClass(slot) {
@@ -4571,6 +4571,18 @@ function htmdx(m, h, options) {
   });
   return markedToReact(esmEntry(m), h, options);
 }
+var Link = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(Link, "__esModule", {
+  value: true
+});
+var default_1 = Link.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"
+}), "Link");
+default_1 = Link.default = _default;
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter.js"));
 const SYNTAX_KEY = "SYNTAX";
 const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != null ? _a : "atomOneDark");
@@ -4620,6 +4632,9 @@ const removeVoidElements = (mdx) => {
   });
   return mdx;
 };
+const HWrapper = default_1$1("span")({
+  display: "inline-block"
+});
 const MDX = memo(({
   mdx,
   onSaveMDX,
@@ -4654,7 +4669,17 @@ const MDX = memo(({
       components: __spreadProps(__spreadValues({}, [1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo2, i2) => {
         memo2[`h${i2}`] = (props) => {
           props = __spreadProps(__spreadValues({}, props), {
-            id: `heading-` + hIndex
+            id: `heading-` + hIndex,
+            children: [/* @__PURE__ */ jsx(HWrapper, {
+              children: props.children
+            }), /* @__PURE__ */ jsx(Link$1, {
+              to: `/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`,
+              children: /* @__PURE__ */ jsx(default_1, {
+                sx: {
+                  fontSize: "1.5rem"
+                }
+              })
+            })]
           });
           hIndex++;
           return createElement(`h` + i2, props);
@@ -4695,9 +4720,23 @@ const MDX = memo(({
     })
   });
 });
-const Wrapper = default_1(Box)(({
+const Wrapper = default_1$1(Box)(({
   theme
-}) => __spreadValues({}, theme.typography.body1));
+}) => __spreadProps(__spreadValues({}, theme.typography.body1), {
+  "h1, h2, h3, h4, h5, h6, h7, h8, h9, h10": {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    "a,a:hover,a:link,a:active": {
+      color: "inherit",
+      textDecoration: "none",
+      textAlign: "left"
+    },
+    "a:hover": {
+      textDecoration: "underline"
+    }
+  }
+}));
 const MarkdownRenderer = ({
   mdx,
   isEditor,

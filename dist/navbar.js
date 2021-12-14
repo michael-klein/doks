@@ -710,7 +710,7 @@ var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)(
 }), "Brightness7");
 default_1 = Brightness7.default = _default;
 const SearchOverlay = lazy(() => import("./search.js"));
-const syntaxThemes = ["anOldHope", "arta", "atelierDuneDark", "atelierDuneLight", "darcula", "far", "github", "gradientDark", "isblEditorDark", "isblEditorLight", "sunburst", "monokai", "nightOwl"];
+const syntaxThemes = ["anOldHope", "arta", "atelierDuneDark", "atelierDuneLight", "darcula", "far", "github", "isblEditorDark", "isblEditorLight", "sunburst", "gradientDark", "monokai", "nightOwl"];
 const SearchInputWrapper = styled("div")(({
   theme
 }) => ({

@@ -27,7 +27,7 @@ const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
 const SYNTAX_KEY = "SYNTAX";
 export const codeTheme$ = new ValueSubject(
-  localStorage.getItem(SYNTAX_KEY) ?? "atomOneDark"
+  localStorage.getItem(SYNTAX_KEY) ?? "gradientDark"
 );
 
 codeTheme$.subscribe((theme) => {
@@ -206,7 +206,13 @@ const MDX = memo(
             ],
           })
         ) : (
-          <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
+          <CircularProgress
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+            }}
+          />
         )}
       </>
     );

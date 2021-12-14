@@ -1071,7 +1071,10 @@ const Content = ({
       sx: {
         padding: embed ? 1 : 2,
         textAlign: "justify",
-        overflowX: "auto"
+        overflowX: "auto",
+        flex: "auto",
+        minHeight: "50vh",
+        position: "relative"
       },
       children: [!embed && document && /* @__PURE__ */ jsx(CardHeader, {
         action: /* @__PURE__ */ jsxs(Box, {

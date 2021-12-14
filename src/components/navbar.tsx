@@ -44,10 +44,10 @@ const syntaxThemes = [
   "darcula",
   "far",
   "github",
-  "gradientDark",
   "isblEditorDark",
   "isblEditorLight",
   "sunburst",
+  "gradientDark",
   "monokai",
   "nightOwl",
 ];

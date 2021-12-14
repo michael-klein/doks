@@ -130,7 +130,14 @@ export const Content = ({ embed }: { embed?: boolean }) => {
       <ConditionalCard
         showCard={!embed}
         elevation={2}
-        sx={{ padding: embed ? 1 : 2, textAlign: "justify", overflowX: "auto" }}
+        sx={{
+          padding: embed ? 1 : 2,
+          textAlign: "justify",
+          overflowX: "auto",
+          flex: "auto",
+          minHeight: "50vh",
+          position: "relative",
+        }}
       >
         {!embed && document && (
           <CardHeader

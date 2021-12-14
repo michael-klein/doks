@@ -4780,7 +4780,7 @@ var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)(
 default_1 = Link.default = _default;
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter.js"));
 const SYNTAX_KEY = "SYNTAX";
-const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != null ? _a : "atomOneDark");
+const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != null ? _a : "gradientDark");
 codeTheme$.subscribe((theme) => {
   localStorage.setItem(SYNTAX_KEY, theme);
 });
@@ -4913,7 +4913,9 @@ const MDX = memo(({
       }]
     }) : /* @__PURE__ */ jsx(CircularProgress, {
       sx: {
-        marginLeft: "calc(50% - 20px)"
+        position: "absolute",
+        top: "50%",
+        left: "50%"
       }
     })
   });

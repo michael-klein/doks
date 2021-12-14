@@ -1,11 +1,11 @@
 import { lazy, Suspense, useCallback } from "react";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { B as Background } from "./background.js";
 import { i as interopRequireDefault, d as default_1$1, C as Container } from "./styled.js";
 import { c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
 import { j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import { B as Button } from "./Button.js";
 import { d as documents$ } from "./documents.js";
+import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
 import { G as Grid } from "./Grid.js";
 import "react-dom";
 import "rxjs";

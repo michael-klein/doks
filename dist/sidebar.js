@@ -22,7 +22,7 @@ import { c as createSvgIcon, r as require$$2, B as ButtonBase } from "./jsx-runt
 import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, q as useThemeProps, G as duration, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, y as alpha, g as capitalize, D as useTheme$1, H as getThemeProps, C as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { Fragment, useState, useCallback, useEffect, useLayoutEffect } from "react";
-import { useParams } from "react-router";
+import { u as useParams } from "./doks.js";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { u as useObservableAndState } from "./use_observable_and_state.js";

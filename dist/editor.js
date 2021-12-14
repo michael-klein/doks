@@ -19,12 +19,11 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 import { p as pathBrowserify } from "./index.js";
 import React__default, { memo, useEffect, useRef, useState, useCallback, lazy, Suspense, useMemo, Fragment as Fragment$1 } from "react";
-import { Routes, Route, useParams as useParams$1 } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
 import { i as interopRequireDefault, d as default_1$5, B as Box, C as Container } from "./styled.js";
 import { c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
 import { P as PropTypes, j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
-import { useNavigate, useParams } from "react-router";
+import { b as useNavigate, u as useParams, R as Routes, a as Route } from "./doks.js";
 import { d as documents$, p as projects$ } from "./documents.js";
 import { I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
 import { C as Card } from "./Card.js";
@@ -1069,7 +1068,7 @@ const MarkdownEditor = ({
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
 const Navbar = lazy(() => import("./navbar.js"));
 const DocumentEditor = () => {
-  const params = useParams$1();
+  const params = useParams();
   const [document2] = useObservableAndState((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
       var _a;

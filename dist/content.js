@@ -21,12 +21,11 @@ import { d as default_1$3 } from "./Menu.js";
 import { i as interopRequireDefault, d as default_1$2, B as Box, b as useForkRef, a as useEventCallback, o as ownerDocument } from "./styled.js";
 import * as React from "react";
 import React__default, { memo, useMemo, useRef, useCallback, useEffect, useState } from "react";
-import { Link, useParams as useParams$1 } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { m as modifyDocument, d as documents$ } from "./documents.js";
 import { h as htmdx, I as IconButton, T as Typography, G as Grow, M as MarkdownRenderer } from "./markdown_renderer.js";
-import { useParams } from "react-router";
+import { u as useParams, L as Link } from "./doks.js";
 import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1 } from "./jsx-runtime_commonjs-proxy.js";
 import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, g as capitalize, J as darken, K as lighten, L as emphasize, G as duration } from "./main.js";
 import { C as ConditionalCard } from "./conditional_card.js";
@@ -995,7 +994,7 @@ const Content = ({
   embed
 }) => {
   var _a;
-  const params = useParams$1();
+  const params = useParams();
   const document = useObservableState(useObservable((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
       return documents.get(input[0].contentSlug);

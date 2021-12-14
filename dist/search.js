@@ -32,7 +32,7 @@ var __objRest = (source, exclude) => {
 import { l as useId, n as useControlled, a as useEventCallback, s as setRef, b as useForkRef, q as getDefaultExportFromCjs, d as default_1 } from "./styled.js";
 import * as React from "react";
 import React__default, { useRef, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router";
+import { b as useNavigate, u as useParams } from "./doks.js";
 import { combineLatest, map, debounceTime, startWith } from "rxjs";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
 import { d as documents$, V as ValueSubject } from "./documents.js";
@@ -49,7 +49,6 @@ import { a as createSvgIcon, B as ButtonBase } from "./jsx-runtime_commonjs-prox
 import "react-dom";
 import "rxjs/operators";
 import "./index.js";
-import "react-router-dom";
 function stripDiacritics(string) {
   return typeof string.normalize !== "undefined" ? string.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : string;
 }

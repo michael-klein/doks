@@ -26,10 +26,9 @@ import { b as useForkRef, k as useEnhancedEffect, s as setRef, e as extendSxProp
 import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
 import { b as useTheme, T as Transition, r as reflow, g as getTransitionProps, u as useObservableState, a as useObservable } from "./use-observable-state.js";
 import { p as pathBrowserify } from "./index.js";
-import { useParams } from "react-router";
+import { u as useParams, L as Link$1 } from "./doks.js";
 import { combineLatest, map, debounceTime } from "rxjs";
 import { V as ValueSubject, p as projects$, d as documents$ } from "./documents.js";
-import { Link as Link$1 } from "react-router-dom";
 function getContainer(container) {
   return typeof container === "function" ? container() : container;
 }

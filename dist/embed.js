@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
 import { B as Background } from "./background.js";
 import { d as jsxs, j as jsx, F as Fragment, C as CircularProgress } from "./main.js";
+import { R as Routes, a as Route, u as useParams } from "./doks.js";
 import { C as Container } from "./styled.js";
 import "react-dom";
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));

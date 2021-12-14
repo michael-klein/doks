@@ -3779,7 +3779,7 @@ css`
   }
 `;
 const Doks = lazy(() => import("./doks.js").then(function(n2) {
-  return n2.d;
+  return n2.f;
 }));
 const docs = (options) => {
   const link = document.createElement("link");

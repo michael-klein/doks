@@ -4,10 +4,8 @@ import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g 
 import { L as ListContext, d as default_1$6, M as Menu } from "./Menu.js";
 import * as React from "react";
 import { lazy, Suspense, useState, Fragment as Fragment$1 } from "react";
-import { useParams, useLocation, useNavigate } from "react-router";
-import { Link } from "react-router-dom";
+import { c as useDocOptions, u as useParams, d as useLocation, e as useColorModeContext, L as Link, b as useNavigate } from "./doks.js";
 import { map, combineLatest } from "rxjs";
-import { u as useDocOptions, a as useColorModeContext } from "./doks.js";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
 import { V as ValueSubject, d as documents$, h as queuedDocuments$, i as fetchingDocuments$ } from "./documents.js";
 import { I as IconButton, T as Typography, c as codeTheme$ } from "./markdown_renderer.js";

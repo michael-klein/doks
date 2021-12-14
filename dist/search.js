@@ -29,25 +29,26 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-import { l as useId, n as useControlled, a as useEventCallback, s as setRef, b as useForkRef, q as getDefaultExportFromCjs, d as default_1 } from "./styled.js";
+import { k as useId, m as useControlled, a as useEventCallback, s as setRef, b as useForkRef, q as getDefaultExportFromCjs, d as default_1 } from "./styled.js";
 import * as React from "react";
 import React__default, { useRef, useEffect, useCallback } from "react";
 import { b as useNavigate, u as useParams } from "./doks.js";
 import { combineLatest, map, debounceTime, startWith } from "rxjs";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
 import { d as documents$, V as ValueSubject } from "./documents.js";
-import { _ as _extends, m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, y as alpha, d as jsxs, K as lighten, J as darken, F as Fragment } from "./main.js";
+import { _ as _extends, g as generateUtilityClass, f as generateUtilityClasses, s as styled, o as capitalize, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, D as alpha, d as jsxs, L as lighten, K as darken, F as Fragment } from "./main.js";
 import { c as useSubscriptionInternal, d as useIsomorphicLayoutEffect, e as useObservableStateInternal, P as Paper, a as useObservable, u as useObservableState } from "./use-observable-state.js";
 import { a as Modal, B as Backdrop } from "./Menu.js";
 import { B as Box } from "./Box.js";
 import { i as inputClasses, A as ArrowDropDownIcon } from "./Input.js";
 import { e as inputBaseClasses, u as useFormControl } from "./InputBase.js";
 import { o as outlinedInputClasses, f as filledInputClasses, C as ClearIcon, T as TextField } from "./Close.js";
-import { I as IconButton, T as Typography } from "./markdown_renderer.js";
+import { I as IconButton } from "./markdown_renderer.js";
 import { P as Popper } from "./Tooltip.js";
-import { a as createSvgIcon, B as ButtonBase } from "./jsx-runtime_commonjs-proxy.js";
+import { a as createSvgIcon, B as ButtonBase, T as Typography } from "./Typography.js";
 import "react-dom";
 import "rxjs/operators";
+import "./react-is.production.min.js";
 import "./index.js";
 function stripDiacritics(string) {
   return typeof string.normalize !== "undefined" ? string.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : string;

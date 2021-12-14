@@ -1,7 +1,7 @@
-import { _ as _extends, h as _objectWithoutPropertiesLoose, l as clsx, j as jsx, n as generateUtilityClasses, z as keyframes, o as styled, q as useThemeProps, m as generateUtilityClass, d as jsxs, r as composeClasses, g as capitalize, A as ClassNameGenerator, B as jsxRuntime } from "./main.js";
+import { _ as _extends, i as _objectWithoutPropertiesLoose, l as clsx, j as jsx, f as generateUtilityClasses, w as keyframes, s as styled, h as useThemeProps, g as generateUtilityClass, d as jsxs, k as composeClasses, o as capitalize, x as ClassNameGenerator, y as jsxRuntime } from "./main.js";
 import * as React from "react";
 import React__default, { Children, isValidElement, cloneElement } from "react";
-import { u as useIsFocusVisible, a as useEventCallback, b as useForkRef, c as createChainedFunction, f as debounce, g as deprecatedPropType, h as isMuiElement, o as ownerDocument, j as ownerWindow, r as requirePropFactory, s as setRef, k as useEnhancedEffect, l as useId, m as unsupportedProp, n as useControlled, p as getAugmentedNamespace } from "./styled.js";
+import { u as useIsFocusVisible, a as useEventCallback, b as useForkRef, c as createChainedFunction, e as debounce, f as deprecatedPropType, g as isMuiElement, o as ownerDocument, h as ownerWindow, r as requirePropFactory, s as setRef, j as useEnhancedEffect, k as useId, l as unsupportedProp, m as useControlled, n as getAugmentedNamespace, p as extendSxProp } from "./styled.js";
 function _setPrototypeOf(o, p) {
   _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p2) {
     o2.__proto__ = p2;
@@ -241,7 +241,7 @@ function Ripple(props) {
 }
 const touchRippleClasses = generateUtilityClasses("MuiTouchRipple", ["root", "ripple", "rippleVisible", "ripplePulsate", "child", "childLeaving", "childPulsate"]);
 var touchRippleClasses$1 = touchRippleClasses;
-const _excluded$2 = ["center", "classes", "className"];
+const _excluded$3 = ["center", "classes", "className"];
 let _ = (t) => t, _t, _t2, _t3, _t4;
 const DURATION = 550;
 const DELAY_RIPPLE = 80;
@@ -357,7 +357,7 @@ const TouchRipple = /* @__PURE__ */ React.forwardRef(function TouchRipple2(inPro
     center: centerProp = false,
     classes = {},
     className
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
   const [ripples, setRipples] = React.useState([]);
   const nextKey = React.useRef(0);
   const rippleCallback = React.useRef(null);
@@ -520,8 +520,8 @@ function getButtonBaseUtilityClass(slot) {
 }
 const buttonBaseClasses = generateUtilityClasses("MuiButtonBase", ["root", "disabled", "focusVisible"]);
 var buttonBaseClasses$1 = buttonBaseClasses;
-const _excluded$1 = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "type"];
-const useUtilityClasses$1 = (ownerState) => {
+const _excluded$2 = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "type"];
+const useUtilityClasses$2 = (ownerState) => {
   const {
     disabled,
     focusVisible,
@@ -605,7 +605,7 @@ const ButtonBase = /* @__PURE__ */ React.forwardRef(function ButtonBase2(inProps
     tabIndex = 0,
     TouchRippleProps,
     type
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
   const buttonRef = React.useRef(null);
   const rippleRef = React.useRef(null);
   const {
@@ -752,7 +752,7 @@ const ButtonBase = /* @__PURE__ */ React.forwardRef(function ButtonBase2(inProps
     tabIndex,
     focusVisible
   });
-  const classes = useUtilityClasses$1(ownerState);
+  const classes = useUtilityClasses$2(ownerState);
   return /* @__PURE__ */ jsxs(ButtonBaseRoot, _extends({
     as: ComponentProp,
     className: clsx(classes.root, className),
@@ -786,8 +786,8 @@ function getSvgIconUtilityClass(slot) {
   return generateUtilityClass("MuiSvgIcon", slot);
 }
 generateUtilityClasses("MuiSvgIcon", ["root", "colorPrimary", "colorSecondary", "colorAction", "colorError", "colorDisabled", "fontSizeInherit", "fontSizeSmall", "fontSizeMedium", "fontSizeLarge"]);
-const _excluded = ["children", "className", "color", "component", "fontSize", "htmlColor", "titleAccess", "viewBox"];
-const useUtilityClasses = (ownerState) => {
+const _excluded$1 = ["children", "className", "color", "component", "fontSize", "htmlColor", "titleAccess", "viewBox"];
+const useUtilityClasses$1 = (ownerState) => {
   const {
     color,
     fontSize,
@@ -849,14 +849,14 @@ const SvgIcon = /* @__PURE__ */ React.forwardRef(function SvgIcon2(inProps, ref)
     htmlColor,
     titleAccess,
     viewBox = "0 0 24 24"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const ownerState = _extends({}, props, {
     color,
     component,
     fontSize,
     viewBox
   });
-  const classes = useUtilityClasses(ownerState);
+  const classes = useUtilityClasses$1(ownerState);
   return /* @__PURE__ */ jsxs(SvgIconRoot, _extends({
     as: component,
     className: clsx(classes.root, className),
@@ -921,5 +921,112 @@ var require$$0 = /* @__PURE__ */ getAugmentedNamespace(utils);
   var _utils = require$$0;
 })(createSvgIcon$1);
 var require$$2 = /* @__PURE__ */ getAugmentedNamespace(jsxRuntime);
-export { ButtonBase$1 as B, TransitionGroupContext as T, _inheritsLoose as _, createSvgIcon as a, _assertThisInitialized as b, createSvgIcon$1 as c, _setPrototypeOf as d, require$$2 as r };
-//# sourceMappingURL=jsx-runtime_commonjs-proxy.js.map
+function getTypographyUtilityClass(slot) {
+  return generateUtilityClass("MuiTypography", slot);
+}
+generateUtilityClasses("MuiTypography", ["root", "h1", "h2", "h3", "h4", "h5", "h6", "subtitle1", "subtitle2", "body1", "body2", "inherit", "button", "caption", "overline", "alignLeft", "alignRight", "alignCenter", "alignJustify", "noWrap", "gutterBottom", "paragraph"]);
+const _excluded = ["align", "className", "component", "gutterBottom", "noWrap", "paragraph", "variant", "variantMapping"];
+const useUtilityClasses = (ownerState) => {
+  const {
+    align,
+    gutterBottom,
+    noWrap,
+    paragraph,
+    variant,
+    classes
+  } = ownerState;
+  const slots = {
+    root: ["root", variant, ownerState.align !== "inherit" && `align${capitalize(align)}`, gutterBottom && "gutterBottom", noWrap && "noWrap", paragraph && "paragraph"]
+  };
+  return composeClasses(slots, getTypographyUtilityClass, classes);
+};
+const TypographyRoot = styled("span", {
+  name: "MuiTypography",
+  slot: "Root",
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, ownerState.variant && styles[ownerState.variant], ownerState.align !== "inherit" && styles[`align${capitalize(ownerState.align)}`], ownerState.noWrap && styles.noWrap, ownerState.gutterBottom && styles.gutterBottom, ownerState.paragraph && styles.paragraph];
+  }
+})(({
+  theme,
+  ownerState
+}) => _extends({
+  margin: 0
+}, ownerState.variant && theme.typography[ownerState.variant], ownerState.align !== "inherit" && {
+  textAlign: ownerState.align
+}, ownerState.noWrap && {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap"
+}, ownerState.gutterBottom && {
+  marginBottom: "0.35em"
+}, ownerState.paragraph && {
+  marginBottom: 16
+}));
+const defaultVariantMapping = {
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  h5: "h5",
+  h6: "h6",
+  subtitle1: "h6",
+  subtitle2: "h6",
+  body1: "p",
+  body2: "p",
+  inherit: "p"
+};
+const colorTransformations = {
+  primary: "primary.main",
+  textPrimary: "text.primary",
+  secondary: "secondary.main",
+  textSecondary: "text.secondary",
+  error: "error.main"
+};
+const transformDeprecatedColors = (color) => {
+  return colorTransformations[color] || color;
+};
+const Typography = /* @__PURE__ */ React.forwardRef(function Typography2(inProps, ref) {
+  const themeProps = useThemeProps({
+    props: inProps,
+    name: "MuiTypography"
+  });
+  const color = transformDeprecatedColors(themeProps.color);
+  const props = extendSxProp(_extends({}, themeProps, {
+    color
+  }));
+  const {
+    align = "inherit",
+    className,
+    component,
+    gutterBottom = false,
+    noWrap = false,
+    paragraph = false,
+    variant = "body1",
+    variantMapping = defaultVariantMapping
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
+  const ownerState = _extends({}, props, {
+    align,
+    color,
+    className,
+    component,
+    gutterBottom,
+    noWrap,
+    paragraph,
+    variant,
+    variantMapping
+  });
+  const Component = component || (paragraph ? "p" : variantMapping[variant] || defaultVariantMapping[variant]) || "span";
+  const classes = useUtilityClasses(ownerState);
+  return /* @__PURE__ */ jsx(TypographyRoot, _extends({
+    as: Component,
+    ref,
+    ownerState,
+    className: clsx(classes.root, className)
+  }, other));
+});
+var Typography$1 = Typography;
+export { ButtonBase$1 as B, Typography$1 as T, _inheritsLoose as _, createSvgIcon as a, TransitionGroupContext as b, createSvgIcon$1 as c, _assertThisInitialized as d, _setPrototypeOf as e, require$$2 as r };
+//# sourceMappingURL=Typography.js.map

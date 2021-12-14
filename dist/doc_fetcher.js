@@ -2302,6 +2302,7 @@ const loadContentsDocument = async (item, project, projectSlug, deletedPaths) =>
   }
 };
 const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mode, navigate) => {
+  var _a;
   const isDocsMode = mode === "docs" || mode === "embed";
   let shouldNavigate = false;
   const docProjects = [];
@@ -2323,8 +2324,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
       docProjects.push(docProject);
     }
   });
-  await Promise.all(docProjects.map(async (project) => {
-    var _a;
+  for (const project of docProjects) {
     const projectSlug = project.slug;
     if (projectSlug !== currentProjectSlug && mode === "embed") {
       return;
@@ -2398,7 +2398,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     if (deletedPaths.length > 0) {
       console.warn(`The following paths seem to have been deleted in ${project.name}: }`, deletedPaths);
     }
-  }));
+  }
 };
 let startedLoading = false;
 const getFirstRealContent = (contents) => {

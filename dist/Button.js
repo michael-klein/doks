@@ -1,6 +1,6 @@
-import { n as generateUtilityClasses, m as generateUtilityClass, o as styled, x as rootShouldForwardProp, g as capitalize, _ as _extends, y as alpha, q as useThemeProps, h as _objectWithoutPropertiesLoose, j as jsx, d as jsxs, l as clsx, r as composeClasses } from "./main.js";
+import { f as generateUtilityClasses, g as generateUtilityClass, s as styled, B as rootShouldForwardProp, o as capitalize, _ as _extends, D as alpha, h as useThemeProps, i as _objectWithoutPropertiesLoose, j as jsx, d as jsxs, l as clsx, k as composeClasses } from "./main.js";
 import * as React from "react";
-import { B as ButtonBase } from "./jsx-runtime_commonjs-proxy.js";
+import { B as ButtonBase } from "./Typography.js";
 function getButtonUtilityClass(slot) {
   return generateUtilityClass("MuiButton", slot);
 }

@@ -1,6 +1,6 @@
-import { k as useEnhancedEffect, b as useForkRef, i as interopRequireDefault } from "./styled.js";
-import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, z as keyframes, N as css, d as jsxs, K as lighten, J as darken, x as rootShouldForwardProp, y as alpha, F as Fragment } from "./main.js";
+import { j as useEnhancedEffect, b as useForkRef, i as interopRequireDefault } from "./styled.js";
+import { B as ButtonBase, c as createSvgIcon, r as require$$2, T as Typography } from "./Typography.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, o as capitalize, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, w as keyframes, N as css, d as jsxs, L as lighten, K as darken, B as rootShouldForwardProp, D as alpha, F as Fragment } from "./main.js";
 import { L as ListContext, d as default_1$6, M as Menu } from "./Menu.js";
 import * as React from "react";
 import { lazy, Suspense, useState, Fragment as Fragment$1 } from "react";
@@ -8,13 +8,14 @@ import { c as useDocOptions, u as useParams, d as useLocation, e as useColorMode
 import { map, combineLatest } from "rxjs";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
 import { V as ValueSubject, d as documents$, h as queuedDocuments$, i as fetchingDocuments$ } from "./documents.js";
-import { I as IconButton, T as Typography, c as codeTheme$ } from "./markdown_renderer.js";
+import { I as IconButton, c as codeTheme$ } from "./markdown_renderer.js";
 import { d as InputBase } from "./InputBase.js";
 import { P as Paper, b as useTheme, u as useObservableState } from "./use-observable-state.js";
 import { B as Box } from "./Box.js";
 import { T as Tooltip } from "./Tooltip.js";
 import { B as Button } from "./Button.js";
 import "react-dom";
+import "./react-is.production.min.js";
 import "./index.js";
 import "rxjs/operators";
 function getAppBarUtilityClass(slot) {

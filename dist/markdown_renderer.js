@@ -21,9 +21,9 @@ var _a;
 import * as React from "react";
 import React__default, { lazy, memo, useCallback, useMemo, useEffect, createElement, Suspense, useLayoutEffect, useRef } from "react";
 import * as ReactDOM from "react-dom";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, y as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
-import { b as useForkRef, k as useEnhancedEffect, s as setRef, e as extendSxProp, q as getDefaultExportFromCjs, i as interopRequireDefault, d as default_1$1, B as Box } from "./styled.js";
-import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, o as capitalize, _ as _extends, D as alpha, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
+import { b as useForkRef, j as useEnhancedEffect, s as setRef, q as getDefaultExportFromCjs, i as interopRequireDefault, d as default_1$1, B as Box } from "./styled.js";
+import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./Typography.js";
 import { b as useTheme, T as Transition, r as reflow, g as getTransitionProps, u as useObservableState, a as useObservable } from "./use-observable-state.js";
 import { p as pathBrowserify } from "./index.js";
 import { u as useParams, L as Link$1 } from "./doks.js";
@@ -65,113 +65,6 @@ const Portal = /* @__PURE__ */ React.forwardRef(function Portal2(props, ref) {
   return mountNode ? /* @__PURE__ */ ReactDOM.createPortal(children, mountNode) : mountNode;
 });
 var Portal$1 = Portal;
-function getTypographyUtilityClass(slot) {
-  return generateUtilityClass("MuiTypography", slot);
-}
-generateUtilityClasses("MuiTypography", ["root", "h1", "h2", "h3", "h4", "h5", "h6", "subtitle1", "subtitle2", "body1", "body2", "inherit", "button", "caption", "overline", "alignLeft", "alignRight", "alignCenter", "alignJustify", "noWrap", "gutterBottom", "paragraph"]);
-const _excluded$2 = ["align", "className", "component", "gutterBottom", "noWrap", "paragraph", "variant", "variantMapping"];
-const useUtilityClasses$1 = (ownerState) => {
-  const {
-    align,
-    gutterBottom,
-    noWrap,
-    paragraph,
-    variant,
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root", variant, ownerState.align !== "inherit" && `align${capitalize(align)}`, gutterBottom && "gutterBottom", noWrap && "noWrap", paragraph && "paragraph"]
-  };
-  return composeClasses(slots, getTypographyUtilityClass, classes);
-};
-const TypographyRoot = styled("span", {
-  name: "MuiTypography",
-  slot: "Root",
-  overridesResolver: (props, styles2) => {
-    const {
-      ownerState
-    } = props;
-    return [styles2.root, ownerState.variant && styles2[ownerState.variant], ownerState.align !== "inherit" && styles2[`align${capitalize(ownerState.align)}`], ownerState.noWrap && styles2.noWrap, ownerState.gutterBottom && styles2.gutterBottom, ownerState.paragraph && styles2.paragraph];
-  }
-})(({
-  theme,
-  ownerState
-}) => _extends({
-  margin: 0
-}, ownerState.variant && theme.typography[ownerState.variant], ownerState.align !== "inherit" && {
-  textAlign: ownerState.align
-}, ownerState.noWrap && {
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap"
-}, ownerState.gutterBottom && {
-  marginBottom: "0.35em"
-}, ownerState.paragraph && {
-  marginBottom: 16
-}));
-const defaultVariantMapping = {
-  h1: "h1",
-  h2: "h2",
-  h3: "h3",
-  h4: "h4",
-  h5: "h5",
-  h6: "h6",
-  subtitle1: "h6",
-  subtitle2: "h6",
-  body1: "p",
-  body2: "p",
-  inherit: "p"
-};
-const colorTransformations = {
-  primary: "primary.main",
-  textPrimary: "text.primary",
-  secondary: "secondary.main",
-  textSecondary: "text.secondary",
-  error: "error.main"
-};
-const transformDeprecatedColors = (color) => {
-  return colorTransformations[color] || color;
-};
-const Typography = /* @__PURE__ */ React.forwardRef(function Typography2(inProps, ref) {
-  const themeProps = useThemeProps({
-    props: inProps,
-    name: "MuiTypography"
-  });
-  const color = transformDeprecatedColors(themeProps.color);
-  const props = extendSxProp(_extends({}, themeProps, {
-    color
-  }));
-  const {
-    align = "inherit",
-    className,
-    component,
-    gutterBottom = false,
-    noWrap = false,
-    paragraph = false,
-    variant = "body1",
-    variantMapping = defaultVariantMapping
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
-  const ownerState = _extends({}, props, {
-    align,
-    color,
-    className,
-    component,
-    gutterBottom,
-    noWrap,
-    paragraph,
-    variant,
-    variantMapping
-  });
-  const Component = component || (paragraph ? "p" : variantMapping[variant] || defaultVariantMapping[variant]) || "span";
-  const classes = useUtilityClasses$1(ownerState);
-  return /* @__PURE__ */ jsx(TypographyRoot, _extends({
-    as: Component,
-    ref,
-    ownerState,
-    className: clsx(classes.root, className)
-  }, other));
-});
-var Typography$1 = Typography;
 function getIconButtonUtilityClass(slot) {
   return generateUtilityClass("MuiIconButton", slot);
 }
@@ -4972,5 +4865,5 @@ const MarkdownRenderer = ({
     }, "mdx-" + mdxIdRef.current)
   });
 };
-export { Grow$1 as G, IconButton$1 as I, MarkdownRenderer as M, Portal$1 as P, Typography$1 as T, codeTheme$ as c, htmdx as h };
+export { Grow$1 as G, IconButton$1 as I, MarkdownRenderer as M, Portal$1 as P, codeTheme$ as c, htmdx as h };
 //# sourceMappingURL=markdown_renderer.js.map

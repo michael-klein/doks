@@ -5,18 +5,18 @@ var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
+var __spreadValues = (a2, b2) => {
+  for (var prop in b2 || (b2 = {}))
+    if (__hasOwnProp.call(b2, prop))
+      __defNormalProp(a2, prop, b2[prop]);
   if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
+    for (var prop of __getOwnPropSymbols(b2)) {
+      if (__propIsEnum.call(b2, prop))
+        __defNormalProp(a2, prop, b2[prop]);
     }
-  return a;
+  return a2;
 };
-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var __spreadProps = (a2, b2) => __defProps(a2, __getOwnPropDescs(b2));
 import { d as default_1$3 } from "./Menu.js";
 import { i as interopRequireDefault, d as default_1$2, B as Box, b as useForkRef, a as useEventCallback, o as ownerDocument } from "./styled.js";
 import * as React from "react";
@@ -24,10 +24,10 @@ import React__default, { memo, useMemo, useRef, useCallback, useEffect, useState
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { m as modifyDocument, d as documents$ } from "./documents.js";
-import { h as htmdx, I as IconButton, T as Typography, G as Grow, M as MarkdownRenderer } from "./markdown_renderer.js";
+import { h as htmdx, I as IconButton, G as Grow, M as MarkdownRenderer } from "./markdown_renderer.js";
 import { u as useParams, L as Link } from "./doks.js";
-import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1 } from "./jsx-runtime_commonjs-proxy.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, g as capitalize, J as darken, K as lighten, L as emphasize, G as duration } from "./main.js";
+import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1, T as Typography } from "./Typography.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, h as useThemeProps, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, o as capitalize, K as darken, L as lighten, e as emphasize, H as duration } from "./main.js";
 import { C as ConditionalCard } from "./conditional_card.js";
 import { G as Grid } from "./Grid.js";
 import { C as ClearIcon, T as TextField } from "./Close.js";
@@ -36,6 +36,7 @@ import { C as CardHeader } from "./CardHeader.js";
 import { F as FormControl } from "./Input.js";
 import { u as useFormControl, F as FormControlContext } from "./InputBase.js";
 import { C as Card } from "./Card.js";
+import "./react-is.production.min.js";
 import "react-dom";
 import "./index.js";
 function getCardContentUtilityClass(slot) {
@@ -119,8 +120,8 @@ var removeMarkdown = function(md, options) {
       output = output.replace(/\n={2,}/g, "\n").replace(/~{3}.*\n/g, "").replace(/~~/g, "").replace(/`{3}.*\n/g, "");
     }
     output = output.replace(/<[^>]*>/g, "").replace(/^[=\-]{2,}\s*$/g, "").replace(/\[\^.+?\](\: .*?$)?/g, "").replace(/\s{0,2}\[.*?\]: .*?$/g, "").replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? "$1" : "").replace(/\[(.*?)\][\[\(].*?[\]\)]/g, "$1").replace(/^\s{0,3}>\s?/g, "").replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "").replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, "$1$2$3").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/(`{3,})(.*?)\1/gm, "$2").replace(/`(.+?)`/g, "$1").replace(/\n{2,}/g, "\n\n");
-  } catch (e) {
-    console.error(e);
+  } catch (e2) {
+    console.error(e2);
     return md;
   }
   return output;
@@ -203,14 +204,14 @@ const TOC = memo(({
   mdx
 }) => {
   const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.startsWith("#")).map((line) => {
-    for (let i2 = 0; i2 < line.length; i2++) {
-      if (line.charAt(i2) !== "#") {
-        return line.substr(0, i2 - 1) + removeMarkdown(line.substr(i2));
+    for (let i22 = 0; i22 < line.length; i22++) {
+      if (line.charAt(i22) !== "#") {
+        return line.substr(0, i22 - 1) + removeMarkdown(line.substr(i22));
       }
     }
     return line;
   }).join("\n"), [mdx]);
-  let i = 0;
+  let i2 = 0;
   let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment, {
     children: headings !== void 0 ? /* @__PURE__ */ jsx(TOCList, {
@@ -233,7 +234,7 @@ const TOC = memo(({
             props.index = hIndex;
             hIndex++;
           }
-          props.key = i++;
+          props.key = i2++;
           return [type, props, children];
         }]
       })
@@ -961,6 +962,198 @@ const Snackbar = /* @__PURE__ */ React.forwardRef(function Snackbar2(inProps, re
   }));
 });
 var Snackbar$1 = Snackbar;
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+function e(e2, t2, n, r) {
+  return new (n || (n = Promise))(function(o, i2) {
+    function a2(e3) {
+      try {
+        c2(r.next(e3));
+      } catch (e4) {
+        i2(e4);
+      }
+    }
+    function u2(e3) {
+      try {
+        c2(r.throw(e3));
+      } catch (e4) {
+        i2(e4);
+      }
+    }
+    function c2(e3) {
+      var t3;
+      e3.done ? o(e3.value) : (t3 = e3.value, t3 instanceof n ? t3 : new n(function(e4) {
+        e4(t3);
+      })).then(a2, u2);
+    }
+    c2((r = r.apply(e2, t2 || [])).next());
+  });
+}
+function t(e2, t2) {
+  var n, r, o, i2, a2 = { label: 0, sent: function() {
+    if (1 & o[0])
+      throw o[1];
+    return o[1];
+  }, trys: [], ops: [] };
+  return i2 = { next: u2(0), throw: u2(1), return: u2(2) }, typeof Symbol == "function" && (i2[Symbol.iterator] = function() {
+    return this;
+  }), i2;
+  function u2(i3) {
+    return function(u3) {
+      return function(i4) {
+        if (n)
+          throw new TypeError("Generator is already executing.");
+        for (; a2; )
+          try {
+            if (n = 1, r && (o = 2 & i4[0] ? r.return : i4[0] ? r.throw || ((o = r.return) && o.call(r), 0) : r.next) && !(o = o.call(r, i4[1])).done)
+              return o;
+            switch (r = 0, o && (i4 = [2 & i4[0], o.value]), i4[0]) {
+              case 0:
+              case 1:
+                o = i4;
+                break;
+              case 4:
+                return a2.label++, { value: i4[1], done: false };
+              case 5:
+                a2.label++, r = i4[1], i4 = [0];
+                continue;
+              case 7:
+                i4 = a2.ops.pop(), a2.trys.pop();
+                continue;
+              default:
+                if (!(o = a2.trys, (o = o.length > 0 && o[o.length - 1]) || i4[0] !== 6 && i4[0] !== 2)) {
+                  a2 = 0;
+                  continue;
+                }
+                if (i4[0] === 3 && (!o || i4[1] > o[0] && i4[1] < o[3])) {
+                  a2.label = i4[1];
+                  break;
+                }
+                if (i4[0] === 6 && a2.label < o[1]) {
+                  a2.label = o[1], o = i4;
+                  break;
+                }
+                if (o && a2.label < o[2]) {
+                  a2.label = o[2], a2.ops.push(i4);
+                  break;
+                }
+                o[2] && a2.ops.pop(), a2.trys.pop();
+                continue;
+            }
+            i4 = t2.call(e2, a2);
+          } catch (e3) {
+            i4 = [6, e3], r = 0;
+          } finally {
+            n = o = 0;
+          }
+        if (5 & i4[0])
+          throw i4[1];
+        return { value: i4[0] ? i4[1] : void 0, done: true };
+      }([i3, u3]);
+    };
+  }
+}
+(function() {
+  (console.warn || console.log).apply(console, arguments);
+}).bind("[clipboard-polyfill]");
+var i, a, u, c, l = typeof navigator == "undefined" ? void 0 : navigator, d = l == null ? void 0 : l.clipboard;
+(i = d == null ? void 0 : d.read) === null || i === void 0 || i.bind(d), (a = d == null ? void 0 : d.readText) === null || a === void 0 ? void 0 : a.bind(d);
+var f = ((u = d == null ? void 0 : d.write) === null || u === void 0 || u.bind(d), (c = d == null ? void 0 : d.writeText) === null || c === void 0 ? void 0 : c.bind(d)), p = typeof window == "undefined" ? void 0 : window, v = (p == null || p.ClipboardItem, p);
+function b() {
+  return typeof ClipboardEvent == "undefined" && v.clipboardData !== void 0 && v.clipboardData.setData !== void 0;
+}
+var m = function() {
+  this.success = false;
+};
+function h(e2, t2, n) {
+  for (var o in e2.success = true, t2) {
+    var i2 = t2[o], a2 = n.clipboardData;
+    a2.setData(o, i2), o === "text/plain" && a2.getData(o) !== i2 && (e2.success = false);
+  }
+  n.preventDefault();
+}
+function w(e2) {
+  var t2 = new m(), n = h.bind(this, t2, e2);
+  document.addEventListener("copy", n);
+  try {
+    document.execCommand("copy");
+  } finally {
+    document.removeEventListener("copy", n);
+  }
+  return t2.success;
+}
+function g(e2, t2) {
+  x(e2);
+  var n = w(t2);
+  return E(), n;
+}
+function x(e2) {
+  var t2 = document.getSelection();
+  if (t2) {
+    var n = document.createRange();
+    n.selectNodeContents(e2), t2.removeAllRanges(), t2.addRange(n);
+  }
+}
+function E() {
+  var e2 = document.getSelection();
+  e2 && e2.removeAllRanges();
+}
+function D(n) {
+  return e(this, void 0, void 0, function() {
+    var e2;
+    return t(this, function(t2) {
+      if (e2 = "text/plain" in n, b()) {
+        if (!e2)
+          throw new Error("No `text/plain` value was specified.");
+        if (o = n["text/plain"], v.clipboardData.setData("Text", o))
+          return [2, true];
+        throw new Error("Copying failed, possibly because the user rejected it.");
+      }
+      var o;
+      return w(n) ? [2, true] : navigator.userAgent.indexOf("Edge") > -1 ? [2, true] : g(document.body, n) ? [2, true] : function(e3) {
+        var t3 = document.createElement("div");
+        t3.setAttribute("style", "-webkit-user-select: text !important"), t3.textContent = "temporary element", document.body.appendChild(t3);
+        var n2 = g(t3, e3);
+        return document.body.removeChild(t3), n2;
+      }(n) ? [2, true] : function(e3) {
+        var t3 = document.createElement("div");
+        t3.setAttribute("style", "-webkit-user-select: text !important");
+        var n2 = t3;
+        t3.attachShadow && (n2 = t3.attachShadow({ mode: "open" }));
+        var o2 = document.createElement("span");
+        o2.innerText = e3, n2.appendChild(o2), document.body.appendChild(t3), x(o2);
+        var i2 = document.execCommand("copy");
+        return E(), document.body.removeChild(t3), i2;
+      }(n["text/plain"]) ? [2, true] : [2, false];
+    });
+  });
+}
+function C(n) {
+  return e(this, void 0, void 0, function() {
+    return t(this, function(e2) {
+      if (f)
+        return [2, f(n)];
+      if (!D(function(e3) {
+        var t2 = {};
+        return t2["text/plain"] = e3, t2;
+      }(n)))
+        throw new Error("writeText() failed");
+      return [2];
+    });
+  });
+}
 const ContentWrapper = default_1$2(Grid)(({
   theme
 }) => ({
@@ -975,11 +1168,14 @@ const ContentWrapper = default_1$2(Grid)(({
 const EmbedField = default_1$2(TextField)(({
   theme
 }) => ({
+  cursor: "grab !important",
+  "*": {
+    cursor: "grab !important"
+  },
   ".MuiOutlinedInput-root": {
     paddingRight: "10px"
   },
   input: {
-    cursor: "grab !important",
     padding: "5px",
     paddingLeft: "14px",
     paddingRight: "14px",
@@ -995,16 +1191,16 @@ const Content = ({
 }) => {
   var _a;
   const params = useParams();
-  const document = useObservableState(useObservable((input$) => {
+  const document2 = useObservableState(useObservable((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
   const toggleFav = useCallback(() => {
-    modifyDocument(__spreadProps(__spreadValues({}, document), {
-      isFavourite: !document.isFavourite
+    modifyDocument(__spreadProps(__spreadValues({}, document2), {
+      isFavourite: !document2.isFavourite
     }));
-  }, [document]);
+  }, [document2]);
   const contentRef = useRef();
   const scrollTimeOutRef = useRef();
   const onAfterRender = useCallback(() => {
@@ -1063,7 +1259,7 @@ const Content = ({
         onClose: () => {
           setOpenSuccess(false);
         },
-        children: "Embed link copied to clipboard!"
+        children: "Embed code copied to clipboard!"
       })
     }), /* @__PURE__ */ jsxs(ConditionalCard, {
       showCard: !embed,
@@ -1076,7 +1272,7 @@ const Content = ({
         minHeight: "50vh",
         position: "relative"
       },
-      children: [!embed && document && /* @__PURE__ */ jsx(CardHeader, {
+      children: [!embed && document2 && /* @__PURE__ */ jsx(CardHeader, {
         action: /* @__PURE__ */ jsxs(Box, {
           sx: {
             display: "flex",
@@ -1084,23 +1280,23 @@ const Content = ({
           },
           children: [/* @__PURE__ */ jsx(FormControl, {
             variant: "standard",
-            onMouseDown: (e) => {
-              e.preventDefault();
+            onMouseDown: (e2) => {
+              e2.preventDefault();
             },
             onMouseUp: () => {
-              navigator.clipboard.writeText(`<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document.name}"></iframe>`).then(function() {
+              C(`<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document2.name}"></iframe>`).then(() => {
                 setOpenSuccess(true);
-              }, function() {
+              }, () => {
               });
             },
             children: /* @__PURE__ */ jsx(EmbedField, {
               id: "component-simple",
-              value: `<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document.name}"></iframe>`,
-              onChange: (e) => {
-                e.preventDefault();
+              value: `<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document2.name}"></iframe>`,
+              onChange: (e2) => {
+                e2.preventDefault();
               },
-              onFocus: (e) => {
-                e.preventDefault();
+              onFocus: (e2) => {
+                e2.preventDefault();
               },
               variant: void 0,
               label: "embed",
@@ -1116,13 +1312,13 @@ const Content = ({
             onClick: toggleFav,
             children: /* @__PURE__ */ jsx(default_1$3, {
               sx: {
-                color: document.isFavourite && "red"
+                color: document2.isFavourite && "red"
               }
             })
           })]
         }),
-        title: document.name,
-        subheader: formatDate(document.lastModified)
+        title: document2.name,
+        subheader: formatDate(document2.lastModified)
       }), /* @__PURE__ */ jsx(CardContent$1, {
         ref: contentRef,
         sx: {
@@ -1130,12 +1326,12 @@ const Content = ({
           overflow: "auto"
         },
         children: /* @__PURE__ */ jsx(MarkdownRenderer, {
-          mdx: document == null ? void 0 : document.mdx,
+          mdx: document2 == null ? void 0 : document2.mdx,
           embed,
           onAfterRender
         })
       })]
-    }), !embed && (((_a = document == null ? void 0 : document.mdx) == null ? void 0 : _a.match(/#/g)) || []).length > 1 && /* @__PURE__ */ jsx(Card, {
+    }), !embed && (((_a = document2 == null ? void 0 : document2.mdx) == null ? void 0 : _a.match(/#/g)) || []).length > 1 && /* @__PURE__ */ jsx(Card, {
       elevation: 2,
       sx: {
         textAlign: "justify",
@@ -1147,10 +1343,14 @@ const Content = ({
         position: "sticky",
         padding: "10px",
         paddingRight: 0,
-        top: "100px"
+        top: "100px",
+        display: {
+          sm: "none",
+          md: "flex"
+        }
       },
       children: /* @__PURE__ */ jsx(TableOfContents, {
-        mdx: document == null ? void 0 : document.mdx
+        mdx: document2 == null ? void 0 : document2.mdx
       })
     })]
   });

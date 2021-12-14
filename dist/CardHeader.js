@@ -1,6 +1,6 @@
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, d as jsxs, l as clsx } from "./main.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, d as jsxs, l as clsx } from "./main.js";
 import * as React from "react";
-import { T as Typography } from "./markdown_renderer.js";
+import { T as Typography } from "./Typography.js";
 function getCardHeaderUtilityClass(slot) {
   return generateUtilityClass("MuiCardHeader", slot);
 }

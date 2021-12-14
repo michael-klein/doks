@@ -1,7 +1,7 @@
 import * as React from "react";
 import React__default, { useRef, useState, useLayoutEffect, useEffect, useDebugValue } from "react";
-import { a as useTheme$1, E as defaultTheme, h as _objectWithoutPropertiesLoose, m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, y as alpha, q as useThemeProps, r as composeClasses, j as jsx, l as clsx } from "./main.js";
-import { _ as _inheritsLoose, T as TransitionGroupContext } from "./jsx-runtime_commonjs-proxy.js";
+import { a as useTheme$1, G as defaultTheme, i as _objectWithoutPropertiesLoose, g as generateUtilityClass, f as generateUtilityClasses, s as styled, _ as _extends, D as alpha, h as useThemeProps, k as composeClasses, j as jsx, l as clsx } from "./main.js";
+import { _ as _inheritsLoose, b as TransitionGroupContext } from "./Typography.js";
 import ReactDOM__default from "react-dom";
 import { Subject, BehaviorSubject, isObservable } from "rxjs";
 import "rxjs/operators";

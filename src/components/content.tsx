@@ -22,6 +22,7 @@ import { InputAdornment } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { ConditionalCard } from "./conditional_card";
+import * as clipboard from "clipboard-polyfill/text";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -34,11 +35,14 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 }));
 
 const EmbedField = styled(TextField)(({ theme }) => ({
+  cursor: "grab !important",
+  "*": {
+    cursor: "grab !important",
+  },
   ".MuiOutlinedInput-root": {
     paddingRight: "10px",
   },
   input: {
-    cursor: "grab !important",
     padding: "5px",
     paddingLeft: "14px",
     paddingRight: "14px",
@@ -124,7 +128,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
             setOpenSuccess(false);
           }}
         >
-          Embed link copied to clipboard!
+          Embed code copied to clipboard!
         </Alert>
       </Snackbar>
       <ConditionalCard
@@ -149,7 +153,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
                     e.preventDefault();
                   }}
                   onMouseUp={() => {
-                    navigator.clipboard
+                    clipboard
                       .writeText(
                         `<iframe src="${window.location.href.replace(
                           "/#/docs",
@@ -157,10 +161,10 @@ export const Content = ({ embed }: { embed?: boolean }) => {
                         )}" title="Talkwalker docs: ${document.name}"></iframe>`
                       )
                       .then(
-                        function () {
+                        () => {
                           setOpenSuccess(true);
                         },
-                        function () {}
+                        () => {}
                       );
                   }}
                 >
@@ -221,6 +225,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
             padding: "10px",
             paddingRight: 0,
             top: "100px",
+            display: { sm: "none", md: "flex" },
           }}
         >
           <TableOfContents mdx={document?.mdx}></TableOfContents>

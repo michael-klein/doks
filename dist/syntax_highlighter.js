@@ -1,6 +1,6 @@
 import React__default, { useEffect } from "react";
-import { h as _objectWithoutPropertiesLoose, _ as _extends, j as jsx } from "./main.js";
-import { b as _assertThisInitialized, d as _setPrototypeOf } from "./jsx-runtime_commonjs-proxy.js";
+import { i as _objectWithoutPropertiesLoose, _ as _extends, j as jsx } from "./main.js";
+import { d as _assertThisInitialized, e as _setPrototypeOf } from "./Typography.js";
 import "react-dom";
 import "./styled.js";
 var runtime = { exports: {} };

@@ -6,6 +6,9 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/background";
 import { Footer } from "../components/footer";
 import { documents$ } from "../store/documents";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Typography from "@mui/material/Typography";
+import FolderIcon from "@mui/icons-material/Folder";
 
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
 const Sidebar = lazy(() => import("../components/sidebar"));
@@ -49,11 +52,39 @@ const Layout = ({ children }: { children: ReactChild }) => {
       <Navbar></Navbar>
       <Container
         sx={{
-          paddingTop: 10,
+          paddingTop: 6,
           marginBottom: 10,
           flex: "auto",
         }}
       >
+        <Breadcrumbs
+          aria-label="breadcrumb"
+          sx={{
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+            display: { xs: "none", sm: "flex" },
+          }}
+        >
+          <FolderIcon
+            sx={{
+              fontSize: "1.1em",
+              color: "text.secondary",
+              transform: "translateY(0.15em)",
+            }}
+          ></FolderIcon>
+          {params.projectSlug && (
+            <Typography color="text.secondary">{params.projectSlug}</Typography>
+          )}
+          {params.contentSlug && (
+            <Typography color="text.secondary">{params.contentSlug}</Typography>
+          )}
+          {params.headingIndex && (
+            <Typography color="text.secondary">
+              {params.headingIndex}
+            </Typography>
+          )}
+        </Breadcrumbs>
         <Grid container spacing={2}>
           <Sidebar
             onProjectSelect={(projectSlug) => {

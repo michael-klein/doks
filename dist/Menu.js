@@ -1,7 +1,8 @@
-import { w as getScrollbarSize, o as ownerDocument, j as ownerWindow, b as useForkRef, a as useEventCallback, c as createChainedFunction, i as interopRequireDefault, k as useEnhancedEffect, f as debounce } from "./styled.js";
-import { c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, o as styled, q as useThemeProps, G as duration, x as rootShouldForwardProp } from "./main.js";
+import { w as getScrollbarSize, o as ownerDocument, h as ownerWindow, b as useForkRef, a as useEventCallback, c as createChainedFunction, i as interopRequireDefault, j as useEnhancedEffect, e as debounce } from "./styled.js";
+import { c as createSvgIcon, r as require$$2 } from "./Typography.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx, d as jsxs, s as styled, h as useThemeProps, H as duration, B as rootShouldForwardProp } from "./main.js";
 import * as React from "react";
+import "./react-is.production.min.js";
 import { i as isHostComponent, b as useTheme, T as Transition, r as reflow, g as getTransitionProps, P as Paper } from "./use-observable-state.js";
 import { P as Portal, G as Grow } from "./markdown_renderer.js";
 function getBackdropUtilityClass(slot) {
@@ -268,7 +269,7 @@ function defaultGetTabbable(root) {
       });
     }
   });
-  return orderedTabNodes.sort((a, b2) => a.tabIndex === b2.tabIndex ? a.documentOrder - b2.documentOrder : a.tabIndex - b2.tabIndex).map((a) => a.node).concat(regularTabNodes);
+  return orderedTabNodes.sort((a, b) => a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex).map((a) => a.node).concat(regularTabNodes);
 }
 function defaultIsEnabled() {
   return true;
@@ -634,120 +635,6 @@ var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)(
   d: "m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
 }), "Favorite");
 default_1 = Favorite.default = _default;
-var reactIs_production_min = {};
-/** @license React v17.0.2
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var b = 60103, c = 60106, d = 60107, e = 60108, f = 60114, g = 60109, h = 60110, k = 60112, l = 60113, m = 60120, n = 60115, p = 60116, q = 60121, r = 60122, u = 60117, v = 60129, w = 60131;
-if (typeof Symbol === "function" && Symbol.for) {
-  var x = Symbol.for;
-  b = x("react.element");
-  c = x("react.portal");
-  d = x("react.fragment");
-  e = x("react.strict_mode");
-  f = x("react.profiler");
-  g = x("react.provider");
-  h = x("react.context");
-  k = x("react.forward_ref");
-  l = x("react.suspense");
-  m = x("react.suspense_list");
-  n = x("react.memo");
-  p = x("react.lazy");
-  q = x("react.block");
-  r = x("react.server.block");
-  u = x("react.fundamental");
-  v = x("react.debug_trace_mode");
-  w = x("react.legacy_hidden");
-}
-function y(a) {
-  if (typeof a === "object" && a !== null) {
-    var t = a.$$typeof;
-    switch (t) {
-      case b:
-        switch (a = a.type, a) {
-          case d:
-          case f:
-          case e:
-          case l:
-          case m:
-            return a;
-          default:
-            switch (a = a && a.$$typeof, a) {
-              case h:
-              case k:
-              case p:
-              case n:
-              case g:
-                return a;
-              default:
-                return t;
-            }
-        }
-      case c:
-        return t;
-    }
-  }
-}
-var z = g, A = b, B = k, C = d, D = p, E = n, F = c, G = f, H = e, I = l;
-reactIs_production_min.ContextConsumer = h;
-reactIs_production_min.ContextProvider = z;
-reactIs_production_min.Element = A;
-reactIs_production_min.ForwardRef = B;
-reactIs_production_min.Fragment = C;
-reactIs_production_min.Lazy = D;
-reactIs_production_min.Memo = E;
-reactIs_production_min.Portal = F;
-reactIs_production_min.Profiler = G;
-reactIs_production_min.StrictMode = H;
-reactIs_production_min.Suspense = I;
-reactIs_production_min.isAsyncMode = function() {
-  return false;
-};
-reactIs_production_min.isConcurrentMode = function() {
-  return false;
-};
-reactIs_production_min.isContextConsumer = function(a) {
-  return y(a) === h;
-};
-reactIs_production_min.isContextProvider = function(a) {
-  return y(a) === g;
-};
-reactIs_production_min.isElement = function(a) {
-  return typeof a === "object" && a !== null && a.$$typeof === b;
-};
-reactIs_production_min.isForwardRef = function(a) {
-  return y(a) === k;
-};
-reactIs_production_min.isFragment = function(a) {
-  return y(a) === d;
-};
-reactIs_production_min.isLazy = function(a) {
-  return y(a) === p;
-};
-reactIs_production_min.isMemo = function(a) {
-  return y(a) === n;
-};
-reactIs_production_min.isPortal = function(a) {
-  return y(a) === c;
-};
-reactIs_production_min.isProfiler = function(a) {
-  return y(a) === f;
-};
-reactIs_production_min.isStrictMode = function(a) {
-  return y(a) === e;
-};
-reactIs_production_min.isSuspense = function(a) {
-  return y(a) === l;
-};
-reactIs_production_min.isValidElementType = function(a) {
-  return typeof a === "string" || typeof a === "function" || a === d || a === f || a === v || a === e || a === l || a === m || a === w || typeof a === "object" && a !== null && (a.$$typeof === p || a.$$typeof === n || a.$$typeof === g || a.$$typeof === h || a.$$typeof === k || a.$$typeof === u || a.$$typeof === q || a[0] === r) ? true : false;
-};
-reactIs_production_min.typeOf = y;
 const ListContext = /* @__PURE__ */ React.createContext({});
 var ListContext$1 = ListContext;
 function getListUtilityClass(slot) {
@@ -1296,7 +1183,7 @@ function getOffsetLeft(rect, horizontal) {
   return offset;
 }
 function getTransformOriginValue(transformOrigin) {
-  return [transformOrigin.horizontal, transformOrigin.vertical].map((n2) => typeof n2 === "number" ? `${n2}px` : n2).join(" ");
+  return [transformOrigin.horizontal, transformOrigin.vertical].map((n) => typeof n === "number" ? `${n}px` : n).join(" ");
 }
 function resolveAnchorEl(anchorEl) {
   return typeof anchorEl === "function" ? anchorEl() : anchorEl;

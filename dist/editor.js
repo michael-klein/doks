@@ -21,7 +21,7 @@ import { p as pathBrowserify } from "./index.js";
 import React__default, { memo, useEffect, useRef, useState, useCallback, lazy, Suspense, useMemo, Fragment as Fragment$1 } from "react";
 import { combineLatest, map } from "rxjs";
 import { i as interopRequireDefault, d as default_1$5, B as Box, C as Container } from "./styled.js";
-import { c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
+import { c as createSvgIcon, r as require$$2 } from "./Typography.js";
 import { P as PropTypes, j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import { b as useNavigate, u as useParams, R as Routes, a as Route } from "./doks.js";
 import { d as documents$, p as projects$ } from "./documents.js";

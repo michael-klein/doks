@@ -17,28 +17,34 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { d as default_1$2 } from "./Favorite.js";
-import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, d as default_1$1, B as Box, H as modifyDocument, a as documents$ } from "./documents.js";
+import { d as default_1$3 } from "./Menu.js";
+import { i as interopRequireDefault, d as default_1$2, B as Box, b as useForkRef, a as useEventCallback, o as ownerDocument } from "./styled.js";
 import * as React from "react";
-import React__default, { memo, useMemo, useRef, useCallback, useEffect } from "react";
+import React__default, { memo, useMemo, useRef, useCallback, useEffect, useState } from "react";
+import { Link, useParams as useParams$1 } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { h as htmdx, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
-import { Link, useParams as useParams$1 } from "react-router-dom";
+import { m as modifyDocument, d as documents$ } from "./documents.js";
+import { h as htmdx, I as IconButton, T as Typography, G as Grow, M as MarkdownRenderer } from "./markdown_renderer.js";
 import { useParams } from "react-router";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment } from "./main.js";
-import { G as Grid } from "./Button.js";
-import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
-import { C as Card } from "./Card.js";
+import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1 } from "./jsx-runtime_commonjs-proxy.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, g as capitalize, J as darken, K as lighten, L as emphasize, G as duration } from "./main.js";
+import { C as ConditionalCard } from "./conditional_card.js";
+import { G as Grid } from "./Grid.js";
+import { C as ClearIcon, T as TextField } from "./Close.js";
+import { P as Paper, b as useTheme, u as useObservableState, a as useObservable } from "./use-observable-state.js";
 import { C as CardHeader } from "./CardHeader.js";
-import "./index.js";
+import { F as FormControl } from "./Input.js";
+import { u as useFormControl, F as FormControlContext } from "./InputBase.js";
+import { C as Card } from "./Card.js";
 import "react-dom";
+import "./index.js";
 function getCardContentUtilityClass(slot) {
   return generateUtilityClass("MuiCardContent", slot);
 }
 generateUtilityClasses("MuiCardContent", ["root"]);
-const _excluded = ["className", "component"];
-const useUtilityClasses = (ownerState) => {
+const _excluded$4 = ["className", "component"];
+const useUtilityClasses$4 = (ownerState) => {
   const {
     classes
   } = ownerState;
@@ -67,11 +73,11 @@ const CardContent = /* @__PURE__ */ React.forwardRef(function CardContent2(inPro
   const {
     className,
     component = "div"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$4);
   const ownerState = _extends({}, props, {
     component
   });
-  const classes = useUtilityClasses(ownerState);
+  const classes = useUtilityClasses$4(ownerState);
   return /* @__PURE__ */ jsx(CardContentRoot, _extends({
     as: component,
     className: clsx(classes.root, className),
@@ -84,17 +90,17 @@ const formatDate = (date) => {
   return new Date(date).toLocaleString();
 };
 var SubdirectoryArrowRight = {};
-var _interopRequireDefault = interopRequireDefault.exports;
+var _interopRequireDefault$1 = interopRequireDefault.exports;
 Object.defineProperty(SubdirectoryArrowRight, "__esModule", {
   value: true
 });
-var default_1 = SubdirectoryArrowRight.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon);
-var _jsxRuntime = require$$2;
-var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+var default_1$1 = SubdirectoryArrowRight.default = void 0;
+var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
+var _jsxRuntime$1 = require$$2;
+var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
   d: "m19 15-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
 }), "SubdirectoryArrowRight");
-default_1 = SubdirectoryArrowRight.default = _default;
+default_1$1 = SubdirectoryArrowRight.default = _default$1;
 var removeMarkdown = function(md, options) {
   options = options || {};
   options.listUnicodeChar = options.hasOwnProperty("listUnicodeChar") ? options.listUnicodeChar : false;
@@ -150,7 +156,7 @@ class ErrorBoundary extends React__default.Component {
     return this.props.children;
   }
 }
-const TOCList = default_1$1("ul")({
+const TOCList = default_1$2("ul")({
   listStyle: "none",
   margin: 0,
   padding: 10,
@@ -159,7 +165,7 @@ const TOCList = default_1$1("ul")({
   maxHeight: "calc(60vh)",
   overflowY: "auto"
 });
-const TOCListItem = default_1$1("li")({
+const TOCListItem = default_1$2("li")({
   fontSize: ".9em",
   "a,a:hover,a:link,a:active": {
     color: "inherit",
@@ -179,7 +185,7 @@ const getListItem = (level) => (props) => {
       display: "flex"
     },
     children: [/* @__PURE__ */ jsx(Box, {
-      children: /* @__PURE__ */ jsx(default_1, {
+      children: /* @__PURE__ */ jsx(default_1$1, {
         sx: {
           fontSize: ".8em",
           marginRight: ".2em"
@@ -235,12 +241,12 @@ const TOC = memo(({
     }) : /* @__PURE__ */ jsx(Fragment, {})
   });
 });
-const Wrapper = default_1$1(Box)(({
+const Wrapper = default_1$2(Box)(({
   theme
 }) => __spreadProps(__spreadValues({}, theme.typography.body1), {
   width: "220px"
 }));
-const Header = default_1$1("h1")({
+const Header = default_1$2("h1")({
   fontSize: "1em",
   marginBottom: "-.7em",
   fontWeight: "bold"
@@ -258,7 +264,705 @@ const TableOfContents = ({
     }, "toc-" + mdx)]
   });
 };
-const ContentWrapper = default_1$1(Grid)(({
+var ContentCopy = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(ContentCopy, "__esModule", {
+  value: true
+});
+var default_1 = ContentCopy.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+}), "ContentCopy");
+default_1 = ContentCopy.default = _default;
+function getAlertUtilityClass(slot) {
+  return generateUtilityClass("MuiAlert", slot);
+}
+const alertClasses = generateUtilityClasses("MuiAlert", ["root", "action", "icon", "message", "filled", "filledSuccess", "filledInfo", "filledWarning", "filledError", "outlined", "outlinedSuccess", "outlinedInfo", "outlinedWarning", "outlinedError", "standard", "standardSuccess", "standardInfo", "standardWarning", "standardError"]);
+var alertClasses$1 = alertClasses;
+var SuccessOutlinedIcon = createSvgIcon$1(/* @__PURE__ */ jsx("path", {
+  d: "M20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4C12.76,4 13.5,4.11 14.2, 4.31L15.77,2.74C14.61,2.26 13.34,2 12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0, 0 22,12M7.91,10.08L6.5,11.5L11,16L21,6L19.59,4.58L11,13.17L7.91,10.08Z"
+}), "SuccessOutlined");
+var ReportProblemOutlinedIcon = createSvgIcon$1(/* @__PURE__ */ jsx("path", {
+  d: "M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"
+}), "ReportProblemOutlined");
+var ErrorOutlineIcon = createSvgIcon$1(/* @__PURE__ */ jsx("path", {
+  d: "M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+}), "ErrorOutline");
+var InfoOutlinedIcon = createSvgIcon$1(/* @__PURE__ */ jsx("path", {
+  d: "M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20, 12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10, 10 0 0,0 12,2M11,17H13V11H11V17Z"
+}), "InfoOutlined");
+var _CloseIcon;
+const _excluded$3 = ["action", "children", "className", "closeText", "color", "icon", "iconMapping", "onClose", "role", "severity", "variant"];
+const useUtilityClasses$3 = (ownerState) => {
+  const {
+    variant,
+    color,
+    severity,
+    classes
+  } = ownerState;
+  const slots = {
+    root: ["root", `${variant}${capitalize(color || severity)}`, `${variant}`],
+    icon: ["icon"],
+    message: ["message"],
+    action: ["action"]
+  };
+  return composeClasses(slots, getAlertUtilityClass, classes);
+};
+const AlertRoot = styled(Paper, {
+  name: "MuiAlert",
+  slot: "Root",
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[ownerState.variant], styles[`${ownerState.variant}${capitalize(ownerState.color || ownerState.severity)}`]];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  const getColor = theme.palette.mode === "light" ? darken : lighten;
+  const getBackgroundColor = theme.palette.mode === "light" ? lighten : darken;
+  const color = ownerState.color || ownerState.severity;
+  return _extends({}, theme.typography.body2, {
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: "transparent",
+    display: "flex",
+    padding: "6px 16px"
+  }, color && ownerState.variant === "standard" && {
+    color: getColor(theme.palette[color].light, 0.6),
+    backgroundColor: getBackgroundColor(theme.palette[color].light, 0.9),
+    [`& .${alertClasses$1.icon}`]: {
+      color: theme.palette.mode === "dark" ? theme.palette[color].main : theme.palette[color].light
+    }
+  }, color && ownerState.variant === "outlined" && {
+    color: getColor(theme.palette[color].light, 0.6),
+    border: `1px solid ${theme.palette[color].light}`,
+    [`& .${alertClasses$1.icon}`]: {
+      color: theme.palette.mode === "dark" ? theme.palette[color].main : theme.palette[color].light
+    }
+  }, color && ownerState.variant === "filled" && {
+    color: "#fff",
+    fontWeight: theme.typography.fontWeightMedium,
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette[color].dark : theme.palette[color].main
+  });
+});
+const AlertIcon = styled("div", {
+  name: "MuiAlert",
+  slot: "Icon",
+  overridesResolver: (props, styles) => styles.icon
+})({
+  marginRight: 12,
+  padding: "7px 0",
+  display: "flex",
+  fontSize: 22,
+  opacity: 0.9
+});
+const AlertMessage = styled("div", {
+  name: "MuiAlert",
+  slot: "Message",
+  overridesResolver: (props, styles) => styles.message
+})({
+  padding: "8px 0"
+});
+const AlertAction = styled("div", {
+  name: "MuiAlert",
+  slot: "Action",
+  overridesResolver: (props, styles) => styles.action
+})({
+  display: "flex",
+  alignItems: "flex-start",
+  padding: "4px 0 0 16px",
+  marginLeft: "auto",
+  marginRight: -8
+});
+const defaultIconMapping = {
+  success: /* @__PURE__ */ jsx(SuccessOutlinedIcon, {
+    fontSize: "inherit"
+  }),
+  warning: /* @__PURE__ */ jsx(ReportProblemOutlinedIcon, {
+    fontSize: "inherit"
+  }),
+  error: /* @__PURE__ */ jsx(ErrorOutlineIcon, {
+    fontSize: "inherit"
+  }),
+  info: /* @__PURE__ */ jsx(InfoOutlinedIcon, {
+    fontSize: "inherit"
+  })
+};
+const Alert = /* @__PURE__ */ React.forwardRef(function Alert2(inProps, ref) {
+  const props = useThemeProps({
+    props: inProps,
+    name: "MuiAlert"
+  });
+  const {
+    action,
+    children,
+    className,
+    closeText = "Close",
+    color,
+    icon,
+    iconMapping = defaultIconMapping,
+    onClose,
+    role = "alert",
+    severity = "success",
+    variant = "standard"
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
+  const ownerState = _extends({}, props, {
+    color,
+    severity,
+    variant
+  });
+  const classes = useUtilityClasses$3(ownerState);
+  return /* @__PURE__ */ jsxs(AlertRoot, _extends({
+    role,
+    square: true,
+    elevation: 0,
+    ownerState,
+    className: clsx(classes.root, className),
+    ref
+  }, other, {
+    children: [icon !== false ? /* @__PURE__ */ jsx(AlertIcon, {
+      ownerState,
+      className: classes.icon,
+      children: icon || iconMapping[severity] || defaultIconMapping[severity]
+    }) : null, /* @__PURE__ */ jsx(AlertMessage, {
+      ownerState,
+      className: classes.message,
+      children
+    }), action != null ? /* @__PURE__ */ jsx(AlertAction, {
+      className: classes.action,
+      children: action
+    }) : null, action == null && onClose ? /* @__PURE__ */ jsx(AlertAction, {
+      ownerState,
+      className: classes.action,
+      children: /* @__PURE__ */ jsx(IconButton, {
+        size: "small",
+        "aria-label": closeText,
+        title: closeText,
+        color: "inherit",
+        onClick: onClose,
+        children: _CloseIcon || (_CloseIcon = /* @__PURE__ */ jsx(ClearIcon, {
+          fontSize: "small"
+        }))
+      })
+    }) : null]
+  }));
+});
+var Alert$1 = Alert;
+function mapEventPropToEvent(eventProp) {
+  return eventProp.substring(2).toLowerCase();
+}
+function clickedRootScrollbar(event, doc) {
+  return doc.documentElement.clientWidth < event.clientX || doc.documentElement.clientHeight < event.clientY;
+}
+function ClickAwayListener(props) {
+  const {
+    children,
+    disableReactTree = false,
+    mouseEvent = "onClick",
+    onClickAway,
+    touchEvent = "onTouchEnd"
+  } = props;
+  const movedRef = React.useRef(false);
+  const nodeRef = React.useRef(null);
+  const activatedRef = React.useRef(false);
+  const syntheticEventRef = React.useRef(false);
+  React.useEffect(() => {
+    setTimeout(() => {
+      activatedRef.current = true;
+    }, 0);
+    return () => {
+      activatedRef.current = false;
+    };
+  }, []);
+  const handleRef = useForkRef(children.ref, nodeRef);
+  const handleClickAway = useEventCallback((event) => {
+    const insideReactTree = syntheticEventRef.current;
+    syntheticEventRef.current = false;
+    const doc = ownerDocument(nodeRef.current);
+    if (!activatedRef.current || !nodeRef.current || "clientX" in event && clickedRootScrollbar(event, doc)) {
+      return;
+    }
+    if (movedRef.current) {
+      movedRef.current = false;
+      return;
+    }
+    let insideDOM;
+    if (event.composedPath) {
+      insideDOM = event.composedPath().indexOf(nodeRef.current) > -1;
+    } else {
+      insideDOM = !doc.documentElement.contains(event.target) || nodeRef.current.contains(event.target);
+    }
+    if (!insideDOM && (disableReactTree || !insideReactTree)) {
+      onClickAway(event);
+    }
+  });
+  const createHandleSynthetic = (handlerName) => (event) => {
+    syntheticEventRef.current = true;
+    const childrenPropsHandler = children.props[handlerName];
+    if (childrenPropsHandler) {
+      childrenPropsHandler(event);
+    }
+  };
+  const childrenProps = {
+    ref: handleRef
+  };
+  if (touchEvent !== false) {
+    childrenProps[touchEvent] = createHandleSynthetic(touchEvent);
+  }
+  React.useEffect(() => {
+    if (touchEvent !== false) {
+      const mappedTouchEvent = mapEventPropToEvent(touchEvent);
+      const doc = ownerDocument(nodeRef.current);
+      const handleTouchMove = () => {
+        movedRef.current = true;
+      };
+      doc.addEventListener(mappedTouchEvent, handleClickAway);
+      doc.addEventListener("touchmove", handleTouchMove);
+      return () => {
+        doc.removeEventListener(mappedTouchEvent, handleClickAway);
+        doc.removeEventListener("touchmove", handleTouchMove);
+      };
+    }
+    return void 0;
+  }, [handleClickAway, touchEvent]);
+  if (mouseEvent !== false) {
+    childrenProps[mouseEvent] = createHandleSynthetic(mouseEvent);
+  }
+  React.useEffect(() => {
+    if (mouseEvent !== false) {
+      const mappedMouseEvent = mapEventPropToEvent(mouseEvent);
+      const doc = ownerDocument(nodeRef.current);
+      doc.addEventListener(mappedMouseEvent, handleClickAway);
+      return () => {
+        doc.removeEventListener(mappedMouseEvent, handleClickAway);
+      };
+    }
+    return void 0;
+  }, [handleClickAway, mouseEvent]);
+  return /* @__PURE__ */ jsx(React.Fragment, {
+    children: /* @__PURE__ */ React.cloneElement(children, childrenProps)
+  });
+}
+function getInputAdornmentUtilityClass(slot) {
+  return generateUtilityClass("MuiInputAdornment", slot);
+}
+const inputAdornmentClasses = generateUtilityClasses("MuiInputAdornment", ["root", "filled", "standard", "outlined", "positionStart", "positionEnd", "disablePointerEvents", "hiddenLabel", "sizeSmall"]);
+var inputAdornmentClasses$1 = inputAdornmentClasses;
+const _excluded$2 = ["children", "className", "component", "disablePointerEvents", "disableTypography", "position", "variant"];
+const overridesResolver = (props, styles) => {
+  const {
+    ownerState
+  } = props;
+  return [styles.root, styles[`position${capitalize(ownerState.position)}`], ownerState.disablePointerEvents === true && styles.disablePointerEvents, styles[ownerState.variant]];
+};
+const useUtilityClasses$2 = (ownerState) => {
+  const {
+    classes,
+    disablePointerEvents,
+    hiddenLabel,
+    position,
+    size,
+    variant
+  } = ownerState;
+  const slots = {
+    root: ["root", disablePointerEvents && "disablePointerEvents", position && `position${capitalize(position)}`, variant, hiddenLabel && "hiddenLabel", size && `size${capitalize(size)}`]
+  };
+  return composeClasses(slots, getInputAdornmentUtilityClass, classes);
+};
+const InputAdornmentRoot = styled("div", {
+  name: "MuiInputAdornment",
+  slot: "Root",
+  overridesResolver
+})(({
+  theme,
+  ownerState
+}) => _extends({
+  display: "flex",
+  height: "0.01em",
+  maxHeight: "2em",
+  alignItems: "center",
+  whiteSpace: "nowrap",
+  color: theme.palette.action.active
+}, ownerState.variant === "filled" && {
+  [`&.${inputAdornmentClasses$1.positionStart}&:not(.${inputAdornmentClasses$1.hiddenLabel})`]: {
+    marginTop: 16
+  }
+}, ownerState.position === "start" && {
+  marginRight: 8
+}, ownerState.position === "end" && {
+  marginLeft: 8
+}, ownerState.disablePointerEvents === true && {
+  pointerEvents: "none"
+}));
+const InputAdornment = /* @__PURE__ */ React.forwardRef(function InputAdornment2(inProps, ref) {
+  const props = useThemeProps({
+    props: inProps,
+    name: "MuiInputAdornment"
+  });
+  const {
+    children,
+    className,
+    component = "div",
+    disablePointerEvents = false,
+    disableTypography = false,
+    position,
+    variant: variantProp
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
+  const muiFormControl = useFormControl() || {};
+  let variant = variantProp;
+  if (variantProp && muiFormControl.variant)
+    ;
+  if (muiFormControl && !variant) {
+    variant = muiFormControl.variant;
+  }
+  const ownerState = _extends({}, props, {
+    hiddenLabel: muiFormControl.hiddenLabel,
+    size: muiFormControl.size,
+    disablePointerEvents,
+    position,
+    variant
+  });
+  const classes = useUtilityClasses$2(ownerState);
+  return /* @__PURE__ */ jsx(FormControlContext.Provider, {
+    value: null,
+    children: /* @__PURE__ */ jsx(InputAdornmentRoot, _extends({
+      as: component,
+      ownerState,
+      className: clsx(classes.root, className),
+      ref
+    }, other, {
+      children: typeof children === "string" && !disableTypography ? /* @__PURE__ */ jsx(Typography, {
+        color: "text.secondary",
+        children
+      }) : /* @__PURE__ */ jsxs(React.Fragment, {
+        children: [position === "start" ? /* @__PURE__ */ jsx("span", {
+          className: "notranslate",
+          dangerouslySetInnerHTML: {
+            __html: "&#8203;"
+          }
+        }) : null, children]
+      })
+    }))
+  });
+});
+var InputAdornment$1 = InputAdornment;
+function getSnackbarContentUtilityClass(slot) {
+  return generateUtilityClass("MuiSnackbarContent", slot);
+}
+generateUtilityClasses("MuiSnackbarContent", ["root", "message", "action"]);
+const _excluded$1 = ["action", "className", "message", "role"];
+const useUtilityClasses$1 = (ownerState) => {
+  const {
+    classes
+  } = ownerState;
+  const slots = {
+    root: ["root"],
+    action: ["action"],
+    message: ["message"]
+  };
+  return composeClasses(slots, getSnackbarContentUtilityClass, classes);
+};
+const SnackbarContentRoot = styled(Paper, {
+  name: "MuiSnackbarContent",
+  slot: "Root",
+  overridesResolver: (props, styles) => styles.root
+})(({
+  theme
+}) => {
+  const emphasis = theme.palette.mode === "light" ? 0.8 : 0.98;
+  const backgroundColor = emphasize(theme.palette.background.default, emphasis);
+  return _extends({}, theme.typography.body2, {
+    color: theme.palette.getContrastText(backgroundColor),
+    backgroundColor,
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    padding: "6px 16px",
+    borderRadius: theme.shape.borderRadius,
+    flexGrow: 1,
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: "initial",
+      minWidth: 288
+    }
+  });
+});
+const SnackbarContentMessage = styled("div", {
+  name: "MuiSnackbarContent",
+  slot: "Message",
+  overridesResolver: (props, styles) => styles.message
+})({
+  padding: "8px 0"
+});
+const SnackbarContentAction = styled("div", {
+  name: "MuiSnackbarContent",
+  slot: "Action",
+  overridesResolver: (props, styles) => styles.action
+})({
+  display: "flex",
+  alignItems: "center",
+  marginLeft: "auto",
+  paddingLeft: 16,
+  marginRight: -8
+});
+const SnackbarContent = /* @__PURE__ */ React.forwardRef(function SnackbarContent2(inProps, ref) {
+  const props = useThemeProps({
+    props: inProps,
+    name: "MuiSnackbarContent"
+  });
+  const {
+    action,
+    className,
+    message,
+    role = "alert"
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
+  const ownerState = props;
+  const classes = useUtilityClasses$1(ownerState);
+  return /* @__PURE__ */ jsxs(SnackbarContentRoot, _extends({
+    role,
+    square: true,
+    elevation: 6,
+    className: clsx(classes.root, className),
+    ownerState,
+    ref
+  }, other, {
+    children: [/* @__PURE__ */ jsx(SnackbarContentMessage, {
+      className: classes.message,
+      ownerState,
+      children: message
+    }), action ? /* @__PURE__ */ jsx(SnackbarContentAction, {
+      className: classes.action,
+      ownerState,
+      children: action
+    }) : null]
+  }));
+});
+var SnackbarContent$1 = SnackbarContent;
+function getSnackbarUtilityClass(slot) {
+  return generateUtilityClass("MuiSnackbar", slot);
+}
+generateUtilityClasses("MuiSnackbar", ["root", "anchorOriginTopCenter", "anchorOriginBottomCenter", "anchorOriginTopRight", "anchorOriginBottomRight", "anchorOriginTopLeft", "anchorOriginBottomLeft"]);
+const _excluded = ["onEnter", "onExited"], _excluded2 = ["action", "anchorOrigin", "autoHideDuration", "children", "className", "ClickAwayListenerProps", "ContentProps", "disableWindowBlurListener", "message", "onClose", "onMouseEnter", "onMouseLeave", "open", "resumeHideDuration", "TransitionComponent", "transitionDuration", "TransitionProps"];
+const useUtilityClasses = (ownerState) => {
+  const {
+    classes,
+    anchorOrigin
+  } = ownerState;
+  const slots = {
+    root: ["root", `anchorOrigin${capitalize(anchorOrigin.vertical)}${capitalize(anchorOrigin.horizontal)}`]
+  };
+  return composeClasses(slots, getSnackbarUtilityClass, classes);
+};
+const SnackbarRoot = styled("div", {
+  name: "MuiSnackbar",
+  slot: "Root",
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`anchorOrigin${capitalize(ownerState.anchorOrigin.vertical)}${capitalize(ownerState.anchorOrigin.horizontal)}`]];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  const center = _extends({}, !ownerState.isRtl && {
+    left: "50%",
+    right: "auto",
+    transform: "translateX(-50%)"
+  }, ownerState.isRtl && {
+    right: "50%",
+    left: "auto",
+    transform: "translateX(50%)"
+  });
+  return _extends({
+    zIndex: theme.zIndex.snackbar,
+    position: "fixed",
+    display: "flex",
+    left: 8,
+    right: 8,
+    justifyContent: "center",
+    alignItems: "center"
+  }, ownerState.anchorOrigin.vertical === "top" ? {
+    top: 8
+  } : {
+    bottom: 8
+  }, ownerState.anchorOrigin.horizontal === "left" && {
+    justifyContent: "flex-start"
+  }, ownerState.anchorOrigin.horizontal === "right" && {
+    justifyContent: "flex-end"
+  }, {
+    [theme.breakpoints.up("sm")]: _extends({}, ownerState.anchorOrigin.vertical === "top" ? {
+      top: 24
+    } : {
+      bottom: 24
+    }, ownerState.anchorOrigin.horizontal === "center" && center, ownerState.anchorOrigin.horizontal === "left" && _extends({}, !ownerState.isRtl && {
+      left: 24,
+      right: "auto"
+    }, ownerState.isRtl && {
+      right: 24,
+      left: "auto"
+    }), ownerState.anchorOrigin.horizontal === "right" && _extends({}, !ownerState.isRtl && {
+      right: 24,
+      left: "auto"
+    }, ownerState.isRtl && {
+      left: 24,
+      right: "auto"
+    }))
+  });
+});
+const Snackbar = /* @__PURE__ */ React.forwardRef(function Snackbar2(inProps, ref) {
+  const props = useThemeProps({
+    props: inProps,
+    name: "MuiSnackbar"
+  });
+  const {
+    action,
+    anchorOrigin: {
+      vertical,
+      horizontal
+    } = {
+      vertical: "bottom",
+      horizontal: "left"
+    },
+    autoHideDuration = null,
+    children,
+    className,
+    ClickAwayListenerProps,
+    ContentProps,
+    disableWindowBlurListener = false,
+    message,
+    onClose,
+    onMouseEnter,
+    onMouseLeave,
+    open,
+    resumeHideDuration,
+    TransitionComponent = Grow,
+    transitionDuration = {
+      enter: duration.enteringScreen,
+      exit: duration.leavingScreen
+    },
+    TransitionProps: {
+      onEnter,
+      onExited
+    } = {}
+  } = props, TransitionProps = _objectWithoutPropertiesLoose(props.TransitionProps, _excluded), other = _objectWithoutPropertiesLoose(props, _excluded2);
+  const theme = useTheme();
+  const isRtl = theme.direction === "rtl";
+  const ownerState = _extends({}, props, {
+    anchorOrigin: {
+      vertical,
+      horizontal
+    },
+    isRtl
+  });
+  const classes = useUtilityClasses(ownerState);
+  const timerAutoHide = React.useRef();
+  const [exited, setExited] = React.useState(true);
+  const handleClose = useEventCallback((...args) => {
+    if (onClose) {
+      onClose(...args);
+    }
+  });
+  const setAutoHideTimer = useEventCallback((autoHideDurationParam) => {
+    if (!onClose || autoHideDurationParam == null) {
+      return;
+    }
+    clearTimeout(timerAutoHide.current);
+    timerAutoHide.current = setTimeout(() => {
+      handleClose(null, "timeout");
+    }, autoHideDurationParam);
+  });
+  React.useEffect(() => {
+    if (open) {
+      setAutoHideTimer(autoHideDuration);
+    }
+    return () => {
+      clearTimeout(timerAutoHide.current);
+    };
+  }, [open, autoHideDuration, setAutoHideTimer]);
+  const handlePause = () => {
+    clearTimeout(timerAutoHide.current);
+  };
+  const handleResume = React.useCallback(() => {
+    if (autoHideDuration != null) {
+      setAutoHideTimer(resumeHideDuration != null ? resumeHideDuration : autoHideDuration * 0.5);
+    }
+  }, [autoHideDuration, resumeHideDuration, setAutoHideTimer]);
+  const handleMouseEnter = (event) => {
+    if (onMouseEnter) {
+      onMouseEnter(event);
+    }
+    handlePause();
+  };
+  const handleMouseLeave = (event) => {
+    if (onMouseLeave) {
+      onMouseLeave(event);
+    }
+    handleResume();
+  };
+  const handleClickAway = (event) => {
+    if (onClose) {
+      onClose(event, "clickaway");
+    }
+  };
+  const handleExited = (node) => {
+    setExited(true);
+    if (onExited) {
+      onExited(node);
+    }
+  };
+  const handleEnter = (node, isAppearing) => {
+    setExited(false);
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  };
+  React.useEffect(() => {
+    if (!disableWindowBlurListener && open) {
+      window.addEventListener("focus", handleResume);
+      window.addEventListener("blur", handlePause);
+      return () => {
+        window.removeEventListener("focus", handleResume);
+        window.removeEventListener("blur", handlePause);
+      };
+    }
+    return void 0;
+  }, [disableWindowBlurListener, handleResume, open]);
+  if (!open && exited) {
+    return null;
+  }
+  return /* @__PURE__ */ jsx(ClickAwayListener, _extends({
+    onClickAway: handleClickAway
+  }, ClickAwayListenerProps, {
+    children: /* @__PURE__ */ jsx(SnackbarRoot, _extends({
+      className: clsx(classes.root, className),
+      onMouseEnter: handleMouseEnter,
+      onMouseLeave: handleMouseLeave,
+      ownerState,
+      ref
+    }, other, {
+      children: /* @__PURE__ */ jsx(TransitionComponent, _extends({
+        appear: true,
+        in: open,
+        timeout: transitionDuration,
+        direction: vertical === "top" ? "down" : "up",
+        onEnter: handleEnter,
+        onExited: handleExited
+      }, TransitionProps, {
+        children: children || /* @__PURE__ */ jsx(SnackbarContent$1, _extends({
+          message,
+          action
+        }, ContentProps))
+      }))
+    }))
+  }));
+});
+var Snackbar$1 = Snackbar;
+const ContentWrapper = default_1$2(Grid)(({
   theme
 }) => ({
   display: "flex",
@@ -269,11 +973,31 @@ const ContentWrapper = default_1$1(Grid)(({
     flexBasis: "initial"
   }
 }));
-const Content = () => {
+const EmbedField = default_1$2(TextField)(({
+  theme
+}) => ({
+  ".MuiOutlinedInput-root": {
+    paddingRight: "10px"
+  },
+  input: {
+    cursor: "grab !important",
+    padding: "5px",
+    paddingLeft: "14px",
+    paddingRight: "14px",
+    fontSize: ".9em"
+  },
+  svg: {
+    height: "0.8em",
+    width: "0.8em"
+  }
+}));
+const Content = ({
+  embed
+}) => {
   var _a;
   const params = useParams$1();
   const document = useObservableState(useObservable((input$) => {
-    return combineLatest(input$, documents$).pipe(map(([input, documents]) => {
+    return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
@@ -315,25 +1039,85 @@ const Content = () => {
       clearTimeout(scrollTimeOutRef.current);
     };
   }, [params.contentSlug]);
+  const [openSuccess, setOpenSuccess] = useState(false);
   return /* @__PURE__ */ jsxs(ContentWrapper, {
     item: true,
-    xs: 9,
-    children: [/* @__PURE__ */ jsxs(Card, {
+    xs: embed ? false : 9,
+    children: [/* @__PURE__ */ jsx(Snackbar$1, {
+      sx: {
+        marginTop: "60px"
+      },
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right"
+      },
+      open: openSuccess,
+      autoHideDuration: 6e3,
+      onClose: () => {
+        setOpenSuccess(false);
+      },
+      children: /* @__PURE__ */ jsx(Alert$1, {
+        sx: {
+          boxShadow: 1
+        },
+        severity: "success",
+        onClose: () => {
+          setOpenSuccess(false);
+        },
+        children: "Embed link copied to clipboard!"
+      })
+    }), /* @__PURE__ */ jsxs(ConditionalCard, {
+      showCard: !embed,
       elevation: 2,
       sx: {
-        padding: 2,
+        padding: embed ? 1 : 2,
         textAlign: "justify",
         overflowX: "auto"
       },
-      children: [document && /* @__PURE__ */ jsx(CardHeader, {
-        action: /* @__PURE__ */ jsx(IconButton, {
-          "aria-label": "favourite",
-          onClick: toggleFav,
-          children: /* @__PURE__ */ jsx(default_1$2, {
-            sx: {
-              color: document.isFavourite && "red"
-            }
-          })
+      children: [!embed && document && /* @__PURE__ */ jsx(CardHeader, {
+        action: /* @__PURE__ */ jsxs(Box, {
+          sx: {
+            display: "flex",
+            alignItems: "center"
+          },
+          children: [/* @__PURE__ */ jsx(FormControl, {
+            variant: "standard",
+            onMouseDown: (e) => {
+              e.preventDefault();
+            },
+            onMouseUp: () => {
+              navigator.clipboard.writeText(`<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document.name}"></iframe>`).then(function() {
+                setOpenSuccess(true);
+              }, function() {
+              });
+            },
+            children: /* @__PURE__ */ jsx(EmbedField, {
+              id: "component-simple",
+              value: `<iframe src="${window.location.href.replace("/#/docs", "/#/embed")}" title="Talkwalker docs: ${document.name}"></iframe>`,
+              onChange: (e) => {
+                e.preventDefault();
+              },
+              onFocus: (e) => {
+                e.preventDefault();
+              },
+              variant: void 0,
+              label: "embed",
+              InputProps: {
+                endAdornment: /* @__PURE__ */ jsx(InputAdornment$1, {
+                  position: "end",
+                  children: /* @__PURE__ */ jsx(default_1, {})
+                })
+              }
+            })
+          }), /* @__PURE__ */ jsx(IconButton, {
+            "aria-label": "favourite",
+            onClick: toggleFav,
+            children: /* @__PURE__ */ jsx(default_1$3, {
+              sx: {
+                color: document.isFavourite && "red"
+              }
+            })
+          })]
         }),
         title: document.name,
         subheader: formatDate(document.lastModified)
@@ -345,10 +1129,11 @@ const Content = () => {
         },
         children: /* @__PURE__ */ jsx(MarkdownRenderer, {
           mdx: document == null ? void 0 : document.mdx,
+          embed,
           onAfterRender
         })
       })]
-    }), (((_a = document == null ? void 0 : document.mdx) == null ? void 0 : _a.match(/#/g)) || []).length > 1 && /* @__PURE__ */ jsx(Card, {
+    }), !embed && (((_a = document == null ? void 0 : document.mdx) == null ? void 0 : _a.match(/#/g)) || []).length > 1 && /* @__PURE__ */ jsx(Card, {
       elevation: 2,
       sx: {
         textAlign: "justify",

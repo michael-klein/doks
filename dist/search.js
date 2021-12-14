@@ -29,25 +29,27 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-import { j as useId, h as useControlled, k as useEventCallback, s as setRef, G as createSvgIcon, u as useForkRef, b as ButtonBase, o as ownerDocument, g as getDefaultExportFromCjs, a as documents$, d as default_1, V as ValueSubject } from "./documents.js";
+import { l as useId, n as useControlled, a as useEventCallback, s as setRef, b as useForkRef, q as getDefaultExportFromCjs, d as default_1 } from "./styled.js";
 import * as React from "react";
 import React__default, { useRef, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { combineLatest, map, debounceTime, startWith } from "rxjs";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
-import { _ as _extends, m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, B as alpha, d as jsxs, K as lighten, L as darken, A as rootShouldForwardProp, e as deepmerge, M as slotShouldForwardProp, f as formatMuiErrorMessage, F as Fragment } from "./main.js";
-import { b as useSubscriptionInternal, c as useIsomorphicLayoutEffect, d as useObservableStateInternal, P as Paper, a as useObservable, u as useObservableState } from "./use-observable-state.js";
-import { M as Menu, a as Modal, B as Backdrop } from "./navbar.js";
-import { e as inputBaseClasses, u as useFormControl, I as InputBaseRoot, r as rootOverridesResolver, b as InputBaseComponent, c as inputOverridesResolver, d as InputBase, f as formControlState, a as isFilled, B as Box } from "./InputBase.js";
-import { i as inputClasses, A as ArrowDropDownIcon, n as nativeSelectSelectStyles, b as nativeSelectIconStyles, N as NativeSelectInput, I as Input, F as FormControl, a as InputLabel } from "./Input.js";
+import { d as documents$, V as ValueSubject } from "./documents.js";
+import { _ as _extends, m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, y as alpha, d as jsxs, K as lighten, J as darken, F as Fragment } from "./main.js";
+import { c as useSubscriptionInternal, d as useIsomorphicLayoutEffect, e as useObservableStateInternal, P as Paper, a as useObservable, u as useObservableState } from "./use-observable-state.js";
+import { a as Modal, B as Backdrop } from "./Menu.js";
+import { B as Box } from "./Box.js";
+import { i as inputClasses, A as ArrowDropDownIcon } from "./Input.js";
+import { e as inputBaseClasses, u as useFormControl } from "./InputBase.js";
+import { o as outlinedInputClasses, f as filledInputClasses, C as ClearIcon, T as TextField } from "./Close.js";
 import { I as IconButton, T as Typography } from "./markdown_renderer.js";
-import { a as Popper } from "./Tooltip.js";
+import { P as Popper } from "./Tooltip.js";
+import { a as createSvgIcon, B as ButtonBase } from "./jsx-runtime_commonjs-proxy.js";
 import "react-dom";
 import "rxjs/operators";
-import "./Favorite.js";
-import "react-router-dom";
-import "./doks.js";
 import "./index.js";
+import "react-router-dom";
 function stripDiacritics(string) {
   return typeof string.normalize !== "undefined" ? string.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : string;
 }
@@ -850,8 +852,8 @@ function getListSubheaderUtilityClass(slot) {
   return generateUtilityClass("MuiListSubheader", slot);
 }
 generateUtilityClasses("MuiListSubheader", ["root", "colorPrimary", "colorInherit", "gutters", "inset", "sticky"]);
-const _excluded$d = ["className", "color", "component", "disableGutters", "disableSticky", "inset"];
-const useUtilityClasses$c = (ownerState) => {
+const _excluded$6 = ["className", "color", "component", "disableGutters", "disableSticky", "inset"];
+const useUtilityClasses$6 = (ownerState) => {
   const {
     classes,
     color,
@@ -911,7 +913,7 @@ const ListSubheader = /* @__PURE__ */ React.forwardRef(function ListSubheader2(i
     disableGutters = false,
     disableSticky = false,
     inset = false
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$d);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$6);
   const ownerState = _extends({}, props, {
     color,
     component,
@@ -919,7 +921,7 @@ const ListSubheader = /* @__PURE__ */ React.forwardRef(function ListSubheader2(i
     disableSticky,
     inset
   });
-  const classes = useUtilityClasses$c(ownerState);
+  const classes = useUtilityClasses$6(ownerState);
   return /* @__PURE__ */ jsx(ListSubheaderRoot, _extends({
     as: component,
     className: clsx(classes.root, className),
@@ -936,8 +938,8 @@ function getChipUtilityClass(slot) {
 }
 const chipClasses = generateUtilityClasses("MuiChip", ["root", "sizeSmall", "sizeMedium", "colorPrimary", "colorSecondary", "disabled", "clickable", "clickableColorPrimary", "clickableColorSecondary", "deletable", "deletableColorPrimary", "deletableColorSecondary", "outlined", "filled", "outlinedPrimary", "outlinedSecondary", "avatar", "avatarSmall", "avatarMedium", "avatarColorPrimary", "avatarColorSecondary", "icon", "iconSmall", "iconMedium", "iconColorPrimary", "iconColorSecondary", "label", "labelSmall", "labelMedium", "deleteIcon", "deleteIconSmall", "deleteIconMedium", "deleteIconColorPrimary", "deleteIconColorSecondary", "deleteIconOutlinedColorPrimary", "deleteIconOutlinedColorSecondary", "focusVisible"]);
 var chipClasses$1 = chipClasses;
-const _excluded$c = ["avatar", "className", "clickable", "color", "component", "deleteIcon", "disabled", "icon", "label", "onClick", "onDelete", "onKeyDown", "onKeyUp", "size", "variant"];
-const useUtilityClasses$b = (ownerState) => {
+const _excluded$5 = ["avatar", "className", "clickable", "color", "component", "deleteIcon", "disabled", "icon", "label", "onClick", "onDelete", "onKeyDown", "onKeyUp", "size", "variant"];
+const useUtilityClasses$5 = (ownerState) => {
   const {
     classes,
     disabled,
@@ -1201,7 +1203,7 @@ const Chip = /* @__PURE__ */ React.forwardRef(function Chip2(inProps, ref) {
     onKeyUp,
     size = "medium",
     variant = "filled"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$c);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$5);
   const chipRef = React.useRef(null);
   const handleRef = useForkRef(chipRef, ref);
   const handleDeleteIconClick = (event) => {
@@ -1242,7 +1244,7 @@ const Chip = /* @__PURE__ */ React.forwardRef(function Chip2(inProps, ref) {
     clickable,
     variant
   });
-  const classes = useUtilityClasses$b(ownerState);
+  const classes = useUtilityClasses$5(ownerState);
   const moreProps = component === ButtonBase ? _extends({
     component: ComponentProp || "div",
     focusVisibleClassName: classes.focusVisible
@@ -1290,27 +1292,14 @@ const Chip = /* @__PURE__ */ React.forwardRef(function Chip2(inProps, ref) {
   }));
 });
 var Chip$1 = Chip;
-function getOutlinedInputUtilityClass(slot) {
-  return generateUtilityClass("MuiOutlinedInput", slot);
-}
-const outlinedInputClasses = generateUtilityClasses("MuiOutlinedInput", ["root", "colorSecondary", "focused", "disabled", "adornedStart", "adornedEnd", "error", "sizeSmall", "multiline", "notchedOutline", "input", "inputSizeSmall", "inputMultiline", "inputAdornedStart", "inputAdornedEnd"]);
-var outlinedInputClasses$1 = outlinedInputClasses;
-function getFilledInputUtilityClass(slot) {
-  return generateUtilityClass("MuiFilledInput", slot);
-}
-const filledInputClasses = generateUtilityClasses("MuiFilledInput", ["root", "colorSecondary", "underline", "focused", "disabled", "adornedStart", "adornedEnd", "error", "sizeSmall", "multiline", "hiddenLabel", "input", "inputSizeSmall", "inputHiddenLabel", "inputMultiline", "inputAdornedStart", "inputAdornedEnd"]);
-var filledInputClasses$1 = filledInputClasses;
-var ClearIcon = createSvgIcon(/* @__PURE__ */ jsx("path", {
-  d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-}), "Close");
 function getAutocompleteUtilityClass(slot) {
   return generateUtilityClass("MuiAutocomplete", slot);
 }
 const autocompleteClasses = generateUtilityClasses("MuiAutocomplete", ["root", "fullWidth", "focused", "focusVisible", "tag", "tagSizeSmall", "tagSizeMedium", "hasPopupIcon", "hasClearIcon", "inputRoot", "input", "inputFocused", "endAdornment", "clearIndicator", "popupIndicator", "popupIndicatorOpen", "popper", "popperDisablePortal", "paper", "listbox", "loading", "noOptions", "option", "groupLabel", "groupUl"]);
 var autocompleteClasses$1 = autocompleteClasses;
 var _ClearIcon, _ArrowDropDownIcon;
-const _excluded$b = ["autoComplete", "autoHighlight", "autoSelect", "blurOnSelect", "ChipProps", "className", "clearIcon", "clearOnBlur", "clearOnEscape", "clearText", "closeText", "componentsProps", "defaultValue", "disableClearable", "disableCloseOnSelect", "disabled", "disabledItemsFocusable", "disableListWrap", "disablePortal", "filterOptions", "filterSelectedOptions", "forcePopupIcon", "freeSolo", "fullWidth", "getLimitTagsText", "getOptionDisabled", "getOptionLabel", "isOptionEqualToValue", "groupBy", "handleHomeEndKeys", "id", "includeInputInList", "inputValue", "limitTags", "ListboxComponent", "ListboxProps", "loading", "loadingText", "multiple", "noOptionsText", "onChange", "onClose", "onHighlightChange", "onInputChange", "onOpen", "open", "openOnFocus", "openText", "options", "PaperComponent", "PopperComponent", "popupIcon", "renderGroup", "renderInput", "renderOption", "renderTags", "selectOnFocus", "size", "value"];
-const useUtilityClasses$a = (ownerState) => {
+const _excluded$4 = ["autoComplete", "autoHighlight", "autoSelect", "blurOnSelect", "ChipProps", "className", "clearIcon", "clearOnBlur", "clearOnEscape", "clearText", "closeText", "componentsProps", "defaultValue", "disableClearable", "disableCloseOnSelect", "disabled", "disabledItemsFocusable", "disableListWrap", "disablePortal", "filterOptions", "filterSelectedOptions", "forcePopupIcon", "freeSolo", "fullWidth", "getLimitTagsText", "getOptionDisabled", "getOptionLabel", "isOptionEqualToValue", "groupBy", "handleHomeEndKeys", "id", "includeInputInList", "inputValue", "limitTags", "ListboxComponent", "ListboxProps", "loading", "loadingText", "multiple", "noOptionsText", "onChange", "onClose", "onHighlightChange", "onInputChange", "onOpen", "open", "openOnFocus", "openText", "options", "PaperComponent", "PopperComponent", "popupIcon", "renderGroup", "renderInput", "renderOption", "renderTags", "selectOnFocus", "size", "value"];
+const useUtilityClasses$4 = (ownerState) => {
   const {
     classes,
     disablePortal,
@@ -1412,7 +1401,7 @@ const AutocompleteRoot = styled("div", {
       padding: "2px 4px 3px 0"
     }
   },
-  [`& .${outlinedInputClasses$1.root}`]: {
+  [`& .${outlinedInputClasses.root}`]: {
     padding: 9,
     [`.${autocompleteClasses$1.hasPopupIcon}&, .${autocompleteClasses$1.hasClearIcon}&`]: {
       paddingRight: 26 + 4 + 9
@@ -1427,13 +1416,13 @@ const AutocompleteRoot = styled("div", {
       right: 9
     }
   },
-  [`& .${outlinedInputClasses$1.root}.${inputBaseClasses.sizeSmall}`]: {
+  [`& .${outlinedInputClasses.root}.${inputBaseClasses.sizeSmall}`]: {
     padding: 6,
     [`& .${autocompleteClasses$1.input}`]: {
       padding: "2.5px 4px 2.5px 6px"
     }
   },
-  [`& .${filledInputClasses$1.root}`]: {
+  [`& .${filledInputClasses.root}`]: {
     paddingTop: 19,
     paddingLeft: 8,
     [`.${autocompleteClasses$1.hasPopupIcon}&, .${autocompleteClasses$1.hasClearIcon}&`]: {
@@ -1442,16 +1431,16 @@ const AutocompleteRoot = styled("div", {
     [`.${autocompleteClasses$1.hasPopupIcon}.${autocompleteClasses$1.hasClearIcon}&`]: {
       paddingRight: 52 + 4 + 9
     },
-    [`& .${filledInputClasses$1.input}`]: {
+    [`& .${filledInputClasses.input}`]: {
       padding: "7px 4px"
     },
     [`& .${autocompleteClasses$1.endAdornment}`]: {
       right: 9
     }
   },
-  [`& .${filledInputClasses$1.root}.${inputBaseClasses.sizeSmall}`]: {
+  [`& .${filledInputClasses.root}.${inputBaseClasses.sizeSmall}`]: {
     paddingBottom: 1,
-    [`& .${filledInputClasses$1.input}`]: {
+    [`& .${filledInputClasses.input}`]: {
       padding: "2.5px 4px"
     }
   },
@@ -1677,7 +1666,7 @@ const Autocomplete = /* @__PURE__ */ React.forwardRef(function Autocomplete2(inP
     renderTags,
     selectOnFocus = !props.freeSolo,
     size = "medium"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$b);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$4);
   const {
     getRootProps,
     getInputProps,
@@ -1712,7 +1701,7 @@ const Autocomplete = /* @__PURE__ */ React.forwardRef(function Autocomplete2(inP
     popupOpen,
     size
   });
-  const classes = useUtilityClasses$a(ownerState);
+  const classes = useUtilityClasses$4(ownerState);
   let startAdornment;
   if (multiple && value.length > 0) {
     const getCustomizedTagProps = (params) => _extends({
@@ -1858,13 +1847,162 @@ const Autocomplete = /* @__PURE__ */ React.forwardRef(function Autocomplete2(inP
   });
 });
 var Autocomplete$1 = Autocomplete;
+function getSwitchBaseUtilityClass(slot) {
+  return generateUtilityClass("PrivateSwitchBase", slot);
+}
+generateUtilityClasses("PrivateSwitchBase", ["root", "checked", "disabled", "input", "edgeStart", "edgeEnd"]);
+const _excluded$3 = ["autoFocus", "checked", "checkedIcon", "className", "defaultChecked", "disabled", "disableFocusRipple", "edge", "icon", "id", "inputProps", "inputRef", "name", "onBlur", "onChange", "onFocus", "readOnly", "required", "tabIndex", "type", "value"];
+const useUtilityClasses$3 = (ownerState) => {
+  const {
+    classes,
+    checked,
+    disabled,
+    edge
+  } = ownerState;
+  const slots = {
+    root: ["root", checked && "checked", disabled && "disabled", edge && `edge${capitalize(edge)}`],
+    input: ["input"]
+  };
+  return composeClasses(slots, getSwitchBaseUtilityClass, classes);
+};
+const SwitchBaseRoot = styled(ButtonBase, {
+  skipSx: true
+})(({
+  ownerState
+}) => _extends({
+  padding: 9,
+  borderRadius: "50%"
+}, ownerState.edge === "start" && {
+  marginLeft: ownerState.size === "small" ? -3 : -12
+}, ownerState.edge === "end" && {
+  marginRight: ownerState.size === "small" ? -3 : -12
+}));
+const SwitchBaseInput = styled("input", {
+  skipSx: true
+})({
+  cursor: "inherit",
+  position: "absolute",
+  opacity: 0,
+  width: "100%",
+  height: "100%",
+  top: 0,
+  left: 0,
+  margin: 0,
+  padding: 0,
+  zIndex: 1
+});
+const SwitchBase = /* @__PURE__ */ React.forwardRef(function SwitchBase2(props, ref) {
+  const {
+    autoFocus,
+    checked: checkedProp,
+    checkedIcon,
+    className,
+    defaultChecked,
+    disabled: disabledProp,
+    disableFocusRipple = false,
+    edge = false,
+    icon,
+    id,
+    inputProps,
+    inputRef,
+    name,
+    onBlur,
+    onChange,
+    onFocus,
+    readOnly,
+    required,
+    tabIndex,
+    type,
+    value
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
+  const [checked, setCheckedState] = useControlled({
+    controlled: checkedProp,
+    default: Boolean(defaultChecked),
+    name: "SwitchBase",
+    state: "checked"
+  });
+  const muiFormControl = useFormControl();
+  const handleFocus = (event) => {
+    if (onFocus) {
+      onFocus(event);
+    }
+    if (muiFormControl && muiFormControl.onFocus) {
+      muiFormControl.onFocus(event);
+    }
+  };
+  const handleBlur = (event) => {
+    if (onBlur) {
+      onBlur(event);
+    }
+    if (muiFormControl && muiFormControl.onBlur) {
+      muiFormControl.onBlur(event);
+    }
+  };
+  const handleInputChange = (event) => {
+    if (event.nativeEvent.defaultPrevented) {
+      return;
+    }
+    const newChecked = event.target.checked;
+    setCheckedState(newChecked);
+    if (onChange) {
+      onChange(event, newChecked);
+    }
+  };
+  let disabled = disabledProp;
+  if (muiFormControl) {
+    if (typeof disabled === "undefined") {
+      disabled = muiFormControl.disabled;
+    }
+  }
+  const hasLabelFor = type === "checkbox" || type === "radio";
+  const ownerState = _extends({}, props, {
+    checked,
+    disabled,
+    disableFocusRipple,
+    edge
+  });
+  const classes = useUtilityClasses$3(ownerState);
+  return /* @__PURE__ */ jsxs(SwitchBaseRoot, _extends({
+    component: "span",
+    className: clsx(classes.root, className),
+    centerRipple: true,
+    focusRipple: !disableFocusRipple,
+    disabled,
+    tabIndex: null,
+    role: void 0,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    ownerState,
+    ref
+  }, other, {
+    children: [/* @__PURE__ */ jsx(SwitchBaseInput, _extends({
+      autoFocus,
+      checked: checkedProp,
+      defaultChecked,
+      className: classes.input,
+      disabled,
+      id: hasLabelFor && id,
+      name,
+      onChange: handleInputChange,
+      readOnly,
+      ref: inputRef,
+      required,
+      ownerState,
+      tabIndex,
+      type
+    }, type === "checkbox" && value === void 0 ? {} : {
+      value
+    }, inputProps)), checked ? checkedIcon : icon]
+  }));
+});
+var SwitchBase$1 = SwitchBase;
 function getFormControlLabelUtilityClasses(slot) {
   return generateUtilityClass("MuiFormControlLabel", slot);
 }
 const formControlLabelClasses = generateUtilityClasses("MuiFormControlLabel", ["root", "labelPlacementStart", "labelPlacementTop", "labelPlacementBottom", "disabled", "label"]);
 var formControlLabelClasses$1 = formControlLabelClasses;
-const _excluded$a = ["checked", "className", "componentsProps", "control", "disabled", "disableTypography", "inputRef", "label", "labelPlacement", "name", "onChange", "value"];
-const useUtilityClasses$9 = (ownerState) => {
+const _excluded$2 = ["checked", "className", "componentsProps", "control", "disabled", "disableTypography", "inputRef", "label", "labelPlacement", "name", "onChange", "value"];
+const useUtilityClasses$2 = (ownerState) => {
   const {
     classes,
     disabled,
@@ -1931,7 +2069,7 @@ const FormControlLabel = /* @__PURE__ */ React.forwardRef(function FormControlLa
     disableTypography,
     label,
     labelPlacement = "end"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$a);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
   const muiFormControl = useFormControl();
   let disabled = disabledProp;
   if (typeof disabled === "undefined" && typeof control.props.disabled !== "undefined") {
@@ -1953,7 +2091,7 @@ const FormControlLabel = /* @__PURE__ */ React.forwardRef(function FormControlLa
     label,
     labelPlacement
   });
-  const classes = useUtilityClasses$9(ownerState);
+  const classes = useUtilityClasses$2(ownerState);
   return /* @__PURE__ */ jsxs(FormControlLabelRoot, _extends({
     className: clsx(classes.root, className),
     ownerState,
@@ -1972,8 +2110,8 @@ function getFormGroupUtilityClass(slot) {
   return generateUtilityClass("MuiFormGroup", slot);
 }
 generateUtilityClasses("MuiFormGroup", ["root", "row"]);
-const _excluded$9 = ["className", "row"];
-const useUtilityClasses$8 = (ownerState) => {
+const _excluded$1 = ["className", "row"];
+const useUtilityClasses$1 = (ownerState) => {
   const {
     classes,
     row
@@ -2009,11 +2147,11 @@ const FormGroup = /* @__PURE__ */ React.forwardRef(function FormGroup2(inProps, 
   const {
     className,
     row = false
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$9);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const ownerState = _extends({}, props, {
     row
   });
-  const classes = useUtilityClasses$8(ownerState);
+  const classes = useUtilityClasses$1(ownerState);
   return /* @__PURE__ */ jsx(FormGroupRoot, _extends({
     className: clsx(classes.root, className),
     ownerState,
@@ -2021,162 +2159,13 @@ const FormGroup = /* @__PURE__ */ React.forwardRef(function FormGroup2(inProps, 
   }, other));
 });
 var FormGroup$1 = FormGroup;
-function getSwitchBaseUtilityClass(slot) {
-  return generateUtilityClass("PrivateSwitchBase", slot);
-}
-generateUtilityClasses("PrivateSwitchBase", ["root", "checked", "disabled", "input", "edgeStart", "edgeEnd"]);
-const _excluded$8 = ["autoFocus", "checked", "checkedIcon", "className", "defaultChecked", "disabled", "disableFocusRipple", "edge", "icon", "id", "inputProps", "inputRef", "name", "onBlur", "onChange", "onFocus", "readOnly", "required", "tabIndex", "type", "value"];
-const useUtilityClasses$7 = (ownerState) => {
-  const {
-    classes,
-    checked,
-    disabled,
-    edge
-  } = ownerState;
-  const slots = {
-    root: ["root", checked && "checked", disabled && "disabled", edge && `edge${capitalize(edge)}`],
-    input: ["input"]
-  };
-  return composeClasses(slots, getSwitchBaseUtilityClass, classes);
-};
-const SwitchBaseRoot = styled(ButtonBase, {
-  skipSx: true
-})(({
-  ownerState
-}) => _extends({
-  padding: 9,
-  borderRadius: "50%"
-}, ownerState.edge === "start" && {
-  marginLeft: ownerState.size === "small" ? -3 : -12
-}, ownerState.edge === "end" && {
-  marginRight: ownerState.size === "small" ? -3 : -12
-}));
-const SwitchBaseInput = styled("input", {
-  skipSx: true
-})({
-  cursor: "inherit",
-  position: "absolute",
-  opacity: 0,
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  margin: 0,
-  padding: 0,
-  zIndex: 1
-});
-const SwitchBase = /* @__PURE__ */ React.forwardRef(function SwitchBase2(props, ref) {
-  const {
-    autoFocus,
-    checked: checkedProp,
-    checkedIcon,
-    className,
-    defaultChecked,
-    disabled: disabledProp,
-    disableFocusRipple = false,
-    edge = false,
-    icon,
-    id,
-    inputProps,
-    inputRef,
-    name,
-    onBlur,
-    onChange,
-    onFocus,
-    readOnly,
-    required,
-    tabIndex,
-    type,
-    value
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$8);
-  const [checked, setCheckedState] = useControlled({
-    controlled: checkedProp,
-    default: Boolean(defaultChecked),
-    name: "SwitchBase",
-    state: "checked"
-  });
-  const muiFormControl = useFormControl();
-  const handleFocus = (event) => {
-    if (onFocus) {
-      onFocus(event);
-    }
-    if (muiFormControl && muiFormControl.onFocus) {
-      muiFormControl.onFocus(event);
-    }
-  };
-  const handleBlur = (event) => {
-    if (onBlur) {
-      onBlur(event);
-    }
-    if (muiFormControl && muiFormControl.onBlur) {
-      muiFormControl.onBlur(event);
-    }
-  };
-  const handleInputChange = (event) => {
-    if (event.nativeEvent.defaultPrevented) {
-      return;
-    }
-    const newChecked = event.target.checked;
-    setCheckedState(newChecked);
-    if (onChange) {
-      onChange(event, newChecked);
-    }
-  };
-  let disabled = disabledProp;
-  if (muiFormControl) {
-    if (typeof disabled === "undefined") {
-      disabled = muiFormControl.disabled;
-    }
-  }
-  const hasLabelFor = type === "checkbox" || type === "radio";
-  const ownerState = _extends({}, props, {
-    checked,
-    disabled,
-    disableFocusRipple,
-    edge
-  });
-  const classes = useUtilityClasses$7(ownerState);
-  return /* @__PURE__ */ jsxs(SwitchBaseRoot, _extends({
-    component: "span",
-    className: clsx(classes.root, className),
-    centerRipple: true,
-    focusRipple: !disableFocusRipple,
-    disabled,
-    tabIndex: null,
-    role: void 0,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-    ownerState,
-    ref
-  }, other, {
-    children: [/* @__PURE__ */ jsx(SwitchBaseInput, _extends({
-      autoFocus,
-      checked: checkedProp,
-      defaultChecked,
-      className: classes.input,
-      disabled,
-      id: hasLabelFor && id,
-      name,
-      onChange: handleInputChange,
-      readOnly,
-      ref: inputRef,
-      required,
-      ownerState,
-      tabIndex,
-      type
-    }, type === "checkbox" && value === void 0 ? {} : {
-      value
-    }, inputProps)), checked ? checkedIcon : icon]
-  }));
-});
-var SwitchBase$1 = SwitchBase;
 function getSwitchUtilityClass(slot) {
   return generateUtilityClass("MuiSwitch", slot);
 }
 const switchClasses = generateUtilityClasses("MuiSwitch", ["root", "edgeStart", "edgeEnd", "switchBase", "colorPrimary", "colorSecondary", "sizeSmall", "sizeMedium", "checked", "disabled", "input", "thumb", "track"]);
 var switchClasses$1 = switchClasses;
-const _excluded$7 = ["className", "color", "edge", "size", "sx"];
-const useUtilityClasses$6 = (ownerState) => {
+const _excluded = ["className", "color", "edge", "size", "sx"];
+const useUtilityClasses = (ownerState) => {
   const {
     classes,
     edge,
@@ -2345,13 +2334,13 @@ const Switch = /* @__PURE__ */ React.forwardRef(function Switch2(inProps, ref) {
     edge = false,
     size = "medium",
     sx
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$7);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
   const ownerState = _extends({}, props, {
     color,
     edge,
     size
   });
-  const classes = useUtilityClasses$6(ownerState);
+  const classes = useUtilityClasses(ownerState);
   const icon = /* @__PURE__ */ jsx(SwitchThumb, {
     className: classes.thumb,
     ownerState
@@ -2377,1136 +2366,6 @@ const Switch = /* @__PURE__ */ React.forwardRef(function Switch2(inProps, ref) {
   });
 });
 var Switch$1 = Switch;
-const _excluded$6 = ["disableUnderline", "components", "componentsProps", "fullWidth", "hiddenLabel", "inputComponent", "multiline", "type"];
-const useUtilityClasses$5 = (ownerState) => {
-  const {
-    classes,
-    disableUnderline
-  } = ownerState;
-  const slots = {
-    root: ["root", !disableUnderline && "underline"],
-    input: ["input"]
-  };
-  const composedClasses = composeClasses(slots, getFilledInputUtilityClass, classes);
-  return _extends({}, classes, composedClasses);
-};
-const FilledInputRoot = styled(InputBaseRoot, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === "classes",
-  name: "MuiFilledInput",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [...rootOverridesResolver(props, styles), !ownerState.disableUnderline && styles.underline];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  const light = theme.palette.mode === "light";
-  const bottomLineColor = light ? "rgba(0, 0, 0, 0.42)" : "rgba(255, 255, 255, 0.7)";
-  const backgroundColor = light ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.09)";
-  return _extends({
-    position: "relative",
-    backgroundColor,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-    transition: theme.transitions.create("background-color", {
-      duration: theme.transitions.duration.shorter,
-      easing: theme.transitions.easing.easeOut
-    }),
-    "&:hover": {
-      backgroundColor: light ? "rgba(0, 0, 0, 0.09)" : "rgba(255, 255, 255, 0.13)",
-      "@media (hover: none)": {
-        backgroundColor
-      }
-    },
-    [`&.${filledInputClasses$1.focused}`]: {
-      backgroundColor
-    },
-    [`&.${filledInputClasses$1.disabled}`]: {
-      backgroundColor: light ? "rgba(0, 0, 0, 0.12)" : "rgba(255, 255, 255, 0.12)"
-    }
-  }, !ownerState.disableUnderline && {
-    "&:after": {
-      borderBottom: `2px solid ${theme.palette[ownerState.color].main}`,
-      left: 0,
-      bottom: 0,
-      content: '""',
-      position: "absolute",
-      right: 0,
-      transform: "scaleX(0)",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shorter,
-        easing: theme.transitions.easing.easeOut
-      }),
-      pointerEvents: "none"
-    },
-    [`&.${filledInputClasses$1.focused}:after`]: {
-      transform: "scaleX(1)"
-    },
-    [`&.${filledInputClasses$1.error}:after`]: {
-      borderBottomColor: theme.palette.error.main,
-      transform: "scaleX(1)"
-    },
-    "&:before": {
-      borderBottom: `1px solid ${bottomLineColor}`,
-      left: 0,
-      bottom: 0,
-      content: '"\\00a0"',
-      position: "absolute",
-      right: 0,
-      transition: theme.transitions.create("border-bottom-color", {
-        duration: theme.transitions.duration.shorter
-      }),
-      pointerEvents: "none"
-    },
-    [`&:hover:not(.${filledInputClasses$1.disabled}):before`]: {
-      borderBottom: `1px solid ${theme.palette.text.primary}`
-    },
-    [`&.${filledInputClasses$1.disabled}:before`]: {
-      borderBottomStyle: "dotted"
-    }
-  }, ownerState.startAdornment && {
-    paddingLeft: 12
-  }, ownerState.endAdornment && {
-    paddingRight: 12
-  }, ownerState.multiline && _extends({
-    padding: "25px 12px 8px"
-  }, ownerState.size === "small" && {
-    paddingTop: 21,
-    paddingBottom: 4
-  }, ownerState.hiddenLabel && {
-    paddingTop: 16,
-    paddingBottom: 17
-  }));
-});
-const FilledInputInput = styled(InputBaseComponent, {
-  name: "MuiFilledInput",
-  slot: "Input",
-  overridesResolver: inputOverridesResolver
-})(({
-  theme,
-  ownerState
-}) => _extends({
-  paddingTop: 25,
-  paddingRight: 12,
-  paddingBottom: 8,
-  paddingLeft: 12,
-  "&:-webkit-autofill": {
-    WebkitBoxShadow: theme.palette.mode === "light" ? null : "0 0 0 100px #266798 inset",
-    WebkitTextFillColor: theme.palette.mode === "light" ? null : "#fff",
-    caretColor: theme.palette.mode === "light" ? null : "#fff",
-    borderTopLeftRadius: "inherit",
-    borderTopRightRadius: "inherit"
-  }
-}, ownerState.size === "small" && {
-  paddingTop: 21,
-  paddingBottom: 4
-}, ownerState.hiddenLabel && {
-  paddingTop: 16,
-  paddingBottom: 17
-}, ownerState.multiline && {
-  paddingTop: 0,
-  paddingBottom: 0,
-  paddingLeft: 0,
-  paddingRight: 0
-}, ownerState.startAdornment && {
-  paddingLeft: 0
-}, ownerState.endAdornment && {
-  paddingRight: 0
-}, ownerState.hiddenLabel && ownerState.size === "small" && {
-  paddingTop: 8,
-  paddingBottom: 9
-}));
-const FilledInput = /* @__PURE__ */ React.forwardRef(function FilledInput2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiFilledInput"
-  });
-  const {
-    components = {},
-    componentsProps: componentsPropsProp,
-    fullWidth = false,
-    inputComponent = "input",
-    multiline = false,
-    type = "text"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$6);
-  const ownerState = _extends({}, props, {
-    fullWidth,
-    inputComponent,
-    multiline,
-    type
-  });
-  const classes = useUtilityClasses$5(props);
-  const filledInputComponentsProps = {
-    root: {
-      ownerState
-    },
-    input: {
-      ownerState
-    }
-  };
-  const componentsProps = componentsPropsProp ? deepmerge(componentsPropsProp, filledInputComponentsProps) : filledInputComponentsProps;
-  return /* @__PURE__ */ jsx(InputBase, _extends({
-    components: _extends({
-      Root: FilledInputRoot,
-      Input: FilledInputInput
-    }, components),
-    componentsProps,
-    fullWidth,
-    inputComponent,
-    multiline,
-    ref,
-    type
-  }, other, {
-    classes
-  }));
-});
-FilledInput.muiName = "Input";
-var FilledInput$1 = FilledInput;
-const _excluded$5 = ["children", "classes", "className", "label", "notched"];
-const NotchedOutlineRoot$1 = styled("fieldset")({
-  textAlign: "left",
-  position: "absolute",
-  bottom: 0,
-  right: 0,
-  top: -5,
-  left: 0,
-  margin: 0,
-  padding: "0 8px",
-  pointerEvents: "none",
-  borderRadius: "inherit",
-  borderStyle: "solid",
-  borderWidth: 1,
-  overflow: "hidden",
-  minWidth: "0%"
-});
-const NotchedOutlineLegend = styled("legend", {
-  skipSx: true
-})(({
-  ownerState,
-  theme
-}) => _extends({}, ownerState.label === void 0 && {
-  padding: 0,
-  lineHeight: "11px",
-  transition: theme.transitions.create("width", {
-    duration: 150,
-    easing: theme.transitions.easing.easeOut
-  })
-}, ownerState.label !== void 0 && _extends({
-  display: "block",
-  width: "auto",
-  padding: 0,
-  height: 11,
-  fontSize: "0.75em",
-  visibility: "hidden",
-  maxWidth: 0.01,
-  transition: theme.transitions.create("max-width", {
-    duration: 50,
-    easing: theme.transitions.easing.easeOut
-  }),
-  "& > span": {
-    paddingLeft: 5,
-    paddingRight: 5,
-    display: "inline-block"
-  }
-}, ownerState.notched && {
-  maxWidth: "100%",
-  transition: theme.transitions.create("max-width", {
-    duration: 100,
-    easing: theme.transitions.easing.easeOut,
-    delay: 50
-  })
-})));
-function NotchedOutline(props) {
-  const {
-    className,
-    label,
-    notched
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$5);
-  const ownerState = _extends({}, props, {
-    notched,
-    label
-  });
-  return /* @__PURE__ */ jsx(NotchedOutlineRoot$1, _extends({
-    "aria-hidden": true,
-    className,
-    ownerState
-  }, other, {
-    children: /* @__PURE__ */ jsx(NotchedOutlineLegend, {
-      ownerState,
-      children: label ? /* @__PURE__ */ jsx("span", {
-        children: label
-      }) : /* @__PURE__ */ jsx("span", {
-        className: "notranslate",
-        dangerouslySetInnerHTML: {
-          __html: "&#8203;"
-        }
-      })
-    })
-  }));
-}
-const _excluded$4 = ["components", "fullWidth", "inputComponent", "label", "multiline", "notched", "type"];
-const useUtilityClasses$4 = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root"],
-    notchedOutline: ["notchedOutline"],
-    input: ["input"]
-  };
-  const composedClasses = composeClasses(slots, getOutlinedInputUtilityClass, classes);
-  return _extends({}, classes, composedClasses);
-};
-const OutlinedInputRoot = styled(InputBaseRoot, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === "classes",
-  name: "MuiOutlinedInput",
-  slot: "Root",
-  overridesResolver: rootOverridesResolver
-})(({
-  theme,
-  ownerState
-}) => {
-  const borderColor = theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)";
-  return _extends({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    [`&:hover .${outlinedInputClasses$1.notchedOutline}`]: {
-      borderColor: theme.palette.text.primary
-    },
-    "@media (hover: none)": {
-      [`&:hover .${outlinedInputClasses$1.notchedOutline}`]: {
-        borderColor
-      }
-    },
-    [`&.${outlinedInputClasses$1.focused} .${outlinedInputClasses$1.notchedOutline}`]: {
-      borderColor: theme.palette[ownerState.color].main,
-      borderWidth: 2
-    },
-    [`&.${outlinedInputClasses$1.error} .${outlinedInputClasses$1.notchedOutline}`]: {
-      borderColor: theme.palette.error.main
-    },
-    [`&.${outlinedInputClasses$1.disabled} .${outlinedInputClasses$1.notchedOutline}`]: {
-      borderColor: theme.palette.action.disabled
-    }
-  }, ownerState.startAdornment && {
-    paddingLeft: 14
-  }, ownerState.endAdornment && {
-    paddingRight: 14
-  }, ownerState.multiline && _extends({
-    padding: "16.5px 14px"
-  }, ownerState.size === "small" && {
-    padding: "8.5px 14px"
-  }));
-});
-const NotchedOutlineRoot = styled(NotchedOutline, {
-  name: "MuiOutlinedInput",
-  slot: "NotchedOutline",
-  overridesResolver: (props, styles) => styles.notchedOutline
-})(({
-  theme
-}) => ({
-  borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)"
-}));
-const OutlinedInputInput = styled(InputBaseComponent, {
-  name: "MuiOutlinedInput",
-  slot: "Input",
-  overridesResolver: inputOverridesResolver
-})(({
-  theme,
-  ownerState
-}) => _extends({
-  padding: "16.5px 14px",
-  "&:-webkit-autofill": {
-    WebkitBoxShadow: theme.palette.mode === "light" ? null : "0 0 0 100px #266798 inset",
-    WebkitTextFillColor: theme.palette.mode === "light" ? null : "#fff",
-    caretColor: theme.palette.mode === "light" ? null : "#fff",
-    borderRadius: "inherit"
-  }
-}, ownerState.size === "small" && {
-  padding: "8.5px 14px"
-}, ownerState.multiline && {
-  padding: 0
-}, ownerState.startAdornment && {
-  paddingLeft: 0
-}, ownerState.endAdornment && {
-  paddingRight: 0
-}));
-const OutlinedInput = /* @__PURE__ */ React.forwardRef(function OutlinedInput2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiOutlinedInput"
-  });
-  const {
-    components = {},
-    fullWidth = false,
-    inputComponent = "input",
-    label,
-    multiline = false,
-    notched,
-    type = "text"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$4);
-  const classes = useUtilityClasses$4(props);
-  return /* @__PURE__ */ jsx(InputBase, _extends({
-    components: _extends({
-      Root: OutlinedInputRoot,
-      Input: OutlinedInputInput
-    }, components),
-    renderSuffix: (state) => /* @__PURE__ */ jsx(NotchedOutlineRoot, {
-      className: classes.notchedOutline,
-      label,
-      notched: typeof notched !== "undefined" ? notched : Boolean(state.startAdornment || state.filled || state.focused)
-    }),
-    fullWidth,
-    inputComponent,
-    multiline,
-    ref,
-    type
-  }, other, {
-    classes: _extends({}, classes, {
-      notchedOutline: null
-    })
-  }));
-});
-OutlinedInput.muiName = "Input";
-var OutlinedInput$1 = OutlinedInput;
-function getFormHelperTextUtilityClasses(slot) {
-  return generateUtilityClass("MuiFormHelperText", slot);
-}
-const formHelperTextClasses = generateUtilityClasses("MuiFormHelperText", ["root", "error", "disabled", "sizeSmall", "sizeMedium", "contained", "focused", "filled", "required"]);
-var formHelperTextClasses$1 = formHelperTextClasses;
-const _excluded$3 = ["children", "className", "component", "disabled", "error", "filled", "focused", "margin", "required", "variant"];
-const useUtilityClasses$3 = (ownerState) => {
-  const {
-    classes,
-    contained,
-    size,
-    disabled,
-    error,
-    filled,
-    focused,
-    required
-  } = ownerState;
-  const slots = {
-    root: ["root", disabled && "disabled", error && "error", size && `size${capitalize(size)}`, contained && "contained", focused && "focused", filled && "filled", required && "required"]
-  };
-  return composeClasses(slots, getFormHelperTextUtilityClasses, classes);
-};
-const FormHelperTextRoot = styled("p", {
-  name: "MuiFormHelperText",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, ownerState.size && styles[`size${capitalize(ownerState.size)}`], ownerState.contained && styles.contained, ownerState.filled && styles.filled];
-  }
-})(({
-  theme,
-  ownerState
-}) => _extends({
-  color: theme.palette.text.secondary
-}, theme.typography.caption, {
-  textAlign: "left",
-  marginTop: 3,
-  marginRight: 0,
-  marginBottom: 0,
-  marginLeft: 0,
-  [`&.${formHelperTextClasses$1.disabled}`]: {
-    color: theme.palette.text.disabled
-  },
-  [`&.${formHelperTextClasses$1.error}`]: {
-    color: theme.palette.error.main
-  }
-}, ownerState.size === "small" && {
-  marginTop: 4
-}, ownerState.contained && {
-  marginLeft: 14,
-  marginRight: 14
-}));
-const FormHelperText = /* @__PURE__ */ React.forwardRef(function FormHelperText2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiFormHelperText"
-  });
-  const {
-    children,
-    className,
-    component = "p"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ["variant", "size", "disabled", "error", "filled", "focused", "required"]
-  });
-  const ownerState = _extends({}, props, {
-    component,
-    contained: fcs.variant === "filled" || fcs.variant === "outlined",
-    variant: fcs.variant,
-    size: fcs.size,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required
-  });
-  const classes = useUtilityClasses$3(ownerState);
-  return /* @__PURE__ */ jsx(FormHelperTextRoot, _extends({
-    as: component,
-    ownerState,
-    className: clsx(classes.root, className),
-    ref
-  }, other, {
-    children: children === " " ? /* @__PURE__ */ jsx("span", {
-      className: "notranslate",
-      dangerouslySetInnerHTML: {
-        __html: "&#8203;"
-      }
-    }) : children
-  }));
-});
-var FormHelperText$1 = FormHelperText;
-function getSelectUtilityClasses(slot) {
-  return generateUtilityClass("MuiSelect", slot);
-}
-const selectClasses = generateUtilityClasses("MuiSelect", ["root", "select", "filled", "outlined", "standard", "disabled", "focused", "icon", "iconOpen", "iconFilled", "iconOutlined", "iconStandard", "nativeInput"]);
-const _excluded$2 = ["aria-describedby", "aria-label", "autoFocus", "autoWidth", "children", "className", "defaultValue", "disabled", "displayEmpty", "IconComponent", "inputRef", "labelId", "MenuProps", "multiple", "name", "onBlur", "onChange", "onClose", "onFocus", "onOpen", "open", "readOnly", "renderValue", "SelectDisplayProps", "tabIndex", "type", "value", "variant"];
-const SelectSelect = styled("div", {
-  name: "MuiSelect",
-  slot: "Select",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [
-      {
-        [`&.${selectClasses.select}`]: styles.select
-      },
-      {
-        [`&.${selectClasses.select}`]: styles[ownerState.variant]
-      }
-    ];
-  }
-})(nativeSelectSelectStyles, {
-  [`&.${selectClasses.select}`]: {
-    height: "auto",
-    minHeight: "1.4375em",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    overflow: "hidden"
-  }
-});
-const SelectIcon = styled("svg", {
-  name: "MuiSelect",
-  slot: "Icon",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.icon, ownerState.variant && styles[`icon${capitalize(ownerState.variant)}`], ownerState.open && styles.iconOpen];
-  }
-})(nativeSelectIconStyles);
-const SelectNativeInput = styled("input", {
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== "classes",
-  name: "MuiSelect",
-  slot: "NativeInput",
-  overridesResolver: (props, styles) => styles.nativeInput
-})({
-  bottom: 0,
-  left: 0,
-  position: "absolute",
-  opacity: 0,
-  pointerEvents: "none",
-  width: "100%",
-  boxSizing: "border-box"
-});
-function areEqualValues(a, b) {
-  if (typeof b === "object" && b !== null) {
-    return a === b;
-  }
-  return String(a) === String(b);
-}
-function isEmpty(display) {
-  return display == null || typeof display === "string" && !display.trim();
-}
-const useUtilityClasses$2 = (ownerState) => {
-  const {
-    classes,
-    variant,
-    disabled,
-    open
-  } = ownerState;
-  const slots = {
-    select: ["select", variant, disabled && "disabled"],
-    icon: ["icon", `icon${capitalize(variant)}`, open && "iconOpen", disabled && "disabled"],
-    nativeInput: ["nativeInput"]
-  };
-  return composeClasses(slots, getSelectUtilityClasses, classes);
-};
-const SelectInput = /* @__PURE__ */ React.forwardRef(function SelectInput2(props, ref) {
-  const {
-    "aria-describedby": ariaDescribedby,
-    "aria-label": ariaLabel,
-    autoFocus,
-    autoWidth,
-    children,
-    className,
-    defaultValue,
-    disabled,
-    displayEmpty,
-    IconComponent,
-    inputRef: inputRefProp,
-    labelId,
-    MenuProps = {},
-    multiple,
-    name,
-    onBlur,
-    onChange,
-    onClose,
-    onFocus,
-    onOpen,
-    open: openProp,
-    readOnly,
-    renderValue,
-    SelectDisplayProps = {},
-    tabIndex: tabIndexProp,
-    value: valueProp,
-    variant = "standard"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
-  const [value, setValueState] = useControlled({
-    controlled: valueProp,
-    default: defaultValue,
-    name: "Select"
-  });
-  const inputRef = React.useRef(null);
-  const displayRef = React.useRef(null);
-  const [displayNode, setDisplayNode] = React.useState(null);
-  const {
-    current: isOpenControlled
-  } = React.useRef(openProp != null);
-  const [menuMinWidthState, setMenuMinWidthState] = React.useState();
-  const [openState, setOpenState] = React.useState(false);
-  const handleRef = useForkRef(ref, inputRefProp);
-  const handleDisplayRef = React.useCallback((node) => {
-    displayRef.current = node;
-    if (node) {
-      setDisplayNode(node);
-    }
-  }, []);
-  React.useImperativeHandle(handleRef, () => ({
-    focus: () => {
-      displayRef.current.focus();
-    },
-    node: inputRef.current,
-    value
-  }), [value]);
-  React.useEffect(() => {
-    if (autoFocus) {
-      displayRef.current.focus();
-    }
-  }, [autoFocus]);
-  React.useEffect(() => {
-    const label = ownerDocument(displayRef.current).getElementById(labelId);
-    if (label) {
-      const handler = () => {
-        if (getSelection().isCollapsed) {
-          displayRef.current.focus();
-        }
-      };
-      label.addEventListener("click", handler);
-      return () => {
-        label.removeEventListener("click", handler);
-      };
-    }
-    return void 0;
-  }, [labelId]);
-  const update = (open2, event) => {
-    if (open2) {
-      if (onOpen) {
-        onOpen(event);
-      }
-    } else if (onClose) {
-      onClose(event);
-    }
-    if (!isOpenControlled) {
-      setMenuMinWidthState(autoWidth ? null : displayNode.clientWidth);
-      setOpenState(open2);
-    }
-  };
-  const handleMouseDown = (event) => {
-    if (event.button !== 0) {
-      return;
-    }
-    event.preventDefault();
-    displayRef.current.focus();
-    update(true, event);
-  };
-  const handleClose = (event) => {
-    update(false, event);
-  };
-  const childrenArray = React.Children.toArray(children);
-  const handleChange = (event) => {
-    const index2 = childrenArray.map((child2) => child2.props.value).indexOf(event.target.value);
-    if (index2 === -1) {
-      return;
-    }
-    const child = childrenArray[index2];
-    setValueState(child.props.value);
-    if (onChange) {
-      onChange(event, child);
-    }
-  };
-  const handleItemClick = (child) => (event) => {
-    let newValue;
-    if (!event.currentTarget.hasAttribute("tabindex")) {
-      return;
-    }
-    if (multiple) {
-      newValue = Array.isArray(value) ? value.slice() : [];
-      const itemIndex = value.indexOf(child.props.value);
-      if (itemIndex === -1) {
-        newValue.push(child.props.value);
-      } else {
-        newValue.splice(itemIndex, 1);
-      }
-    } else {
-      newValue = child.props.value;
-    }
-    if (child.props.onClick) {
-      child.props.onClick(event);
-    }
-    if (value !== newValue) {
-      setValueState(newValue);
-      if (onChange) {
-        const nativeEvent = event.nativeEvent || event;
-        const clonedEvent = new nativeEvent.constructor(nativeEvent.type, nativeEvent);
-        Object.defineProperty(clonedEvent, "target", {
-          writable: true,
-          value: {
-            value: newValue,
-            name
-          }
-        });
-        onChange(clonedEvent, child);
-      }
-    }
-    if (!multiple) {
-      update(false, event);
-    }
-  };
-  const handleKeyDown = (event) => {
-    if (!readOnly) {
-      const validKeys = [
-        " ",
-        "ArrowUp",
-        "ArrowDown",
-        "Enter"
-      ];
-      if (validKeys.indexOf(event.key) !== -1) {
-        event.preventDefault();
-        update(true, event);
-      }
-    }
-  };
-  const open = displayNode !== null && (isOpenControlled ? openProp : openState);
-  const handleBlur = (event) => {
-    if (!open && onBlur) {
-      Object.defineProperty(event, "target", {
-        writable: true,
-        value: {
-          value,
-          name
-        }
-      });
-      onBlur(event);
-    }
-  };
-  delete other["aria-invalid"];
-  let display;
-  let displaySingle;
-  const displayMultiple = [];
-  let computeDisplay = false;
-  if (isFilled({
-    value
-  }) || displayEmpty) {
-    if (renderValue) {
-      display = renderValue(value);
-    } else {
-      computeDisplay = true;
-    }
-  }
-  const items = childrenArray.map((child) => {
-    if (!/* @__PURE__ */ React.isValidElement(child)) {
-      return null;
-    }
-    let selected;
-    if (multiple) {
-      if (!Array.isArray(value)) {
-        throw new Error(formatMuiErrorMessage(2));
-      }
-      selected = value.some((v) => areEqualValues(v, child.props.value));
-      if (selected && computeDisplay) {
-        displayMultiple.push(child.props.children);
-      }
-    } else {
-      selected = areEqualValues(value, child.props.value);
-      if (selected && computeDisplay) {
-        displaySingle = child.props.children;
-      }
-    }
-    return /* @__PURE__ */ React.cloneElement(child, {
-      "aria-selected": selected ? "true" : void 0,
-      onClick: handleItemClick(child),
-      onKeyUp: (event) => {
-        if (event.key === " ") {
-          event.preventDefault();
-        }
-        if (child.props.onKeyUp) {
-          child.props.onKeyUp(event);
-        }
-      },
-      role: "option",
-      selected,
-      value: void 0,
-      "data-value": child.props.value
-    });
-  });
-  if (computeDisplay) {
-    display = multiple ? displayMultiple.join(", ") : displaySingle;
-  }
-  let menuMinWidth = menuMinWidthState;
-  if (!autoWidth && isOpenControlled && displayNode) {
-    menuMinWidth = displayNode.clientWidth;
-  }
-  let tabIndex;
-  if (typeof tabIndexProp !== "undefined") {
-    tabIndex = tabIndexProp;
-  } else {
-    tabIndex = disabled ? null : 0;
-  }
-  const buttonId = SelectDisplayProps.id || (name ? `mui-component-select-${name}` : void 0);
-  const ownerState = _extends({}, props, {
-    variant,
-    value,
-    open
-  });
-  const classes = useUtilityClasses$2(ownerState);
-  return /* @__PURE__ */ jsxs(React.Fragment, {
-    children: [/* @__PURE__ */ jsx(SelectSelect, _extends({
-      ref: handleDisplayRef,
-      tabIndex,
-      role: "button",
-      "aria-disabled": disabled ? "true" : void 0,
-      "aria-expanded": open ? "true" : "false",
-      "aria-haspopup": "listbox",
-      "aria-label": ariaLabel,
-      "aria-labelledby": [labelId, buttonId].filter(Boolean).join(" ") || void 0,
-      "aria-describedby": ariaDescribedby,
-      onKeyDown: handleKeyDown,
-      onMouseDown: disabled || readOnly ? null : handleMouseDown,
-      onBlur: handleBlur,
-      onFocus
-    }, SelectDisplayProps, {
-      ownerState,
-      className: clsx(classes.select, className, SelectDisplayProps.className),
-      id: buttonId,
-      children: isEmpty(display) ? /* @__PURE__ */ jsx("span", {
-        className: "notranslate",
-        dangerouslySetInnerHTML: {
-          __html: "&#8203;"
-        }
-      }) : display
-    })), /* @__PURE__ */ jsx(SelectNativeInput, _extends({
-      value: Array.isArray(value) ? value.join(",") : value,
-      name,
-      ref: inputRef,
-      "aria-hidden": true,
-      onChange: handleChange,
-      tabIndex: -1,
-      disabled,
-      className: classes.nativeInput,
-      autoFocus,
-      ownerState
-    }, other)), /* @__PURE__ */ jsx(SelectIcon, {
-      as: IconComponent,
-      className: classes.icon,
-      ownerState
-    }), /* @__PURE__ */ jsx(Menu, _extends({
-      id: `menu-${name || ""}`,
-      anchorEl: displayNode,
-      open,
-      onClose: handleClose,
-      anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "center"
-      },
-      transformOrigin: {
-        vertical: "top",
-        horizontal: "center"
-      }
-    }, MenuProps, {
-      MenuListProps: _extends({
-        "aria-labelledby": labelId,
-        role: "listbox",
-        disableListWrap: true
-      }, MenuProps.MenuListProps),
-      PaperProps: _extends({}, MenuProps.PaperProps, {
-        style: _extends({
-          minWidth: menuMinWidth
-        }, MenuProps.PaperProps != null ? MenuProps.PaperProps.style : null)
-      }),
-      children: items
-    }))]
-  });
-});
-var SelectInput$1 = SelectInput;
-var _Input, _FilledInput;
-const _excluded$1 = ["autoWidth", "children", "classes", "className", "displayEmpty", "IconComponent", "id", "input", "inputProps", "label", "labelId", "MenuProps", "multiple", "native", "onClose", "onOpen", "open", "renderValue", "SelectDisplayProps", "variant"], _excluded2 = ["root"];
-const useUtilityClasses$1 = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root"]
-  };
-  return composeClasses(slots, getSelectUtilityClasses, classes);
-};
-const Select = /* @__PURE__ */ React.forwardRef(function Select2(inProps, ref) {
-  const props = useThemeProps({
-    name: "MuiSelect",
-    props: inProps
-  });
-  const {
-    autoWidth = false,
-    children,
-    classes: classesProp = {},
-    className,
-    displayEmpty = false,
-    IconComponent = ArrowDropDownIcon,
-    id,
-    input,
-    inputProps,
-    label,
-    labelId,
-    MenuProps,
-    multiple = false,
-    native = false,
-    onClose,
-    onOpen,
-    open,
-    renderValue,
-    SelectDisplayProps,
-    variant: variantProps = "outlined"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
-  const inputComponent = native ? NativeSelectInput : SelectInput$1;
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ["variant"]
-  });
-  const variant = fcs.variant || variantProps;
-  const InputComponent = input || {
-    standard: _Input || (_Input = /* @__PURE__ */ jsx(Input, {})),
-    outlined: /* @__PURE__ */ jsx(OutlinedInput$1, {
-      label
-    }),
-    filled: _FilledInput || (_FilledInput = /* @__PURE__ */ jsx(FilledInput$1, {}))
-  }[variant];
-  const ownerState = _extends({}, props, {
-    classes: classesProp
-  });
-  const classes = useUtilityClasses$1(ownerState);
-  const otherClasses = _objectWithoutPropertiesLoose(classesProp, _excluded2);
-  const inputComponentRef = useForkRef(ref, InputComponent.ref);
-  return /* @__PURE__ */ React.cloneElement(InputComponent, _extends({
-    inputComponent,
-    inputProps: _extends({
-      children,
-      IconComponent,
-      variant,
-      type: void 0,
-      multiple
-    }, native ? {
-      id
-    } : {
-      autoWidth,
-      displayEmpty,
-      labelId,
-      MenuProps,
-      onClose,
-      onOpen,
-      open,
-      renderValue,
-      SelectDisplayProps: _extends({
-        id
-      }, SelectDisplayProps)
-    }, inputProps, {
-      classes: inputProps ? deepmerge(otherClasses, inputProps.classes) : otherClasses
-    }, input ? input.props.inputProps : {})
-  }, multiple && native && variant === "outlined" ? {
-    notched: true
-  } : {}, {
-    ref: inputComponentRef,
-    className: clsx(classes.root, InputComponent.props.className, className)
-  }, other));
-});
-Select.muiName = "Select";
-var Select$1 = Select;
-function getTextFieldUtilityClass(slot) {
-  return generateUtilityClass("MuiTextField", slot);
-}
-generateUtilityClasses("MuiTextField", ["root"]);
-const _excluded = ["autoComplete", "autoFocus", "children", "className", "color", "defaultValue", "disabled", "error", "FormHelperTextProps", "fullWidth", "helperText", "id", "InputLabelProps", "inputProps", "InputProps", "inputRef", "label", "maxRows", "minRows", "multiline", "name", "onBlur", "onChange", "onFocus", "placeholder", "required", "rows", "select", "SelectProps", "type", "value", "variant"];
-const variantComponent = {
-  standard: Input,
-  filled: FilledInput$1,
-  outlined: OutlinedInput$1
-};
-const useUtilityClasses = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root"]
-  };
-  return composeClasses(slots, getTextFieldUtilityClass, classes);
-};
-const TextFieldRoot = styled(FormControl, {
-  name: "MuiTextField",
-  slot: "Root",
-  overridesResolver: (props, styles) => styles.root
-})({});
-const TextField = /* @__PURE__ */ React.forwardRef(function TextField2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiTextField"
-  });
-  const {
-    autoComplete,
-    autoFocus = false,
-    children,
-    className,
-    color = "primary",
-    defaultValue,
-    disabled = false,
-    error = false,
-    FormHelperTextProps,
-    fullWidth = false,
-    helperText,
-    id,
-    InputLabelProps,
-    inputProps,
-    InputProps,
-    inputRef,
-    label,
-    maxRows,
-    minRows,
-    multiline = false,
-    name,
-    onBlur,
-    onChange,
-    onFocus,
-    placeholder,
-    required = false,
-    rows,
-    select = false,
-    SelectProps,
-    type,
-    value,
-    variant = "outlined"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
-  const ownerState = _extends({}, props, {
-    autoFocus,
-    color,
-    disabled,
-    error,
-    fullWidth,
-    multiline,
-    required,
-    select,
-    variant
-  });
-  const classes = useUtilityClasses(ownerState);
-  const InputMore = {};
-  if (variant === "outlined") {
-    if (InputLabelProps && typeof InputLabelProps.shrink !== "undefined") {
-      InputMore.notched = InputLabelProps.shrink;
-    }
-    if (label) {
-      var _InputLabelProps$requ;
-      const displayRequired = (_InputLabelProps$requ = InputLabelProps == null ? void 0 : InputLabelProps.required) != null ? _InputLabelProps$requ : required;
-      InputMore.label = /* @__PURE__ */ jsxs(React.Fragment, {
-        children: [label, displayRequired && "\xA0*"]
-      });
-    }
-  }
-  if (select) {
-    if (!SelectProps || !SelectProps.native) {
-      InputMore.id = void 0;
-    }
-    InputMore["aria-describedby"] = void 0;
-  }
-  const helperTextId = helperText && id ? `${id}-helper-text` : void 0;
-  const inputLabelId = label && id ? `${id}-label` : void 0;
-  const InputComponent = variantComponent[variant];
-  const InputElement = /* @__PURE__ */ jsx(InputComponent, _extends({
-    "aria-describedby": helperTextId,
-    autoComplete,
-    autoFocus,
-    defaultValue,
-    fullWidth,
-    multiline,
-    name,
-    rows,
-    maxRows,
-    minRows,
-    type,
-    value,
-    id,
-    inputRef,
-    onBlur,
-    onChange,
-    onFocus,
-    placeholder,
-    inputProps
-  }, InputMore, InputProps));
-  return /* @__PURE__ */ jsxs(TextFieldRoot, _extends({
-    className: clsx(classes.root, className),
-    disabled,
-    error,
-    fullWidth,
-    ref,
-    required,
-    color,
-    variant,
-    ownerState
-  }, other, {
-    children: [label && /* @__PURE__ */ jsx(InputLabel, _extends({
-      htmlFor: id,
-      id: inputLabelId
-    }, InputLabelProps, {
-      children: label
-    })), select ? /* @__PURE__ */ jsx(Select$1, _extends({
-      "aria-describedby": helperTextId,
-      id,
-      labelId: inputLabelId,
-      value,
-      input: InputElement
-    }, SelectProps, {
-      children
-    })) : InputElement, helperText && /* @__PURE__ */ jsx(FormHelperText$1, _extends({
-      id: helperTextId
-    }, FormHelperTextProps, {
-      children: helperText
-    }))]
-  }));
-});
-var TextField$1 = TextField;
 var main = { exports: {} };
 (function(module) {
   module.exports = function(modules) {
@@ -6566,7 +5425,7 @@ const SearchOverlay = ({
                 }),
                 label: "search all projects"
               })
-            }), /* @__PURE__ */ jsx(TextField$1, __spreadProps(__spreadValues({}, params2), {
+            }), /* @__PURE__ */ jsx(TextField, __spreadProps(__spreadValues({}, params2), {
               label: "Type to search...",
               inputRef,
               autoFocus: true

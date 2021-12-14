@@ -116,6 +116,7 @@ const DocOptionsContextProvider = (props) => {
 const useDocOptions = () => useContext(docOptionsContext);
 const Docs = lazy(() => import("./docs.js"));
 const Editor = lazy(() => import("./editor.js"));
+const Embed = lazy(() => import("./embed.js"));
 const Doks = (options) => {
   return /* @__PURE__ */ jsx(DocsThemeProvider, {
     children: /* @__PURE__ */ jsx(DocOptionsContextProvider, {
@@ -128,6 +129,9 @@ const Doks = (options) => {
           }), /* @__PURE__ */ jsx(Route, {
             path: "/docs/*",
             element: /* @__PURE__ */ jsx(Docs, {})
+          }), /* @__PURE__ */ jsx(Route, {
+            path: "/embed/*",
+            element: /* @__PURE__ */ jsx(Embed, {})
           }), /* @__PURE__ */ jsx(Route, {
             path: "*",
             element: /* @__PURE__ */ jsx(Docs, {})

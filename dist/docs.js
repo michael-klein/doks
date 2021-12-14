@@ -1,18 +1,14 @@
 import { lazy, Suspense, useCallback } from "react";
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
-import { d as default_1$1, B as Box, c as createSvgIcon, i as interopRequireDefault, r as require$$2, a as documents$, C as Container } from "./documents.js";
+import { B as Background } from "./background.js";
+import { i as interopRequireDefault, d as default_1$1, C as Container } from "./styled.js";
+import { c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
 import { j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
-import { B as Button, G as Grid } from "./Button.js";
-import "rxjs";
+import { B as Button } from "./Button.js";
+import { d as documents$ } from "./documents.js";
+import { G as Grid } from "./Grid.js";
 import "react-dom";
-const Background = default_1$1(Box)(({
-  theme
-}) => ({
-  background: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[100],
-  flex: "auto",
-  flexDirection: "column",
-  display: "flex"
-}));
+import "rxjs";
 var KeyboardArrowUp = {};
 var _interopRequireDefault = interopRequireDefault.exports;
 Object.defineProperty(KeyboardArrowUp, "__esModule", {
@@ -51,9 +47,7 @@ const Footer = () => {
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
 const Sidebar = lazy(() => import("./sidebar.js"));
 const Content = lazy(() => import("./content.js"));
-const Navbar = lazy(() => import("./navbar.js").then(function(n) {
-  return n.n;
-}));
+const Navbar = lazy(() => import("./navbar.js"));
 const Project = () => {
   const params = useParams();
   return /* @__PURE__ */ jsx(Fragment, {

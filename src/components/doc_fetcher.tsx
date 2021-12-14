@@ -29,7 +29,6 @@ const loadContentsDocument = async (
   projectSlug,
   deletedPaths: string[]
 ) => {
-  console.log("load: ", item.path);
   if (!item.isOnlyHeading) {
     const lastModified = await getLastModified(join(project.root, item.path));
     if (lastModified !== false) {
@@ -49,9 +48,10 @@ const loadProjects = async (
   projects: DocOptionsProject[],
   currentProjectSlug,
   currentContentSlug,
-  mode: "docs" | "editor",
+  mode: "docs" | "editor" | "embed",
   navigate: NavigateFunction
 ) => {
+  const isDocsMode = mode === "docs" || mode === "embed";
   let shouldNavigate = false;
   const docProjects: Project[] = [];
   projects.forEach((project) => {
@@ -76,6 +76,9 @@ const loadProjects = async (
   await Promise.all(
     docProjects.map(async (project) => {
       const projectSlug = project.slug;
+      if (projectSlug !== currentProjectSlug && mode === "embed") {
+        return;
+      }
       let lastModified: string;
       const contentsText = await fetch(
         join(project.root, "contents.doks")
@@ -88,7 +91,7 @@ const loadProjects = async (
       );
       let contents: Contents[];
       if (cached.lastModified === lastModified) {
-        if (mode === "docs" && !currentContentSlug) {
+        if (isDocsMode && !currentContentSlug) {
           for (const item of cached.contents) {
             if (!currentContentSlug && !item.isOnlyHeading) {
               currentContentSlug = item.slug;
@@ -114,7 +117,7 @@ const loadProjects = async (
             projectSlug,
             isOnlyHeading: !path.includes(".md"),
           };
-          if (mode === "docs" && !currentContentSlug && !item.isOnlyHeading) {
+          if (isDocsMode && !currentContentSlug && !item.isOnlyHeading) {
             currentContentSlug = item.slug;
             shouldNavigate = true;
           }
@@ -144,11 +147,13 @@ const loadProjects = async (
           deletedPaths
         );
       }
-      await Promise.all(
-        contents.map((c) =>
-          loadContentsDocument({ ...c }, project, projectSlug, deletedPaths)
-        )
-      );
+      if (mode !== "embed") {
+        await Promise.all(
+          contents.map((c) =>
+            loadContentsDocument({ ...c }, project, projectSlug, deletedPaths)
+          )
+        );
+      }
       const cacheItem: ProjectCacheItem = {
         lastModified,
         contents: Array.from(contents$.value.get(projectSlug).values()),
@@ -174,7 +179,7 @@ const getFirstRealContent = (contents: Map<string, Contents>) => {
   }
   return undefined;
 };
-export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
+export const DocFetcher = ({ mode }: { mode: "docs" | "editor" | "embed" }) => {
   const { projects } = useDocOptions();
   const params = useParams();
   const navigate = useNavigate();

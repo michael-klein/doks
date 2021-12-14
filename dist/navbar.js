@@ -1,690 +1,137 @@
-import { I as getScrollbarSize, o as ownerDocument, A as ownerWindow, u as useForkRef, k as useEventCallback, J as createChainedFunction, c as createSvgIcon, i as interopRequireDefault, r as require$$2, f as useEnhancedEffect, D as debounce, b as ButtonBase, V as ValueSubject, a as documents$, K as queuedDocuments$, L as fetchingDocuments$ } from "./documents.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, v as keyframes, o as styled, g as capitalize, J as css, q as useThemeProps, K as lighten, L as darken, G as duration, A as rootShouldForwardProp, B as alpha, F as Fragment } from "./main.js";
-import { d as default_1$6 } from "./Favorite.js";
+import { k as useEnhancedEffect, b as useForkRef, i as interopRequireDefault } from "./styled.js";
+import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, z as keyframes, N as css, d as jsxs, K as lighten, J as darken, x as rootShouldForwardProp, y as alpha, F as Fragment } from "./main.js";
+import { L as ListContext, d as default_1$6, M as Menu } from "./Menu.js";
 import * as React from "react";
 import { lazy, Suspense, useState, Fragment as Fragment$1 } from "react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { map, combineLatest } from "rxjs";
 import { u as useDocOptions, a as useColorModeContext } from "./doks.js";
-import { i as isHostComponent, a as useTheme, T as Transition, r as reflow, g as getTransitionProps, u as useObservableAndState } from "./use_observable_and_state.js";
+import { u as useObservableAndState } from "./use_observable_and_state.js";
+import { V as ValueSubject, d as documents$, h as queuedDocuments$, i as fetchingDocuments$ } from "./documents.js";
 import { I as IconButton, T as Typography, c as codeTheme$ } from "./markdown_renderer.js";
-import { d as InputBase, B as Box } from "./InputBase.js";
-import { P as Paper, u as useObservableState } from "./use-observable-state.js";
-import { P as Portal, G as Grow, T as Tooltip } from "./Tooltip.js";
-function getBackdropUtilityClass(slot) {
-  return generateUtilityClass("MuiBackdrop", slot);
+import { d as InputBase } from "./InputBase.js";
+import { P as Paper, b as useTheme, u as useObservableState } from "./use-observable-state.js";
+import { B as Box } from "./Box.js";
+import { T as Tooltip } from "./Tooltip.js";
+import { B as Button } from "./Button.js";
+import "react-dom";
+import "./index.js";
+import "rxjs/operators";
+function getAppBarUtilityClass(slot) {
+  return generateUtilityClass("MuiAppBar", slot);
 }
-generateUtilityClasses("MuiBackdrop", ["root", "invisible"]);
-const _excluded$c = ["classes", "className", "invisible", "component", "components", "componentsProps", "theme"];
-const useUtilityClasses$8 = (ownerState) => {
+generateUtilityClasses("MuiAppBar", ["root", "positionFixed", "positionAbsolute", "positionSticky", "positionStatic", "positionRelative", "colorDefault", "colorPrimary", "colorSecondary", "colorInherit", "colorTransparent"]);
+const _excluded$3 = ["className", "color", "enableColorOnDark", "position"];
+const useUtilityClasses$3 = (ownerState) => {
   const {
-    classes,
-    invisible
-  } = ownerState;
-  const slots = {
-    root: ["root", invisible && "invisible"]
-  };
-  return composeClasses(slots, getBackdropUtilityClass, classes);
-};
-const BackdropUnstyled = /* @__PURE__ */ React.forwardRef(function BackdropUnstyled2(props, ref) {
-  const {
-    classes: classesProp,
-    className,
-    invisible = false,
-    component = "div",
-    components = {},
-    componentsProps = {},
-    theme
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$c);
-  const ownerState = _extends({}, props, {
-    classes: classesProp,
-    invisible
-  });
-  const classes = useUtilityClasses$8(ownerState);
-  const Root = components.Root || component;
-  const rootProps = componentsProps.root || {};
-  return /* @__PURE__ */ jsx(Root, _extends({
-    "aria-hidden": true
-  }, rootProps, !isHostComponent(Root) && {
-    as: component,
-    ownerState: _extends({}, ownerState, rootProps.ownerState),
-    theme
-  }, {
-    ref
-  }, other, {
-    className: clsx(classes.root, rootProps.className, className)
-  }));
-});
-var BackdropUnstyled$1 = BackdropUnstyled;
-function isOverflowing(container) {
-  const doc = ownerDocument(container);
-  if (doc.body === container) {
-    return ownerWindow(container).innerWidth > doc.documentElement.clientWidth;
-  }
-  return container.scrollHeight > container.clientHeight;
-}
-function ariaHidden(element, show) {
-  if (show) {
-    element.setAttribute("aria-hidden", "true");
-  } else {
-    element.removeAttribute("aria-hidden");
-  }
-}
-function getPaddingRight(element) {
-  return parseInt(ownerWindow(element).getComputedStyle(element).paddingRight, 10) || 0;
-}
-function ariaHiddenSiblings(container, mountElement, currentElement, elementsToExclude = [], show) {
-  const blacklist = [mountElement, currentElement, ...elementsToExclude];
-  const blacklistTagNames = ["TEMPLATE", "SCRIPT", "STYLE"];
-  [].forEach.call(container.children, (element) => {
-    if (blacklist.indexOf(element) === -1 && blacklistTagNames.indexOf(element.tagName) === -1) {
-      ariaHidden(element, show);
-    }
-  });
-}
-function findIndexOf(items, callback) {
-  let idx = -1;
-  items.some((item, index) => {
-    if (callback(item)) {
-      idx = index;
-      return true;
-    }
-    return false;
-  });
-  return idx;
-}
-function handleContainer(containerInfo, props) {
-  const restoreStyle = [];
-  const container = containerInfo.container;
-  if (!props.disableScrollLock) {
-    if (isOverflowing(container)) {
-      const scrollbarSize = getScrollbarSize(ownerDocument(container));
-      restoreStyle.push({
-        value: container.style.paddingRight,
-        property: "padding-right",
-        el: container
-      });
-      container.style.paddingRight = `${getPaddingRight(container) + scrollbarSize}px`;
-      const fixedElements = ownerDocument(container).querySelectorAll(".mui-fixed");
-      [].forEach.call(fixedElements, (element) => {
-        restoreStyle.push({
-          value: element.style.paddingRight,
-          property: "padding-right",
-          el: element
-        });
-        element.style.paddingRight = `${getPaddingRight(element) + scrollbarSize}px`;
-      });
-    }
-    const parent = container.parentElement;
-    const containerWindow = ownerWindow(container);
-    const scrollContainer = (parent == null ? void 0 : parent.nodeName) === "HTML" && containerWindow.getComputedStyle(parent).overflowY === "scroll" ? parent : container;
-    restoreStyle.push({
-      value: scrollContainer.style.overflow,
-      property: "overflow",
-      el: scrollContainer
-    }, {
-      value: scrollContainer.style.overflowX,
-      property: "overflow-x",
-      el: scrollContainer
-    }, {
-      value: scrollContainer.style.overflowY,
-      property: "overflow-y",
-      el: scrollContainer
-    });
-    scrollContainer.style.overflow = "hidden";
-  }
-  const restore = () => {
-    restoreStyle.forEach(({
-      value,
-      el,
-      property
-    }) => {
-      if (value) {
-        el.style.setProperty(property, value);
-      } else {
-        el.style.removeProperty(property);
-      }
-    });
-  };
-  return restore;
-}
-function getHiddenSiblings(container) {
-  const hiddenSiblings = [];
-  [].forEach.call(container.children, (element) => {
-    if (element.getAttribute("aria-hidden") === "true") {
-      hiddenSiblings.push(element);
-    }
-  });
-  return hiddenSiblings;
-}
-class ModalManager {
-  constructor() {
-    this.containers = void 0;
-    this.modals = void 0;
-    this.modals = [];
-    this.containers = [];
-  }
-  add(modal, container) {
-    let modalIndex = this.modals.indexOf(modal);
-    if (modalIndex !== -1) {
-      return modalIndex;
-    }
-    modalIndex = this.modals.length;
-    this.modals.push(modal);
-    if (modal.modalRef) {
-      ariaHidden(modal.modalRef, false);
-    }
-    const hiddenSiblings = getHiddenSiblings(container);
-    ariaHiddenSiblings(container, modal.mount, modal.modalRef, hiddenSiblings, true);
-    const containerIndex = findIndexOf(this.containers, (item) => item.container === container);
-    if (containerIndex !== -1) {
-      this.containers[containerIndex].modals.push(modal);
-      return modalIndex;
-    }
-    this.containers.push({
-      modals: [modal],
-      container,
-      restore: null,
-      hiddenSiblings
-    });
-    return modalIndex;
-  }
-  mount(modal, props) {
-    const containerIndex = findIndexOf(this.containers, (item) => item.modals.indexOf(modal) !== -1);
-    const containerInfo = this.containers[containerIndex];
-    if (!containerInfo.restore) {
-      containerInfo.restore = handleContainer(containerInfo, props);
-    }
-  }
-  remove(modal) {
-    const modalIndex = this.modals.indexOf(modal);
-    if (modalIndex === -1) {
-      return modalIndex;
-    }
-    const containerIndex = findIndexOf(this.containers, (item) => item.modals.indexOf(modal) !== -1);
-    const containerInfo = this.containers[containerIndex];
-    containerInfo.modals.splice(containerInfo.modals.indexOf(modal), 1);
-    this.modals.splice(modalIndex, 1);
-    if (containerInfo.modals.length === 0) {
-      if (containerInfo.restore) {
-        containerInfo.restore();
-      }
-      if (modal.modalRef) {
-        ariaHidden(modal.modalRef, true);
-      }
-      ariaHiddenSiblings(containerInfo.container, modal.mount, modal.modalRef, containerInfo.hiddenSiblings, false);
-      this.containers.splice(containerIndex, 1);
-    } else {
-      const nextTop = containerInfo.modals[containerInfo.modals.length - 1];
-      if (nextTop.modalRef) {
-        ariaHidden(nextTop.modalRef, false);
-      }
-    }
-    return modalIndex;
-  }
-  isTopModal(modal) {
-    return this.modals.length > 0 && this.modals[this.modals.length - 1] === modal;
-  }
-}
-const candidatesSelector = ["input", "select", "textarea", "a[href]", "button", "[tabindex]", "audio[controls]", "video[controls]", '[contenteditable]:not([contenteditable="false"])'].join(",");
-function getTabIndex(node) {
-  const tabindexAttr = parseInt(node.getAttribute("tabindex"), 10);
-  if (!Number.isNaN(tabindexAttr)) {
-    return tabindexAttr;
-  }
-  if (node.contentEditable === "true" || (node.nodeName === "AUDIO" || node.nodeName === "VIDEO" || node.nodeName === "DETAILS") && node.getAttribute("tabindex") === null) {
-    return 0;
-  }
-  return node.tabIndex;
-}
-function isNonTabbableRadio(node) {
-  if (node.tagName !== "INPUT" || node.type !== "radio") {
-    return false;
-  }
-  if (!node.name) {
-    return false;
-  }
-  const getRadio = (selector) => node.ownerDocument.querySelector(`input[type="radio"]${selector}`);
-  let roving = getRadio(`[name="${node.name}"]:checked`);
-  if (!roving) {
-    roving = getRadio(`[name="${node.name}"]`);
-  }
-  return roving !== node;
-}
-function isNodeMatchingSelectorFocusable(node) {
-  if (node.disabled || node.tagName === "INPUT" && node.type === "hidden" || isNonTabbableRadio(node)) {
-    return false;
-  }
-  return true;
-}
-function defaultGetTabbable(root) {
-  const regularTabNodes = [];
-  const orderedTabNodes = [];
-  Array.from(root.querySelectorAll(candidatesSelector)).forEach((node, i) => {
-    const nodeTabIndex = getTabIndex(node);
-    if (nodeTabIndex === -1 || !isNodeMatchingSelectorFocusable(node)) {
-      return;
-    }
-    if (nodeTabIndex === 0) {
-      regularTabNodes.push(node);
-    } else {
-      orderedTabNodes.push({
-        documentOrder: i,
-        tabIndex: nodeTabIndex,
-        node
-      });
-    }
-  });
-  return orderedTabNodes.sort((a, b2) => a.tabIndex === b2.tabIndex ? a.documentOrder - b2.documentOrder : a.tabIndex - b2.tabIndex).map((a) => a.node).concat(regularTabNodes);
-}
-function defaultIsEnabled() {
-  return true;
-}
-function Unstable_TrapFocus(props) {
-  const {
-    children,
-    disableAutoFocus = false,
-    disableEnforceFocus = false,
-    disableRestoreFocus = false,
-    getTabbable = defaultGetTabbable,
-    isEnabled = defaultIsEnabled,
-    open
-  } = props;
-  const ignoreNextEnforceFocus = React.useRef();
-  const sentinelStart = React.useRef(null);
-  const sentinelEnd = React.useRef(null);
-  const nodeToRestore = React.useRef(null);
-  const reactFocusEventTarget = React.useRef(null);
-  const activated = React.useRef(false);
-  const rootRef = React.useRef(null);
-  const handleRef = useForkRef(children.ref, rootRef);
-  const lastKeydown = React.useRef(null);
-  React.useEffect(() => {
-    if (!open || !rootRef.current) {
-      return;
-    }
-    activated.current = !disableAutoFocus;
-  }, [disableAutoFocus, open]);
-  React.useEffect(() => {
-    if (!open || !rootRef.current) {
-      return;
-    }
-    const doc = ownerDocument(rootRef.current);
-    if (!rootRef.current.contains(doc.activeElement)) {
-      if (!rootRef.current.hasAttribute("tabIndex")) {
-        rootRef.current.setAttribute("tabIndex", -1);
-      }
-      if (activated.current) {
-        rootRef.current.focus();
-      }
-    }
-    return () => {
-      if (!disableRestoreFocus) {
-        if (nodeToRestore.current && nodeToRestore.current.focus) {
-          ignoreNextEnforceFocus.current = true;
-          nodeToRestore.current.focus();
-        }
-        nodeToRestore.current = null;
-      }
-    };
-  }, [open]);
-  React.useEffect(() => {
-    if (!open || !rootRef.current) {
-      return;
-    }
-    const doc = ownerDocument(rootRef.current);
-    const contain = (nativeEvent) => {
-      const {
-        current: rootElement
-      } = rootRef;
-      if (rootElement === null) {
-        return;
-      }
-      if (!doc.hasFocus() || disableEnforceFocus || !isEnabled() || ignoreNextEnforceFocus.current) {
-        ignoreNextEnforceFocus.current = false;
-        return;
-      }
-      if (!rootElement.contains(doc.activeElement)) {
-        if (nativeEvent && reactFocusEventTarget.current !== nativeEvent.target || doc.activeElement !== reactFocusEventTarget.current) {
-          reactFocusEventTarget.current = null;
-        } else if (reactFocusEventTarget.current !== null) {
-          return;
-        }
-        if (!activated.current) {
-          return;
-        }
-        let tabbable = [];
-        if (doc.activeElement === sentinelStart.current || doc.activeElement === sentinelEnd.current) {
-          tabbable = getTabbable(rootRef.current);
-        }
-        if (tabbable.length > 0) {
-          var _lastKeydown$current, _lastKeydown$current2;
-          const isShiftTab = Boolean(((_lastKeydown$current = lastKeydown.current) == null ? void 0 : _lastKeydown$current.shiftKey) && ((_lastKeydown$current2 = lastKeydown.current) == null ? void 0 : _lastKeydown$current2.key) === "Tab");
-          const focusNext = tabbable[0];
-          const focusPrevious = tabbable[tabbable.length - 1];
-          if (isShiftTab) {
-            focusPrevious.focus();
-          } else {
-            focusNext.focus();
-          }
-        } else {
-          rootElement.focus();
-        }
-      }
-    };
-    const loopFocus = (nativeEvent) => {
-      lastKeydown.current = nativeEvent;
-      if (disableEnforceFocus || !isEnabled() || nativeEvent.key !== "Tab") {
-        return;
-      }
-      if (doc.activeElement === rootRef.current && nativeEvent.shiftKey) {
-        ignoreNextEnforceFocus.current = true;
-        sentinelEnd.current.focus();
-      }
-    };
-    doc.addEventListener("focusin", contain);
-    doc.addEventListener("keydown", loopFocus, true);
-    const interval = setInterval(() => {
-      if (doc.activeElement.tagName === "BODY") {
-        contain();
-      }
-    }, 50);
-    return () => {
-      clearInterval(interval);
-      doc.removeEventListener("focusin", contain);
-      doc.removeEventListener("keydown", loopFocus, true);
-    };
-  }, [disableAutoFocus, disableEnforceFocus, disableRestoreFocus, isEnabled, open, getTabbable]);
-  const onFocus = (event) => {
-    if (nodeToRestore.current === null) {
-      nodeToRestore.current = event.relatedTarget;
-    }
-    activated.current = true;
-    reactFocusEventTarget.current = event.target;
-    const childrenPropsHandler = children.props.onFocus;
-    if (childrenPropsHandler) {
-      childrenPropsHandler(event);
-    }
-  };
-  const handleFocusSentinel = (event) => {
-    if (nodeToRestore.current === null) {
-      nodeToRestore.current = event.relatedTarget;
-    }
-    activated.current = true;
-  };
-  return /* @__PURE__ */ jsxs(React.Fragment, {
-    children: [/* @__PURE__ */ jsx("div", {
-      tabIndex: 0,
-      onFocus: handleFocusSentinel,
-      ref: sentinelStart,
-      "data-test": "sentinelStart"
-    }), /* @__PURE__ */ React.cloneElement(children, {
-      ref: handleRef,
-      onFocus
-    }), /* @__PURE__ */ jsx("div", {
-      tabIndex: 0,
-      onFocus: handleFocusSentinel,
-      ref: sentinelEnd,
-      "data-test": "sentinelEnd"
-    })]
-  });
-}
-function getModalUtilityClass(slot) {
-  return generateUtilityClass("MuiModal", slot);
-}
-generateUtilityClasses("MuiModal", ["root", "hidden"]);
-const _excluded$b = ["BackdropComponent", "BackdropProps", "children", "classes", "className", "closeAfterTransition", "component", "components", "componentsProps", "container", "disableAutoFocus", "disableEnforceFocus", "disableEscapeKeyDown", "disablePortal", "disableRestoreFocus", "disableScrollLock", "hideBackdrop", "keepMounted", "manager", "onBackdropClick", "onClose", "onKeyDown", "open", "theme", "onTransitionEnter", "onTransitionExited"];
-const useUtilityClasses$7 = (ownerState) => {
-  const {
-    open,
-    exited,
+    color,
+    position,
     classes
   } = ownerState;
   const slots = {
-    root: ["root", !open && exited && "hidden"]
+    root: ["root", `color${capitalize(color)}`, `position${capitalize(position)}`]
   };
-  return composeClasses(slots, getModalUtilityClass, classes);
+  return composeClasses(slots, getAppBarUtilityClass, classes);
 };
-function getContainer(container) {
-  return typeof container === "function" ? container() : container;
-}
-function getHasTransition(props) {
-  return props.children ? props.children.props.hasOwnProperty("in") : false;
-}
-const defaultManager = new ModalManager();
-const ModalUnstyled = /* @__PURE__ */ React.forwardRef(function ModalUnstyled2(props, ref) {
+const AppBarRoot = styled(Paper, {
+  name: "MuiAppBar",
+  slot: "Root",
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`position${capitalize(ownerState.position)}`], styles[`color${capitalize(ownerState.color)}`]];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  const backgroundColorDefault = theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900];
+  return _extends({
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    boxSizing: "border-box",
+    flexShrink: 0
+  }, ownerState.position === "fixed" && {
+    position: "fixed",
+    zIndex: theme.zIndex.appBar,
+    top: 0,
+    left: "auto",
+    right: 0,
+    "@media print": {
+      position: "absolute"
+    }
+  }, ownerState.position === "absolute" && {
+    position: "absolute",
+    zIndex: theme.zIndex.appBar,
+    top: 0,
+    left: "auto",
+    right: 0
+  }, ownerState.position === "sticky" && {
+    position: "sticky",
+    zIndex: theme.zIndex.appBar,
+    top: 0,
+    left: "auto",
+    right: 0
+  }, ownerState.position === "static" && {
+    position: "static"
+  }, ownerState.position === "relative" && {
+    position: "relative"
+  }, ownerState.color === "default" && {
+    backgroundColor: backgroundColorDefault,
+    color: theme.palette.getContrastText(backgroundColorDefault)
+  }, ownerState.color && ownerState.color !== "default" && ownerState.color !== "inherit" && ownerState.color !== "transparent" && {
+    backgroundColor: theme.palette[ownerState.color].main,
+    color: theme.palette[ownerState.color].contrastText
+  }, ownerState.color === "inherit" && {
+    color: "inherit"
+  }, theme.palette.mode === "dark" && !ownerState.enableColorOnDark && {
+    backgroundColor: null,
+    color: null
+  }, ownerState.color === "transparent" && _extends({
+    backgroundColor: "transparent",
+    color: "inherit"
+  }, theme.palette.mode === "dark" && {
+    backgroundImage: "none"
+  }));
+});
+const AppBar = /* @__PURE__ */ React.forwardRef(function AppBar2(inProps, ref) {
+  const props = useThemeProps({
+    props: inProps,
+    name: "MuiAppBar"
+  });
   const {
-    BackdropComponent,
-    BackdropProps,
-    children,
-    classes: classesProp,
     className,
-    closeAfterTransition = false,
-    component = "div",
-    components = {},
-    componentsProps = {},
-    container,
-    disableAutoFocus = false,
-    disableEnforceFocus = false,
-    disableEscapeKeyDown = false,
-    disablePortal = false,
-    disableRestoreFocus = false,
-    disableScrollLock = false,
-    hideBackdrop = false,
-    keepMounted = false,
-    manager = defaultManager,
-    onBackdropClick,
-    onClose,
-    onKeyDown,
-    open,
-    theme,
-    onTransitionEnter,
-    onTransitionExited
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$b);
-  const [exited, setExited] = React.useState(true);
-  const modal = React.useRef({});
-  const mountNodeRef = React.useRef(null);
-  const modalRef = React.useRef(null);
-  const handleRef = useForkRef(modalRef, ref);
-  const hasTransition = getHasTransition(props);
-  const getDoc = () => ownerDocument(mountNodeRef.current);
-  const getModal = () => {
-    modal.current.modalRef = modalRef.current;
-    modal.current.mountNode = mountNodeRef.current;
-    return modal.current;
-  };
-  const handleMounted = () => {
-    manager.mount(getModal(), {
-      disableScrollLock
-    });
-    modalRef.current.scrollTop = 0;
-  };
-  const handleOpen = useEventCallback(() => {
-    const resolvedContainer = getContainer(container) || getDoc().body;
-    manager.add(getModal(), resolvedContainer);
-    if (modalRef.current) {
-      handleMounted();
-    }
-  });
-  const isTopModal = React.useCallback(() => manager.isTopModal(getModal()), [manager]);
-  const handlePortalRef = useEventCallback((node) => {
-    mountNodeRef.current = node;
-    if (!node) {
-      return;
-    }
-    if (open && isTopModal()) {
-      handleMounted();
-    } else {
-      ariaHidden(modalRef.current, true);
-    }
-  });
-  const handleClose = React.useCallback(() => {
-    manager.remove(getModal());
-  }, [manager]);
-  React.useEffect(() => {
-    return () => {
-      handleClose();
-    };
-  }, [handleClose]);
-  React.useEffect(() => {
-    if (open) {
-      handleOpen();
-    } else if (!hasTransition || !closeAfterTransition) {
-      handleClose();
-    }
-  }, [open, handleClose, hasTransition, closeAfterTransition, handleOpen]);
+    color = "primary",
+    enableColorOnDark = false,
+    position = "fixed"
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
   const ownerState = _extends({}, props, {
-    classes: classesProp,
-    closeAfterTransition,
-    disableAutoFocus,
-    disableEnforceFocus,
-    disableEscapeKeyDown,
-    disablePortal,
-    disableRestoreFocus,
-    disableScrollLock,
-    exited,
-    hideBackdrop,
-    keepMounted
+    color,
+    position,
+    enableColorOnDark
   });
-  const classes = useUtilityClasses$7(ownerState);
-  if (!keepMounted && !open && (!hasTransition || exited)) {
-    return null;
-  }
-  const handleEnter = () => {
-    setExited(false);
-    if (onTransitionEnter) {
-      onTransitionEnter();
-    }
-  };
-  const handleExited = () => {
-    setExited(true);
-    if (onTransitionExited) {
-      onTransitionExited();
-    }
-    if (closeAfterTransition) {
-      handleClose();
-    }
-  };
-  const handleBackdropClick = (event) => {
-    if (event.target !== event.currentTarget) {
-      return;
-    }
-    if (onBackdropClick) {
-      onBackdropClick(event);
-    }
-    if (onClose) {
-      onClose(event, "backdropClick");
-    }
-  };
-  const handleKeyDown = (event) => {
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
-    if (event.key !== "Escape" || !isTopModal()) {
-      return;
-    }
-    if (!disableEscapeKeyDown) {
-      event.stopPropagation();
-      if (onClose) {
-        onClose(event, "escapeKeyDown");
-      }
-    }
-  };
-  const childProps = {};
-  if (children.props.tabIndex === void 0) {
-    childProps.tabIndex = "-1";
-  }
-  if (hasTransition) {
-    childProps.onEnter = createChainedFunction(handleEnter, children.props.onEnter);
-    childProps.onExited = createChainedFunction(handleExited, children.props.onExited);
-  }
-  const Root = components.Root || component;
-  const rootProps = componentsProps.root || {};
-  return /* @__PURE__ */ jsx(Portal, {
-    ref: handlePortalRef,
-    container,
-    disablePortal,
-    children: /* @__PURE__ */ jsxs(Root, _extends({
-      role: "presentation"
-    }, rootProps, !isHostComponent(Root) && {
-      as: component,
-      ownerState: _extends({}, ownerState, rootProps.ownerState),
-      theme
-    }, other, {
-      ref: handleRef,
-      onKeyDown: handleKeyDown,
-      className: clsx(classes.root, rootProps.className, className),
-      children: [!hideBackdrop && BackdropComponent ? /* @__PURE__ */ jsx(BackdropComponent, _extends({
-        open,
-        onClick: handleBackdropClick
-      }, BackdropProps)) : null, /* @__PURE__ */ jsx(Unstable_TrapFocus, {
-        disableEnforceFocus,
-        disableAutoFocus,
-        disableRestoreFocus,
-        isEnabled: isTopModal,
-        open,
-        children: /* @__PURE__ */ React.cloneElement(children, childProps)
-      })]
-    }))
-  });
+  const classes = useUtilityClasses$3(ownerState);
+  return /* @__PURE__ */ jsx(AppBarRoot, _extends({
+    square: true,
+    component: "header",
+    ownerState,
+    elevation: 4,
+    className: clsx(classes.root, className, position === "fixed" && "mui-fixed"),
+    ref
+  }, other));
 });
-var ModalUnstyled$1 = ModalUnstyled;
-var Code = {};
-var _interopRequireDefault$5 = interopRequireDefault.exports;
-Object.defineProperty(Code, "__esModule", {
-  value: true
-});
-var default_1$5 = Code.default = void 0;
-var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
-var _jsxRuntime$5 = require$$2;
-var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
-  d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
-}), "Code");
-default_1$5 = Code.default = _default$5;
-var Edit = {};
-var _interopRequireDefault$4 = interopRequireDefault.exports;
-Object.defineProperty(Edit, "__esModule", {
-  value: true
-});
-var default_1$4 = Edit.default = void 0;
-var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
-var _jsxRuntime$4 = require$$2;
-var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
-  d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-}), "Edit");
-default_1$4 = Edit.default = _default$4;
-var PostAdd = {};
-var _interopRequireDefault$3 = interopRequireDefault.exports;
-Object.defineProperty(PostAdd, "__esModule", {
-  value: true
-});
-var default_1$3 = PostAdd.default = void 0;
-var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
-var _jsxRuntime$3 = require$$2;
-var _default$3 = (0, _createSvgIcon$3.default)([/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
-  d: "M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
-}, "0"), /* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
-  d: "M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
-}, "1")], "PostAdd");
-default_1$3 = PostAdd.default = _default$3;
-var Search = {};
-var _interopRequireDefault$2 = interopRequireDefault.exports;
-Object.defineProperty(Search, "__esModule", {
-  value: true
-});
-var default_1$2 = Search.default = void 0;
-var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
-var _jsxRuntime$2 = require$$2;
-var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
-  d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-}), "Search");
-default_1$2 = Search.default = _default$2;
+var AppBar$1 = AppBar;
+const dividerClasses = generateUtilityClasses("MuiDivider", ["root", "absolute", "fullWidth", "inset", "middle", "flexItem", "light", "vertical", "withChildren", "withChildrenVertical", "textAlignRight", "textAlignLeft", "wrapper", "wrapperVertical"]);
+var dividerClasses$1 = dividerClasses;
 function getLinearProgressUtilityClass(slot) {
   return generateUtilityClass("MuiLinearProgress", slot);
 }
 generateUtilityClasses("MuiLinearProgress", ["root", "colorPrimary", "colorSecondary", "determinate", "indeterminate", "buffer", "query", "dashed", "dashedColorPrimary", "dashedColorSecondary", "bar", "barColorPrimary", "barColorSecondary", "bar1Indeterminate", "bar1Determinate", "bar1Buffer", "bar2Indeterminate", "bar2Buffer"]);
-const _excluded$a = ["className", "color", "value", "valueBuffer", "variant"];
+const _excluded$2 = ["className", "color", "value", "valueBuffer", "variant"];
 let _ = (t) => t, _t, _t2, _t3, _t4, _t5, _t6;
 const TRANSITION_DURATION = 4;
 const indeterminate1Keyframe = keyframes(_t || (_t = _`
@@ -735,7 +182,7 @@ const bufferKeyframe = keyframes(_t3 || (_t3 = _`
     background-position: -200px -23px;
   }
 `));
-const useUtilityClasses$6 = (ownerState) => {
+const useUtilityClasses$2 = (ownerState) => {
   const {
     classes,
     variant,
@@ -758,11 +205,11 @@ const getColorShade = (theme, color) => {
 const LinearProgressRoot = styled("span", {
   name: "MuiLinearProgress",
   slot: "Root",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.root, styles2[`color${capitalize(ownerState.color)}`], styles2[ownerState.variant]];
+    return [styles.root, styles[`color${capitalize(ownerState.color)}`], styles[ownerState.variant]];
   }
 })(({
   ownerState,
@@ -797,11 +244,11 @@ const LinearProgressRoot = styled("span", {
 const LinearProgressDashed = styled("span", {
   name: "MuiLinearProgress",
   slot: "Dashed",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.dashed, styles2[`dashedColor${capitalize(ownerState.color)}`]];
+    return [styles.dashed, styles[`dashedColor${capitalize(ownerState.color)}`]];
   }
 })(({
   ownerState,
@@ -826,11 +273,11 @@ const LinearProgressDashed = styled("span", {
 const LinearProgressBar1 = styled("span", {
   name: "MuiLinearProgress",
   slot: "Bar1",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.bar, styles2[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles2.bar1Indeterminate, ownerState.variant === "determinate" && styles2.bar1Determinate, ownerState.variant === "buffer" && styles2.bar1Buffer];
+    return [styles.bar, styles[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles.bar1Indeterminate, ownerState.variant === "determinate" && styles.bar1Determinate, ownerState.variant === "buffer" && styles.bar1Buffer];
   }
 })(({
   ownerState,
@@ -858,11 +305,11 @@ const LinearProgressBar1 = styled("span", {
 const LinearProgressBar2 = styled("span", {
   name: "MuiLinearProgress",
   slot: "Bar2",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.bar, styles2[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles2.bar2Indeterminate, ownerState.variant === "buffer" && styles2.bar2Buffer];
+    return [styles.bar, styles[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles.bar2Indeterminate, ownerState.variant === "buffer" && styles.bar2Buffer];
   }
 })(({
   ownerState,
@@ -899,12 +346,12 @@ const LinearProgress = /* @__PURE__ */ React.forwardRef(function LinearProgress2
     value,
     valueBuffer,
     variant = "indeterminate"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$a);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
   const ownerState = _extends({}, props, {
     color,
     variant
   });
-  const classes = useUtilityClasses$6(ownerState);
+  const classes = useUtilityClasses$2(ownerState);
   const theme = useTheme();
   const rootProps = {};
   const inlineStyles = {
@@ -954,1034 +401,6 @@ const LinearProgress = /* @__PURE__ */ React.forwardRef(function LinearProgress2
   }));
 });
 var LinearProgress$1 = LinearProgress;
-var reactIs_production_min = {};
-/** @license React v17.0.2
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var b = 60103, c = 60106, d = 60107, e = 60108, f = 60114, g = 60109, h = 60110, k = 60112, l = 60113, m = 60120, n = 60115, p = 60116, q = 60121, r = 60122, u = 60117, v = 60129, w = 60131;
-if (typeof Symbol === "function" && Symbol.for) {
-  var x = Symbol.for;
-  b = x("react.element");
-  c = x("react.portal");
-  d = x("react.fragment");
-  e = x("react.strict_mode");
-  f = x("react.profiler");
-  g = x("react.provider");
-  h = x("react.context");
-  k = x("react.forward_ref");
-  l = x("react.suspense");
-  m = x("react.suspense_list");
-  n = x("react.memo");
-  p = x("react.lazy");
-  q = x("react.block");
-  r = x("react.server.block");
-  u = x("react.fundamental");
-  v = x("react.debug_trace_mode");
-  w = x("react.legacy_hidden");
-}
-function y(a) {
-  if (typeof a === "object" && a !== null) {
-    var t = a.$$typeof;
-    switch (t) {
-      case b:
-        switch (a = a.type, a) {
-          case d:
-          case f:
-          case e:
-          case l:
-          case m:
-            return a;
-          default:
-            switch (a = a && a.$$typeof, a) {
-              case h:
-              case k:
-              case p:
-              case n:
-              case g:
-                return a;
-              default:
-                return t;
-            }
-        }
-      case c:
-        return t;
-    }
-  }
-}
-var z = g, A = b, B = k, C = d, D = p, E = n, F = c, G = f, H = e, I = l;
-reactIs_production_min.ContextConsumer = h;
-reactIs_production_min.ContextProvider = z;
-reactIs_production_min.Element = A;
-reactIs_production_min.ForwardRef = B;
-reactIs_production_min.Fragment = C;
-reactIs_production_min.Lazy = D;
-reactIs_production_min.Memo = E;
-reactIs_production_min.Portal = F;
-reactIs_production_min.Profiler = G;
-reactIs_production_min.StrictMode = H;
-reactIs_production_min.Suspense = I;
-reactIs_production_min.isAsyncMode = function() {
-  return false;
-};
-reactIs_production_min.isConcurrentMode = function() {
-  return false;
-};
-reactIs_production_min.isContextConsumer = function(a) {
-  return y(a) === h;
-};
-reactIs_production_min.isContextProvider = function(a) {
-  return y(a) === g;
-};
-reactIs_production_min.isElement = function(a) {
-  return typeof a === "object" && a !== null && a.$$typeof === b;
-};
-reactIs_production_min.isForwardRef = function(a) {
-  return y(a) === k;
-};
-reactIs_production_min.isFragment = function(a) {
-  return y(a) === d;
-};
-reactIs_production_min.isLazy = function(a) {
-  return y(a) === p;
-};
-reactIs_production_min.isMemo = function(a) {
-  return y(a) === n;
-};
-reactIs_production_min.isPortal = function(a) {
-  return y(a) === c;
-};
-reactIs_production_min.isProfiler = function(a) {
-  return y(a) === f;
-};
-reactIs_production_min.isStrictMode = function(a) {
-  return y(a) === e;
-};
-reactIs_production_min.isSuspense = function(a) {
-  return y(a) === l;
-};
-reactIs_production_min.isValidElementType = function(a) {
-  return typeof a === "string" || typeof a === "function" || a === d || a === f || a === v || a === e || a === l || a === m || a === w || typeof a === "object" && a !== null && (a.$$typeof === p || a.$$typeof === n || a.$$typeof === g || a.$$typeof === h || a.$$typeof === k || a.$$typeof === u || a.$$typeof === q || a[0] === r) ? true : false;
-};
-reactIs_production_min.typeOf = y;
-const ListContext = /* @__PURE__ */ React.createContext({});
-var ListContext$1 = ListContext;
-function getListUtilityClass(slot) {
-  return generateUtilityClass("MuiList", slot);
-}
-generateUtilityClasses("MuiList", ["root", "padding", "dense", "subheader"]);
-const _excluded$9 = ["children", "className", "component", "dense", "disablePadding", "subheader"];
-const useUtilityClasses$5 = (ownerState) => {
-  const {
-    classes,
-    disablePadding,
-    dense,
-    subheader
-  } = ownerState;
-  const slots = {
-    root: ["root", !disablePadding && "padding", dense && "dense", subheader && "subheader"]
-  };
-  return composeClasses(slots, getListUtilityClass, classes);
-};
-const ListRoot = styled("ul", {
-  name: "MuiList",
-  slot: "Root",
-  overridesResolver: (props, styles2) => {
-    const {
-      ownerState
-    } = props;
-    return [styles2.root, !ownerState.disablePadding && styles2.padding, ownerState.dense && styles2.dense, ownerState.subheader && styles2.subheader];
-  }
-})(({
-  ownerState
-}) => _extends({
-  listStyle: "none",
-  margin: 0,
-  padding: 0,
-  position: "relative"
-}, !ownerState.disablePadding && {
-  paddingTop: 8,
-  paddingBottom: 8
-}, ownerState.subheader && {
-  paddingTop: 0
-}));
-const List = /* @__PURE__ */ React.forwardRef(function List2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiList"
-  });
-  const {
-    children,
-    className,
-    component = "ul",
-    dense = false,
-    disablePadding = false,
-    subheader
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$9);
-  const context = React.useMemo(() => ({
-    dense
-  }), [dense]);
-  const ownerState = _extends({}, props, {
-    component,
-    dense,
-    disablePadding
-  });
-  const classes = useUtilityClasses$5(ownerState);
-  return /* @__PURE__ */ jsx(ListContext$1.Provider, {
-    value: context,
-    children: /* @__PURE__ */ jsxs(ListRoot, _extends({
-      as: component,
-      className: clsx(classes.root, className),
-      ref,
-      ownerState
-    }, other, {
-      children: [subheader, children]
-    }))
-  });
-});
-var List$1 = List;
-const _excluded$8 = ["actions", "autoFocus", "autoFocusItem", "children", "className", "disabledItemsFocusable", "disableListWrap", "onKeyDown", "variant"];
-function nextItem(list, item, disableListWrap) {
-  if (list === item) {
-    return list.firstChild;
-  }
-  if (item && item.nextElementSibling) {
-    return item.nextElementSibling;
-  }
-  return disableListWrap ? null : list.firstChild;
-}
-function previousItem(list, item, disableListWrap) {
-  if (list === item) {
-    return disableListWrap ? list.firstChild : list.lastChild;
-  }
-  if (item && item.previousElementSibling) {
-    return item.previousElementSibling;
-  }
-  return disableListWrap ? null : list.lastChild;
-}
-function textCriteriaMatches(nextFocus, textCriteria) {
-  if (textCriteria === void 0) {
-    return true;
-  }
-  let text = nextFocus.innerText;
-  if (text === void 0) {
-    text = nextFocus.textContent;
-  }
-  text = text.trim().toLowerCase();
-  if (text.length === 0) {
-    return false;
-  }
-  if (textCriteria.repeating) {
-    return text[0] === textCriteria.keys[0];
-  }
-  return text.indexOf(textCriteria.keys.join("")) === 0;
-}
-function moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, traversalFunction, textCriteria) {
-  let wrappedOnce = false;
-  let nextFocus = traversalFunction(list, currentFocus, currentFocus ? disableListWrap : false);
-  while (nextFocus) {
-    if (nextFocus === list.firstChild) {
-      if (wrappedOnce) {
-        return false;
-      }
-      wrappedOnce = true;
-    }
-    const nextFocusDisabled = disabledItemsFocusable ? false : nextFocus.disabled || nextFocus.getAttribute("aria-disabled") === "true";
-    if (!nextFocus.hasAttribute("tabindex") || !textCriteriaMatches(nextFocus, textCriteria) || nextFocusDisabled) {
-      nextFocus = traversalFunction(list, nextFocus, disableListWrap);
-    } else {
-      nextFocus.focus();
-      return true;
-    }
-  }
-  return false;
-}
-const MenuList = /* @__PURE__ */ React.forwardRef(function MenuList2(props, ref) {
-  const {
-    actions,
-    autoFocus = false,
-    autoFocusItem = false,
-    children,
-    className,
-    disabledItemsFocusable = false,
-    disableListWrap = false,
-    onKeyDown,
-    variant = "selectedMenu"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$8);
-  const listRef = React.useRef(null);
-  const textCriteriaRef = React.useRef({
-    keys: [],
-    repeating: true,
-    previousKeyMatched: true,
-    lastTime: null
-  });
-  useEnhancedEffect(() => {
-    if (autoFocus) {
-      listRef.current.focus();
-    }
-  }, [autoFocus]);
-  React.useImperativeHandle(actions, () => ({
-    adjustStyleForScrollbar: (containerElement, theme) => {
-      const noExplicitWidth = !listRef.current.style.width;
-      if (containerElement.clientHeight < listRef.current.clientHeight && noExplicitWidth) {
-        const scrollbarSize = `${getScrollbarSize(ownerDocument(containerElement))}px`;
-        listRef.current.style[theme.direction === "rtl" ? "paddingLeft" : "paddingRight"] = scrollbarSize;
-        listRef.current.style.width = `calc(100% + ${scrollbarSize})`;
-      }
-      return listRef.current;
-    }
-  }), []);
-  const handleKeyDown = (event) => {
-    const list = listRef.current;
-    const key = event.key;
-    const currentFocus = ownerDocument(list).activeElement;
-    if (key === "ArrowDown") {
-      event.preventDefault();
-      moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, nextItem);
-    } else if (key === "ArrowUp") {
-      event.preventDefault();
-      moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, previousItem);
-    } else if (key === "Home") {
-      event.preventDefault();
-      moveFocus(list, null, disableListWrap, disabledItemsFocusable, nextItem);
-    } else if (key === "End") {
-      event.preventDefault();
-      moveFocus(list, null, disableListWrap, disabledItemsFocusable, previousItem);
-    } else if (key.length === 1) {
-      const criteria = textCriteriaRef.current;
-      const lowerKey = key.toLowerCase();
-      const currTime = performance.now();
-      if (criteria.keys.length > 0) {
-        if (currTime - criteria.lastTime > 500) {
-          criteria.keys = [];
-          criteria.repeating = true;
-          criteria.previousKeyMatched = true;
-        } else if (criteria.repeating && lowerKey !== criteria.keys[0]) {
-          criteria.repeating = false;
-        }
-      }
-      criteria.lastTime = currTime;
-      criteria.keys.push(lowerKey);
-      const keepFocusOnCurrent = currentFocus && !criteria.repeating && textCriteriaMatches(currentFocus, criteria);
-      if (criteria.previousKeyMatched && (keepFocusOnCurrent || moveFocus(list, currentFocus, false, disabledItemsFocusable, nextItem, criteria))) {
-        event.preventDefault();
-      } else {
-        criteria.previousKeyMatched = false;
-      }
-    }
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
-  };
-  const handleRef = useForkRef(listRef, ref);
-  let activeItemIndex = -1;
-  React.Children.forEach(children, (child, index) => {
-    if (!/* @__PURE__ */ React.isValidElement(child)) {
-      return;
-    }
-    if (!child.props.disabled) {
-      if (variant === "selectedMenu" && child.props.selected) {
-        activeItemIndex = index;
-      } else if (activeItemIndex === -1) {
-        activeItemIndex = index;
-      }
-    }
-  });
-  const items = React.Children.map(children, (child, index) => {
-    if (index === activeItemIndex) {
-      const newChildProps = {};
-      if (autoFocusItem) {
-        newChildProps.autoFocus = true;
-      }
-      if (child.props.tabIndex === void 0 && variant === "selectedMenu") {
-        newChildProps.tabIndex = 0;
-      }
-      return /* @__PURE__ */ React.cloneElement(child, newChildProps);
-    }
-    return child;
-  });
-  return /* @__PURE__ */ jsx(List$1, _extends({
-    role: "menu",
-    ref: handleRef,
-    className,
-    onKeyDown: handleKeyDown,
-    tabIndex: autoFocus ? 0 : -1
-  }, other, {
-    children: items
-  }));
-});
-var MenuList$1 = MenuList;
-const _excluded$7 = ["addEndListener", "appear", "children", "easing", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"];
-const styles = {
-  entering: {
-    opacity: 1
-  },
-  entered: {
-    opacity: 1
-  }
-};
-const defaultTimeout = {
-  enter: duration.enteringScreen,
-  exit: duration.leavingScreen
-};
-const Fade = /* @__PURE__ */ React.forwardRef(function Fade2(props, ref) {
-  const {
-    addEndListener,
-    appear = true,
-    children,
-    easing,
-    in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
-    style,
-    timeout = defaultTimeout,
-    TransitionComponent = Transition
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$7);
-  const theme = useTheme();
-  const nodeRef = React.useRef(null);
-  const foreignRef = useForkRef(children.ref, ref);
-  const handleRef = useForkRef(nodeRef, foreignRef);
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
-      if (maybeIsAppearing === void 0) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
-    }
-  };
-  const handleEntering = normalizedTransitionCallback(onEntering);
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
-    reflow(node);
-    const transitionProps = getTransitionProps({
-      style,
-      timeout,
-      easing
-    }, {
-      mode: "enter"
-    });
-    node.style.webkitTransition = theme.transitions.create("opacity", transitionProps);
-    node.style.transition = theme.transitions.create("opacity", transitionProps);
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
-  const handleEntered = normalizedTransitionCallback(onEntered);
-  const handleExiting = normalizedTransitionCallback(onExiting);
-  const handleExit = normalizedTransitionCallback((node) => {
-    const transitionProps = getTransitionProps({
-      style,
-      timeout,
-      easing
-    }, {
-      mode: "exit"
-    });
-    node.style.webkitTransition = theme.transitions.create("opacity", transitionProps);
-    node.style.transition = theme.transitions.create("opacity", transitionProps);
-    if (onExit) {
-      onExit(node);
-    }
-  });
-  const handleExited = normalizedTransitionCallback(onExited);
-  const handleAddEndListener = (next) => {
-    if (addEndListener) {
-      addEndListener(nodeRef.current, next);
-    }
-  };
-  return /* @__PURE__ */ jsx(TransitionComponent, _extends({
-    appear,
-    in: inProp,
-    nodeRef,
-    onEnter: handleEnter,
-    onEntered: handleEntered,
-    onEntering: handleEntering,
-    onExit: handleExit,
-    onExited: handleExited,
-    onExiting: handleExiting,
-    addEndListener: handleAddEndListener,
-    timeout
-  }, other, {
-    children: (state, childProps) => {
-      return /* @__PURE__ */ React.cloneElement(children, _extends({
-        style: _extends({
-          opacity: 0,
-          visibility: state === "exited" && !inProp ? "hidden" : void 0
-        }, styles[state], style, children.props.style),
-        ref: handleRef
-      }, childProps));
-    }
-  }));
-});
-var Fade$1 = Fade;
-const _excluded$6 = ["children", "components", "componentsProps", "className", "invisible", "open", "transitionDuration", "TransitionComponent"];
-const extendUtilityClasses$1 = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  return classes;
-};
-const BackdropRoot = styled("div", {
-  name: "MuiBackdrop",
-  slot: "Root",
-  overridesResolver: (props, styles2) => {
-    const {
-      ownerState
-    } = props;
-    return [styles2.root, ownerState.invisible && styles2.invisible];
-  }
-})(({
-  ownerState
-}) => _extends({
-  position: "fixed",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  right: 0,
-  bottom: 0,
-  top: 0,
-  left: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  WebkitTapHighlightColor: "transparent"
-}, ownerState.invisible && {
-  backgroundColor: "transparent"
-}));
-const Backdrop = /* @__PURE__ */ React.forwardRef(function Backdrop2(inProps, ref) {
-  var _componentsProps$root;
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiBackdrop"
-  });
-  const {
-    children,
-    components = {},
-    componentsProps = {},
-    className,
-    invisible = false,
-    open,
-    transitionDuration,
-    TransitionComponent = Fade$1
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$6);
-  const ownerState = _extends({}, props, {
-    invisible
-  });
-  const classes = extendUtilityClasses$1(ownerState);
-  return /* @__PURE__ */ jsx(TransitionComponent, _extends({
-    in: open,
-    timeout: transitionDuration
-  }, other, {
-    children: /* @__PURE__ */ jsx(BackdropUnstyled$1, {
-      className,
-      invisible,
-      components: _extends({
-        Root: BackdropRoot
-      }, components),
-      componentsProps: {
-        root: _extends({}, componentsProps.root, (!components.Root || !isHostComponent(components.Root)) && {
-          ownerState: _extends({}, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.ownerState)
-        })
-      },
-      classes,
-      ref,
-      children
-    })
-  }));
-});
-var Backdrop$1 = Backdrop;
-const _excluded$5 = ["BackdropComponent", "closeAfterTransition", "children", "components", "componentsProps", "disableAutoFocus", "disableEnforceFocus", "disableEscapeKeyDown", "disablePortal", "disableRestoreFocus", "disableScrollLock", "hideBackdrop", "keepMounted"];
-const extendUtilityClasses = (ownerState) => {
-  return ownerState.classes;
-};
-const ModalRoot = styled("div", {
-  name: "MuiModal",
-  slot: "Root",
-  overridesResolver: (props, styles2) => {
-    const {
-      ownerState
-    } = props;
-    return [styles2.root, !ownerState.open && ownerState.exited && styles2.hidden];
-  }
-})(({
-  theme,
-  ownerState
-}) => _extends({
-  position: "fixed",
-  zIndex: theme.zIndex.modal,
-  right: 0,
-  bottom: 0,
-  top: 0,
-  left: 0
-}, !ownerState.open && ownerState.exited && {
-  visibility: "hidden"
-}));
-const ModalBackdrop = styled(Backdrop$1, {
-  name: "MuiModal",
-  slot: "Backdrop",
-  overridesResolver: (props, styles2) => {
-    return styles2.backdrop;
-  }
-})({
-  zIndex: -1
-});
-const Modal = /* @__PURE__ */ React.forwardRef(function Modal2(inProps, ref) {
-  var _componentsProps$root;
-  const props = useThemeProps({
-    name: "MuiModal",
-    props: inProps
-  });
-  const {
-    BackdropComponent = ModalBackdrop,
-    closeAfterTransition = false,
-    children,
-    components = {},
-    componentsProps = {},
-    disableAutoFocus = false,
-    disableEnforceFocus = false,
-    disableEscapeKeyDown = false,
-    disablePortal = false,
-    disableRestoreFocus = false,
-    disableScrollLock = false,
-    hideBackdrop = false,
-    keepMounted = false
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$5);
-  const [exited, setExited] = React.useState(true);
-  const commonProps = {
-    closeAfterTransition,
-    disableAutoFocus,
-    disableEnforceFocus,
-    disableEscapeKeyDown,
-    disablePortal,
-    disableRestoreFocus,
-    disableScrollLock,
-    hideBackdrop,
-    keepMounted
-  };
-  const ownerState = _extends({}, props, commonProps, {
-    exited
-  });
-  const classes = extendUtilityClasses(ownerState);
-  return /* @__PURE__ */ jsx(ModalUnstyled$1, _extends({
-    components: _extends({
-      Root: ModalRoot
-    }, components),
-    componentsProps: {
-      root: _extends({}, componentsProps.root, (!components.Root || !isHostComponent(components.Root)) && {
-        ownerState: _extends({}, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.ownerState)
-      })
-    },
-    BackdropComponent,
-    onTransitionEnter: () => setExited(false),
-    onTransitionExited: () => setExited(true),
-    ref
-  }, other, {
-    classes
-  }, commonProps, {
-    children
-  }));
-});
-var Modal$1 = Modal;
-function getPopoverUtilityClass(slot) {
-  return generateUtilityClass("MuiPopover", slot);
-}
-generateUtilityClasses("MuiPopover", ["root", "paper"]);
-const _excluded$4 = ["onEntering"], _excluded2$1 = ["action", "anchorEl", "anchorOrigin", "anchorPosition", "anchorReference", "children", "className", "container", "elevation", "marginThreshold", "open", "PaperProps", "transformOrigin", "TransitionComponent", "transitionDuration", "TransitionProps"];
-function getOffsetTop(rect, vertical) {
-  let offset = 0;
-  if (typeof vertical === "number") {
-    offset = vertical;
-  } else if (vertical === "center") {
-    offset = rect.height / 2;
-  } else if (vertical === "bottom") {
-    offset = rect.height;
-  }
-  return offset;
-}
-function getOffsetLeft(rect, horizontal) {
-  let offset = 0;
-  if (typeof horizontal === "number") {
-    offset = horizontal;
-  } else if (horizontal === "center") {
-    offset = rect.width / 2;
-  } else if (horizontal === "right") {
-    offset = rect.width;
-  }
-  return offset;
-}
-function getTransformOriginValue(transformOrigin) {
-  return [transformOrigin.horizontal, transformOrigin.vertical].map((n2) => typeof n2 === "number" ? `${n2}px` : n2).join(" ");
-}
-function resolveAnchorEl(anchorEl) {
-  return typeof anchorEl === "function" ? anchorEl() : anchorEl;
-}
-const useUtilityClasses$4 = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root"],
-    paper: ["paper"]
-  };
-  return composeClasses(slots, getPopoverUtilityClass, classes);
-};
-const PopoverRoot = styled(Modal$1, {
-  name: "MuiPopover",
-  slot: "Root",
-  overridesResolver: (props, styles2) => styles2.root
-})({});
-const PopoverPaper = styled(Paper, {
-  name: "MuiPopover",
-  slot: "Paper",
-  overridesResolver: (props, styles2) => styles2.paper
-})({
-  position: "absolute",
-  overflowY: "auto",
-  overflowX: "hidden",
-  minWidth: 16,
-  minHeight: 16,
-  maxWidth: "calc(100% - 32px)",
-  maxHeight: "calc(100% - 32px)",
-  outline: 0
-});
-const Popover = /* @__PURE__ */ React.forwardRef(function Popover2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiPopover"
-  });
-  const {
-    action,
-    anchorEl,
-    anchorOrigin = {
-      vertical: "top",
-      horizontal: "left"
-    },
-    anchorPosition,
-    anchorReference = "anchorEl",
-    children,
-    className,
-    container: containerProp,
-    elevation = 8,
-    marginThreshold = 16,
-    open,
-    PaperProps = {},
-    transformOrigin = {
-      vertical: "top",
-      horizontal: "left"
-    },
-    TransitionComponent = Grow,
-    transitionDuration: transitionDurationProp = "auto",
-    TransitionProps: {
-      onEntering
-    } = {}
-  } = props, TransitionProps = _objectWithoutPropertiesLoose(props.TransitionProps, _excluded$4), other = _objectWithoutPropertiesLoose(props, _excluded2$1);
-  const paperRef = React.useRef();
-  const handlePaperRef = useForkRef(paperRef, PaperProps.ref);
-  const ownerState = _extends({}, props, {
-    anchorOrigin,
-    anchorReference,
-    elevation,
-    marginThreshold,
-    PaperProps,
-    transformOrigin,
-    TransitionComponent,
-    transitionDuration: transitionDurationProp,
-    TransitionProps
-  });
-  const classes = useUtilityClasses$4(ownerState);
-  const getAnchorOffset = React.useCallback(() => {
-    if (anchorReference === "anchorPosition") {
-      return anchorPosition;
-    }
-    const resolvedAnchorEl = resolveAnchorEl(anchorEl);
-    const anchorElement = resolvedAnchorEl && resolvedAnchorEl.nodeType === 1 ? resolvedAnchorEl : ownerDocument(paperRef.current).body;
-    const anchorRect = anchorElement.getBoundingClientRect();
-    return {
-      top: anchorRect.top + getOffsetTop(anchorRect, anchorOrigin.vertical),
-      left: anchorRect.left + getOffsetLeft(anchorRect, anchorOrigin.horizontal)
-    };
-  }, [anchorEl, anchorOrigin.horizontal, anchorOrigin.vertical, anchorPosition, anchorReference]);
-  const getTransformOrigin = React.useCallback((elemRect) => {
-    return {
-      vertical: getOffsetTop(elemRect, transformOrigin.vertical),
-      horizontal: getOffsetLeft(elemRect, transformOrigin.horizontal)
-    };
-  }, [transformOrigin.horizontal, transformOrigin.vertical]);
-  const getPositioningStyle = React.useCallback((element) => {
-    const elemRect = {
-      width: element.offsetWidth,
-      height: element.offsetHeight
-    };
-    const elemTransformOrigin = getTransformOrigin(elemRect);
-    if (anchorReference === "none") {
-      return {
-        top: null,
-        left: null,
-        transformOrigin: getTransformOriginValue(elemTransformOrigin)
-      };
-    }
-    const anchorOffset = getAnchorOffset();
-    let top = anchorOffset.top - elemTransformOrigin.vertical;
-    let left = anchorOffset.left - elemTransformOrigin.horizontal;
-    const bottom = top + elemRect.height;
-    const right = left + elemRect.width;
-    const containerWindow = ownerWindow(resolveAnchorEl(anchorEl));
-    const heightThreshold = containerWindow.innerHeight - marginThreshold;
-    const widthThreshold = containerWindow.innerWidth - marginThreshold;
-    if (top < marginThreshold) {
-      const diff = top - marginThreshold;
-      top -= diff;
-      elemTransformOrigin.vertical += diff;
-    } else if (bottom > heightThreshold) {
-      const diff = bottom - heightThreshold;
-      top -= diff;
-      elemTransformOrigin.vertical += diff;
-    }
-    if (left < marginThreshold) {
-      const diff = left - marginThreshold;
-      left -= diff;
-      elemTransformOrigin.horizontal += diff;
-    } else if (right > widthThreshold) {
-      const diff = right - widthThreshold;
-      left -= diff;
-      elemTransformOrigin.horizontal += diff;
-    }
-    return {
-      top: `${Math.round(top)}px`,
-      left: `${Math.round(left)}px`,
-      transformOrigin: getTransformOriginValue(elemTransformOrigin)
-    };
-  }, [anchorEl, anchorReference, getAnchorOffset, getTransformOrigin, marginThreshold]);
-  const setPositioningStyles = React.useCallback(() => {
-    const element = paperRef.current;
-    if (!element) {
-      return;
-    }
-    const positioning = getPositioningStyle(element);
-    if (positioning.top !== null) {
-      element.style.top = positioning.top;
-    }
-    if (positioning.left !== null) {
-      element.style.left = positioning.left;
-    }
-    element.style.transformOrigin = positioning.transformOrigin;
-  }, [getPositioningStyle]);
-  const handleEntering = (element, isAppearing) => {
-    if (onEntering) {
-      onEntering(element, isAppearing);
-    }
-    setPositioningStyles();
-  };
-  React.useEffect(() => {
-    if (open) {
-      setPositioningStyles();
-    }
-  });
-  React.useImperativeHandle(action, () => open ? {
-    updatePosition: () => {
-      setPositioningStyles();
-    }
-  } : null, [open, setPositioningStyles]);
-  React.useEffect(() => {
-    if (!open) {
-      return void 0;
-    }
-    const handleResize = debounce(() => {
-      setPositioningStyles();
-    });
-    const containerWindow = ownerWindow(anchorEl);
-    containerWindow.addEventListener("resize", handleResize);
-    return () => {
-      handleResize.clear();
-      containerWindow.removeEventListener("resize", handleResize);
-    };
-  }, [anchorEl, open, setPositioningStyles]);
-  let transitionDuration = transitionDurationProp;
-  if (transitionDurationProp === "auto" && !TransitionComponent.muiSupportAuto) {
-    transitionDuration = void 0;
-  }
-  const container = containerProp || (anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : void 0);
-  return /* @__PURE__ */ jsx(PopoverRoot, _extends({
-    BackdropProps: {
-      invisible: true
-    },
-    className: clsx(classes.root, className),
-    container,
-    open,
-    ref,
-    ownerState
-  }, other, {
-    children: /* @__PURE__ */ jsx(TransitionComponent, _extends({
-      appear: true,
-      in: open,
-      onEntering: handleEntering,
-      timeout: transitionDuration
-    }, TransitionProps, {
-      children: /* @__PURE__ */ jsx(PopoverPaper, _extends({
-        elevation
-      }, PaperProps, {
-        ref: handlePaperRef,
-        className: clsx(classes.paper, PaperProps.className),
-        children
-      }))
-    }))
-  }));
-});
-var Popover$1 = Popover;
-function getMenuUtilityClass(slot) {
-  return generateUtilityClass("MuiMenu", slot);
-}
-generateUtilityClasses("MuiMenu", ["root", "paper", "list"]);
-const _excluded$3 = ["onEntering"], _excluded2 = ["autoFocus", "children", "disableAutoFocusItem", "MenuListProps", "onClose", "open", "PaperProps", "PopoverClasses", "transitionDuration", "TransitionProps", "variant"];
-const RTL_ORIGIN = {
-  vertical: "top",
-  horizontal: "right"
-};
-const LTR_ORIGIN = {
-  vertical: "top",
-  horizontal: "left"
-};
-const useUtilityClasses$3 = (ownerState) => {
-  const {
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root"],
-    paper: ["paper"],
-    list: ["list"]
-  };
-  return composeClasses(slots, getMenuUtilityClass, classes);
-};
-const MenuRoot = styled(Popover$1, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === "classes",
-  name: "MuiMenu",
-  slot: "Root",
-  overridesResolver: (props, styles2) => styles2.root
-})({});
-const MenuPaper = styled(Paper, {
-  name: "MuiMenu",
-  slot: "Paper",
-  overridesResolver: (props, styles2) => styles2.paper
-})({
-  maxHeight: "calc(100% - 96px)",
-  WebkitOverflowScrolling: "touch"
-});
-const MenuMenuList = styled(MenuList$1, {
-  name: "MuiMenu",
-  slot: "List",
-  overridesResolver: (props, styles2) => styles2.list
-})({
-  outline: 0
-});
-const Menu = /* @__PURE__ */ React.forwardRef(function Menu2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiMenu"
-  });
-  const {
-    autoFocus = true,
-    children,
-    disableAutoFocusItem = false,
-    MenuListProps = {},
-    onClose,
-    open,
-    PaperProps = {},
-    PopoverClasses,
-    transitionDuration = "auto",
-    TransitionProps: {
-      onEntering
-    } = {},
-    variant = "selectedMenu"
-  } = props, TransitionProps = _objectWithoutPropertiesLoose(props.TransitionProps, _excluded$3), other = _objectWithoutPropertiesLoose(props, _excluded2);
-  const theme = useTheme();
-  const isRtl = theme.direction === "rtl";
-  const ownerState = _extends({}, props, {
-    autoFocus,
-    disableAutoFocusItem,
-    MenuListProps,
-    onEntering,
-    PaperProps,
-    transitionDuration,
-    TransitionProps,
-    variant
-  });
-  const classes = useUtilityClasses$3(ownerState);
-  const autoFocusItem = autoFocus && !disableAutoFocusItem && open;
-  const menuListActionsRef = React.useRef(null);
-  const handleEntering = (element, isAppearing) => {
-    if (menuListActionsRef.current) {
-      menuListActionsRef.current.adjustStyleForScrollbar(element, theme);
-    }
-    if (onEntering) {
-      onEntering(element, isAppearing);
-    }
-  };
-  const handleListKeyDown = (event) => {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      if (onClose) {
-        onClose(event, "tabKeyDown");
-      }
-    }
-  };
-  let activeItemIndex = -1;
-  React.Children.map(children, (child, index) => {
-    if (!/* @__PURE__ */ React.isValidElement(child)) {
-      return;
-    }
-    if (!child.props.disabled) {
-      if (variant === "selectedMenu" && child.props.selected) {
-        activeItemIndex = index;
-      } else if (activeItemIndex === -1) {
-        activeItemIndex = index;
-      }
-    }
-  });
-  return /* @__PURE__ */ jsx(MenuRoot, _extends({
-    classes: PopoverClasses,
-    onClose,
-    anchorOrigin: {
-      vertical: "bottom",
-      horizontal: isRtl ? "right" : "left"
-    },
-    transformOrigin: isRtl ? RTL_ORIGIN : LTR_ORIGIN,
-    PaperProps: _extends({
-      component: MenuPaper
-    }, PaperProps, {
-      classes: _extends({}, PaperProps.classes, {
-        root: classes.paper
-      })
-    }),
-    className: classes.root,
-    open,
-    ref,
-    transitionDuration,
-    TransitionProps: _extends({
-      onEntering: handleEntering
-    }, TransitionProps),
-    ownerState
-  }, other, {
-    children: /* @__PURE__ */ jsx(MenuMenuList, _extends({
-      onKeyDown: handleListKeyDown,
-      actions: menuListActionsRef,
-      autoFocus: autoFocus && (activeItemIndex === -1 || disableAutoFocusItem),
-      autoFocusItem,
-      variant
-    }, MenuListProps, {
-      className: clsx(classes.list, MenuListProps.className),
-      children
-    }))
-  }));
-});
-var Menu$1 = Menu;
-const dividerClasses = generateUtilityClasses("MuiDivider", ["root", "absolute", "fullWidth", "inset", "middle", "flexItem", "light", "vertical", "withChildren", "withChildrenVertical", "textAlignRight", "textAlignLeft", "wrapper", "wrapperVertical"]);
-var dividerClasses$1 = dividerClasses;
 const listItemIconClasses = generateUtilityClasses("MuiListItemIcon", ["root", "alignItemsFlexStart"]);
 var listItemIconClasses$1 = listItemIconClasses;
 const listItemTextClasses = generateUtilityClasses("MuiListItemText", ["root", "multiline", "dense", "inset", "primary", "secondary"]);
@@ -1991,14 +410,14 @@ function getMenuItemUtilityClass(slot) {
 }
 const menuItemClasses = generateUtilityClasses("MuiMenuItem", ["root", "focusVisible", "dense", "disabled", "divider", "gutters", "selected"]);
 var menuItemClasses$1 = menuItemClasses;
-const _excluded$2 = ["autoFocus", "component", "dense", "divider", "disableGutters", "focusVisibleClassName", "role", "tabIndex"];
-const overridesResolver = (props, styles2) => {
+const _excluded$1 = ["autoFocus", "component", "dense", "divider", "disableGutters", "focusVisibleClassName", "role", "tabIndex"];
+const overridesResolver = (props, styles) => {
   const {
     ownerState
   } = props;
-  return [styles2.root, ownerState.dense && styles2.dense, ownerState.divider && styles2.divider, !ownerState.disableGutters && styles2.gutters];
+  return [styles.root, ownerState.dense && styles.dense, ownerState.divider && styles.divider, !ownerState.disableGutters && styles.gutters];
 };
-const useUtilityClasses$2 = (ownerState) => {
+const useUtilityClasses$1 = (ownerState) => {
   const {
     disabled,
     dense,
@@ -2108,8 +527,8 @@ const MenuItem = /* @__PURE__ */ React.forwardRef(function MenuItem2(inProps, re
     focusVisibleClassName,
     role = "menuitem",
     tabIndex: tabIndexProp
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
-  const context = React.useContext(ListContext$1);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
+  const context = React.useContext(ListContext);
   const childContext = {
     dense: dense || context.dense || false,
     disableGutters
@@ -2127,13 +546,13 @@ const MenuItem = /* @__PURE__ */ React.forwardRef(function MenuItem2(inProps, re
     divider,
     disableGutters
   });
-  const classes = useUtilityClasses$2(props);
+  const classes = useUtilityClasses$1(props);
   const handleRef = useForkRef(menuItemRef, ref);
   let tabIndex;
   if (!props.disabled) {
     tabIndex = tabIndexProp !== void 0 ? tabIndexProp : -1;
   }
-  return /* @__PURE__ */ jsx(ListContext$1.Provider, {
+  return /* @__PURE__ */ jsx(ListContext.Provider, {
     value: childContext,
     children: /* @__PURE__ */ jsx(MenuItemRoot, _extends({
       ref: handleRef,
@@ -2148,112 +567,6 @@ const MenuItem = /* @__PURE__ */ React.forwardRef(function MenuItem2(inProps, re
   });
 });
 var MenuItem$1 = MenuItem;
-function getAppBarUtilityClass(slot) {
-  return generateUtilityClass("MuiAppBar", slot);
-}
-generateUtilityClasses("MuiAppBar", ["root", "positionFixed", "positionAbsolute", "positionSticky", "positionStatic", "positionRelative", "colorDefault", "colorPrimary", "colorSecondary", "colorInherit", "colorTransparent"]);
-const _excluded$1 = ["className", "color", "enableColorOnDark", "position"];
-const useUtilityClasses$1 = (ownerState) => {
-  const {
-    color,
-    position,
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root", `color${capitalize(color)}`, `position${capitalize(position)}`]
-  };
-  return composeClasses(slots, getAppBarUtilityClass, classes);
-};
-const AppBarRoot = styled(Paper, {
-  name: "MuiAppBar",
-  slot: "Root",
-  overridesResolver: (props, styles2) => {
-    const {
-      ownerState
-    } = props;
-    return [styles2.root, styles2[`position${capitalize(ownerState.position)}`], styles2[`color${capitalize(ownerState.color)}`]];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  const backgroundColorDefault = theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900];
-  return _extends({
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    boxSizing: "border-box",
-    flexShrink: 0
-  }, ownerState.position === "fixed" && {
-    position: "fixed",
-    zIndex: theme.zIndex.appBar,
-    top: 0,
-    left: "auto",
-    right: 0,
-    "@media print": {
-      position: "absolute"
-    }
-  }, ownerState.position === "absolute" && {
-    position: "absolute",
-    zIndex: theme.zIndex.appBar,
-    top: 0,
-    left: "auto",
-    right: 0
-  }, ownerState.position === "sticky" && {
-    position: "sticky",
-    zIndex: theme.zIndex.appBar,
-    top: 0,
-    left: "auto",
-    right: 0
-  }, ownerState.position === "static" && {
-    position: "static"
-  }, ownerState.position === "relative" && {
-    position: "relative"
-  }, ownerState.color === "default" && {
-    backgroundColor: backgroundColorDefault,
-    color: theme.palette.getContrastText(backgroundColorDefault)
-  }, ownerState.color && ownerState.color !== "default" && ownerState.color !== "inherit" && ownerState.color !== "transparent" && {
-    backgroundColor: theme.palette[ownerState.color].main,
-    color: theme.palette[ownerState.color].contrastText
-  }, ownerState.color === "inherit" && {
-    color: "inherit"
-  }, theme.palette.mode === "dark" && !ownerState.enableColorOnDark && {
-    backgroundColor: null,
-    color: null
-  }, ownerState.color === "transparent" && _extends({
-    backgroundColor: "transparent",
-    color: "inherit"
-  }, theme.palette.mode === "dark" && {
-    backgroundImage: "none"
-  }));
-});
-const AppBar = /* @__PURE__ */ React.forwardRef(function AppBar2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiAppBar"
-  });
-  const {
-    className,
-    color = "primary",
-    enableColorOnDark = false,
-    position = "fixed"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
-  const ownerState = _extends({}, props, {
-    color,
-    position,
-    enableColorOnDark
-  });
-  const classes = useUtilityClasses$1(ownerState);
-  return /* @__PURE__ */ jsx(AppBarRoot, _extends({
-    square: true,
-    component: "header",
-    ownerState,
-    elevation: 4,
-    className: clsx(classes.root, className, position === "fixed" && "mui-fixed"),
-    ref
-  }, other));
-});
-var AppBar$1 = AppBar;
 function getToolbarUtilityClass(slot) {
   return generateUtilityClass("MuiToolbar", slot);
 }
@@ -2273,11 +586,11 @@ const useUtilityClasses = (ownerState) => {
 const ToolbarRoot = styled("div", {
   name: "MuiToolbar",
   slot: "Root",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.root, !ownerState.disableGutters && styles2.gutters, styles2[ownerState.variant]];
+    return [styles.root, !ownerState.disableGutters && styles.gutters, styles[ownerState.variant]];
   }
 })(({
   theme,
@@ -2324,6 +637,56 @@ const Toolbar = /* @__PURE__ */ React.forwardRef(function Toolbar2(inProps, ref)
   }, other));
 });
 var Toolbar$1 = Toolbar;
+var Code = {};
+var _interopRequireDefault$5 = interopRequireDefault.exports;
+Object.defineProperty(Code, "__esModule", {
+  value: true
+});
+var default_1$5 = Code.default = void 0;
+var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
+var _jsxRuntime$5 = require$$2;
+var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
+  d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+}), "Code");
+default_1$5 = Code.default = _default$5;
+var Edit = {};
+var _interopRequireDefault$4 = interopRequireDefault.exports;
+Object.defineProperty(Edit, "__esModule", {
+  value: true
+});
+var default_1$4 = Edit.default = void 0;
+var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
+var _jsxRuntime$4 = require$$2;
+var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
+  d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+}), "Edit");
+default_1$4 = Edit.default = _default$4;
+var PostAdd = {};
+var _interopRequireDefault$3 = interopRequireDefault.exports;
+Object.defineProperty(PostAdd, "__esModule", {
+  value: true
+});
+var default_1$3 = PostAdd.default = void 0;
+var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
+var _jsxRuntime$3 = require$$2;
+var _default$3 = (0, _createSvgIcon$3.default)([/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+  d: "M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
+}, "0"), /* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+  d: "M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
+}, "1")], "PostAdd");
+default_1$3 = PostAdd.default = _default$3;
+var Search = {};
+var _interopRequireDefault$2 = interopRequireDefault.exports;
+Object.defineProperty(Search, "__esModule", {
+  value: true
+});
+var default_1$2 = Search.default = void 0;
+var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
+var _jsxRuntime$2 = require$$2;
+var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
+  d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+}), "Search");
+default_1$2 = Search.default = _default$2;
 var Brightness4 = {};
 var _interopRequireDefault$1 = interopRequireDefault.exports;
 Object.defineProperty(Brightness4, "__esModule", {
@@ -2437,7 +800,7 @@ const NavMenu = ({
         onClick: handleClick,
         children
       })
-    }), /* @__PURE__ */ jsx(Menu$1, {
+    }), /* @__PURE__ */ jsx(Menu, {
       id: "fav-menu",
       anchorEl,
       open,
@@ -2521,7 +884,9 @@ const NavAppBar = styled(AppBar$1)(({
     textDecoration: "underline"
   }
 }));
-function Navbar() {
+function Navbar({
+  embed
+}) {
   const [hasDocumentsFetching] = useObservableAndState(() => combineLatest(queuedDocuments$, fetchingDocuments$).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
   const {
     title = "documentation"
@@ -2535,7 +900,7 @@ function Navbar() {
   return /* @__PURE__ */ jsxs(Box, {
     sx: {
       flex: 0,
-      position: "sticky",
+      position: embed ? "static" : "sticky",
       top: 0,
       zIndex: 1e3
     },
@@ -2557,56 +922,67 @@ function Navbar() {
             to: "/docs/",
             children: title
           })
-        }), params.contentSlug && location.pathname.startsWith("/docs") && /* @__PURE__ */ jsx(Tooltip, {
-          title: "edit current document",
-          children: /* @__PURE__ */ jsx(Link, {
-            to: `/editor/${params.projectSlug}/${params.contentSlug}`,
-            children: /* @__PURE__ */ jsx(NavButton, {
-              "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$4, {})
+        }), !embed ? /* @__PURE__ */ jsxs(Fragment, {
+          children: [params.contentSlug && location.pathname.startsWith("/docs") && /* @__PURE__ */ jsx(Tooltip, {
+            title: "edit current document",
+            children: /* @__PURE__ */ jsx(Link, {
+              to: `/editor/${params.projectSlug}/${params.contentSlug}`,
+              children: /* @__PURE__ */ jsx(NavButton, {
+                "aria-label": "editor",
+                children: /* @__PURE__ */ jsx(default_1$4, {})
+              })
             })
-          })
-        }), /* @__PURE__ */ jsx(Tooltip, {
-          title: "create document",
-          children: /* @__PURE__ */ jsx(Link, {
-            to: "/editor/" + params.projectSlug,
-            children: /* @__PURE__ */ jsx(NavButton, {
-              "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$3, {})
+          }), /* @__PURE__ */ jsx(Tooltip, {
+            title: "create document",
+            children: /* @__PURE__ */ jsx(Link, {
+              to: "/editor/" + params.projectSlug,
+              children: /* @__PURE__ */ jsx(NavButton, {
+                "aria-label": "editor",
+                children: /* @__PURE__ */ jsx(default_1$3, {})
+              })
             })
-          })
-        }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavButton, {
-          "aria-label": "toggle dark mode",
-          onClick: toggleColorMode,
-          children: mode === "light" ? /* @__PURE__ */ jsx(default_1$1, {
+          }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavButton, {
+            "aria-label": "toggle dark mode",
+            onClick: toggleColorMode,
+            children: mode === "light" ? /* @__PURE__ */ jsx(default_1$1, {
+              sx: {
+                fontSize: 20
+              }
+            }) : /* @__PURE__ */ jsx(default_1, {
+              sx: {
+                fontSize: 20
+              }
+            })
+          }), /* @__PURE__ */ jsxs(SearchInputWrapper, {
             sx: {
-              fontSize: 20
-            }
-          }) : /* @__PURE__ */ jsx(default_1, {
-            sx: {
-              fontSize: 20
-            }
-          })
-        }), /* @__PURE__ */ jsxs(SearchInputWrapper, {
-          sx: {
-            cursor: "text"
-          },
-          onClick: (e2) => {
-            e2.currentTarget.blur();
-            showSearch$.next(true);
-          },
-          children: [/* @__PURE__ */ jsx(SearchIconWrapper, {
-            children: /* @__PURE__ */ jsx(default_1$2, {})
-          }), /* @__PURE__ */ jsx(StyledInputBase, {
-            onFocus: (e2) => {
-              e2.target.blur();
+              cursor: "text"
+            },
+            onClick: (e) => {
+              e.currentTarget.blur();
               showSearch$.next(true);
             },
-            placeholder: "Search\u2026",
-            inputProps: {
-              "aria-label": "search"
-            }
+            children: [/* @__PURE__ */ jsx(SearchIconWrapper, {
+              children: /* @__PURE__ */ jsx(default_1$2, {})
+            }), /* @__PURE__ */ jsx(StyledInputBase, {
+              onFocus: (e) => {
+                e.target.blur();
+                showSearch$.next(true);
+              },
+              placeholder: "Search\u2026",
+              inputProps: {
+                "aria-label": "search"
+              }
+            })]
           })]
+        }) : /* @__PURE__ */ jsx(Fragment, {
+          children: /* @__PURE__ */ jsx("a", {
+            href: window.location.href.replace("#/embed", "#/docs"),
+            target: "window",
+            children: /* @__PURE__ */ jsx(Button, {
+              variant: "contained",
+              children: "open in docs"
+            })
+          })
         })]
       })
     }), /* @__PURE__ */ jsx(Suspense, {
@@ -2617,11 +993,5 @@ function Navbar() {
     })]
   });
 }
-var navbar = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  Navbar,
-  "default": Navbar
-});
-export { Backdrop$1 as B, Menu$1 as M, Modal$1 as a, navbar as n };
+export { Navbar, Navbar as default };
 //# sourceMappingURL=navbar.js.map

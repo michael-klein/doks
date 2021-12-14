@@ -236,7 +236,10 @@ export function Sidebar({
         (mode === "editor" ? "editor-sidebar" : "docs-sidebar")
       }
     >
-      <ConditionalCard showCard={mode === "docs"}>
+      <ConditionalCard
+        showCard={mode === "docs"}
+        sx={{ padding: 2, position: "sticky", top: "80px" }}
+      >
         <Fab color="secondary" aria-label="add" className="menu-button">
           {showMobileSidebar ? (
             <CloseIcon onClick={() => setShowMobileSidebar(false)} />

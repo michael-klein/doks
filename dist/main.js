@@ -2877,6 +2877,9 @@ function lighten(color2, coefficient) {
   }
   return recomposeColor(color2);
 }
+function emphasize(color2, coefficient = 0.15) {
+  return getLuminance(color2) > 0.5 ? darken(color2, coefficient) : lighten(color2, coefficient);
+}
 function createMixins(breakpoints, spacing2, mixins) {
   return _extends({
     toolbar: {
@@ -3798,5 +3801,5 @@ const docs = (options) => {
     children: /* @__PURE__ */ jsx(Doks, __spreadValues({}, options))
   }), targetNode);
 };
-export { rootShouldForwardProp as A, alpha as B, CircularProgress$1 as C, defaultTheme$1 as D, useTheme$1 as E, Fragment as F, duration as G, getThemeProps as H, GlobalStyles as I, css$1 as J, lighten as K, darken as L, slotShouldForwardProp as M, docs as N, PropTypes as P, ThemeContext$1 as T, _extends as _, useTheme as a, ThemeContext$2 as b, createTheme as c, jsxs as d, deepmerge as e, formatMuiErrorMessage as f, capitalize as g, _objectWithoutPropertiesLoose as h, createTheme$1 as i, jsx as j, styled$2 as k, clsx as l, generateUtilityClass as m, generateUtilityClasses as n, styled$1 as o, propToStyleFunction as p, useThemeProps as q, composeClasses as r, styleFunctionSx as s, styledEngine as t, useTheme$2 as u, keyframes as v, ClassNameGenerator$1 as w, jsxRuntime as x, resolveBreakpointValues as y, handleBreakpoints as z };
+export { ClassNameGenerator$1 as A, jsxRuntime as B, CircularProgress$1 as C, useTheme$1 as D, defaultTheme$1 as E, Fragment as F, duration as G, getThemeProps as H, GlobalStyles as I, darken as J, lighten as K, emphasize as L, slotShouldForwardProp as M, css$1 as N, docs as O, PropTypes as P, ThemeContext$1 as T, _extends as _, useTheme as a, ThemeContext$2 as b, createTheme as c, jsxs as d, deepmerge as e, formatMuiErrorMessage as f, capitalize as g, _objectWithoutPropertiesLoose as h, createTheme$1 as i, jsx as j, styled$2 as k, clsx as l, generateUtilityClass as m, generateUtilityClasses as n, styled$1 as o, propToStyleFunction as p, useThemeProps as q, composeClasses as r, styleFunctionSx as s, styledEngine as t, useTheme$2 as u, resolveBreakpointValues as v, handleBreakpoints as w, rootShouldForwardProp as x, alpha as y, keyframes as z };
 //# sourceMappingURL=main.js.map

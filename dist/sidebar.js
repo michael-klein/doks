@@ -17,20 +17,25 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { c as createSvgIcon, i as interopRequireDefault, r as require$$2, u as useForkRef, f as useEnhancedEffect, o as ownerDocument, j as useId, h as useControlled, b as ButtonBase, d as default_1$4, p as projects$, n as contents$ } from "./documents.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, q as useThemeProps, G as duration, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, B as alpha, g as capitalize, E as useTheme$1, H as getThemeProps, C as CircularProgress } from "./main.js";
+import { i as interopRequireDefault, b as useForkRef, k as useEnhancedEffect, o as ownerDocument, l as useId, n as useControlled, d as default_1$4 } from "./styled.js";
+import { c as createSvgIcon, r as require$$2, B as ButtonBase } from "./jsx-runtime_commonjs-proxy.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, q as useThemeProps, G as duration, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, y as alpha, g as capitalize, D as useTheme$1, H as getThemeProps, C as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { Fragment, useState, useCallback, useEffect, useLayoutEffect } from "react";
 import { useParams } from "react-router";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { T as Transition, a as useTheme, g as getTransitionProps, u as useObservableAndState } from "./use_observable_and_state.js";
-import { G as Grid, B as Button } from "./Button.js";
-import { u as useObservableState } from "./use-observable-state.js";
-import { u as useFormControl, f as formControlState, B as Box } from "./InputBase.js";
+import { u as useObservableAndState } from "./use_observable_and_state.js";
+import { p as projects$, c as contents$ } from "./documents.js";
+import { C as ConditionalCard } from "./conditional_card.js";
+import { T as Transition, b as useTheme, g as getTransitionProps, u as useObservableState } from "./use-observable-state.js";
+import { G as Grid } from "./Grid.js";
+import { B as Box } from "./Box.js";
 import { g as getNativeSelectUtilityClasses, N as NativeSelectInput, A as ArrowDropDownIcon, I as Input, F as FormControl, a as InputLabel } from "./Input.js";
-import { C as Card } from "./Card.js";
+import { u as useFormControl, f as formControlState } from "./InputBase.js";
+import { B as Button } from "./Button.js";
 import "react-dom";
+import "./Card.js";
 var ChevronRight = {};
 var _interopRequireDefault$3 = interopRequireDefault.exports;
 Object.defineProperty(ChevronRight, "__esModule", {
@@ -1839,23 +1844,6 @@ const RenderTreeWrapper = ({
     content
   }) : /* @__PURE__ */ jsx(CircularProgress, {});
 };
-const ConditionalCard = ({
-  children,
-  mode
-}) => {
-  if (mode === "editor") {
-    return children;
-  }
-  return /* @__PURE__ */ jsx(Card, {
-    elevation: 1,
-    sx: {
-      padding: 2,
-      position: "sticky",
-      top: "80px"
-    },
-    children
-  });
-};
 function Sidebar({
   onNodeSelect,
   mode,
@@ -1897,7 +1885,12 @@ function Sidebar({
     xs: 3,
     className: (showMobileSidebar ? "show" : "") + " " + (mode === "editor" ? "editor-sidebar" : "docs-sidebar"),
     children: /* @__PURE__ */ jsxs(ConditionalCard, {
-      mode,
+      showCard: mode === "docs",
+      sx: {
+        padding: 2,
+        position: "sticky",
+        top: "80px"
+      },
       children: [/* @__PURE__ */ jsx(Fab$1, {
         color: "secondary",
         "aria-label": "add",

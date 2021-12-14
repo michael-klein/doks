@@ -1,7 +1,8 @@
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, g as capitalize, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, A as rootShouldForwardProp, e as deepmerge } from "./main.js";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, _ as _extends, g as capitalize, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, d as jsxs, x as rootShouldForwardProp, e as deepmerge } from "./main.js";
 import * as React from "react";
 import { i as isAdornedStart, a as isFilled, F as FormControlContext, u as useFormControl, f as formControlState, I as InputBaseRoot, r as rootOverridesResolver, b as InputBaseComponent, c as inputOverridesResolver, d as InputBase } from "./InputBase.js";
-import { F as isMuiElement, G as createSvgIcon } from "./documents.js";
+import { h as isMuiElement } from "./styled.js";
+import { a as createSvgIcon } from "./jsx-runtime_commonjs-proxy.js";
 function getFormControlUtilityClasses(slot) {
   return generateUtilityClass("MuiFormControl", slot);
 }

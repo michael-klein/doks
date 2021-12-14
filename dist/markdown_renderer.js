@@ -18,20 +18,59 @@ var __spreadValues = (a, b) => {
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var _a;
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, B as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { lazy, memo, useCallback, useMemo, useEffect, createElement, Suspense, useLayoutEffect, useRef } from "react";
-import { e as extendSxProp, b as ButtonBase, g as getDefaultExportFromCjs, c as createSvgIcon, i as interopRequireDefault, r as require$$2, V as ValueSubject, d as default_1$1, p as projects$, B as Box, a as documents$ } from "./documents.js";
+import * as ReactDOM from "react-dom";
+import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, _ as _extends, q as useThemeProps, h as _objectWithoutPropertiesLoose, r as composeClasses, j as jsx, l as clsx, y as alpha, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
+import { b as useForkRef, k as useEnhancedEffect, s as setRef, e as extendSxProp, q as getDefaultExportFromCjs, i as interopRequireDefault, d as default_1$1, B as Box } from "./styled.js";
+import { B as ButtonBase, c as createSvgIcon, r as require$$2 } from "./jsx-runtime_commonjs-proxy.js";
+import { b as useTheme, T as Transition, r as reflow, g as getTransitionProps, u as useObservableState, a as useObservable } from "./use-observable-state.js";
 import { p as pathBrowserify } from "./index.js";
 import { useParams } from "react-router";
 import { combineLatest, map, debounceTime } from "rxjs";
+import { V as ValueSubject, p as projects$, d as documents$ } from "./documents.js";
 import { Link as Link$1 } from "react-router-dom";
-import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
+function getContainer(container) {
+  return typeof container === "function" ? container() : container;
+}
+const Portal = /* @__PURE__ */ React.forwardRef(function Portal2(props, ref) {
+  const {
+    children,
+    container,
+    disablePortal = false
+  } = props;
+  const [mountNode, setMountNode] = React.useState(null);
+  const handleRef = useForkRef(/* @__PURE__ */ React.isValidElement(children) ? children.ref : null, ref);
+  useEnhancedEffect(() => {
+    if (!disablePortal) {
+      setMountNode(getContainer(container) || document.body);
+    }
+  }, [container, disablePortal]);
+  useEnhancedEffect(() => {
+    if (mountNode && !disablePortal) {
+      setRef(ref, mountNode);
+      return () => {
+        setRef(ref, null);
+      };
+    }
+    return void 0;
+  }, [ref, mountNode, disablePortal]);
+  if (disablePortal) {
+    if (/* @__PURE__ */ React.isValidElement(children)) {
+      return /* @__PURE__ */ React.cloneElement(children, {
+        ref: handleRef
+      });
+    }
+    return children;
+  }
+  return mountNode ? /* @__PURE__ */ ReactDOM.createPortal(children, mountNode) : mountNode;
+});
+var Portal$1 = Portal;
 function getTypographyUtilityClass(slot) {
   return generateUtilityClass("MuiTypography", slot);
 }
 generateUtilityClasses("MuiTypography", ["root", "h1", "h2", "h3", "h4", "h5", "h6", "subtitle1", "subtitle2", "body1", "body2", "inherit", "button", "caption", "overline", "alignLeft", "alignRight", "alignCenter", "alignJustify", "noWrap", "gutterBottom", "paragraph"]);
-const _excluded$1 = ["align", "className", "component", "gutterBottom", "noWrap", "paragraph", "variant", "variantMapping"];
+const _excluded$2 = ["align", "className", "component", "gutterBottom", "noWrap", "paragraph", "variant", "variantMapping"];
 const useUtilityClasses$1 = (ownerState) => {
   const {
     align,
@@ -49,11 +88,11 @@ const useUtilityClasses$1 = (ownerState) => {
 const TypographyRoot = styled("span", {
   name: "MuiTypography",
   slot: "Root",
-  overridesResolver: (props, styles) => {
+  overridesResolver: (props, styles2) => {
     const {
       ownerState
     } = props;
-    return [styles.root, ownerState.variant && styles[ownerState.variant], ownerState.align !== "inherit" && styles[`align${capitalize(ownerState.align)}`], ownerState.noWrap && styles.noWrap, ownerState.gutterBottom && styles.gutterBottom, ownerState.paragraph && styles.paragraph];
+    return [styles2.root, ownerState.variant && styles2[ownerState.variant], ownerState.align !== "inherit" && styles2[`align${capitalize(ownerState.align)}`], ownerState.noWrap && styles2.noWrap, ownerState.gutterBottom && styles2.gutterBottom, ownerState.paragraph && styles2.paragraph];
   }
 })(({
   theme,
@@ -112,7 +151,7 @@ const Typography = /* @__PURE__ */ React.forwardRef(function Typography2(inProps
     paragraph = false,
     variant = "body1",
     variantMapping = defaultVariantMapping
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
   const ownerState = _extends({}, props, {
     align,
     color,
@@ -139,7 +178,7 @@ function getIconButtonUtilityClass(slot) {
 }
 const iconButtonClasses = generateUtilityClasses("MuiIconButton", ["root", "disabled", "colorInherit", "colorPrimary", "colorSecondary", "edgeStart", "edgeEnd", "sizeSmall", "sizeMedium", "sizeLarge"]);
 var iconButtonClasses$1 = iconButtonClasses;
-const _excluded = ["edge", "children", "className", "color", "disabled", "disableFocusRipple", "size"];
+const _excluded$1 = ["edge", "children", "className", "color", "disabled", "disableFocusRipple", "size"];
 const useUtilityClasses = (ownerState) => {
   const {
     classes,
@@ -156,11 +195,11 @@ const useUtilityClasses = (ownerState) => {
 const IconButtonRoot = styled(ButtonBase, {
   name: "MuiIconButton",
   slot: "Root",
-  overridesResolver: (props, styles) => {
+  overridesResolver: (props, styles2) => {
     const {
       ownerState
     } = props;
-    return [styles.root, ownerState.color !== "default" && styles[`color${capitalize(ownerState.color)}`], ownerState.edge && styles[`edge${capitalize(ownerState.edge)}`], styles[`size${capitalize(ownerState.size)}`]];
+    return [styles2.root, ownerState.color !== "default" && styles2[`color${capitalize(ownerState.color)}`], ownerState.edge && styles2[`edge${capitalize(ownerState.edge)}`], styles2[`size${capitalize(ownerState.size)}`]];
   }
 })(({
   theme,
@@ -224,7 +263,7 @@ const IconButton = /* @__PURE__ */ React.forwardRef(function IconButton2(inProps
     disabled = false,
     disableFocusRipple = false,
     size = "medium"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const ownerState = _extends({}, props, {
     edge,
     color,
@@ -245,6 +284,162 @@ const IconButton = /* @__PURE__ */ React.forwardRef(function IconButton2(inProps
   }));
 });
 var IconButton$1 = IconButton;
+const _excluded = ["addEndListener", "appear", "children", "easing", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"];
+function getScale(value) {
+  return `scale(${value}, ${value ** 2})`;
+}
+const styles = {
+  entering: {
+    opacity: 1,
+    transform: getScale(1)
+  },
+  entered: {
+    opacity: 1,
+    transform: "none"
+  }
+};
+const Grow = /* @__PURE__ */ React.forwardRef(function Grow2(props, ref) {
+  const {
+    addEndListener,
+    appear = true,
+    children,
+    easing,
+    in: inProp,
+    onEnter,
+    onEntered,
+    onEntering,
+    onExit,
+    onExited,
+    onExiting,
+    style,
+    timeout = "auto",
+    TransitionComponent = Transition
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
+  const timer = React.useRef();
+  const autoTimeout = React.useRef();
+  const theme = useTheme();
+  const nodeRef = React.useRef(null);
+  const foreignRef = useForkRef(children.ref, ref);
+  const handleRef = useForkRef(nodeRef, foreignRef);
+  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
+    if (callback) {
+      const node = nodeRef.current;
+      if (maybeIsAppearing === void 0) {
+        callback(node);
+      } else {
+        callback(node, maybeIsAppearing);
+      }
+    }
+  };
+  const handleEntering = normalizedTransitionCallback(onEntering);
+  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
+    reflow(node);
+    const {
+      duration: transitionDuration,
+      delay,
+      easing: transitionTimingFunction
+    } = getTransitionProps({
+      style,
+      timeout,
+      easing
+    }, {
+      mode: "enter"
+    });
+    let duration;
+    if (timeout === "auto") {
+      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
+      autoTimeout.current = duration;
+    } else {
+      duration = transitionDuration;
+    }
+    node.style.transition = [theme.transitions.create("opacity", {
+      duration,
+      delay
+    }), theme.transitions.create("transform", {
+      duration: duration * 0.666,
+      delay,
+      easing: transitionTimingFunction
+    })].join(",");
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  const handleEntered = normalizedTransitionCallback(onEntered);
+  const handleExiting = normalizedTransitionCallback(onExiting);
+  const handleExit = normalizedTransitionCallback((node) => {
+    const {
+      duration: transitionDuration,
+      delay,
+      easing: transitionTimingFunction
+    } = getTransitionProps({
+      style,
+      timeout,
+      easing
+    }, {
+      mode: "exit"
+    });
+    let duration;
+    if (timeout === "auto") {
+      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
+      autoTimeout.current = duration;
+    } else {
+      duration = transitionDuration;
+    }
+    node.style.transition = [theme.transitions.create("opacity", {
+      duration,
+      delay
+    }), theme.transitions.create("transform", {
+      duration: duration * 0.666,
+      delay: delay || duration * 0.333,
+      easing: transitionTimingFunction
+    })].join(",");
+    node.style.opacity = "0";
+    node.style.transform = getScale(0.75);
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  const handleExited = normalizedTransitionCallback(onExited);
+  const handleAddEndListener = (next) => {
+    if (timeout === "auto") {
+      timer.current = setTimeout(next, autoTimeout.current || 0);
+    }
+    if (addEndListener) {
+      addEndListener(nodeRef.current, next);
+    }
+  };
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+  return /* @__PURE__ */ jsx(TransitionComponent, _extends({
+    appear,
+    in: inProp,
+    nodeRef,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    addEndListener: handleAddEndListener,
+    timeout: timeout === "auto" ? null : timeout
+  }, other, {
+    children: (state, childProps) => {
+      return /* @__PURE__ */ React.cloneElement(children, _extends({
+        style: _extends({
+          opacity: 0,
+          transform: getScale(0.75),
+          visibility: state === "exited" && !inProp ? "hidden" : void 0
+        }, styles[state], style, children.props.style),
+        ref: handleRef
+      }, childProps));
+    }
+  }));
+});
+Grow.muiSupportAuto = true;
+var Grow$1 = Grow;
 var dist = { exports: {} };
 var entities$1 = {};
 Object.defineProperty(entities$1, "__esModule", { value: true });
@@ -4639,22 +4834,23 @@ const HWrapper = default_1$1("span")({
 const MDX = memo(({
   mdx,
   onSaveMDX,
-  onAfterRender
+  onAfterRender,
+  embed
 }) => {
   let i = 0;
   const [theme] = useObservableState(() => codeTheme$);
   const params = useParams();
-  const document = useObservableState(useObservable((input$) => {
+  const document2 = useObservableState(useObservable((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
       return documents.get(input[0].contentSlug);
     }));
   }, [params]));
   const getPath = useCallback((src) => {
-    if (src.includes("http") || !document) {
+    if (src.includes("http") || !document2) {
       return src;
     }
-    return pathBrowserify.join(projects$.value.get(document.projectSlug).root, document.path.split("/").slice(0, -1).join("/"), src);
-  }, [document, params]);
+    return pathBrowserify.join(projects$.value.get(document2.projectSlug).root, document2.path.split("/").slice(0, -1).join("/"), src);
+  }, [document2, params]);
   const sanitizedMDX = useMemo(() => removeVoidElements(mdx), [mdx]);
   useEffect(() => {
     onSaveMDX(mdx);
@@ -4674,7 +4870,7 @@ const MDX = memo(({
             children: /* @__PURE__ */ jsxs(Fragment, {
               children: [/* @__PURE__ */ jsx(HWrapper, {
                 children: props.children
-              }), /* @__PURE__ */ jsx(Link$1, {
+              }), !embed && /* @__PURE__ */ jsx(Link$1, {
                 to: `/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`,
                 children: /* @__PURE__ */ jsx(default_1, {
                   sx: {
@@ -4743,7 +4939,8 @@ const Wrapper = default_1$1(Box)(({
 const MarkdownRenderer = ({
   mdx,
   isEditor,
-  onAfterRender
+  onAfterRender,
+  embed
 }) => {
   const currentMDX$ = useObservable(() => new ValueSubject(mdx));
   const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(500, void 0)) : currentMDX$);
@@ -4764,6 +4961,7 @@ const MarkdownRenderer = ({
         }
       },
       children: /* @__PURE__ */ jsx(MDX, {
+        embed,
         onAfterRender,
         mdx: debouncedMDX,
         onSaveMDX: (saveMDX) => {
@@ -4773,5 +4971,5 @@ const MarkdownRenderer = ({
     }, "mdx-" + mdxIdRef.current)
   });
 };
-export { IconButton$1 as I, MarkdownRenderer as M, Typography$1 as T, codeTheme$ as c, htmdx as h };
+export { Grow$1 as G, IconButton$1 as I, MarkdownRenderer as M, Portal$1 as P, Typography$1 as T, codeTheme$ as c, htmdx as h };
 //# sourceMappingURL=markdown_renderer.js.map

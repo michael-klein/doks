@@ -17,14 +17,15 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { m as commonjsGlobal, n as contents$, q as addOrUpdateProject, t as addOrUpdateManyContents, v as addOrUpdateContents, w as getLastModified, x as getCachedDocument, y as queueDocument, z as removeContents } from "./documents.js";
+import { t as commonjsGlobal } from "./styled.js";
 import { p as pathBrowserify } from "./index.js";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { u as useDocOptions } from "./doks.js";
+import { c as contents$, a as addOrUpdateProject, b as addOrUpdateManyContents, e as addOrUpdateContents, g as getLastModified, f as getCachedDocument, q as queueDocument, r as removeContents } from "./documents.js";
 import { j as jsx, F as Fragment } from "./main.js";
-import "rxjs";
 import "react-router-dom";
+import "rxjs";
 import "react-dom";
 function escapeStringRegexp$1(string) {
   if (typeof string !== "string") {
@@ -2285,7 +2286,6 @@ function slugify(string, options) {
   return string;
 }
 const loadContentsDocument = async (item, project, projectSlug, deletedPaths) => {
-  console.log("load: ", item.path);
   if (!item.isOnlyHeading) {
     const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
     if (lastModified !== false) {
@@ -2304,6 +2304,7 @@ const loadContentsDocument = async (item, project, projectSlug, deletedPaths) =>
   }
 };
 const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mode, navigate) => {
+  const isDocsMode = mode === "docs" || mode === "embed";
   let shouldNavigate = false;
   const docProjects = [];
   projects.forEach((project) => {
@@ -2327,6 +2328,9 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
   await Promise.all(docProjects.map(async (project) => {
     var _a;
     const projectSlug = project.slug;
+    if (projectSlug !== currentProjectSlug && mode === "embed") {
+      return;
+    }
     let lastModified;
     const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => {
       lastModified = res.headers.get("last-modified");
@@ -2335,7 +2339,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     const cached = JSON.parse((_a = localStorage.getItem("CACHE__" + projectSlug)) != null ? _a : "{}");
     let contents;
     if (cached.lastModified === lastModified) {
-      if (mode === "docs" && !currentContentSlug) {
+      if (isDocsMode && !currentContentSlug) {
         for (const item of cached.contents) {
           if (!currentContentSlug && !item.isOnlyHeading) {
             currentContentSlug = item.slug;
@@ -2361,7 +2365,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
           projectSlug,
           isOnlyHeading: !path.includes(".md")
         };
-        if (mode === "docs" && !currentContentSlug && !item.isOnlyHeading) {
+        if (isDocsMode && !currentContentSlug && !item.isOnlyHeading) {
           currentContentSlug = item.slug;
           shouldNavigate = true;
         }
@@ -2385,7 +2389,9 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     if (firstContent) {
       await loadContentsDocument(__spreadValues({}, firstContent), project, projectSlug, deletedPaths);
     }
-    await Promise.all(contents.map((c) => loadContentsDocument(__spreadValues({}, c), project, projectSlug, deletedPaths)));
+    if (mode !== "embed") {
+      await Promise.all(contents.map((c) => loadContentsDocument(__spreadValues({}, c), project, projectSlug, deletedPaths)));
+    }
     const cacheItem = {
       lastModified,
       contents: Array.from(contents$.value.get(projectSlug).values())
@@ -2436,7 +2442,7 @@ const DocFetcher = ({
         });
       }
     }
-  }, []);
+  }, [params.projectSlug]);
   return /* @__PURE__ */ jsx(Fragment, {});
 };
 export { DocFetcher, DocFetcher as default };

@@ -1,7 +1,7 @@
-import { h as _objectWithoutPropertiesLoose, d as jsxs, j as jsx, _ as _extends, c as createTheme, I as GlobalStyles$1, D as defaultTheme$1, m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, r as composeClasses, l as clsx, g as capitalize, f as formatMuiErrorMessage } from "./main.js";
-import { u as useForkRef, A as ownerWindow, f as useEnhancedEffect, D as debounce, E as createBox } from "./documents.js";
+import { h as _objectWithoutPropertiesLoose, d as jsxs, j as jsx, _ as _extends, I as GlobalStyles$1, E as defaultTheme, m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, r as composeClasses, l as clsx, g as capitalize, f as formatMuiErrorMessage } from "./main.js";
 import * as React from "react";
-import { i as isHostComponent } from "./use_observable_and_state.js";
+import { b as useForkRef, j as ownerWindow, k as useEnhancedEffect, f as debounce } from "./styled.js";
+import { i as isHostComponent } from "./use-observable-state.js";
 const _excluded$1 = ["onChange", "maxRows", "minRows", "style", "value"];
 function getStyleValue(computedStyle, property) {
   return parseInt(computedStyle[property], 10) || 0;
@@ -131,11 +131,6 @@ const TextareaAutosize = /* @__PURE__ */ React.forwardRef(function TextareaAutos
   });
 });
 var TextareaAutosize$1 = TextareaAutosize;
-const defaultTheme = createTheme();
-const Box = createBox({
-  defaultTheme
-});
-var Box$1 = Box;
 function hasValue(value) {
   return value != null && !(Array.isArray(value) && value.length === 0);
 }
@@ -167,7 +162,7 @@ function formControlState({
 }
 function GlobalStyles(props) {
   return /* @__PURE__ */ jsx(GlobalStyles$1, _extends({}, props, {
-    defaultTheme: defaultTheme$1
+    defaultTheme
   }));
 }
 function getInputBaseUtilityClass(slot) {
@@ -564,5 +559,5 @@ const InputBase = /* @__PURE__ */ React.forwardRef(function InputBase2(inProps, 
   });
 });
 var InputBase$1 = InputBase;
-export { Box$1 as B, FormControlContext$1 as F, InputBaseRoot as I, isFilled as a, InputBaseComponent as b, inputOverridesResolver as c, InputBase$1 as d, inputBaseClasses$1 as e, formControlState as f, isAdornedStart as i, rootOverridesResolver as r, useFormControl as u };
+export { FormControlContext$1 as F, InputBaseRoot as I, isFilled as a, InputBaseComponent as b, inputOverridesResolver as c, InputBase$1 as d, inputBaseClasses$1 as e, formControlState as f, isAdornedStart as i, rootOverridesResolver as r, useFormControl as u };
 //# sourceMappingURL=InputBase.js.map

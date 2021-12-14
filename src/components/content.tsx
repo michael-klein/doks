@@ -55,7 +55,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
   const document = useObservableState(
     useObservable(
       (input$) => {
-        return combineLatest(input$, documents$).pipe(
+        return combineLatest([input$, documents$]).pipe(
           map(([input, documents]) => {
             return documents.get(input[0].contentSlug);
           })
@@ -107,7 +107,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
   const [openSuccess, setOpenSuccess] = useState(false);
 
   return (
-    <ContentWrapper item xs={embed ? 0 : 9}>
+    <ContentWrapper item xs={embed ? false : 9}>
       <Snackbar
         sx={{ marginTop: "60px" }}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -169,7 +169,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
                     onFocus={(e) => {
                       e.preventDefault();
                     }}
-                    variant="outlined"
+                    variant={undefined}
                     label="embed"
                     InputProps={{
                       endAdornment: (

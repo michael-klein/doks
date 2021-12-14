@@ -1,8 +1,8 @@
-import { _ as _extends, h as _objectWithoutPropertiesLoose, j as jsx, E as useTheme, m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, B as alpha, q as useThemeProps, l as clsx, r as composeClasses, d as jsxs } from "./main.js";
+import { _ as _extends, h as _objectWithoutPropertiesLoose, j as jsx, D as useTheme, m as generateUtilityClass, n as generateUtilityClasses, o as styled, g as capitalize, y as alpha, q as useThemeProps, l as clsx, r as composeClasses, d as jsxs } from "./main.js";
 import * as React from "react";
-import { i as isHostComponent, a as useTheme$1, T as Transition, r as reflow, g as getTransitionProps } from "./use_observable_and_state.js";
-import { u as useForkRef, f as useEnhancedEffect, s as setRef, o as ownerDocument, h as useControlled, j as useId, k as useEventCallback, l as useIsFocusVisible } from "./documents.js";
-import * as ReactDOM from "react-dom";
+import { i as isHostComponent, b as useTheme$1 } from "./use-observable-state.js";
+import { o as ownerDocument, b as useForkRef, k as useEnhancedEffect, n as useControlled, l as useId, a as useEventCallback, u as useIsFocusVisible } from "./styled.js";
+import { P as Portal, G as Grow } from "./markdown_renderer.js";
 function appendOwnerState(elementType, existingProps, ownerState) {
   if (isHostComponent(elementType)) {
     return existingProps;
@@ -11,42 +11,6 @@ function appendOwnerState(elementType, existingProps, ownerState) {
     ownerState: _extends({}, existingProps.ownerState, ownerState)
   });
 }
-function getContainer(container) {
-  return typeof container === "function" ? container() : container;
-}
-const Portal = /* @__PURE__ */ React.forwardRef(function Portal2(props, ref) {
-  const {
-    children,
-    container,
-    disablePortal = false
-  } = props;
-  const [mountNode, setMountNode] = React.useState(null);
-  const handleRef = useForkRef(/* @__PURE__ */ React.isValidElement(children) ? children.ref : null, ref);
-  useEnhancedEffect(() => {
-    if (!disablePortal) {
-      setMountNode(getContainer(container) || document.body);
-    }
-  }, [container, disablePortal]);
-  useEnhancedEffect(() => {
-    if (mountNode && !disablePortal) {
-      setRef(ref, mountNode);
-      return () => {
-        setRef(ref, null);
-      };
-    }
-    return void 0;
-  }, [ref, mountNode, disablePortal]);
-  if (disablePortal) {
-    if (/* @__PURE__ */ React.isValidElement(children)) {
-      return /* @__PURE__ */ React.cloneElement(children, {
-        ref: handleRef
-      });
-    }
-    return children;
-  }
-  return mountNode ? /* @__PURE__ */ ReactDOM.createPortal(children, mountNode) : mountNode;
-});
-var Portal$1 = Portal;
 var top = "top";
 var bottom = "bottom";
 var right = "right";
@@ -1297,7 +1261,7 @@ var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyS
 var createPopper = /* @__PURE__ */ popperGenerator({
   defaultModifiers
 });
-const _excluded$2 = ["anchorEl", "children", "disablePortal", "modifiers", "open", "placement", "popperOptions", "popperRef", "TransitionProps"], _excluded2 = ["anchorEl", "children", "container", "disablePortal", "keepMounted", "modifiers", "open", "placement", "popperOptions", "popperRef", "style", "transition"];
+const _excluded$1 = ["anchorEl", "children", "disablePortal", "modifiers", "open", "placement", "popperOptions", "popperRef", "TransitionProps"], _excluded2 = ["anchorEl", "children", "container", "disablePortal", "keepMounted", "modifiers", "open", "placement", "popperOptions", "popperRef", "style", "transition"];
 function flipPlacement(placement, theme) {
   const direction = theme && theme.direction || "ltr";
   if (direction === "ltr") {
@@ -1331,7 +1295,7 @@ const PopperTooltip = /* @__PURE__ */ React.forwardRef(function PopperTooltip2(p
     popperOptions,
     popperRef: popperRefProp,
     TransitionProps
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const tooltipRef = React.useRef(null);
   const ownRef = useForkRef(tooltipRef, ref);
   const popperRef = React.useRef(null);
@@ -1433,7 +1397,7 @@ const Popper = /* @__PURE__ */ React.forwardRef(function Popper2(props, ref) {
     return null;
   }
   const container = containerProp || (anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : void 0);
-  return /* @__PURE__ */ jsx(Portal$1, {
+  return /* @__PURE__ */ jsx(Portal, {
     disablePortal,
     container,
     children: /* @__PURE__ */ jsx(PopperTooltip, _extends({
@@ -1462,162 +1426,6 @@ const Popper = /* @__PURE__ */ React.forwardRef(function Popper2(props, ref) {
   });
 });
 var Popper$1 = Popper;
-const _excluded$1 = ["addEndListener", "appear", "children", "easing", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"];
-function getScale(value) {
-  return `scale(${value}, ${value ** 2})`;
-}
-const styles = {
-  entering: {
-    opacity: 1,
-    transform: getScale(1)
-  },
-  entered: {
-    opacity: 1,
-    transform: "none"
-  }
-};
-const Grow = /* @__PURE__ */ React.forwardRef(function Grow2(props, ref) {
-  const {
-    addEndListener,
-    appear = true,
-    children,
-    easing,
-    in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
-    style,
-    timeout = "auto",
-    TransitionComponent = Transition
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
-  const timer = React.useRef();
-  const autoTimeout = React.useRef();
-  const theme = useTheme$1();
-  const nodeRef = React.useRef(null);
-  const foreignRef = useForkRef(children.ref, ref);
-  const handleRef = useForkRef(nodeRef, foreignRef);
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
-      if (maybeIsAppearing === void 0) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
-    }
-  };
-  const handleEntering = normalizedTransitionCallback(onEntering);
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
-    reflow(node);
-    const {
-      duration: transitionDuration,
-      delay,
-      easing: transitionTimingFunction
-    } = getTransitionProps({
-      style,
-      timeout,
-      easing
-    }, {
-      mode: "enter"
-    });
-    let duration;
-    if (timeout === "auto") {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
-    node.style.transition = [theme.transitions.create("opacity", {
-      duration,
-      delay
-    }), theme.transitions.create("transform", {
-      duration: duration * 0.666,
-      delay,
-      easing: transitionTimingFunction
-    })].join(",");
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
-  const handleEntered = normalizedTransitionCallback(onEntered);
-  const handleExiting = normalizedTransitionCallback(onExiting);
-  const handleExit = normalizedTransitionCallback((node) => {
-    const {
-      duration: transitionDuration,
-      delay,
-      easing: transitionTimingFunction
-    } = getTransitionProps({
-      style,
-      timeout,
-      easing
-    }, {
-      mode: "exit"
-    });
-    let duration;
-    if (timeout === "auto") {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
-    node.style.transition = [theme.transitions.create("opacity", {
-      duration,
-      delay
-    }), theme.transitions.create("transform", {
-      duration: duration * 0.666,
-      delay: delay || duration * 0.333,
-      easing: transitionTimingFunction
-    })].join(",");
-    node.style.opacity = "0";
-    node.style.transform = getScale(0.75);
-    if (onExit) {
-      onExit(node);
-    }
-  });
-  const handleExited = normalizedTransitionCallback(onExited);
-  const handleAddEndListener = (next) => {
-    if (timeout === "auto") {
-      timer.current = setTimeout(next, autoTimeout.current || 0);
-    }
-    if (addEndListener) {
-      addEndListener(nodeRef.current, next);
-    }
-  };
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-  return /* @__PURE__ */ jsx(TransitionComponent, _extends({
-    appear,
-    in: inProp,
-    nodeRef,
-    onEnter: handleEnter,
-    onEntered: handleEntered,
-    onEntering: handleEntering,
-    onExit: handleExit,
-    onExited: handleExited,
-    onExiting: handleExiting,
-    addEndListener: handleAddEndListener,
-    timeout: timeout === "auto" ? null : timeout
-  }, other, {
-    children: (state, childProps) => {
-      return /* @__PURE__ */ React.cloneElement(children, _extends({
-        style: _extends({
-          opacity: 0,
-          transform: getScale(0.75),
-          visibility: state === "exited" && !inProp ? "hidden" : void 0
-        }, styles[state], style, children.props.style),
-        ref: handleRef
-      }, childProps));
-    }
-  }));
-});
-Grow.muiSupportAuto = true;
-var Grow$1 = Grow;
 function getTooltipUtilityClass(slot) {
   return generateUtilityClass("MuiTooltip", slot);
 }
@@ -1645,11 +1453,11 @@ const useUtilityClasses = (ownerState) => {
 const TooltipPopper = styled(Popper$1, {
   name: "MuiTooltip",
   slot: "Popper",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.popper, !ownerState.disableInteractive && styles2.popperInteractive, ownerState.arrow && styles2.popperArrow, !ownerState.open && styles2.popperClose];
+    return [styles.popper, !ownerState.disableInteractive && styles.popperInteractive, ownerState.arrow && styles.popperArrow, !ownerState.open && styles.popperClose];
   }
 })(({
   theme,
@@ -1707,11 +1515,11 @@ const TooltipPopper = styled(Popper$1, {
 const TooltipTooltip = styled("div", {
   name: "MuiTooltip",
   slot: "Tooltip",
-  overridesResolver: (props, styles2) => {
+  overridesResolver: (props, styles) => {
     const {
       ownerState
     } = props;
-    return [styles2.tooltip, ownerState.touch && styles2.touch, ownerState.arrow && styles2.tooltipArrow, styles2[`tooltipPlacement${capitalize(ownerState.placement.split("-")[0])}`]];
+    return [styles.tooltip, ownerState.touch && styles.touch, ownerState.arrow && styles.tooltipArrow, styles[`tooltipPlacement${capitalize(ownerState.placement.split("-")[0])}`]];
   }
 })(({
   theme,
@@ -1774,7 +1582,7 @@ const TooltipTooltip = styled("div", {
 const TooltipArrow = styled("span", {
   name: "MuiTooltip",
   slot: "Arrow",
-  overridesResolver: (props, styles2) => styles2.arrow
+  overridesResolver: (props, styles) => styles.arrow
 })(({
   theme
 }) => ({
@@ -1834,7 +1642,7 @@ const Tooltip = /* @__PURE__ */ React.forwardRef(function Tooltip2(inProps, ref)
     PopperComponent: PopperComponentProp,
     PopperProps = {},
     title,
-    TransitionComponent: TransitionComponentProp = Grow$1,
+    TransitionComponent: TransitionComponentProp = Grow,
     TransitionProps
   } = props, other = _objectWithoutPropertiesLoose(props, _excluded);
   const theme = useTheme$1();
@@ -2074,7 +1882,7 @@ const Tooltip = /* @__PURE__ */ React.forwardRef(function Tooltip2(inProps, ref)
   });
   const classes = useUtilityClasses(ownerState);
   const PopperComponent = (_components$Popper = components.Popper) != null ? _components$Popper : TooltipPopper;
-  const TransitionComponent = (_ref = (_components$Transitio = components.Transition) != null ? _components$Transitio : TransitionComponentProp) != null ? _ref : Grow$1;
+  const TransitionComponent = (_ref = (_components$Transitio = components.Transition) != null ? _components$Transitio : TransitionComponentProp) != null ? _ref : Grow;
   const TooltipComponent = (_components$Tooltip = components.Tooltip) != null ? _components$Tooltip : TooltipTooltip;
   const ArrowComponent = (_components$Arrow = components.Arrow) != null ? _components$Arrow : TooltipArrow;
   const popperProps = appendOwnerState(PopperComponent, _extends({}, PopperProps, componentsProps.popper), ownerState);
@@ -2122,5 +1930,5 @@ const Tooltip = /* @__PURE__ */ React.forwardRef(function Tooltip2(inProps, ref)
   });
 });
 var Tooltip$1 = Tooltip;
-export { Grow$1 as G, Portal$1 as P, Tooltip$1 as T, Popper$1 as a };
+export { Popper$1 as P, Tooltip$1 as T };
 //# sourceMappingURL=Tooltip.js.map

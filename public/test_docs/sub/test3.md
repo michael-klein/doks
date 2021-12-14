@@ -4,6 +4,27 @@ Nunc sit amet elit non diam euismod semper non sed ex. Vestibulum vestibulum, ju
 
 ## hi
 
+```javascript
+const [mdx, setMDX] = useState(initial);
+const [height, setHeight] = useState(0);
+const [editorFlex, setEditorFlex] = useState(-1);
+const boxRef = useRef<HTMLDivElement>();
+const editorRef = useRef<any>();
+
+const saveMDX = useCallback(() => {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(mdx));
+    element.setAttribute('download', 'document.mdx');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}, [mdx]);
+```
+
 ![donk](donk.jpeg)
 
 Morbi dui elit, tristique eu viverra non, volutpat sit amet augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam volutpat ullamcorper tristique. Mauris sagittis nisl risus. Sed viverra quam lacus, molestie varius sapien tincidunt at. Aliquam at condimentum est, at blandit nisi. Suspendisse in lobortis nulla, at suscipit turpis. Suspendisse in diam tortor.

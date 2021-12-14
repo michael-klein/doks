@@ -290,3 +290,5 @@ export const SearchOverlay = ({ show$ }: { show$: ValueSubject<boolean> }) => {
     </div>
   );
 };
+
+export default SearchOverlay;

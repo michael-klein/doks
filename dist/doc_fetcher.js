@@ -20,9 +20,11 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 import { m as commonjsGlobal, n as contents$, q as addOrUpdateProject, t as addOrUpdateManyContents, v as addOrUpdateContents, w as getLastModified, x as getCachedDocument, y as queueDocument, z as removeContents } from "./documents.js";
 import { p as pathBrowserify } from "./index.js";
 import { useEffect } from "react";
-import { c as useDocOptions, u as useParams, b as useNavigate } from "./doks.js";
+import { useParams, useNavigate } from "react-router";
+import { u as useDocOptions } from "./doks.js";
 import { j as jsx, F as Fragment } from "./main.js";
 import "rxjs";
+import "react-router-dom";
 import "react-dom";
 function escapeStringRegexp$1(string) {
   if (typeof string !== "string") {

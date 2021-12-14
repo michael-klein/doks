@@ -1,8 +1,8 @@
 import { lazy, Suspense, useCallback } from "react";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { d as default_1$1, B as Box, c as createSvgIcon, i as interopRequireDefault, r as require$$2, a as documents$, C as Container } from "./documents.js";
 import { j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
 import { B as Button, G as Grid } from "./Button.js";
-import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
 import "rxjs";
 import "react-dom";
 const Background = default_1$1(Box)(({
@@ -51,7 +51,9 @@ const Footer = () => {
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
 const Sidebar = lazy(() => import("./sidebar.js"));
 const Content = lazy(() => import("./content.js"));
-const Navbar = lazy(() => import("./navbar.js"));
+const Navbar = lazy(() => import("./navbar.js").then(function(n) {
+  return n.n;
+}));
 const Project = () => {
   const params = useParams();
   return /* @__PURE__ */ jsx(Fragment, {

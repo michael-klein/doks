@@ -212,7 +212,7 @@ export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
         );
       }
     }
-  }, []);
+  }, [params.projectSlug]);
   return <></>;
 };
 export default DocFetcher;

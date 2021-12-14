@@ -23,8 +23,9 @@ import * as React from "react";
 import React__default, { lazy, memo, useCallback, useMemo, useEffect, createElement, Suspense, useLayoutEffect, useRef } from "react";
 import { e as extendSxProp, b as ButtonBase, g as getDefaultExportFromCjs, c as createSvgIcon, i as interopRequireDefault, r as require$$2, V as ValueSubject, d as default_1$1, p as projects$, B as Box, a as documents$ } from "./documents.js";
 import { p as pathBrowserify } from "./index.js";
-import { u as useParams, L as Link$1 } from "./doks.js";
+import { useParams } from "react-router";
 import { combineLatest, map, debounceTime } from "rxjs";
+import { Link as Link$1 } from "react-router-dom";
 import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
 function getTypographyUtilityClass(slot) {
   return generateUtilityClass("MuiTypography", slot);
@@ -4662,7 +4663,7 @@ const MDX = memo(({
     requestAnimationFrame(() => {
       onAfterRender == null ? void 0 : onAfterRender();
     });
-  });
+  }, [mdx, params.headingIndex]);
   let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment, {
     children: mdx !== void 0 ? htmdx(sanitizedMDX, React__default.createElement, {

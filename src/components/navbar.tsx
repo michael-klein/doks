@@ -15,7 +15,7 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useObservableState } from "observable-hooks";
-import React, { Fragment, useState } from "react";
+import { Fragment, lazy, Suspense, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
@@ -29,109 +29,27 @@ import {
 } from "../store/documents";
 import { ValueSubject } from "../utils/value_subject";
 import { codeTheme$ } from "./markdown_renderer";
-import { SearchOverlay } from "./search";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useColorModeContext } from "../css/theme";
+import Button from "@mui/material/Button";
+
+const SearchOverlay = lazy(() => import("./search"));
 
 const syntaxThemes = [
-  "a11yDark",
-  "a11yLight",
-  "agate",
   "anOldHope",
-  "androidstudio",
-  "arduinoLight",
   "arta",
-  "ascetic",
-  "atelierCaveDark",
-  "atelierCaveLight",
   "atelierDuneDark",
   "atelierDuneLight",
-  "atelierEstuaryDark",
-  "atelierEstuaryLight",
-  "atelierForestDark",
-  "atelierForestLight",
-  "atelierHeathDark",
-  "atelierHeathLight",
-  "atelierLakesideDark",
-  "atelierLakesideLight",
-  "atelierPlateauDark",
-  "atelierPlateauLight",
-  "atelierSavannaDark",
-  "atelierSavannaLight",
-  "atelierSeasideDark",
-  "atelierSeasideLight",
-  "atelierSulphurpoolDark",
-  "atelierSulphurpoolLight",
-  "atomOneDark",
-  "atomOneDarkReasonable",
-  "atomOneLight",
-  "brownPaper",
-  "codepenEmbed",
-  "colorBrewer",
   "darcula",
-  "dark",
-  "defaultStyle",
-  "docco",
-  "dracula",
   "far",
-  "foundation",
   "github",
-  "githubGist",
-  "gml",
-  "googlecode",
   "gradientDark",
-  "gradientLight",
-  "grayscale",
-  "gruvboxDark",
-  "gruvboxLight",
-  "hopscotch",
-  "hybrid",
-  "idea",
-  "irBlack",
   "isblEditorDark",
   "isblEditorLight",
-  "kimbieDark",
-  "kimbieLight",
-  "lightfair",
-  "lioshi",
-  "magula",
-  "monoBlue",
-  "monokai",
-  "monokaiSublime",
-  "nightOwl",
-  "nnfx",
-  "nnfxDark",
-  "nord",
-  "obsidian",
-  "ocean",
-  "paraisoDark",
-  "paraisoLight",
-  "pojoaque",
-  "purebasic",
-  "qtcreatorDark",
-  "qtcreatorLight",
-  "railscasts",
-  "rainbow",
-  "routeros",
-  "schoolBook",
-  "shadesOfPurple",
-  "solarizedDark",
-  "solarizedLight",
-  "srcery",
-  "stackoverflowDark",
-  "stackoverflowLight",
   "sunburst",
-  "tomorrow",
-  "tomorrowNight",
-  "tomorrowNightBlue",
-  "tomorrowNightBright",
-  "tomorrowNightEighties",
-  "vs",
-  "vs2015",
-  "xcode",
-  "xt256",
-  "zenburn",
+  "monokai",
+  "nightOwl",
 ];
 
 const SearchInputWrapper = styled("div")(({ theme }) => ({
@@ -199,7 +117,12 @@ const NavMenu = ({
 }: {
   children: React.ReactChild;
   tooltip: string;
-  items: { key: string; label: string; onClick: () => void }[];
+  items: {
+    key: string;
+    label: string;
+    onClick: () => void;
+    selected?: boolean;
+  }[];
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -237,8 +160,9 @@ const NavMenu = ({
           horizontal: "right",
         }}
       >
-        {items.map(({ onClick, label, key }) => (
+        {items.map(({ onClick, label, key, selected }) => (
           <MenuItem
+            selected={selected}
             key={key}
             onClick={() => {
               onClick();
@@ -283,6 +207,7 @@ const FavMenu = () => {
 };
 
 const SyntaxMenu = () => {
+  const [codeTheme] = useObservableState(() => codeTheme$);
   return (
     <NavMenu
       tooltip="Syntax theme"
@@ -291,6 +216,7 @@ const SyntaxMenu = () => {
           return {
             key: theme,
             label: theme,
+            selected: codeTheme === theme,
             onClick: () => {
               codeTheme$.next(theme);
             },
@@ -311,7 +237,7 @@ const NavAppBar = styled(AppBar)(({ theme }) => ({
     textDecoration: "underline",
   },
 }));
-export function Navbar() {
+export function Navbar({ embed }: { embed?: boolean }) {
   const [hasDocumentsFetching] = useObservableAndState(() =>
     combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
       map(
@@ -325,7 +251,14 @@ export function Navbar() {
   const location = useLocation();
   const { mode, toggleColorMode } = useColorModeContext();
   return (
-    <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
+    <Box
+      sx={{
+        flex: 0,
+        position: embed ? "static" : "sticky",
+        top: 0,
+        zIndex: 1000,
+      }}
+    >
       {hasDocumentsFetching && <Progress />}
       <NavAppBar position="static">
         <Toolbar>
@@ -340,54 +273,73 @@ export function Navbar() {
           >
             <Link to="/docs/">{title}</Link>
           </Typography>
-
-          {params.contentSlug && location.pathname.startsWith("/docs") && (
-            <Tooltip title="edit current document">
-              <Link to={`/editor/${params.projectSlug}/${params.contentSlug}`}>
-                <NavButton aria-label="editor">
-                  <EditIcon />
-                </NavButton>
-              </Link>
-            </Tooltip>
-          )}
-          <Tooltip title="create document">
-            <Link to={"/editor/" + params.projectSlug ?? ""}>
-              <NavButton aria-label="editor">
-                <PostAddIcon />
+          {!embed ? (
+            <>
+              {params.contentSlug && location.pathname.startsWith("/docs") && (
+                <Tooltip title="edit current document">
+                  <Link
+                    to={`/editor/${params.projectSlug}/${params.contentSlug}`}
+                  >
+                    <NavButton aria-label="editor">
+                      <EditIcon />
+                    </NavButton>
+                  </Link>
+                </Tooltip>
+              )}
+              <Tooltip title="create document">
+                <Link to={"/editor/" + params.projectSlug ?? ""}>
+                  <NavButton aria-label="editor">
+                    <PostAddIcon />
+                  </NavButton>
+                </Link>
+              </Tooltip>
+              <SyntaxMenu />
+              <FavMenu />
+              <NavButton
+                aria-label="toggle dark mode"
+                onClick={toggleColorMode}
+              >
+                {mode === "light" ? (
+                  <Brightness4Icon sx={{ fontSize: 20 }} />
+                ) : (
+                  <Brightness7Icon sx={{ fontSize: 20 }} />
+                )}
               </NavButton>
-            </Link>
-          </Tooltip>
-          <SyntaxMenu />
-          <FavMenu />
-          <NavButton aria-label="toggle dark mode" onClick={toggleColorMode}>
-            {mode === "light" ? (
-              <Brightness4Icon sx={{ fontSize: 20 }} />
-            ) : (
-              <Brightness7Icon sx={{ fontSize: 20 }} />
-            )}
-          </NavButton>
-          <SearchInputWrapper
-            sx={{ cursor: "text" }}
-            onClick={(e: React.MouseEvent<HTMLInputElement>) => {
-              e.currentTarget.blur();
-              showSearch$.next(true);
-            }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              onFocus={(e) => {
-                e.target.blur();
-                showSearch$.next(true);
-              }}
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </SearchInputWrapper>
+              <SearchInputWrapper
+                sx={{ cursor: "text" }}
+                onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+                  e.currentTarget.blur();
+                  showSearch$.next(true);
+                }}
+              >
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  onFocus={(e) => {
+                    e.target.blur();
+                    showSearch$.next(true);
+                  }}
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </SearchInputWrapper>
+            </>
+          ) : (
+            <>
+              <a
+                href={window.location.href.replace("#/embed", "#/docs")}
+                target="window"
+              >
+                <Button variant="contained">open in docs</Button>
+              </a>
+            </>
+          )}
         </Toolbar>
       </NavAppBar>
-      <SearchOverlay show$={showSearch$}></SearchOverlay>
+      <Suspense fallback={<></>}>
+        <SearchOverlay show$={showSearch$}></SearchOverlay>
+      </Suspense>
     </Box>
   );
 }

@@ -99,10 +99,12 @@ const MDX = memo(
     mdx,
     onSaveMDX,
     onAfterRender,
+    embed,
   }: {
     mdx: string;
     onSaveMDX: (mdx: string) => void;
     onAfterRender?: () => void;
+    embed?: boolean;
   }) => {
     let i = 0;
     const [theme] = useObservableState(() => codeTheme$);
@@ -140,7 +142,7 @@ const MDX = memo(
       requestAnimationFrame(() => {
         onAfterRender?.();
       });
-    });
+    }, [mdx, params.headingIndex]);
     let hIndex = 0;
     return (
       <>
@@ -155,15 +157,17 @@ const MDX = memo(
                     children: (
                       <>
                         <HWrapper>{props.children}</HWrapper>
-                        <Link
-                          to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
-                        >
-                          <LinkIcon
-                            sx={{
-                              fontSize: "1.5rem",
-                            }}
-                          ></LinkIcon>
-                        </Link>
+                        {!embed && (
+                          <Link
+                            to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
+                          >
+                            <LinkIcon
+                              sx={{
+                                fontSize: "1.5rem",
+                              }}
+                            ></LinkIcon>
+                          </Link>
+                        )}
                       </>
                     ),
                   };
@@ -228,10 +232,12 @@ export const MarkdownRenderer = ({
   mdx,
   isEditor,
   onAfterRender,
+  embed,
 }: {
   mdx: string;
   isEditor?: boolean;
   onAfterRender?: () => void;
+  embed?: boolean;
 }) => {
   const currentMDX$ = useObservable(
     () => new ValueSubject(mdx)
@@ -257,6 +263,7 @@ export const MarkdownRenderer = ({
         }}
       >
         <MDX
+          embed={embed}
           onAfterRender={onAfterRender}
           mdx={debouncedMDX}
           onSaveMDX={(saveMDX) => {

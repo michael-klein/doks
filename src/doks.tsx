@@ -6,6 +6,7 @@ import { DocOptionsContextProvider } from "./hooks/use_doc_options_context";
 import { DocOptions } from "./interfaces";
 const Docs = lazy(() => import("./pages/docs"));
 const Editor = lazy(() => import("./pages/editor"));
+const Embed = lazy(() => import("./pages/embed"));
 
 export const Doks = (options: DocOptions) => {
   return (
@@ -15,6 +16,7 @@ export const Doks = (options: DocOptions) => {
           <Routes>
             <Route path="/editor/*" element={<Editor></Editor>}></Route>
             <Route path="/docs/*" element={<Docs></Docs>}></Route>
+            <Route path="/embed/*" element={<Embed></Embed>}></Route>
             <Route path="*" element={<Docs></Docs>}></Route>
           </Routes>
         </HashRouter>

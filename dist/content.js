@@ -24,7 +24,8 @@ import React__default, { memo, useMemo, useRef, useCallback, useEffect } from "r
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { h as htmdx, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
-import { u as useParams, L as Link } from "./doks.js";
+import { Link, useParams as useParams$1 } from "react-router-dom";
+import { useParams } from "react-router";
 import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment } from "./main.js";
 import { G as Grid } from "./Button.js";
 import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
@@ -270,7 +271,7 @@ const ContentWrapper = default_1$1(Grid)(({
 }));
 const Content = () => {
   var _a;
-  const params = useParams();
+  const params = useParams$1();
   const document = useObservableState(useObservable((input$) => {
     return combineLatest(input$, documents$).pipe(map(([input, documents]) => {
       return documents.get(input[0].contentSlug);

@@ -1,19 +1,28 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
 import { formatDate } from "../utils/format_date";
 import { MarkdownRenderer } from "./markdown_renderer";
 import { TableOfContents } from "./table_of_contents";
-import { useParams } from "react-router-dom";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { InputAdornment } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { ConditionalCard } from "./conditional_card";
+
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   display: "flex",
   alignItems: "start",
@@ -24,7 +33,24 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
   },
 }));
 
-export const Content = () => {
+const EmbedField = styled(TextField)(({ theme }) => ({
+  ".MuiOutlinedInput-root": {
+    paddingRight: "10px",
+  },
+  input: {
+    cursor: "grab !important",
+    padding: "5px",
+    paddingLeft: "14px",
+    paddingRight: "14px",
+    fontSize: ".9em",
+  },
+  svg: {
+    height: "0.8em",
+    width: "0.8em",
+  },
+}));
+
+export const Content = ({ embed }: { embed?: boolean }) => {
   const params = useParams();
   const document = useObservableState(
     useObservable(
@@ -78,18 +104,86 @@ export const Content = () => {
     };
   }, [params.contentSlug]);
 
+  const [openSuccess, setOpenSuccess] = useState(false);
+
   return (
-    <ContentWrapper item xs={9}>
-      <Card
-        elevation={2}
-        sx={{ padding: 2, textAlign: "justify", overflowX: "auto" }}
+    <ContentWrapper item xs={embed ? 0 : 9}>
+      <Snackbar
+        sx={{ marginTop: "60px" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={openSuccess}
+        autoHideDuration={6000}
+        onClose={() => {
+          setOpenSuccess(false);
+        }}
       >
-        {document && (
+        <Alert
+          sx={{ boxShadow: 1 }}
+          severity="success"
+          onClose={() => {
+            setOpenSuccess(false);
+          }}
+        >
+          Embed link copied to clipboard!
+        </Alert>
+      </Snackbar>
+      <ConditionalCard
+        showCard={!embed}
+        elevation={2}
+        sx={{ padding: embed ? 1 : 2, textAlign: "justify", overflowX: "auto" }}
+      >
+        {!embed && document && (
           <CardHeader
             action={
-              <IconButton aria-label="favourite" onClick={toggleFav}>
-                <FavoriteIcon sx={{ color: document.isFavourite && "red" }} />
-              </IconButton>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <FormControl
+                  variant="standard"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                  onMouseUp={() => {
+                    navigator.clipboard
+                      .writeText(
+                        `<iframe src="${window.location.href.replace(
+                          "/#/docs",
+                          "/#/embed"
+                        )}" title="Talkwalker docs: ${document.name}"></iframe>`
+                      )
+                      .then(
+                        function () {
+                          setOpenSuccess(true);
+                        },
+                        function () {}
+                      );
+                  }}
+                >
+                  <EmbedField
+                    id="component-simple"
+                    value={`<iframe src="${window.location.href.replace(
+                      "/#/docs",
+                      "/#/embed"
+                    )}" title="Talkwalker docs: ${document.name}"></iframe>`}
+                    onChange={(e) => {
+                      e.preventDefault();
+                    }}
+                    onFocus={(e) => {
+                      e.preventDefault();
+                    }}
+                    variant="outlined"
+                    label="embed"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <ContentCopyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <IconButton aria-label="favourite" onClick={toggleFav}>
+                  <FavoriteIcon sx={{ color: document.isFavourite && "red" }} />
+                </IconButton>
+              </Box>
             }
             title={document.name}
             subheader={formatDate(document.lastModified)}
@@ -101,11 +195,12 @@ export const Content = () => {
         >
           <MarkdownRenderer
             mdx={document?.mdx}
+            embed={embed}
             onAfterRender={onAfterRender}
           ></MarkdownRenderer>
         </CardContent>
-      </Card>
-      {(document?.mdx?.match(/#/g) || []).length > 1 && (
+      </ConditionalCard>
+      {!embed && (document?.mdx?.match(/#/g) || []).length > 1 && (
         <Card
           elevation={2}
           sx={{

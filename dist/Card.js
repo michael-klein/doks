@@ -1,6 +1,6 @@
 import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, h as useThemeProps, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx } from "./main.js";
 import * as React from "react";
-import { P as Paper } from "./use-observable-state.js";
+import { P as Paper } from "./IconButton.js";
 function getCardUtilityClass(slot) {
   return generateUtilityClass("MuiCard", slot);
 }

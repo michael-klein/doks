@@ -1,6 +1,12 @@
-import { f as generateUtilityClasses, g as generateUtilityClass, s as styled, B as rootShouldForwardProp, o as capitalize, _ as _extends, D as alpha, h as useThemeProps, i as _objectWithoutPropertiesLoose, j as jsx, d as jsxs, l as clsx, k as composeClasses } from "./main.js";
+import { c as createTheme, f as generateUtilityClasses, g as generateUtilityClass, s as styled, r as rootShouldForwardProp, m as capitalize, _ as _extends, q as alpha, h as useThemeProps, i as _objectWithoutPropertiesLoose, j as jsx, d as jsxs, l as clsx, k as composeClasses } from "./main.js";
+import { c as createBox } from "./styled.js";
 import * as React from "react";
-import { B as ButtonBase } from "./Typography.js";
+import { B as ButtonBase } from "./IconButton.js";
+const defaultTheme = createTheme();
+const Box = createBox({
+  defaultTheme
+});
+var Box$1 = Box;
 function getButtonUtilityClass(slot) {
   return generateUtilityClass("MuiButton", slot);
 }
@@ -254,5 +260,5 @@ const Button = /* @__PURE__ */ React.forwardRef(function Button2(inProps, ref) {
   }));
 });
 var Button$1 = Button;
-export { Button$1 as B };
+export { Button$1 as B, Box$1 as a };
 //# sourceMappingURL=Button.js.map

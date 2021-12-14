@@ -239,7 +239,7 @@ const NavAppBar = styled(AppBar)(({ theme }) => ({
 }));
 export function Navbar({ embed }: { embed?: boolean }) {
   const [hasDocumentsFetching] = useObservableAndState(() =>
-    combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
+    combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(
       map(
         ([queuedDocuments, fetchingDocuments]) =>
           queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0
@@ -259,7 +259,13 @@ export function Navbar({ embed }: { embed?: boolean }) {
         zIndex: 1000,
       }}
     >
-      {hasDocumentsFetching && <Progress />}
+      {hasDocumentsFetching && (
+        <Progress
+          sx={{
+            display: { xs: "block", sm: "none" },
+          }}
+        />
+      )}
       <NavAppBar position="static">
         <Toolbar>
           <Typography

@@ -1,10 +1,10 @@
-import { w as getScrollbarSize, o as ownerDocument, h as ownerWindow, b as useForkRef, a as useEventCallback, c as createChainedFunction, i as interopRequireDefault, j as useEnhancedEffect, e as debounce } from "./styled.js";
-import { c as createSvgIcon, r as require$$2 } from "./Typography.js";
-import { g as generateUtilityClass, f as generateUtilityClasses, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx, d as jsxs, s as styled, h as useThemeProps, H as duration, B as rootShouldForwardProp } from "./main.js";
+import { w as getScrollbarSize, o as ownerDocument, j as ownerWindow, u as useForkRef, a as useEventCallback, e as createChainedFunction, i as interopRequireDefault, k as useEnhancedEffect, f as debounce } from "./styled.js";
+import { c as createSvgIcon, r as require$$2, d as useTheme, e as Transition, f as reflow, g as getTransitionProps, P as Paper, G as Grow } from "./IconButton.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx, d as jsxs, s as styled, h as useThemeProps, n as duration, r as rootShouldForwardProp } from "./main.js";
 import * as React from "react";
 import "./react-is.production.min.js";
-import { i as isHostComponent, b as useTheme, T as Transition, r as reflow, g as getTransitionProps, P as Paper } from "./use-observable-state.js";
-import { P as Portal, G as Grow } from "./markdown_renderer.js";
+import { i as isHostComponent } from "./isHostComponent.js";
+import { P as Portal } from "./markdown_renderer.js";
 function getBackdropUtilityClass(slot) {
   return generateUtilityClass("MuiBackdrop", slot);
 }

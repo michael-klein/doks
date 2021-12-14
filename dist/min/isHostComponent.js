@@ -1,0 +1,1 @@
+function isHostComponent(o){return"string"==typeof o}export{isHostComponent as i};

@@ -1,1 +1,1 @@
-import{u as useObservableState,a as useObservable}from"./use-observable-state.js";function useObservableAndState(e,s){const a=useObservable(e,s);return[useObservableState(a),a]}export{useObservableAndState as u};
+import{u as useObservableState,b as useObservable}from"./IconButton.js";function useObservableAndState(e,s){const t=useObservable(e,s);return[useObservableState(t),t]}export{useObservableAndState as u};

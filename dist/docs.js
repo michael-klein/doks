@@ -2,15 +2,19 @@ import * as React from "react";
 import { lazy, Suspense, useCallback } from "react";
 import { B as Background } from "./background.js";
 import { i as interopRequireDefault, d as default_1$2, C as Container } from "./styled.js";
-import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1, B as ButtonBase, T as Typography } from "./Typography.js";
+import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1, B as ButtonBase, T as Typography } from "./IconButton.js";
 import { j as jsx, d as jsxs, s as styled, _ as _extends, e as emphasize, g as generateUtilityClass, f as generateUtilityClasses, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, l as clsx, F as Fragment, C as CircularProgress } from "./main.js";
-import { B as Button } from "./Button.js";
-import { d as documents$ } from "./documents.js";
+import { B as Button, a as Box } from "./Button.js";
+import { q as queuedDocuments$, f as fetchingDocuments$, d as documents$ } from "./documents.js";
+import { u as useObservableAndState } from "./use_observable_and_state.js";
+import { combineLatest, map } from "rxjs";
 import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
+import { S as Snackbar, A as Alert } from "./Alert.js";
 import "./react-is.production.min.js";
 import { G as Grid } from "./Grid.js";
+import "rxjs/operators";
 import "react-dom";
-import "rxjs";
+import "./Close.js";
 var KeyboardArrowUp = {};
 var _interopRequireDefault$1 = interopRequireDefault.exports;
 Object.defineProperty(KeyboardArrowUp, "__esModule", {
@@ -258,6 +262,7 @@ const Project = () => {
 const Layout = ({
   children
 }) => {
+  const [hasDocumentsFetching] = useObservableAndState(() => combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
   const params = useParams();
   const navigate = useNavigate();
   const onNodeSelect = useCallback((nodeId) => {
@@ -268,7 +273,38 @@ const Layout = ({
     }
   }, [params]);
   return /* @__PURE__ */ jsxs(Background, {
-    children: [/* @__PURE__ */ jsx(DocFetcher, {
+    children: [/* @__PURE__ */ jsx(Snackbar, {
+      anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "left"
+      },
+      open: hasDocumentsFetching,
+      sx: {
+        display: {
+          xs: "none",
+          sm: "block"
+        }
+      },
+      children: /* @__PURE__ */ jsx(Alert, {
+        sx: {
+          boxShadow: 1
+        },
+        severity: "info",
+        icon: false,
+        children: /* @__PURE__ */ jsxs(Box, {
+          sx: {
+            display: "flex",
+            alignItems: "center"
+          },
+          children: [/* @__PURE__ */ jsx(CircularProgress, {
+            size: 18,
+            sx: {
+              marginRight: 1
+            }
+          }), " ", "fetching documents in the background..."]
+        })
+      })
+    }), /* @__PURE__ */ jsx(DocFetcher, {
       mode: "docs"
     }), /* @__PURE__ */ jsx(Navbar, {}), /* @__PURE__ */ jsxs(Container, {
       sx: {

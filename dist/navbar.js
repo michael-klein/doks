@@ -1,23 +1,22 @@
-import { j as useEnhancedEffect, b as useForkRef, i as interopRequireDefault } from "./styled.js";
-import { B as ButtonBase, c as createSvgIcon, r as require$$2, T as Typography } from "./Typography.js";
-import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, o as capitalize, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, w as keyframes, N as css, d as jsxs, L as lighten, K as darken, B as rootShouldForwardProp, D as alpha, F as Fragment } from "./main.js";
+import { k as useEnhancedEffect, u as useForkRef, i as interopRequireDefault } from "./styled.js";
+import { P as Paper, d as useTheme, B as ButtonBase, c as createSvgIcon, r as require$$2, I as IconButton, T as Typography, u as useObservableState } from "./IconButton.js";
+import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, m as capitalize, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, D as keyframes, N as css, d as jsxs, p as lighten, o as darken, r as rootShouldForwardProp, q as alpha, F as Fragment } from "./main.js";
 import { L as ListContext, d as default_1$6, M as Menu } from "./Menu.js";
 import * as React from "react";
 import { lazy, Suspense, useState, Fragment as Fragment$1 } from "react";
 import { c as useDocOptions, u as useParams, d as useLocation, e as useColorModeContext, L as Link, b as useNavigate } from "./doks.js";
 import { map, combineLatest } from "rxjs";
 import { u as useObservableAndState } from "./use_observable_and_state.js";
-import { V as ValueSubject, d as documents$, h as queuedDocuments$, i as fetchingDocuments$ } from "./documents.js";
-import { I as IconButton, c as codeTheme$ } from "./markdown_renderer.js";
+import { V as ValueSubject, d as documents$, q as queuedDocuments$, f as fetchingDocuments$ } from "./documents.js";
+import { c as codeTheme$ } from "./markdown_renderer.js";
 import { d as InputBase } from "./InputBase.js";
-import { P as Paper, b as useTheme, u as useObservableState } from "./use-observable-state.js";
-import { B as Box } from "./Box.js";
+import { a as Box, B as Button } from "./Button.js";
 import { T as Tooltip } from "./Tooltip.js";
-import { B as Button } from "./Button.js";
+import "rxjs/operators";
 import "react-dom";
 import "./react-is.production.min.js";
+import "./isHostComponent.js";
 import "./index.js";
-import "rxjs/operators";
 function getAppBarUtilityClass(slot) {
   return generateUtilityClass("MuiAppBar", slot);
 }
@@ -886,7 +885,7 @@ const NavAppBar = styled(AppBar$1)(({
 function Navbar({
   embed
 }) {
-  const [hasDocumentsFetching] = useObservableAndState(() => combineLatest(queuedDocuments$, fetchingDocuments$).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
+  const [hasDocumentsFetching] = useObservableAndState(() => combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
   const {
     title = "documentation"
   } = useDocOptions();
@@ -903,7 +902,14 @@ function Navbar({
       top: 0,
       zIndex: 1e3
     },
-    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(Progress, {}), /* @__PURE__ */ jsx(NavAppBar, {
+    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(Progress, {
+      sx: {
+        display: {
+          xs: "block",
+          sm: "none"
+        }
+      }
+    }), /* @__PURE__ */ jsx(NavAppBar, {
       position: "static",
       children: /* @__PURE__ */ jsxs(Toolbar$1, {
         children: [/* @__PURE__ */ jsx(Typography, {

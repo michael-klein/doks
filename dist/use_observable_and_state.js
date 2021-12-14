@@ -1,4 +1,4 @@
-import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
+import { u as useObservableState, b as useObservable } from "./IconButton.js";
 function useObservableAndState(init, inputs) {
   const observable$ = useObservable(init, inputs);
   return [useObservableState(observable$), observable$];

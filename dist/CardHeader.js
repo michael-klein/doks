@@ -1,6 +1,6 @@
 import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, d as jsxs, l as clsx } from "./main.js";
 import * as React from "react";
-import { T as Typography } from "./Typography.js";
+import { T as Typography } from "./IconButton.js";
 function getCardHeaderUtilityClass(slot) {
   return generateUtilityClass("MuiCardHeader", slot);
 }

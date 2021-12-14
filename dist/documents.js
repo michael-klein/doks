@@ -674,5 +674,5 @@ const queueDocument = (contents, prioritize = false) => {
   }));
   shiftQueue();
 };
-export { ValueSubject as V, addOrUpdateProject as a, addOrUpdateManyContents as b, contents$ as c, documents$ as d, addOrUpdateContents as e, getCachedDocument as f, getLastModified as g, queuedDocuments$ as h, fetchingDocuments$ as i, modifyDocument as m, projects$ as p, queueDocument as q, removeContents as r };
+export { ValueSubject as V, addOrUpdateProject as a, addOrUpdateManyContents as b, contents$ as c, documents$ as d, addOrUpdateContents as e, fetchingDocuments$ as f, getLastModified as g, getCachedDocument as h, queueDocument as i, modifyDocument as m, projects$ as p, queuedDocuments$ as q, removeContents as r };
 //# sourceMappingURL=documents.js.map

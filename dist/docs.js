@@ -1,56 +1,14 @@
 import * as React from "react";
 import { lazy, Suspense, useCallback } from "react";
-import { B as Background } from "./background.js";
-import { i as interopRequireDefault, d as default_1$2, C as Container } from "./styled.js";
-import { c as createSvgIcon, r as require$$2, a as createSvgIcon$1, B as ButtonBase, T as Typography } from "./IconButton.js";
-import { j as jsx, d as jsxs, s as styled, _ as _extends, e as emphasize, g as generateUtilityClass, f as generateUtilityClasses, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, l as clsx, F as Fragment, C as CircularProgress } from "./main.js";
-import { B as Button, a as Box } from "./Button.js";
-import { q as queuedDocuments$, f as fetchingDocuments$, d as documents$ } from "./documents.js";
-import { u as useObservableAndState } from "./use_observable_and_state.js";
+import { c as createSvgIcon, B as ButtonBase, T as Typography, a as createSvgIcon$1, i as interopRequireDefault, r as require$$2, R as Routes, b as Route, u as useComponentContext, d as useParams, e as useObservableAndState, q as queuedDocuments$, f as fetchingDocuments$, g as useNavigate, h as documents$, j as Box } from "./doks.js";
 import { combineLatest, map } from "rxjs";
-import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
-import { S as Snackbar, A as Alert } from "./Alert.js";
-import "./react-is.production.min.js";
+import { j as jsx, q as styled, _ as _extends, O as emphasize, g as generateUtilityClass, a as generateUtilityClasses, r as useThemeProps, b as _objectWithoutPropertiesLoose, e as composeClasses, h as clsx, i as jsxs, F as Fragment, G as CircularProgress } from "./main.js";
+import { S as Snackbar, A as Alert } from "./Snackbar.js";
+import { C as Container } from "./Container.js";
 import { G as Grid } from "./Grid.js";
-import "rxjs/operators";
 import "react-dom";
-import "./Close.js";
-var KeyboardArrowUp = {};
-var _interopRequireDefault$1 = interopRequireDefault.exports;
-Object.defineProperty(KeyboardArrowUp, "__esModule", {
-  value: true
-});
-var default_1$1 = KeyboardArrowUp.default = void 0;
-var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
-var _jsxRuntime$1 = require$$2;
-var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
-  d: "M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"
-}), "KeyboardArrowUp");
-default_1$1 = KeyboardArrowUp.default = _default$1;
-const StyledFooter = default_1$2("footer")(({
-  theme
-}) => ({
-  background: theme.palette.primary.light,
-  padding: 20,
-  display: "flex",
-  justifyContent: "flex-end"
-}));
-const UpButton = default_1$2(Button)(({
-  theme
-}) => ({
-  color: theme.palette.primary.dark
-}));
-const Footer = () => {
-  return /* @__PURE__ */ jsx(StyledFooter, {
-    children: /* @__PURE__ */ jsxs(UpButton, {
-      onClick: () => {
-        window.scrollTo(0, 0);
-      },
-      children: [/* @__PURE__ */ jsx(default_1$1, {}), "up"]
-    })
-  });
-};
-var MoreHorizIcon = createSvgIcon$1(/* @__PURE__ */ jsx("path", {
+import "rxjs/operators";
+var MoreHorizIcon = createSvgIcon(/* @__PURE__ */ jsx("path", {
   d: "M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
 }), "MoreHoriz");
 const BreadcrumbCollapsedButton = styled(ButtonBase, {
@@ -234,17 +192,17 @@ Object.defineProperty(Folder, "__esModule", {
   value: true
 });
 var default_1 = Folder.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _createSvgIcon = _interopRequireDefault(createSvgIcon$1);
 var _jsxRuntime = require$$2;
 var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
   d: "M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
 }), "Folder");
 default_1 = Folder.default = _default;
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
-const Sidebar = lazy(() => import("./sidebar.js"));
-const Content = lazy(() => import("./content.js"));
-const Navbar = lazy(() => import("./navbar.js"));
 const Project = () => {
+  const {
+    Content
+  } = useComponentContext();
   const params = useParams();
   return /* @__PURE__ */ jsx(Fragment, {
     children: params.contentSlug && /* @__PURE__ */ jsx(Suspense, {
@@ -272,6 +230,12 @@ const Layout = ({
       });
     }
   }, [params]);
+  const {
+    Sidebar,
+    Navbar,
+    Background,
+    Footer
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(Background, {
     children: [/* @__PURE__ */ jsx(Snackbar, {
       anchorOrigin: {

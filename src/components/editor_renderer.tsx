@@ -32,4 +32,3 @@ export const EditorRenderer = ({
     ></Editor>
   );
 };
-export default EditorRenderer;

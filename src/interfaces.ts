@@ -3,7 +3,7 @@ export interface DocOptionsProject {
   name: string;
 }
 export interface DocOptions {
-  title?: string;
   targetNode?: HTMLElement;
   projects: DocOptionsProject[];
+  wrapDocs?: (docs: JSX.Element) => JSX.Element;
 }

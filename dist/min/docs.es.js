@@ -1,1 +1,1 @@
-import"react";import"react-dom";export{O as docs}from"./main.js";
+import"react";import"react-dom";export{U as docs}from"./main.js";

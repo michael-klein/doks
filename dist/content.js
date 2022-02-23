@@ -17,30 +17,16 @@ var __spreadValues = (a2, b2) => {
   return a2;
 };
 var __spreadProps = (a2, b2) => __defProps(a2, __getOwnPropDescs(b2));
-import { d as default_1$3 } from "./Menu.js";
-import { i as interopRequireDefault, d as default_1$2, B as Box } from "./styled.js";
+import { a as createSvgIcon, i as interopRequireDefault, r as require$$2, z as useFormControl, S as FormControlContext, T as Typography, H as default_1$1, U as TextField, d as useParams, K as useObservableState, V as useObservable, W as modifyDocument, u as useComponentContext, X as CardHeader, Y as Box, L as FormControl, I as IconButton, Z as default_1$2, Q as Card, h as documents$ } from "./doks.js";
 import * as React from "react";
-import React__default, { memo, useMemo, useRef, useCallback, useEffect, useState } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { m as modifyDocument, d as documents$ } from "./documents.js";
-import { h as htmdx, M as MarkdownRenderer } from "./markdown_renderer.js";
-import { u as useParams, L as Link } from "./doks.js";
-import { c as createSvgIcon, r as require$$2, T as Typography, u as useObservableState, b as useObservable, I as IconButton } from "./IconButton.js";
-import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, h as useThemeProps, i as _objectWithoutPropertiesLoose, _ as _extends, k as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment, m as capitalize } from "./main.js";
+import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, r as useThemeProps, b as _objectWithoutPropertiesLoose, _ as _extends, e as composeClasses, j as jsx, h as clsx, i as jsxs, c as capitalize } from "./main.js";
 import { C as ConditionalCard } from "./conditional_card.js";
 import { G as Grid } from "./Grid.js";
-import { T as TextField } from "./TextField.js";
-import { S as Snackbar, A as Alert } from "./Alert.js";
-import { C as CardHeader } from "./CardHeader.js";
-import { F as FormControl } from "./Input.js";
-import { u as useFormControl, F as FormControlContext } from "./InputBase.js";
-import { C as Card } from "./Card.js";
-import "./react-is.production.min.js";
-import "./isHostComponent.js";
+import { S as Snackbar, A as Alert } from "./Snackbar.js";
 import "react-dom";
-import "./index.js";
-import "./Close.js";
 function getCardContentUtilityClass(slot) {
   return generateUtilityClass("MuiCardContent", slot);
 }
@@ -90,181 +76,6 @@ const CardContent = /* @__PURE__ */ React.forwardRef(function CardContent2(inPro
 var CardContent$1 = CardContent;
 const formatDate = (date) => {
   return new Date(date).toLocaleString();
-};
-var SubdirectoryArrowRight = {};
-var _interopRequireDefault$1 = interopRequireDefault.exports;
-Object.defineProperty(SubdirectoryArrowRight, "__esModule", {
-  value: true
-});
-var default_1$1 = SubdirectoryArrowRight.default = void 0;
-var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
-var _jsxRuntime$1 = require$$2;
-var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
-  d: "m19 15-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
-}), "SubdirectoryArrowRight");
-default_1$1 = SubdirectoryArrowRight.default = _default$1;
-var removeMarkdown = function(md, options) {
-  options = options || {};
-  options.listUnicodeChar = options.hasOwnProperty("listUnicodeChar") ? options.listUnicodeChar : false;
-  options.stripListLeaders = options.hasOwnProperty("stripListLeaders") ? options.stripListLeaders : true;
-  options.gfm = options.hasOwnProperty("gfm") ? options.gfm : true;
-  options.useImgAltText = options.hasOwnProperty("useImgAltText") ? options.useImgAltText : true;
-  var output = md || "";
-  output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "");
-  try {
-    if (options.stripListLeaders) {
-      if (options.listUnicodeChar)
-        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, options.listUnicodeChar + " $1");
-      else
-        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, "$1");
-    }
-    if (options.gfm) {
-      output = output.replace(/\n={2,}/g, "\n").replace(/~{3}.*\n/g, "").replace(/~~/g, "").replace(/`{3}.*\n/g, "");
-    }
-    output = output.replace(/<[^>]*>/g, "").replace(/^[=\-]{2,}\s*$/g, "").replace(/\[\^.+?\](\: .*?$)?/g, "").replace(/\s{0,2}\[.*?\]: .*?$/g, "").replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? "$1" : "").replace(/\[(.*?)\][\[\(].*?[\]\)]/g, "$1").replace(/^\s{0,3}>\s?/g, "").replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "").replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, "$1$2$3").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/(`{3,})(.*?)\1/gm, "$2").replace(/`(.+?)`/g, "$1").replace(/\n{2,}/g, "\n\n");
-  } catch (e2) {
-    console.error(e2);
-    return md;
-  }
-  return output;
-};
-class ErrorBoundary extends React__default.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: ""
-    };
-  }
-  componentDidCatch(error, errorInfo) {
-  }
-  static getDerivedStateFromError(error) {
-    return {
-      hasError: true,
-      error: error.message
-    };
-  }
-  render() {
-    if (this.state.hasError) {
-      console.error("toc error", this.state.error);
-      return /* @__PURE__ */ jsxs(Fragment, {
-        children: [/* @__PURE__ */ jsx("h1", {
-          children: "MDX error:"
-        }), /* @__PURE__ */ jsx("div", {
-          children: this.state.error
-        })]
-      });
-    }
-    return this.props.children;
-  }
-}
-const TOCList = default_1$2("ul")({
-  listStyle: "none",
-  margin: 0,
-  padding: 10,
-  paddingLeft: 0,
-  lineHeight: "1.3em",
-  maxHeight: "calc(60vh)",
-  overflowY: "auto"
-});
-const TOCListItem = default_1$2("li")({
-  fontSize: ".9em",
-  "a,a:hover,a:link,a:active": {
-    color: "inherit",
-    textDecoration: "none",
-    textAlign: "left"
-  },
-  "a:hover": {
-    textDecoration: "underline"
-  }
-});
-const getListItem = (level) => (props) => {
-  const params = useParams();
-  const linkRef = useRef();
-  return /* @__PURE__ */ jsxs(TOCListItem, {
-    sx: {
-      marginLeft: 10 * (level - 1) + "px",
-      display: "flex"
-    },
-    children: [/* @__PURE__ */ jsx(Box, {
-      children: /* @__PURE__ */ jsx(default_1$1, {
-        sx: {
-          fontSize: ".8em",
-          marginRight: ".2em"
-        },
-        className: "sub-icon"
-      })
-    }), /* @__PURE__ */ jsx(Box, {
-      children: /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
-        ref: linkRef,
-        to: `/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`
-      }))
-    })]
-  });
-};
-const TOC = memo(({
-  mdx
-}) => {
-  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.startsWith("#")).map((line) => {
-    for (let i22 = 0; i22 < line.length; i22++) {
-      if (line.charAt(i22) !== "#") {
-        return line.substr(0, i22 - 1) + removeMarkdown(line.substr(i22));
-      }
-    }
-    return line;
-  }).join("\n"), [mdx]);
-  let i2 = 0;
-  let hIndex = 0;
-  return /* @__PURE__ */ jsx(Fragment, {
-    children: headings !== void 0 ? /* @__PURE__ */ jsx(TOCList, {
-      children: htmdx(headings, React__default.createElement, {
-        components: {
-          h1: getListItem(1),
-          h2: getListItem(2),
-          h3: getListItem(3),
-          h4: getListItem(4),
-          h6: getListItem(6),
-          h7: getListItem(7),
-          h8: getListItem(8),
-          h10: getListItem(10)
-        },
-        jsxTransforms: [(type, props, children) => {
-          if (!props) {
-            props = {};
-          }
-          if (type.startsWith("h")) {
-            props.index = hIndex;
-            hIndex++;
-          }
-          props.key = i2++;
-          return [type, props, children];
-        }]
-      })
-    }) : /* @__PURE__ */ jsx(Fragment, {})
-  });
-});
-const Wrapper = default_1$2(Box)(({
-  theme
-}) => __spreadProps(__spreadValues({}, theme.typography.body1), {
-  width: "220px"
-}));
-const Header = default_1$2("h1")({
-  fontSize: "1em",
-  marginBottom: "-.7em",
-  fontWeight: "bold"
-});
-const TableOfContents = ({
-  mdx
-}) => {
-  return /* @__PURE__ */ jsxs(Wrapper, {
-    children: [/* @__PURE__ */ jsx(Header, {
-      children: "Table of contents"
-    }), /* @__PURE__ */ jsx(ErrorBoundary, {
-      children: /* @__PURE__ */ jsx(TOC, {
-        mdx
-      })
-    }, "toc-" + mdx)]
-  });
 };
 var ContentCopy = {};
 var _interopRequireDefault = interopRequireDefault.exports;
@@ -573,7 +384,7 @@ function C(n) {
     });
   });
 }
-const ContentWrapper = default_1$2(Grid)(({
+const ContentWrapper = default_1$1(Grid)(({
   theme
 }) => ({
   display: "flex",
@@ -584,7 +395,7 @@ const ContentWrapper = default_1$2(Grid)(({
     flexBasis: "initial"
   }
 }));
-const EmbedField = default_1$2(TextField)(({
+const EmbedField = default_1$1(TextField)(({
   theme
 }) => ({
   cursor: "grab !important",
@@ -647,6 +458,10 @@ const Content = ({
       }
     }
   }, [params.headingIndex]);
+  const {
+    TableOfContents,
+    MarkdownRenderer
+  } = useComponentContext();
   useEffect(() => {
     window.scrollTo(0, 0);
     return () => {
@@ -729,7 +544,7 @@ const Content = ({
           }), /* @__PURE__ */ jsx(IconButton, {
             "aria-label": "favourite",
             onClick: toggleFav,
-            children: /* @__PURE__ */ jsx(default_1$3, {
+            children: /* @__PURE__ */ jsx(default_1$2, {
               sx: {
                 color: document2.isFavourite && "red"
               }

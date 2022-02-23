@@ -4,27 +4,23 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { lazy, ReactChild, Suspense, useCallback } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { Background } from "../components/background";
-import { Footer } from "../components/footer";
+import { useComponentContext } from "../hooks/use_component_context";
 import {
   documents$,
   fetchingDocuments$,
   queuedDocuments$,
 } from "../store/documents";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Typography from "@mui/material/Typography";
-import FolderIcon from "@mui/icons-material/Folder";
+import { combineLatest, map } from "rxjs";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { combineLatest, map } from "rxjs";
-
+import Typography from "@mui/material/Typography";
+import FolderIcon from "@mui/icons-material/Folder";
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
-const Sidebar = lazy(() => import("../components/sidebar"));
-const Content = lazy(() => import("../components/content"));
-const Navbar = lazy(() => import("../components/navbar"));
 
 const Project = () => {
+  const { Content } = useComponentContext();
   const params = useParams();
   return (
     <>
@@ -63,6 +59,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
     },
     [params]
   );
+  const { Sidebar, Navbar, Background, Footer } = useComponentContext();
   return (
     <Background>
       <Snackbar

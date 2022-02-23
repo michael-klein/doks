@@ -20,19 +20,12 @@ import { combineLatest, debounceTime, map } from "rxjs";
 import { DoksTheme } from "../css/theme";
 import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
+import { codeTheme$ } from "../utils/code_theme";
 import { ValueSubject } from "../utils/value_subject";
 import LinkIcon from "@mui/icons-material/Link";
 import { Link } from "react-router-dom";
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
-const SYNTAX_KEY = "SYNTAX";
-export const codeTheme$ = new ValueSubject(
-  localStorage.getItem(SYNTAX_KEY) ?? "gradientDark"
-);
-
-codeTheme$.subscribe((theme) => {
-  localStorage.setItem(SYNTAX_KEY, theme);
-});
 class ErrorBoundary extends React.Component<
   { onError: () => void },
   { hasError: boolean; error: string }
@@ -94,7 +87,8 @@ const removeVoidElements = (mdx: string) => {
 const HWrapper = styled("span")({
   display: "inline-block",
 });
-const MDX = memo(
+
+export const MDX = memo(
   ({
     mdx,
     onSaveMDX,

@@ -1,14 +1,16 @@
 import { lazy, Suspense } from "react";
-import { B as Background } from "./background.js";
-import { d as jsxs, j as jsx, F as Fragment, C as CircularProgress } from "./main.js";
-import { R as Routes, a as Route, u as useParams } from "./doks.js";
-import { C as Container } from "./styled.js";
+import { R as Routes, b as Route, d as useParams, u as useComponentContext } from "./doks.js";
+import { i as jsxs, j as jsx, F as Fragment, G as CircularProgress } from "./main.js";
+import { C as Container } from "./Container.js";
 import "react-dom";
+import "rxjs";
+import "rxjs/operators";
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
-const Content = lazy(() => import("./content.js"));
-const Navbar = lazy(() => import("./navbar.js"));
 const Project = () => {
   const params = useParams();
+  const {
+    Content
+  } = useComponentContext();
   return /* @__PURE__ */ jsx(Fragment, {
     children: params.contentSlug && /* @__PURE__ */ jsx(Suspense, {
       fallback: /* @__PURE__ */ jsx(CircularProgress, {
@@ -27,6 +29,10 @@ const Project = () => {
 const Layout = ({
   children
 }) => {
+  const {
+    Navbar,
+    Background
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(Background, {
     sx: {
       background: "initial"

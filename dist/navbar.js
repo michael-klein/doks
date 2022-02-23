@@ -1,28 +1,16 @@
-import { k as useEnhancedEffect, u as useForkRef, i as interopRequireDefault } from "./styled.js";
-import { P as Paper, d as useTheme, B as ButtonBase, c as createSvgIcon, r as require$$2, I as IconButton, T as Typography, u as useObservableState } from "./IconButton.js";
-import { g as generateUtilityClass, f as generateUtilityClasses, s as styled, m as capitalize, _ as _extends, h as useThemeProps, i as _objectWithoutPropertiesLoose, k as composeClasses, j as jsx, l as clsx, D as keyframes, N as css, d as jsxs, p as lighten, o as darken, r as rootShouldForwardProp, q as alpha, F as Fragment } from "./main.js";
-import { L as ListContext, d as default_1$6, M as Menu } from "./Menu.js";
+import { P as Paper, a as createSvgIcon, i as interopRequireDefault, r as require$$2, _ as InputBase, $ as LinearProgress, a0 as ValueSubject, e as useObservableAndState, d as useParams, a1 as useLocation, a2 as useColorModeContext, u as useComponentContext, j as Box, T as Typography, a3 as Link, a4 as Tooltip, O as Button, K as useObservableState, h as documents$, g as useNavigate, a5 as codeTheme$, q as queuedDocuments$, f as fetchingDocuments$ } from "./doks.js";
+import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, c as capitalize, _ as _extends, r as useThemeProps, b as _objectWithoutPropertiesLoose, e as composeClasses, j as jsx, h as clsx, F as Fragment, i as jsxs } from "./main.js";
 import * as React from "react";
-import { lazy, Suspense, useState, Fragment as Fragment$1 } from "react";
-import { c as useDocOptions, u as useParams, d as useLocation, e as useColorModeContext, L as Link, b as useNavigate } from "./doks.js";
+import { Suspense } from "react";
 import { map, combineLatest } from "rxjs";
-import { u as useObservableAndState } from "./use_observable_and_state.js";
-import { V as ValueSubject, d as documents$, q as queuedDocuments$, f as fetchingDocuments$ } from "./documents.js";
-import { c as codeTheme$ } from "./markdown_renderer.js";
-import { d as InputBase } from "./InputBase.js";
-import { a as Box, B as Button } from "./Button.js";
-import { T as Tooltip } from "./Tooltip.js";
-import "rxjs/operators";
 import "react-dom";
-import "./react-is.production.min.js";
-import "./isHostComponent.js";
-import "./index.js";
+import "rxjs/operators";
 function getAppBarUtilityClass(slot) {
   return generateUtilityClass("MuiAppBar", slot);
 }
 generateUtilityClasses("MuiAppBar", ["root", "positionFixed", "positionAbsolute", "positionSticky", "positionStatic", "positionRelative", "colorDefault", "colorPrimary", "colorSecondary", "colorInherit", "colorTransparent"]);
-const _excluded$3 = ["className", "color", "enableColorOnDark", "position"];
-const useUtilityClasses$3 = (ownerState) => {
+const _excluded$1 = ["className", "color", "enableColorOnDark", "position"];
+const useUtilityClasses$1 = (ownerState) => {
   const {
     color,
     position,
@@ -106,13 +94,13 @@ const AppBar = /* @__PURE__ */ React.forwardRef(function AppBar2(inProps, ref) {
     color = "primary",
     enableColorOnDark = false,
     position = "fixed"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$3);
+  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
   const ownerState = _extends({}, props, {
     color,
     position,
     enableColorOnDark
   });
-  const classes = useUtilityClasses$3(ownerState);
+  const classes = useUtilityClasses$1(ownerState);
   return /* @__PURE__ */ jsx(AppBarRoot, _extends({
     square: true,
     component: "header",
@@ -123,448 +111,6 @@ const AppBar = /* @__PURE__ */ React.forwardRef(function AppBar2(inProps, ref) {
   }, other));
 });
 var AppBar$1 = AppBar;
-const dividerClasses = generateUtilityClasses("MuiDivider", ["root", "absolute", "fullWidth", "inset", "middle", "flexItem", "light", "vertical", "withChildren", "withChildrenVertical", "textAlignRight", "textAlignLeft", "wrapper", "wrapperVertical"]);
-var dividerClasses$1 = dividerClasses;
-function getLinearProgressUtilityClass(slot) {
-  return generateUtilityClass("MuiLinearProgress", slot);
-}
-generateUtilityClasses("MuiLinearProgress", ["root", "colorPrimary", "colorSecondary", "determinate", "indeterminate", "buffer", "query", "dashed", "dashedColorPrimary", "dashedColorSecondary", "bar", "barColorPrimary", "barColorSecondary", "bar1Indeterminate", "bar1Determinate", "bar1Buffer", "bar2Indeterminate", "bar2Buffer"]);
-const _excluded$2 = ["className", "color", "value", "valueBuffer", "variant"];
-let _ = (t) => t, _t, _t2, _t3, _t4, _t5, _t6;
-const TRANSITION_DURATION = 4;
-const indeterminate1Keyframe = keyframes(_t || (_t = _`
-  0% {
-    left: -35%;
-    right: 100%;
-  }
-
-  60% {
-    left: 100%;
-    right: -90%;
-  }
-
-  100% {
-    left: 100%;
-    right: -90%;
-  }
-`));
-const indeterminate2Keyframe = keyframes(_t2 || (_t2 = _`
-  0% {
-    left: -200%;
-    right: 100%;
-  }
-
-  60% {
-    left: 107%;
-    right: -8%;
-  }
-
-  100% {
-    left: 107%;
-    right: -8%;
-  }
-`));
-const bufferKeyframe = keyframes(_t3 || (_t3 = _`
-  0% {
-    opacity: 1;
-    background-position: 0 -23px;
-  }
-
-  60% {
-    opacity: 0;
-    background-position: 0 -23px;
-  }
-
-  100% {
-    opacity: 1;
-    background-position: -200px -23px;
-  }
-`));
-const useUtilityClasses$2 = (ownerState) => {
-  const {
-    classes,
-    variant,
-    color
-  } = ownerState;
-  const slots = {
-    root: ["root", `color${capitalize(color)}`, variant],
-    dashed: ["dashed", `dashedColor${capitalize(color)}`],
-    bar1: ["bar", `barColor${capitalize(color)}`, (variant === "indeterminate" || variant === "query") && "bar1Indeterminate", variant === "determinate" && "bar1Determinate", variant === "buffer" && "bar1Buffer"],
-    bar2: ["bar", variant !== "buffer" && `barColor${capitalize(color)}`, variant === "buffer" && `color${capitalize(color)}`, (variant === "indeterminate" || variant === "query") && "bar2Indeterminate", variant === "buffer" && "bar2Buffer"]
-  };
-  return composeClasses(slots, getLinearProgressUtilityClass, classes);
-};
-const getColorShade = (theme, color) => {
-  if (color === "inherit") {
-    return "currentColor";
-  }
-  return theme.palette.mode === "light" ? lighten(theme.palette[color].main, 0.62) : darken(theme.palette[color].main, 0.5);
-};
-const LinearProgressRoot = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Root",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[`color${capitalize(ownerState.color)}`], styles[ownerState.variant]];
-  }
-})(({
-  ownerState,
-  theme
-}) => _extends({
-  position: "relative",
-  overflow: "hidden",
-  display: "block",
-  height: 4,
-  zIndex: 0,
-  "@media print": {
-    colorAdjust: "exact"
-  },
-  backgroundColor: getColorShade(theme, ownerState.color)
-}, ownerState.color === "inherit" && ownerState.variant !== "buffer" && {
-  backgroundColor: "none",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "currentColor",
-    opacity: 0.3
-  }
-}, ownerState.variant === "buffer" && {
-  backgroundColor: "transparent"
-}, ownerState.variant === "query" && {
-  transform: "rotate(180deg)"
-}));
-const LinearProgressDashed = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Dashed",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.dashed, styles[`dashedColor${capitalize(ownerState.color)}`]];
-  }
-})(({
-  ownerState,
-  theme
-}) => {
-  const backgroundColor = getColorShade(theme, ownerState.color);
-  return _extends({
-    position: "absolute",
-    marginTop: 0,
-    height: "100%",
-    width: "100%"
-  }, ownerState.color === "inherit" && {
-    opacity: 0.3
-  }, {
-    backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
-    backgroundSize: "10px 10px",
-    backgroundPosition: "0 -23px"
-  });
-}, css(_t4 || (_t4 = _`
-    animation: ${0} 3s infinite linear;
-  `), bufferKeyframe));
-const LinearProgressBar1 = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Bar1",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.bar, styles[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles.bar1Indeterminate, ownerState.variant === "determinate" && styles.bar1Determinate, ownerState.variant === "buffer" && styles.bar1Buffer];
-  }
-})(({
-  ownerState,
-  theme
-}) => _extends({
-  width: "100%",
-  position: "absolute",
-  left: 0,
-  bottom: 0,
-  top: 0,
-  transition: "transform 0.2s linear",
-  transformOrigin: "left",
-  backgroundColor: ownerState.color === "inherit" ? "currentColor" : theme.palette[ownerState.color].main
-}, ownerState.variant === "determinate" && {
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}, ownerState.variant === "buffer" && {
-  zIndex: 1,
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}), ({
-  ownerState
-}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css(_t5 || (_t5 = _`
-      width: auto;
-      animation: ${0} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-    `), indeterminate1Keyframe));
-const LinearProgressBar2 = styled("span", {
-  name: "MuiLinearProgress",
-  slot: "Bar2",
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.bar, styles[`barColor${capitalize(ownerState.color)}`], (ownerState.variant === "indeterminate" || ownerState.variant === "query") && styles.bar2Indeterminate, ownerState.variant === "buffer" && styles.bar2Buffer];
-  }
-})(({
-  ownerState,
-  theme
-}) => _extends({
-  width: "100%",
-  position: "absolute",
-  left: 0,
-  bottom: 0,
-  top: 0,
-  transition: "transform 0.2s linear",
-  transformOrigin: "left"
-}, ownerState.variant !== "buffer" && {
-  backgroundColor: ownerState.color === "inherit" ? "currentColor" : theme.palette[ownerState.color].main
-}, ownerState.color === "inherit" && {
-  opacity: 0.3
-}, ownerState.variant === "buffer" && {
-  backgroundColor: getColorShade(theme, ownerState.color),
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}), ({
-  ownerState
-}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css(_t6 || (_t6 = _`
-      width: auto;
-      animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
-    `), indeterminate2Keyframe));
-const LinearProgress = /* @__PURE__ */ React.forwardRef(function LinearProgress2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiLinearProgress"
-  });
-  const {
-    className,
-    color = "primary",
-    value,
-    valueBuffer,
-    variant = "indeterminate"
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$2);
-  const ownerState = _extends({}, props, {
-    color,
-    variant
-  });
-  const classes = useUtilityClasses$2(ownerState);
-  const theme = useTheme();
-  const rootProps = {};
-  const inlineStyles = {
-    bar1: {},
-    bar2: {}
-  };
-  if (variant === "determinate" || variant === "buffer") {
-    if (value !== void 0) {
-      rootProps["aria-valuenow"] = Math.round(value);
-      rootProps["aria-valuemin"] = 0;
-      rootProps["aria-valuemax"] = 100;
-      let transform = value - 100;
-      if (theme.direction === "rtl") {
-        transform = -transform;
-      }
-      inlineStyles.bar1.transform = `translateX(${transform}%)`;
-    }
-  }
-  if (variant === "buffer") {
-    if (valueBuffer !== void 0) {
-      let transform = (valueBuffer || 0) - 100;
-      if (theme.direction === "rtl") {
-        transform = -transform;
-      }
-      inlineStyles.bar2.transform = `translateX(${transform}%)`;
-    }
-  }
-  return /* @__PURE__ */ jsxs(LinearProgressRoot, _extends({
-    className: clsx(classes.root, className),
-    ownerState,
-    role: "progressbar"
-  }, rootProps, {
-    ref
-  }, other, {
-    children: [variant === "buffer" ? /* @__PURE__ */ jsx(LinearProgressDashed, {
-      className: classes.dashed,
-      ownerState
-    }) : null, /* @__PURE__ */ jsx(LinearProgressBar1, {
-      className: classes.bar1,
-      ownerState,
-      style: inlineStyles.bar1
-    }), variant === "determinate" ? null : /* @__PURE__ */ jsx(LinearProgressBar2, {
-      className: classes.bar2,
-      ownerState,
-      style: inlineStyles.bar2
-    })]
-  }));
-});
-var LinearProgress$1 = LinearProgress;
-const listItemIconClasses = generateUtilityClasses("MuiListItemIcon", ["root", "alignItemsFlexStart"]);
-var listItemIconClasses$1 = listItemIconClasses;
-const listItemTextClasses = generateUtilityClasses("MuiListItemText", ["root", "multiline", "dense", "inset", "primary", "secondary"]);
-var listItemTextClasses$1 = listItemTextClasses;
-function getMenuItemUtilityClass(slot) {
-  return generateUtilityClass("MuiMenuItem", slot);
-}
-const menuItemClasses = generateUtilityClasses("MuiMenuItem", ["root", "focusVisible", "dense", "disabled", "divider", "gutters", "selected"]);
-var menuItemClasses$1 = menuItemClasses;
-const _excluded$1 = ["autoFocus", "component", "dense", "divider", "disableGutters", "focusVisibleClassName", "role", "tabIndex"];
-const overridesResolver = (props, styles) => {
-  const {
-    ownerState
-  } = props;
-  return [styles.root, ownerState.dense && styles.dense, ownerState.divider && styles.divider, !ownerState.disableGutters && styles.gutters];
-};
-const useUtilityClasses$1 = (ownerState) => {
-  const {
-    disabled,
-    dense,
-    divider,
-    disableGutters,
-    selected,
-    classes
-  } = ownerState;
-  const slots = {
-    root: ["root", dense && "dense", disabled && "disabled", !disableGutters && "gutters", divider && "divider", selected && "selected"]
-  };
-  const composedClasses = composeClasses(slots, getMenuItemUtilityClass, classes);
-  return _extends({}, classes, composedClasses);
-};
-const MenuItemRoot = styled(ButtonBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === "classes",
-  name: "MuiMenuItem",
-  slot: "Root",
-  overridesResolver
-})(({
-  theme,
-  ownerState
-}) => _extends({}, theme.typography.body1, {
-  display: "flex",
-  justifyContent: "flex-start",
-  alignItems: "center",
-  position: "relative",
-  textDecoration: "none",
-  minHeight: 48,
-  paddingTop: 6,
-  paddingBottom: 6,
-  boxSizing: "border-box",
-  whiteSpace: "nowrap"
-}, !ownerState.disableGutters && {
-  paddingLeft: 16,
-  paddingRight: 16
-}, ownerState.divider && {
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  backgroundClip: "padding-box"
-}, {
-  "&:hover": {
-    textDecoration: "none",
-    backgroundColor: theme.palette.action.hover,
-    "@media (hover: none)": {
-      backgroundColor: "transparent"
-    }
-  },
-  [`&.${menuItemClasses$1.selected}`]: {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-    [`&.${menuItemClasses$1.focusVisible}`]: {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
-    }
-  },
-  [`&.${menuItemClasses$1.selected}:hover`]: {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
-    "@media (hover: none)": {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
-    }
-  },
-  [`&.${menuItemClasses$1.focusVisible}`]: {
-    backgroundColor: theme.palette.action.focus
-  },
-  [`&.${menuItemClasses$1.disabled}`]: {
-    opacity: theme.palette.action.disabledOpacity
-  },
-  [`& + .${dividerClasses$1.root}`]: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  [`& + .${dividerClasses$1.inset}`]: {
-    marginLeft: 52
-  },
-  [`& .${listItemTextClasses$1.root}`]: {
-    marginTop: 0,
-    marginBottom: 0
-  },
-  [`& .${listItemTextClasses$1.inset}`]: {
-    paddingLeft: 36
-  },
-  [`& .${listItemIconClasses$1.root}`]: {
-    minWidth: 36
-  }
-}, !ownerState.dense && {
-  [theme.breakpoints.up("sm")]: {
-    minHeight: "auto"
-  }
-}, ownerState.dense && _extends({
-  minHeight: 32,
-  paddingTop: 4,
-  paddingBottom: 4
-}, theme.typography.body2, {
-  [`& .${listItemIconClasses$1.root} svg`]: {
-    fontSize: "1.25rem"
-  }
-})));
-const MenuItem = /* @__PURE__ */ React.forwardRef(function MenuItem2(inProps, ref) {
-  const props = useThemeProps({
-    props: inProps,
-    name: "MuiMenuItem"
-  });
-  const {
-    autoFocus = false,
-    component = "li",
-    dense = false,
-    divider = false,
-    disableGutters = false,
-    focusVisibleClassName,
-    role = "menuitem",
-    tabIndex: tabIndexProp
-  } = props, other = _objectWithoutPropertiesLoose(props, _excluded$1);
-  const context = React.useContext(ListContext);
-  const childContext = {
-    dense: dense || context.dense || false,
-    disableGutters
-  };
-  const menuItemRef = React.useRef(null);
-  useEnhancedEffect(() => {
-    if (autoFocus) {
-      if (menuItemRef.current) {
-        menuItemRef.current.focus();
-      }
-    }
-  }, [autoFocus]);
-  const ownerState = _extends({}, props, {
-    dense: childContext.dense,
-    divider,
-    disableGutters
-  });
-  const classes = useUtilityClasses$1(props);
-  const handleRef = useForkRef(menuItemRef, ref);
-  let tabIndex;
-  if (!props.disabled) {
-    tabIndex = tabIndexProp !== void 0 ? tabIndexProp : -1;
-  }
-  return /* @__PURE__ */ jsx(ListContext.Provider, {
-    value: childContext,
-    children: /* @__PURE__ */ jsx(MenuItemRoot, _extends({
-      ref: handleRef,
-      role,
-      tabIndex,
-      component,
-      focusVisibleClassName: clsx(classes.focusVisible, focusVisibleClassName)
-    }, other, {
-      ownerState,
-      classes
-    }))
-  });
-});
-var MenuItem$1 = MenuItem;
 function getToolbarUtilityClass(slot) {
   return generateUtilityClass("MuiToolbar", slot);
 }
@@ -709,35 +255,7 @@ var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)(
   d: "M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"
 }), "Brightness7");
 default_1 = Brightness7.default = _default;
-const SearchOverlay = lazy(() => import("./search.js"));
 const syntaxThemes = ["anOldHope", "arta", "atelierDuneDark", "atelierDuneLight", "darcula", "far", "github", "isblEditorDark", "isblEditorLight", "sunburst", "gradientDark", "monokai", "nightOwl"];
-const SearchInputWrapper = styled("div")(({
-  theme
-}) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25)
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto"
-  }
-}));
-const SearchIconWrapper = styled("div")(({
-  theme
-}) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center"
-}));
 const StyledInputBase = styled(InputBase)(({
   theme
 }) => ({
@@ -752,7 +270,7 @@ const StyledInputBase = styled(InputBase)(({
     }
   }
 }));
-const Progress = styled(LinearProgress$1)(({
+const SearchProgress = styled(LinearProgress)(({
   theme
 }) => ({
   position: "fixed",
@@ -761,79 +279,6 @@ const Progress = styled(LinearProgress$1)(({
   left: 0
 }));
 const showSearch$ = new ValueSubject(false);
-const FavButton = styled(default_1$6)(({
-  theme
-}) => ({
-  color: theme.palette.getContrastText(theme.palette.primary.main),
-  "&:hover": {
-    color: "red"
-  }
-}));
-const NavButton = styled(IconButton)(({
-  theme
-}) => ({
-  color: theme.palette.getContrastText(theme.palette.primary.main),
-  "&:hover": {
-    color: theme.palette.primary.dark
-  }
-}));
-const NavMenu = ({
-  items,
-  children,
-  tooltip
-}) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.target);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (items == null ? void 0 : items.length) > 0 ? /* @__PURE__ */ jsxs(Fragment$1, {
-    children: [/* @__PURE__ */ jsx(Tooltip, {
-      title: tooltip,
-      children: /* @__PURE__ */ jsx(NavButton, {
-        "aria-label": tooltip,
-        onClick: handleClick,
-        children
-      })
-    }), /* @__PURE__ */ jsx(Menu, {
-      id: "fav-menu",
-      anchorEl,
-      open,
-      onClose: handleClose,
-      PaperProps: {
-        style: {
-          maxHeight: "80vh",
-          width: "100%",
-          maxWidth: "200px"
-        }
-      },
-      anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "right"
-      },
-      transformOrigin: {
-        vertical: "top",
-        horizontal: "right"
-      },
-      children: items.map(({
-        onClick,
-        label,
-        key,
-        selected
-      }) => /* @__PURE__ */ jsx(MenuItem$1, {
-        selected,
-        onClick: () => {
-          onClick();
-          handleClose();
-        },
-        children: label
-      }, key))
-    })]
-  }) : /* @__PURE__ */ jsx(Fragment, {});
-};
 const FavMenu = () => {
   var _a;
   const [favDocs] = useObservableState(() => documents$.pipe(map((docs) => Array.from(docs.values()).filter((doc) => doc.isFavourite))));
@@ -843,20 +288,27 @@ const FavMenu = () => {
       replace: true
     });
   };
-  return /* @__PURE__ */ jsx(NavMenu, {
+  const {
+    NavbarMenu,
+    NavbarFavButton
+  } = useComponentContext();
+  return /* @__PURE__ */ jsx(NavbarMenu, {
     tooltip: "Favourites",
     items: (_a = favDocs == null ? void 0 : favDocs.map((doc) => ({
       key: doc.slug,
       label: doc.name,
       onClick: () => onFavClicked(doc)
     }))) != null ? _a : [],
-    children: /* @__PURE__ */ jsx(FavButton, {})
+    children: /* @__PURE__ */ jsx(NavbarFavButton, {})
   });
 };
 const SyntaxMenu = () => {
   var _a;
+  const {
+    NavbarMenu
+  } = useComponentContext();
   const [codeTheme] = useObservableState(() => codeTheme$);
-  return /* @__PURE__ */ jsx(NavMenu, {
+  return /* @__PURE__ */ jsx(NavbarMenu, {
     tooltip: "Syntax theme",
     items: (_a = syntaxThemes.map((theme) => {
       return {
@@ -871,6 +323,9 @@ const SyntaxMenu = () => {
     children: /* @__PURE__ */ jsx(default_1$5, {})
   });
 };
+const NavbarTitle = () => /* @__PURE__ */ jsx(Fragment, {
+  children: "documentation"
+});
 const NavAppBar = styled(AppBar$1)(({
   theme
 }) => ({
@@ -886,15 +341,20 @@ function Navbar({
   embed
 }) {
   const [hasDocumentsFetching] = useObservableAndState(() => combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
-  const {
-    title = "documentation"
-  } = useDocOptions();
   const params = useParams();
   const location = useLocation();
   const {
     mode,
     toggleColorMode
   } = useColorModeContext();
+  const {
+    NavbarTitle: NavbarTitle2,
+    SearchProgress: SearchProgress2,
+    NavbarButton,
+    SearchIconWrapper,
+    SearchInputWrapper,
+    SearchOverlay
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(Box, {
     sx: {
       flex: 0,
@@ -902,7 +362,7 @@ function Navbar({
       top: 0,
       zIndex: 1e3
     },
-    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(Progress, {
+    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(SearchProgress2, {
       sx: {
         display: {
           xs: "block",
@@ -925,14 +385,14 @@ function Navbar({
           },
           children: /* @__PURE__ */ jsx(Link, {
             to: "/docs/",
-            children: title
+            children: /* @__PURE__ */ jsx(NavbarTitle2, {})
           })
         }), !embed ? /* @__PURE__ */ jsxs(Fragment, {
           children: [params.contentSlug && location.pathname.startsWith("/docs") && /* @__PURE__ */ jsx(Tooltip, {
             title: "edit current document",
             children: /* @__PURE__ */ jsx(Link, {
               to: `/editor/${params.projectSlug}/${params.contentSlug}`,
-              children: /* @__PURE__ */ jsx(NavButton, {
+              children: /* @__PURE__ */ jsx(NavbarButton, {
                 "aria-label": "editor",
                 children: /* @__PURE__ */ jsx(default_1$4, {})
               })
@@ -941,12 +401,12 @@ function Navbar({
             title: "create document",
             children: /* @__PURE__ */ jsx(Link, {
               to: "/editor/" + params.projectSlug,
-              children: /* @__PURE__ */ jsx(NavButton, {
+              children: /* @__PURE__ */ jsx(NavbarButton, {
                 "aria-label": "editor",
                 children: /* @__PURE__ */ jsx(default_1$3, {})
               })
             })
-          }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavButton, {
+          }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavbarButton, {
             "aria-label": "toggle dark mode",
             onClick: toggleColorMode,
             children: mode === "light" ? /* @__PURE__ */ jsx(default_1$1, {
@@ -998,5 +458,5 @@ function Navbar({
     })]
   });
 }
-export { Navbar, Navbar as default };
+export { NavbarTitle, SearchProgress, Navbar as default };
 //# sourceMappingURL=navbar.js.map

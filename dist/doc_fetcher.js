@@ -17,14 +17,12 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { v as commonjsGlobal } from "./styled.js";
-import { p as pathBrowserify } from "./index.js";
+import { a8 as commonjsGlobal, a9 as useDocOptions, d as useParams, g as useNavigate, J as contents$, aa as addOrUpdateProject, p as pathBrowserify, ab as addOrUpdateManyContents, ac as addOrUpdateContents, ad as getLastModified, ae as getCachedDocument, af as queueDocument, ag as removeContents } from "./doks.js";
 import { useEffect } from "react";
-import { c as useDocOptions, u as useParams, b as useNavigate } from "./doks.js";
-import { c as contents$, a as addOrUpdateProject, b as addOrUpdateManyContents, e as addOrUpdateContents, g as getLastModified, h as getCachedDocument, i as queueDocument, r as removeContents } from "./documents.js";
 import { j as jsx, F as Fragment } from "./main.js";
-import "rxjs";
 import "react-dom";
+import "rxjs";
+import "rxjs/operators";
 function escapeStringRegexp$1(string) {
   if (typeof string !== "string") {
     throw new TypeError("Expected a string");

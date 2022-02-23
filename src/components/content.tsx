@@ -10,20 +10,18 @@ import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
 import { useObservable, useObservableState } from "observable-hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
 import { formatDate } from "../utils/format_date";
-import { MarkdownRenderer } from "./markdown_renderer";
-import { TableOfContents } from "./table_of_contents";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { InputAdornment } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { ConditionalCard } from "./conditional_card";
 import * as clipboard from "clipboard-polyfill/text";
-
+import { useParams } from "react-router-dom";
+import { useComponentContext } from "../hooks/use_component_context";
+import { ConditionalCard } from "./conditional_card";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   display: "flex",
   alignItems: "start",
@@ -100,6 +98,7 @@ export const Content = ({ embed }: { embed?: boolean }) => {
       }
     }
   }, [params.headingIndex]);
+  const { TableOfContents, MarkdownRenderer } = useComponentContext();
 
   useEffect(() => {
     window.scrollTo(0, 0);

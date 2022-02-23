@@ -1,18 +1,13 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import { lazy, ReactChild, Suspense, useCallback } from "react";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { Background } from "../components/background";
-import { Footer } from "../components/footer";
-import { documents$ } from "../store/documents";
-
+import { lazy, ReactChild, Suspense } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
+import { useComponentContext } from "../hooks/use_component_context";
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
-const Content = lazy(() => import("../components/content"));
-const Navbar = lazy(() => import("../components/navbar"));
 
 const Project = () => {
   const params = useParams();
+  const { Content } = useComponentContext();
   return (
     <>
       {params.contentSlug && (
@@ -30,6 +25,7 @@ const Project = () => {
   );
 };
 const Layout = ({ children }: { children: ReactChild }) => {
+  const { Navbar, Background } = useComponentContext();
   return (
     <Background sx={{ background: "initial" }}>
       <DocFetcher mode="embed"></DocFetcher>

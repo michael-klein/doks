@@ -1,7 +1,10 @@
+import {
+  ComponentContextProvider,
+  defaultComponents,
+} from "./src/components/components";
 import { docs } from "./src/main";
 
 docs({
-  title: "demo docs",
   targetNode: document.getElementById("app"),
   projects: [
     {
@@ -13,4 +16,13 @@ docs({
       name: "test docs 2",
     },
   ],
+  wrapDocs: (docs) => {
+    return (
+      <ComponentContextProvider
+        value={{ ...defaultComponents, NavbarTitle: () => <>"demo docs"</> }}
+      >
+        {docs}
+      </ComponentContextProvider>
+    );
+  },
 });

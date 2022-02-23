@@ -1,5 +1,5 @@
 import { j as jsx } from "./main.js";
-import { C as Card } from "./Card.js";
+import { Q as Card } from "./doks.js";
 const ConditionalCard = ({
   children,
   showCard,

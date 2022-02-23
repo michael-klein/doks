@@ -1,4 +1,4 @@
-import { R as Routes, a as Route, u as useParams, f as useObservableAndState, d as documents$, p as pathBrowserify, g as projects$, M as MarkdownEditor } from "./doks.js";
+import { R as Routes, b as Route, u as useComponentContext, d as useParams, e as useObservableAndState, h as documents$, p as pathBrowserify, s as projects$ } from "./doks.js";
 import { lazy, useMemo, Fragment as Fragment$1 } from "react";
 import { combineLatest, map } from "rxjs";
 import { i as jsxs, j as jsx, F as Fragment, G as CircularProgress } from "./main.js";
@@ -6,8 +6,10 @@ import { C as Container } from "./Container.js";
 import "react-dom";
 import "rxjs/operators";
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
-const Navbar = lazy(() => import("./navbar.js"));
 const DocumentEditor = () => {
+  const {
+    MarkdownEditor
+  } = useComponentContext();
   const params = useParams();
   const [document] = useObservableAndState((input$) => {
     return combineLatest([input$, documents$]).pipe(map(([input, documents]) => {
@@ -32,6 +34,10 @@ const DocumentEditor = () => {
 const Layout = ({
   children
 }) => {
+  const {
+    Navbar,
+    MarkdownEditor
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(Fragment$1, {
     children: [/* @__PURE__ */ jsx(DocFetcher, {
       mode: "editor"

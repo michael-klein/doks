@@ -17,12 +17,13 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { h as createSvgIcon, i as interopRequireDefault, r as require$$2, T as Transition, j as useTheme, k as useForkRef, l as getTransitionProps, m as useEnhancedEffect, o as ownerDocument, n as useId, q as useControlled, s as ButtonBase, t as useFormControl, v as formControlState, w as getNativeSelectUtilityClasses, N as NativeSelectInput, A as ArrowDropDownIcon, I as Input, x as default_1$4, u as useParams, f as useObservableAndState, g as projects$, y as contents$, z as useObservableState, C as Box, D as FormControl, E as InputLabel, G as Button, H as Card } from "./doks.js";
-import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, _ as _extends, r as useThemeProps, B as duration, b as _objectWithoutPropertiesLoose, e as composeClasses, j as jsx, h as clsx, i as jsxs, w as alpha, c as capitalize, o as useTheme$1, M as getThemeProps, G as CircularProgress } from "./main.js";
+import { a as createSvgIcon, i as interopRequireDefault, r as require$$2, t as Transition, m as useTheme, k as useForkRef, v as getTransitionProps, w as useEnhancedEffect, o as ownerDocument, x as useId, y as useControlled, B as ButtonBase, z as useFormControl, A as formControlState, D as getNativeSelectUtilityClasses, N as NativeSelectInput, E as ArrowDropDownIcon, F as Input, H as default_1$4, d as useParams, e as useObservableAndState, s as projects$, J as contents$, K as useObservableState, j as Box, L as FormControl, M as InputLabel, O as Button } from "./doks.js";
+import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, _ as _extends, r as useThemeProps, B as duration, b as _objectWithoutPropertiesLoose, e as composeClasses, j as jsx, h as clsx, i as jsxs, w as alpha, c as capitalize, o as useTheme$1, N as getThemeProps, G as CircularProgress } from "./main.js";
 import * as React from "react";
 import React__default, { Fragment, useState, useCallback, useEffect, useLayoutEffect } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
+import { C as ConditionalCard } from "./conditional_card.js";
 import { G as Grid } from "./Grid.js";
 import "react-dom";
 var ChevronRight = {};
@@ -1773,6 +1774,10 @@ const SidebarWrapper = default_1$4(Grid)(({
     display: "block",
     width: "200px"
   },
+  "&:not(.edit-sidebar) > .MuiPaper-root": {
+    maxHeight: "calc(100vh - 180px)",
+    overflow: "auto"
+  },
   [".menu-button"]: {
     display: "none",
     position: "fixed",
@@ -1829,23 +1834,6 @@ const RenderTreeWrapper = ({
     content
   }) : /* @__PURE__ */ jsx(CircularProgress, {});
 };
-const ConditionalCard = ({
-  children,
-  mode
-}) => {
-  if (mode === "editor") {
-    return children;
-  }
-  return /* @__PURE__ */ jsx(Card, {
-    elevation: 1,
-    sx: {
-      padding: 2,
-      position: "sticky",
-      top: "80px"
-    },
-    children
-  });
-};
 function Sidebar({
   onNodeSelect,
   mode,
@@ -1887,7 +1875,12 @@ function Sidebar({
     xs: 3,
     className: (showMobileSidebar ? "show" : "") + " " + (mode === "editor" ? "editor-sidebar" : "docs-sidebar"),
     children: /* @__PURE__ */ jsxs(ConditionalCard, {
-      mode,
+      showCard: mode === "docs",
+      sx: {
+        padding: 2,
+        position: "sticky",
+        top: "80px"
+      },
       children: [/* @__PURE__ */ jsx(Fab$1, {
         color: "secondary",
         "aria-label": "add",

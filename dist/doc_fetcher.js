@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { a3 as commonjsGlobal, a4 as useDocOptions, u as useParams, b as useNavigate, y as contents$, a5 as addOrUpdateProject, p as pathBrowserify, a6 as addOrUpdateManyContents, a7 as addOrUpdateContents, a8 as getLastModified, a9 as getCachedDocument, aa as queueDocument, ab as removeContents } from "./doks.js";
+import { a8 as commonjsGlobal, a9 as useDocOptions, d as useParams, g as useNavigate, J as contents$, aa as addOrUpdateProject, p as pathBrowserify, ab as addOrUpdateManyContents, ac as addOrUpdateContents, ad as getLastModified, ae as getCachedDocument, af as queueDocument, ag as removeContents } from "./doks.js";
 import { useEffect } from "react";
 import { j as jsx, F as Fragment } from "./main.js";
 import "react-dom";
@@ -2282,7 +2282,6 @@ function slugify(string, options) {
   return string;
 }
 const loadContentsDocument = async (item, project, projectSlug, deletedPaths) => {
-  console.log("load: ", item.path);
   if (!item.isOnlyHeading) {
     const lastModified = await getLastModified(pathBrowserify.join(project.root, item.path));
     if (lastModified !== false) {
@@ -2301,6 +2300,8 @@ const loadContentsDocument = async (item, project, projectSlug, deletedPaths) =>
   }
 };
 const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mode, navigate) => {
+  var _a;
+  const isDocsMode = mode === "docs" || mode === "embed";
   let shouldNavigate = false;
   const docProjects = [];
   projects.forEach((project) => {
@@ -2321,9 +2322,11 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
       docProjects.push(docProject);
     }
   });
-  await Promise.all(docProjects.map(async (project) => {
-    var _a;
+  for (const project of docProjects) {
     const projectSlug = project.slug;
+    if (projectSlug !== currentProjectSlug && mode === "embed") {
+      return;
+    }
     let lastModified;
     const contentsText = await fetch(pathBrowserify.join(project.root, "contents.doks")).then((res) => {
       lastModified = res.headers.get("last-modified");
@@ -2332,7 +2335,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     const cached = JSON.parse((_a = localStorage.getItem("CACHE__" + projectSlug)) != null ? _a : "{}");
     let contents;
     if (cached.lastModified === lastModified) {
-      if (mode === "docs" && !currentContentSlug) {
+      if (isDocsMode && !currentContentSlug) {
         for (const item of cached.contents) {
           if (!currentContentSlug && !item.isOnlyHeading) {
             currentContentSlug = item.slug;
@@ -2358,7 +2361,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
           projectSlug,
           isOnlyHeading: !path.includes(".md")
         };
-        if (mode === "docs" && !currentContentSlug && !item.isOnlyHeading) {
+        if (isDocsMode && !currentContentSlug && !item.isOnlyHeading) {
           currentContentSlug = item.slug;
           shouldNavigate = true;
         }
@@ -2382,7 +2385,9 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     if (firstContent) {
       await loadContentsDocument(__spreadValues({}, firstContent), project, projectSlug, deletedPaths);
     }
-    await Promise.all(contents.map((c) => loadContentsDocument(__spreadValues({}, c), project, projectSlug, deletedPaths)));
+    if (mode !== "embed") {
+      await Promise.all(contents.map((c) => loadContentsDocument(__spreadValues({}, c), project, projectSlug, deletedPaths)));
+    }
     const cacheItem = {
       lastModified,
       contents: Array.from(contents$.value.get(projectSlug).values())
@@ -2391,7 +2396,7 @@ const loadProjects = async (projects, currentProjectSlug, currentContentSlug, mo
     if (deletedPaths.length > 0) {
       console.warn(`The following paths seem to have been deleted in ${project.name}: }`, deletedPaths);
     }
-  }));
+  }
 };
 let startedLoading = false;
 const getFirstRealContent = (contents) => {
@@ -2433,7 +2438,7 @@ const DocFetcher = ({
         });
       }
     }
-  }, []);
+  }, [params.projectSlug]);
   return /* @__PURE__ */ jsx(Fragment, {});
 };
 export { DocFetcher, DocFetcher as default };

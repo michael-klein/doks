@@ -4,14 +4,14 @@ import { join } from "path-browserify";
 import React, { Fragment, lazy, ReactChild, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
-import { MarkdownEditor } from "../components/markdown_editor";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
-const Navbar = lazy(() => import("../components/navbar"));
+import { useComponentContext } from "../hooks/use_component_context";
 
 const DocumentEditor = () => {
+  const { MarkdownEditor } = useComponentContext();
   const params = useParams();
   const [document] = useObservableAndState(
     (input$) => {
@@ -46,6 +46,7 @@ const DocumentEditor = () => {
 };
 
 const Layout = ({ children }: { children: ReactChild }) => {
+  const { Navbar, MarkdownEditor } = useComponentContext();
   return (
     <Fragment>
       <DocFetcher mode="editor"></DocFetcher>

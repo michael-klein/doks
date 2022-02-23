@@ -22,7 +22,8 @@ import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
 import { codeTheme$ } from "../utils/code_theme";
 import { ValueSubject } from "../utils/value_subject";
-
+import LinkIcon from "@mui/icons-material/Link";
+import { Link } from "react-router-dom";
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
 class ErrorBoundary extends React.Component<
@@ -83,16 +84,21 @@ const removeVoidElements = (mdx: string) => {
   });
   return mdx;
 };
+const HWrapper = styled("span")({
+  display: "inline-block",
+});
 
 export const MDX = memo(
   ({
     mdx,
     onSaveMDX,
     onAfterRender,
+    embed,
   }: {
     mdx: string;
     onSaveMDX: (mdx: string) => void;
     onAfterRender?: () => void;
+    embed?: boolean;
   }) => {
     let i = 0;
     const [theme] = useObservableState(() => codeTheme$);
@@ -130,7 +136,7 @@ export const MDX = memo(
       requestAnimationFrame(() => {
         onAfterRender?.();
       });
-    });
+    }, [mdx, params.headingIndex]);
     let hIndex = 0;
     return (
       <>
@@ -139,7 +145,26 @@ export const MDX = memo(
             components: {
               ...[1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo, i) => {
                 memo[`h${i}`] = (props) => {
-                  props = { ...props, id: `heading-` + hIndex };
+                  props = {
+                    ...props,
+                    id: `heading-` + hIndex,
+                    children: (
+                      <>
+                        <HWrapper>{props.children}</HWrapper>
+                        {!embed && (
+                          <Link
+                            to={`/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`}
+                          >
+                            <LinkIcon
+                              sx={{
+                                fontSize: "1.5rem",
+                              }}
+                            ></LinkIcon>
+                          </Link>
+                        )}
+                      </>
+                    ),
+                  };
                   hIndex++;
                   return createElement(`h` + i, props);
                 };
@@ -175,7 +200,13 @@ export const MDX = memo(
             ],
           })
         ) : (
-          <CircularProgress sx={{ marginLeft: "calc(50% - 20px)" }} />
+          <CircularProgress
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+            }}
+          />
         )}
       </>
     );
@@ -183,15 +214,30 @@ export const MDX = memo(
 );
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
+  "h1, h2, h3, h4, h5, h6, h7, h8, h9, h10": {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    "a,a:hover,a:link,a:active": {
+      color: "inherit",
+      textDecoration: "none",
+      textAlign: "left",
+    },
+    "a:hover": {
+      textDecoration: "underline",
+    },
+  },
 }));
 export const MarkdownRenderer = ({
   mdx,
   isEditor,
   onAfterRender,
+  embed,
 }: {
   mdx: string;
   isEditor?: boolean;
   onAfterRender?: () => void;
+  embed?: boolean;
 }) => {
   const currentMDX$ = useObservable(
     () => new ValueSubject(mdx)
@@ -217,6 +263,7 @@ export const MarkdownRenderer = ({
         }}
       >
         <MDX
+          embed={embed}
           onAfterRender={onAfterRender}
           mdx={debouncedMDX}
           onSaveMDX={(saveMDX) => {

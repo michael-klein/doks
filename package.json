@@ -14,10 +14,13 @@
         "@mui/lab": "^5.0.0-alpha.53",
         "@mui/material": "^5.0.6",
         "@sindresorhus/slugify": "^2.1.0",
+        "clipboard-polyfill": "^3.0.3",
         "history": "^5.1.0",
         "htmdx": "^0.3.6",
+        "i": "^0.3.7",
         "immer": "^9.0.6",
         "lunr": "^2.3.9",
+        "npm": "^8.3.0",
         "observable-hooks": "^4.1.2",
         "path-browserify": "^1.0.1",
         "react": "^17.0.0",
@@ -39,6 +42,7 @@
         "rollup-plugin-delete": "^2.0.0",
         "rollup-plugin-typescript2": "^0.31.1",
         "typescript": "^4.3.2",
+        "uglifyjs-folder": "^3.0.0",
         "vite": "^2.6.4"
     }
 }

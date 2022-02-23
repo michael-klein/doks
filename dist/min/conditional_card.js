@@ -1,0 +1,1 @@
+import{j as jsx}from"./main.js";import{Q as Card}from"./doks.js";const ConditionalCard=({children:o,showCard:a,elevation:r=1,sx:s={}})=>a?jsx(Card,{elevation:r,sx:s,children:o}):o;export{ConditionalCard as C};

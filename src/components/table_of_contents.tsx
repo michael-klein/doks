@@ -1,10 +1,20 @@
 import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
 import { htmdx } from "htmdx";
-import React, { memo, ReactChild, useMemo } from "react";
+import React, {
+  memo,
+  ReactChild,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Link } from "react-router-dom";
 import { DoksTheme } from "../css/theme";
 import { useParams } from "react-router";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import removeMd from "remove-markdown";
+import { ChildCareRounded } from "@mui/icons-material";
 
 class ErrorBoundary extends React.Component<
   { children: ReactChild },
@@ -40,13 +50,17 @@ const TOCList = styled("ul")({
   listStyle: "none",
   margin: 0,
   padding: 10,
-  lineHeight: "1.6em",
+  paddingLeft: 0,
+  lineHeight: "1.3em",
+  maxHeight: "calc(60vh)",
+  overflowY: "auto",
 });
 const TOCListItem = styled("li")({
-  fontSize: "1.1em",
+  fontSize: ".9em",
   "a,a:hover,a:link,a:active": {
     color: "inherit",
     textDecoration: "none",
+    textAlign: "left",
   },
   "a:hover": {
     textDecoration: "underline",
@@ -54,12 +68,23 @@ const TOCListItem = styled("li")({
 });
 const getListItem = (level: number) => (props: any) => {
   const params = useParams();
+  const linkRef = useRef<HTMLAnchorElement>();
+
   return (
-    <TOCListItem sx={{ paddingLeft: 10 * (level - 1) + "px" }}>
-      <Link
-        {...props}
-        to={`/${params.projectSlug}/${params.contentSlug}/${props.index}`}
-      ></Link>
+    <TOCListItem sx={{ marginLeft: 10 * (level - 1) + "px", display: "flex" }}>
+      <Box>
+        <SubdirectoryArrowRightIcon
+          sx={{ fontSize: ".8em", marginRight: ".2em" }}
+          className="sub-icon"
+        ></SubdirectoryArrowRightIcon>
+      </Box>
+      <Box>
+        <Link
+          {...props}
+          ref={linkRef}
+          to={`/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`}
+        ></Link>
+      </Box>
     </TOCListItem>
   );
 };
@@ -69,7 +94,15 @@ const TOC = memo(({ mdx }: { mdx: string }) => {
       mdx
         ?.replace(/(<([^>]+)>)/gi, "")
         .split("\n")
-        .filter((line) => line.includes("#"))
+        .filter((line) => line.startsWith("#"))
+        .map((line) => {
+          for (let i = 0; i < line.length; i++) {
+            if (line.charAt(i) !== "#") {
+              return line.substr(0, i - 1) + removeMd(line.substr(i));
+            }
+          }
+          return line;
+        })
         .join("\n"),
     [mdx]
   );
@@ -100,6 +133,7 @@ const TOC = memo(({ mdx }: { mdx: string }) => {
                   hIndex++;
                 }
                 props.key = i++;
+
                 return [type, props, children];
               },
             ],
@@ -113,9 +147,11 @@ const TOC = memo(({ mdx }: { mdx: string }) => {
 });
 const Wrapper = styled(Box)(({ theme }) => ({
   ...(theme as DoksTheme).typography.body1,
+  width: "220px",
 }));
 const Header = styled("h1")({
-  fontSize: "1.2em",
+  fontSize: "1em",
+  marginBottom: "-.7em",
   fontWeight: "bold",
 });
 export const TableOfContents = ({ mdx }: { mdx: string }) => {

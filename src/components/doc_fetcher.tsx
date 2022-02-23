@@ -29,7 +29,6 @@ const loadContentsDocument = async (
   projectSlug,
   deletedPaths: string[]
 ) => {
-  console.log("load: ", item.path);
   if (!item.isOnlyHeading) {
     const lastModified = await getLastModified(join(project.root, item.path));
     if (lastModified !== false) {
@@ -49,9 +48,10 @@ const loadProjects = async (
   projects: DocOptionsProject[],
   currentProjectSlug,
   currentContentSlug,
-  mode: "docs" | "editor",
+  mode: "docs" | "editor" | "embed",
   navigate: NavigateFunction
 ) => {
+  const isDocsMode = mode === "docs" || mode === "embed";
   let shouldNavigate = false;
   const docProjects: Project[] = [];
   projects.forEach((project) => {
@@ -73,95 +73,98 @@ const loadProjects = async (
       docProjects.push(docProject);
     }
   });
-  await Promise.all(
-    docProjects.map(async (project) => {
-      const projectSlug = project.slug;
-      let lastModified: string;
-      const contentsText = await fetch(
-        join(project.root, "contents.doks")
-      ).then((res) => {
+  for (const project of docProjects) {
+    const projectSlug = project.slug;
+    if (projectSlug !== currentProjectSlug && mode === "embed") {
+      return;
+    }
+    let lastModified: string;
+    const contentsText = await fetch(join(project.root, "contents.doks")).then(
+      (res) => {
         lastModified = res.headers.get("last-modified");
         return res.text();
-      });
-      const cached: ProjectCacheItem = JSON.parse(
-        localStorage.getItem("CACHE__" + projectSlug) ?? "{}"
-      );
-      let contents: Contents[];
-      if (cached.lastModified === lastModified) {
-        if (mode === "docs" && !currentContentSlug) {
-          for (const item of cached.contents) {
-            if (!currentContentSlug && !item.isOnlyHeading) {
-              currentContentSlug = item.slug;
-              shouldNavigate = true;
-              break;
-            }
-          }
-        }
-        addOrUpdateManyContents(cached.contents, projectSlug);
-        contents = cached.contents;
-      } else {
-        contents = contentsText.split("\n").map((c) => {
-          const [path, name] = c.split("|");
-          let depth = 0;
-          while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
-            depth++;
-          }
-          const item: Contents = {
-            path: path.trim(),
-            name: name?.trim() || path.trim(),
-            depth,
-            slug: slugify(projectSlug + "-" + path.trim()),
-            projectSlug,
-            isOnlyHeading: !path.includes(".md"),
-          };
-          if (mode === "docs" && !currentContentSlug && !item.isOnlyHeading) {
+      }
+    );
+    const cached: ProjectCacheItem = JSON.parse(
+      localStorage.getItem("CACHE__" + projectSlug) ?? "{}"
+    );
+    let contents: Contents[];
+    if (cached.lastModified === lastModified) {
+      if (isDocsMode && !currentContentSlug) {
+        for (const item of cached.contents) {
+          if (!currentContentSlug && !item.isOnlyHeading) {
             currentContentSlug = item.slug;
             shouldNavigate = true;
+            break;
           }
-          addOrUpdateContents({ ...item }, projectSlug);
-          return { ...item };
-        });
-      }
-      let firstContent: Contents;
-      if (projectSlug === currentProjectSlug) {
-        const index = contents.findIndex((c) => c.slug === currentContentSlug);
-        if (index > -1) {
-          firstContent = contents.splice(index, 1)[0];
         }
       }
-
-      const deletedPaths: string[] = [];
-      if (shouldNavigate) {
-        navigate(`/${mode}/${currentProjectSlug}/${currentContentSlug}`, {
-          replace: true,
-        });
-      }
-      if (firstContent) {
-        await loadContentsDocument(
-          { ...firstContent },
-          project,
+      addOrUpdateManyContents(cached.contents, projectSlug);
+      contents = cached.contents;
+    } else {
+      contents = contentsText.split("\n").map((c) => {
+        const [path, name] = c.split("|");
+        let depth = 0;
+        while (path.charAt(depth) && path.charAt(depth).search(/\s/) > -1) {
+          depth++;
+        }
+        const item: Contents = {
+          path: path.trim(),
+          name: name?.trim() || path.trim(),
+          depth,
+          slug: slugify(projectSlug + "-" + path.trim()),
           projectSlug,
-          deletedPaths
-        );
+          isOnlyHeading: !path.includes(".md"),
+        };
+        if (isDocsMode && !currentContentSlug && !item.isOnlyHeading) {
+          currentContentSlug = item.slug;
+          shouldNavigate = true;
+        }
+        addOrUpdateContents({ ...item }, projectSlug);
+        return { ...item };
+      });
+    }
+    let firstContent: Contents;
+    if (projectSlug === currentProjectSlug) {
+      const index = contents.findIndex((c) => c.slug === currentContentSlug);
+      if (index > -1) {
+        firstContent = contents.splice(index, 1)[0];
       }
+    }
+
+    const deletedPaths: string[] = [];
+    if (shouldNavigate) {
+      navigate(`/${mode}/${currentProjectSlug}/${currentContentSlug}`, {
+        replace: true,
+      });
+    }
+    if (firstContent) {
+      await loadContentsDocument(
+        { ...firstContent },
+        project,
+        projectSlug,
+        deletedPaths
+      );
+    }
+    if (mode !== "embed") {
       await Promise.all(
         contents.map((c) =>
           loadContentsDocument({ ...c }, project, projectSlug, deletedPaths)
         )
       );
-      const cacheItem: ProjectCacheItem = {
-        lastModified,
-        contents: Array.from(contents$.value.get(projectSlug).values()),
-      };
-      localStorage.setItem("CACHE__" + projectSlug, JSON.stringify(cacheItem));
-      if (deletedPaths.length > 0) {
-        console.warn(
-          `The following paths seem to have been deleted in ${project.name}: }`,
-          deletedPaths
-        );
-      }
-    })
-  );
+    }
+    const cacheItem: ProjectCacheItem = {
+      lastModified,
+      contents: Array.from(contents$.value.get(projectSlug).values()),
+    };
+    localStorage.setItem("CACHE__" + projectSlug, JSON.stringify(cacheItem));
+    if (deletedPaths.length > 0) {
+      console.warn(
+        `The following paths seem to have been deleted in ${project.name}: }`,
+        deletedPaths
+      );
+    }
+  }
 };
 
 let startedLoading = false;
@@ -174,7 +177,7 @@ const getFirstRealContent = (contents: Map<string, Contents>) => {
   }
   return undefined;
 };
-export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
+export const DocFetcher = ({ mode }: { mode: "docs" | "editor" | "embed" }) => {
   const { projects } = useDocOptions();
   const params = useParams();
   const navigate = useNavigate();
@@ -212,7 +215,7 @@ export const DocFetcher = ({ mode }: { mode: "docs" | "editor" }) => {
         );
       }
     }
-  }, []);
+  }, [params.projectSlug]);
   return <></>;
 };
 export default DocFetcher;

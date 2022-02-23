@@ -4359,7 +4359,7 @@ function HashRouter(_ref2) {
 function isModifiedEvent(event) {
   return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 }
-const Link = /* @__PURE__ */ forwardRef(function LinkWithRef(_ref3, ref) {
+const Link$1 = /* @__PURE__ */ forwardRef(function LinkWithRef(_ref3, ref) {
   let {
     onClick,
     replace = false,
@@ -4558,17 +4558,17 @@ var require$$0 = /* @__PURE__ */ getAugmentedNamespace(utils);
   var _utils2 = require$$0;
 })(createSvgIcon$1);
 var require$$2 = /* @__PURE__ */ getAugmentedNamespace(jsxRuntime);
-var _interopRequireDefault$9 = interopRequireDefault.exports;
+var _interopRequireDefault$b = interopRequireDefault.exports;
 Object.defineProperty(Favorite, "__esModule", {
   value: true
 });
-var default_1$7 = Favorite.default = void 0;
-var _createSvgIcon$6 = _interopRequireDefault$9(createSvgIcon$1);
-var _jsxRuntime$6 = require$$2;
-var _default$7 = (0, _createSvgIcon$6.default)(/* @__PURE__ */ (0, _jsxRuntime$6.jsx)("path", {
+var default_1$9 = Favorite.default = void 0;
+var _createSvgIcon$8 = _interopRequireDefault$b(createSvgIcon$1);
+var _jsxRuntime$8 = require$$2;
+var _default$9 = (0, _createSvgIcon$8.default)(/* @__PURE__ */ (0, _jsxRuntime$8.jsx)("path", {
   d: "m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
 }), "Favorite");
-default_1$7 = Favorite.default = _default$7;
+default_1$9 = Favorite.default = _default$9;
 function _setPrototypeOf(o2, p2) {
   _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o3, p3) {
     o3.__proto__ = p3;
@@ -8075,7 +8075,7 @@ const SearchProgress = styled$3(LinearProgress$1)(({
   right: 0,
   left: 0
 }));
-const NavbarFavButton = styled$3(default_1$7)(({
+const NavbarFavButton = styled$3(default_1$9)(({
   theme
 }) => ({
   color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -8135,8 +8135,10 @@ const NavbarMenu = ({
       children: items.map(({
         onClick,
         label,
-        key
+        key,
+        selected
       }) => /* @__PURE__ */ jsx(MenuItem$1, {
+        selected,
         onClick: () => {
           onClick();
           handleClose();
@@ -8195,12 +8197,12 @@ var require$$4 = /* @__PURE__ */ getAugmentedNamespace(esm);
 var require$$5 = /* @__PURE__ */ getAugmentedNamespace(createTheme);
 var require$$6 = /* @__PURE__ */ getAugmentedNamespace(styleFunctionSx);
 var propsToClassKey$1 = {};
-var _interopRequireDefault$8 = interopRequireDefault.exports;
+var _interopRequireDefault$a = interopRequireDefault.exports;
 Object.defineProperty(propsToClassKey$1, "__esModule", {
   value: true
 });
 propsToClassKey$1.default = propsToClassKey;
-var _objectWithoutPropertiesLoose2$1 = _interopRequireDefault$8(objectWithoutPropertiesLoose.exports);
+var _objectWithoutPropertiesLoose2$1 = _interopRequireDefault$a(objectWithoutPropertiesLoose.exports);
 var _utils = require$$4;
 const _excluded$o = ["variant"];
 function isEmpty$3(string) {
@@ -8220,19 +8222,19 @@ function propsToClassKey(props) {
   });
   return classKey;
 }
-var _interopRequireDefault$7 = interopRequireDefault.exports;
+var _interopRequireDefault$9 = interopRequireDefault.exports;
 Object.defineProperty(createStyled$1, "__esModule", {
   value: true
 });
 createStyled$1.default = createStyled;
 createStyled$1.shouldForwardProp = shouldForwardProp;
 createStyled$1.systemDefaultTheme = void 0;
-var _extends2 = _interopRequireDefault$7(_extends$1.exports);
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault$7(objectWithoutPropertiesLoose.exports);
-var _styledEngine = _interopRequireDefault$7(require$$3);
-var _createTheme = _interopRequireDefault$7(require$$5);
-var _styleFunctionSx = _interopRequireDefault$7(require$$6);
-var _propsToClassKey = _interopRequireDefault$7(propsToClassKey$1);
+var _extends2 = _interopRequireDefault$9(_extends$1.exports);
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault$9(objectWithoutPropertiesLoose.exports);
+var _styledEngine = _interopRequireDefault$9(require$$3);
+var _createTheme = _interopRequireDefault$9(require$$5);
+var _styleFunctionSx = _interopRequireDefault$9(require$$6);
+var _propsToClassKey = _interopRequireDefault$9(propsToClassKey$1);
 const _excluded$n = ["name", "slot", "skipVariantsResolver", "skipSx", "overridesResolver"], _excluded2$1 = ["theme"], _excluded3 = ["theme"];
 function isEmpty$2(obj) {
   return Object.keys(obj).length === 0;
@@ -8366,16 +8368,16 @@ function createStyled(input = {}) {
     return muiStyledResolver;
   };
 }
-var _interopRequireDefault$6 = interopRequireDefault.exports;
+var _interopRequireDefault$8 = interopRequireDefault.exports;
 Object.defineProperty(styled$1, "__esModule", {
   value: true
 });
-var default_1$6 = styled$1.default = void 0;
-var _createStyled = _interopRequireDefault$6(createStyled$1);
+var default_1$8 = styled$1.default = void 0;
+var _createStyled = _interopRequireDefault$8(createStyled$1);
 const styled = (0, _createStyled.default)();
-var _default$6 = styled;
-default_1$6 = styled$1.default = _default$6;
-const Background = default_1$6(Box$3)(({
+var _default$8 = styled;
+default_1$8 = styled$1.default = _default$8;
+const Background = default_1$8(Box$3)(({
   theme
 }) => ({
   background: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[100],
@@ -9426,18 +9428,18 @@ const Button = /* @__PURE__ */ React.forwardRef(function Button2(inProps, ref) {
 });
 var Button$1 = Button;
 var KeyboardArrowUp = {};
-var _interopRequireDefault$5 = interopRequireDefault.exports;
+var _interopRequireDefault$7 = interopRequireDefault.exports;
 Object.defineProperty(KeyboardArrowUp, "__esModule", {
   value: true
 });
-var default_1$5 = KeyboardArrowUp.default = void 0;
-var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon$1);
-var _jsxRuntime$5 = require$$2;
-var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
+var default_1$7 = KeyboardArrowUp.default = void 0;
+var _createSvgIcon$7 = _interopRequireDefault$7(createSvgIcon$1);
+var _jsxRuntime$7 = require$$2;
+var _default$7 = (0, _createSvgIcon$7.default)(/* @__PURE__ */ (0, _jsxRuntime$7.jsx)("path", {
   d: "M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"
 }), "KeyboardArrowUp");
-default_1$5 = KeyboardArrowUp.default = _default$5;
-const StyledFooter = default_1$6("footer")(({
+default_1$7 = KeyboardArrowUp.default = _default$7;
+const StyledFooter = default_1$8("footer")(({
   theme
 }) => ({
   background: theme.palette.primary.light,
@@ -9445,7 +9447,7 @@ const StyledFooter = default_1$6("footer")(({
   display: "flex",
   justifyContent: "flex-end"
 }));
-const UpButton = default_1$6(Button$1)(({
+const UpButton = default_1$8(Button$1)(({
   theme
 }) => ({
   color: theme.palette.primary.dark
@@ -9456,70 +9458,70 @@ const Footer = () => {
       onClick: () => {
         window.scrollTo(0, 0);
       },
-      children: [/* @__PURE__ */ jsx(default_1$5, {}), "up"]
+      children: [/* @__PURE__ */ jsx(default_1$7, {}), "up"]
     })
   });
 };
 var ArrowLeft = {};
-var _interopRequireDefault$4 = interopRequireDefault.exports;
+var _interopRequireDefault$6 = interopRequireDefault.exports;
 Object.defineProperty(ArrowLeft, "__esModule", {
   value: true
 });
-var default_1$4 = ArrowLeft.default = void 0;
-var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon$1);
-var _jsxRuntime$4 = require$$2;
-var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
+var default_1$6 = ArrowLeft.default = void 0;
+var _createSvgIcon$6 = _interopRequireDefault$6(createSvgIcon$1);
+var _jsxRuntime$6 = require$$2;
+var _default$6 = (0, _createSvgIcon$6.default)(/* @__PURE__ */ (0, _jsxRuntime$6.jsx)("path", {
   d: "m14 7-5 5 5 5V7z"
 }), "ArrowLeft");
-default_1$4 = ArrowLeft.default = _default$4;
+default_1$6 = ArrowLeft.default = _default$6;
 var ArrowRight = {};
-var _interopRequireDefault$3 = interopRequireDefault.exports;
+var _interopRequireDefault$5 = interopRequireDefault.exports;
 Object.defineProperty(ArrowRight, "__esModule", {
   value: true
 });
-var default_1$3 = ArrowRight.default = void 0;
-var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon$1);
-var _jsxRuntime$3 = require$$2;
-var _default$3 = (0, _createSvgIcon$3.default)(/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+var default_1$5 = ArrowRight.default = void 0;
+var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon$1);
+var _jsxRuntime$5 = require$$2;
+var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
   d: "m10 17 5-5-5-5v10z"
 }), "ArrowRight");
-default_1$3 = ArrowRight.default = _default$3;
+default_1$5 = ArrowRight.default = _default$5;
 var Save = {};
-var _interopRequireDefault$2 = interopRequireDefault.exports;
+var _interopRequireDefault$4 = interopRequireDefault.exports;
 Object.defineProperty(Save, "__esModule", {
   value: true
 });
-var default_1$2 = Save.default = void 0;
-var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon$1);
-var _jsxRuntime$2 = require$$2;
-var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
+var default_1$4 = Save.default = void 0;
+var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon$1);
+var _jsxRuntime$4 = require$$2;
+var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
   d: "M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"
 }), "Save");
-default_1$2 = Save.default = _default$2;
+default_1$4 = Save.default = _default$4;
 var Visibility = {};
-var _interopRequireDefault$1 = interopRequireDefault.exports;
+var _interopRequireDefault$3 = interopRequireDefault.exports;
 Object.defineProperty(Visibility, "__esModule", {
   value: true
 });
-var default_1$1 = Visibility.default = void 0;
-var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon$1);
-var _jsxRuntime$1 = require$$2;
-var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
+var default_1$3 = Visibility.default = void 0;
+var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon$1);
+var _jsxRuntime$3 = require$$2;
+var _default$3 = (0, _createSvgIcon$3.default)(/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
   d: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
 }), "Visibility");
-default_1$1 = Visibility.default = _default$1;
+default_1$3 = Visibility.default = _default$3;
 var VisibilityOff = {};
-var _interopRequireDefault = interopRequireDefault.exports;
+var _interopRequireDefault$2 = interopRequireDefault.exports;
 Object.defineProperty(VisibilityOff, "__esModule", {
   value: true
 });
-var default_1 = VisibilityOff.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon$1);
-var _jsxRuntime = require$$2;
-var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+var default_1$2 = VisibilityOff.default = void 0;
+var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon$1);
+var _jsxRuntime$2 = require$$2;
+var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
   d: "M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78 3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"
 }), "VisibilityOff");
-default_1 = VisibilityOff.default = _default;
+default_1$2 = VisibilityOff.default = _default$2;
 function getCardUtilityClass(slot) {
   return generateUtilityClass("MuiCard", slot);
 }
@@ -10349,7 +10351,7 @@ const queueDocument = (contents, prioritize = false) => {
   }));
   shiftQueue();
 };
-const EditorWrapper = default_1$6(Card$1)({
+const EditorWrapper = default_1$8(Card$1)({
   width: "100%",
   flex: "auto",
   display: "flex",
@@ -10361,7 +10363,7 @@ const EditorWrapper = default_1$6(Card$1)({
     flexDirection: "row"
   }
 });
-const EditorHeader = default_1$6(CardHeader$1)(({
+const EditorHeader = default_1$8(CardHeader$1)(({
   theme
 }) => ({
   background: theme.palette.primary.dark,
@@ -10373,13 +10375,13 @@ const EditorHeader = default_1$6(CardHeader$1)(({
     fontSize: "1rem"
   }
 }));
-const EditorContentBox = default_1$6(Box$3)({
+const EditorContentBox = default_1$8(Box$3)({
   overflow: "auto",
   paddingLeft: "20px",
   paddingRight: "20px",
   paddingBottom: "20px"
 });
-const EditorSidebarBox = default_1$6(Box$3)({
+const EditorSidebarBox = default_1$8(Box$3)({
   flex: 0,
   position: "relative"
 });
@@ -10424,7 +10426,7 @@ const MarkdownEditor = ({
           },
           "aria-label": "increase preview size",
           onClick: saveMDX,
-          children: /* @__PURE__ */ jsx(default_1$2, {
+          children: /* @__PURE__ */ jsx(default_1$4, {
             sx: {
               fontSize: 22
             }
@@ -10437,7 +10439,7 @@ const MarkdownEditor = ({
           onClick: () => {
             setEditorFlex((value) => Math.max(-(MAX_FLEX_DIFF - 1), value - 1));
           },
-          children: /* @__PURE__ */ jsx(default_1$4, {
+          children: /* @__PURE__ */ jsx(default_1$6, {
             sx: {
               fontSize: 32
             }
@@ -10450,7 +10452,7 @@ const MarkdownEditor = ({
           onClick: () => {
             setEditorFlex((value) => Math.min(MAX_FLEX_DIFF - 1, value + 1));
           },
-          children: /* @__PURE__ */ jsx(default_1$3, {
+          children: /* @__PURE__ */ jsx(default_1$5, {
             sx: {
               fontSize: 32
             }
@@ -10466,11 +10468,11 @@ const MarkdownEditor = ({
             onClick: () => {
               setShowPreview((value) => !value);
             },
-            children: !showPreview ? /* @__PURE__ */ jsx(default_1$1, {
+            children: !showPreview ? /* @__PURE__ */ jsx(default_1$3, {
               sx: {
                 fontSize: 22
               }
-            }) : /* @__PURE__ */ jsx(default_1, {
+            }) : /* @__PURE__ */ jsx(default_1$2, {
               sx: {
                 fontSize: 22
               }
@@ -15438,6 +15440,18 @@ const codeTheme$ = new ValueSubject((_a = localStorage.getItem(SYNTAX_KEY)) != n
 codeTheme$.subscribe((theme) => {
   localStorage.setItem(SYNTAX_KEY, theme);
 });
+var Link = {};
+var _interopRequireDefault$1 = interopRequireDefault.exports;
+Object.defineProperty(Link, "__esModule", {
+  value: true
+});
+var default_1$1 = Link.default = void 0;
+var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon$1);
+var _jsxRuntime$1 = require$$2;
+var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
+  d: "M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"
+}), "Link");
+default_1$1 = Link.default = _default$1;
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter.js"));
 class ErrorBoundary$1 extends React__default.Component {
   constructor(props) {
@@ -15482,10 +15496,14 @@ const removeVoidElements = (mdx) => {
   });
   return mdx;
 };
+const HWrapper = default_1$8("span")({
+  display: "inline-block"
+});
 const MDX = memo(({
   mdx,
   onSaveMDX,
-  onAfterRender
+  onAfterRender,
+  embed
 }) => {
   let i2 = 0;
   const [theme] = useObservableState(() => codeTheme$);
@@ -15509,14 +15527,26 @@ const MDX = memo(({
     requestAnimationFrame(() => {
       onAfterRender == null ? void 0 : onAfterRender();
     });
-  });
+  }, [mdx, params.headingIndex]);
   let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment$1, {
     children: mdx !== void 0 ? htmdx(sanitizedMDX, React__default.createElement, {
       components: __spreadProps(__spreadValues({}, [1, 2, 3, 4, 5, 6, 6, 7, 8, 10].reduce((memo2, i22) => {
         memo2[`h${i22}`] = (props) => {
           props = __spreadProps(__spreadValues({}, props), {
-            id: `heading-` + hIndex
+            id: `heading-` + hIndex,
+            children: /* @__PURE__ */ jsxs(Fragment$1, {
+              children: [/* @__PURE__ */ jsx(HWrapper, {
+                children: props.children
+              }), !embed && /* @__PURE__ */ jsx(Link$1, {
+                to: `/docs/${params.projectSlug}/${params.contentSlug}/${hIndex}`,
+                children: /* @__PURE__ */ jsx(default_1$1, {
+                  sx: {
+                    fontSize: "1.5rem"
+                  }
+                })
+              })]
+            })
           });
           hIndex++;
           return createElement(`h` + i22, props);
@@ -15552,18 +15582,35 @@ const MDX = memo(({
       }]
     }) : /* @__PURE__ */ jsx(CircularProgress, {
       sx: {
-        marginLeft: "calc(50% - 20px)"
+        position: "absolute",
+        top: "50%",
+        left: "50%"
       }
     })
   });
 });
-const Wrapper$1 = default_1$6(Box$3)(({
+const Wrapper$1 = default_1$8(Box$3)(({
   theme
-}) => __spreadValues({}, theme.typography.body1));
+}) => __spreadProps(__spreadValues({}, theme.typography.body1), {
+  "h1, h2, h3, h4, h5, h6, h7, h8, h9, h10": {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    "a,a:hover,a:link,a:active": {
+      color: "inherit",
+      textDecoration: "none",
+      textAlign: "left"
+    },
+    "a:hover": {
+      textDecoration: "underline"
+    }
+  }
+}));
 const MarkdownRenderer = ({
   mdx,
   isEditor,
-  onAfterRender
+  onAfterRender,
+  embed
 }) => {
   const currentMDX$ = useObservable(() => new ValueSubject(mdx));
   const [debouncedMDX] = useObservableState(() => isEditor ? currentMDX$.pipe(debounceTime(500, void 0)) : currentMDX$);
@@ -15584,6 +15631,7 @@ const MarkdownRenderer = ({
         }
       },
       children: /* @__PURE__ */ jsx(MDX, {
+        embed,
         onAfterRender,
         mdx: debouncedMDX,
         onSaveMDX: (saveMDX) => {
@@ -16057,7 +16105,7 @@ function getFilledInputUtilityClass(slot) {
 }
 const filledInputClasses = generateUtilityClasses("MuiFilledInput", ["root", "colorSecondary", "underline", "focused", "disabled", "adornedStart", "adornedEnd", "error", "sizeSmall", "multiline", "hiddenLabel", "input", "inputSizeSmall", "inputHiddenLabel", "inputMultiline", "inputAdornedStart", "inputAdornedEnd"]);
 var filledInputClasses$1 = filledInputClasses;
-var ClearIcon = createSvgIcon(/* @__PURE__ */ jsx("path", {
+var CloseIcon = createSvgIcon(/* @__PURE__ */ jsx("path", {
   d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
 }), "Close");
 var ArrowDropDownIcon = createSvgIcon(/* @__PURE__ */ jsx("path", {
@@ -16392,7 +16440,7 @@ const Autocomplete = /* @__PURE__ */ React.forwardRef(function Autocomplete2(inP
     blurOnSelect = false,
     ChipProps,
     className,
-    clearIcon = _ClearIcon || (_ClearIcon = /* @__PURE__ */ jsx(ClearIcon, {
+    clearIcon = _ClearIcon || (_ClearIcon = /* @__PURE__ */ jsx(CloseIcon, {
       fontSize: "small"
     })),
     clearOnBlur = !props.freeSolo,
@@ -22193,7 +22241,7 @@ const style = {
     p: 2
   }
 };
-const StyledAutocompletePopper = default_1$6("div")(({
+const StyledAutocompletePopper = default_1$8("div")(({
   theme
 }) => ({
   [`& .${autocompleteClasses$1.paper}`]: {
@@ -22249,7 +22297,7 @@ const StyledAutocompletePopper = default_1$6("div")(({
     width: "100%"
   }
 }));
-const ProjectToggle = default_1$6(FormGroup$1)(({
+const ProjectToggle = default_1$8(FormGroup$1)(({
   theme
 }) => ({
   display: "flex",
@@ -22409,6 +22457,43 @@ const SearchOverlay = ({
     })
   });
 };
+var SubdirectoryArrowRight = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(SubdirectoryArrowRight, "__esModule", {
+  value: true
+});
+var default_1 = SubdirectoryArrowRight.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon$1);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "m19 15-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
+}), "SubdirectoryArrowRight");
+default_1 = SubdirectoryArrowRight.default = _default;
+var removeMarkdown = function(md, options) {
+  options = options || {};
+  options.listUnicodeChar = options.hasOwnProperty("listUnicodeChar") ? options.listUnicodeChar : false;
+  options.stripListLeaders = options.hasOwnProperty("stripListLeaders") ? options.stripListLeaders : true;
+  options.gfm = options.hasOwnProperty("gfm") ? options.gfm : true;
+  options.useImgAltText = options.hasOwnProperty("useImgAltText") ? options.useImgAltText : true;
+  var output = md || "";
+  output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "");
+  try {
+    if (options.stripListLeaders) {
+      if (options.listUnicodeChar)
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, options.listUnicodeChar + " $1");
+      else
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, "$1");
+    }
+    if (options.gfm) {
+      output = output.replace(/\n={2,}/g, "\n").replace(/~{3}.*\n/g, "").replace(/~~/g, "").replace(/`{3}.*\n/g, "");
+    }
+    output = output.replace(/<[^>]*>/g, "").replace(/^[=\-]{2,}\s*$/g, "").replace(/\[\^.+?\](\: .*?$)?/g, "").replace(/\s{0,2}\[.*?\]: .*?$/g, "").replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? "$1" : "").replace(/\[(.*?)\][\[\(].*?[\]\)]/g, "$1").replace(/^\s{0,3}>\s?/g, "").replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "").replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, "$1$2$3").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, "$2").replace(/(`{3,})(.*?)\1/gm, "$2").replace(/`(.+?)`/g, "$1").replace(/\n{2,}/g, "\n\n");
+  } catch (e2) {
+    console.error(e2);
+    return md;
+  }
+  return output;
+};
 class ErrorBoundary extends React__default.Component {
   constructor(props) {
     super(props);
@@ -22439,17 +22524,21 @@ class ErrorBoundary extends React__default.Component {
     return this.props.children;
   }
 }
-const TOCList = default_1$6("ul")({
+const TOCList = default_1$8("ul")({
   listStyle: "none",
   margin: 0,
   padding: 10,
-  lineHeight: "1.6em"
+  paddingLeft: 0,
+  lineHeight: "1.3em",
+  maxHeight: "calc(60vh)",
+  overflowY: "auto"
 });
-const TOCListItem = default_1$6("li")({
-  fontSize: "1.1em",
+const TOCListItem = default_1$8("li")({
+  fontSize: ".9em",
   "a,a:hover,a:link,a:active": {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
+    textAlign: "left"
   },
   "a:hover": {
     textDecoration: "underline"
@@ -22457,19 +22546,39 @@ const TOCListItem = default_1$6("li")({
 });
 const getListItem = (level) => (props) => {
   const params = useParams();
-  return /* @__PURE__ */ jsx(TOCListItem, {
+  const linkRef = useRef();
+  return /* @__PURE__ */ jsxs(TOCListItem, {
     sx: {
-      paddingLeft: 10 * (level - 1) + "px"
+      marginLeft: 10 * (level - 1) + "px",
+      display: "flex"
     },
-    children: /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
-      to: `/${params.projectSlug}/${params.contentSlug}/${props.index}`
-    }))
+    children: [/* @__PURE__ */ jsx(Box$3, {
+      children: /* @__PURE__ */ jsx(default_1, {
+        sx: {
+          fontSize: ".8em",
+          marginRight: ".2em"
+        },
+        className: "sub-icon"
+      })
+    }), /* @__PURE__ */ jsx(Box$3, {
+      children: /* @__PURE__ */ jsx(Link$1, __spreadProps(__spreadValues({}, props), {
+        ref: linkRef,
+        to: `/docs/${params.projectSlug}/${params.contentSlug}/${props.index}`
+      }))
+    })]
   });
 };
 const TOC = memo(({
   mdx
 }) => {
-  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.includes("#")).join("\n"), [mdx]);
+  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.startsWith("#")).map((line) => {
+    for (let i22 = 0; i22 < line.length; i22++) {
+      if (line.charAt(i22) !== "#") {
+        return line.substr(0, i22 - 1) + removeMarkdown(line.substr(i22));
+      }
+    }
+    return line;
+  }).join("\n"), [mdx]);
   let i2 = 0;
   let hIndex = 0;
   return /* @__PURE__ */ jsx(Fragment$1, {
@@ -22500,11 +22609,14 @@ const TOC = memo(({
     }) : /* @__PURE__ */ jsx(Fragment$1, {})
   });
 });
-const Wrapper = default_1$6(Box$3)(({
+const Wrapper = default_1$8(Box$3)(({
   theme
-}) => __spreadValues({}, theme.typography.body1));
-const Header = default_1$6("h1")({
-  fontSize: "1.2em",
+}) => __spreadProps(__spreadValues({}, theme.typography.body1), {
+  width: "220px"
+}));
+const Header = default_1$8("h1")({
+  fontSize: "1em",
+  marginBottom: "-.7em",
   fontWeight: "bold"
 });
 const TableOfContents = ({
@@ -22617,6 +22729,7 @@ const DocOptionsContextProvider = (props) => {
 const useDocOptions = () => useContext(docOptionsContext);
 const Docs = lazy(() => import("./docs.js"));
 const Editor = lazy(() => import("./editor.js"));
+const Embed = lazy(() => import("./embed.js"));
 const Doks = (options) => {
   const componentContext2 = useComponentContext();
   return /* @__PURE__ */ jsx(ComponentContextProvider, {
@@ -22633,6 +22746,9 @@ const Doks = (options) => {
               path: "/docs/*",
               element: /* @__PURE__ */ jsx(Docs, {})
             }), /* @__PURE__ */ jsx(Route, {
+              path: "/embed/*",
+              element: /* @__PURE__ */ jsx(Embed, {})
+            }), /* @__PURE__ */ jsx(Route, {
               path: "*",
               element: /* @__PURE__ */ jsx(Docs, {})
             })]
@@ -22648,5 +22764,5 @@ var doks = /* @__PURE__ */ Object.freeze({
   Doks,
   "default": Doks
 });
-export { codeTheme$ as $, ArrowDropDownIcon as A, Background as B, Box$1 as C, FormControl$1 as D, InputLabel$1 as E, Footer as F, Button$1 as G, Card$1 as H, Input$1 as I, useObservable as J, modifyDocument as K, CardHeader$1 as L, MarkdownEditor as M, NativeSelectInput$1 as N, IconButton$1 as O, default_1$7 as P, Paper$1 as Q, Routes as R, InputBase$1 as S, Transition$1 as T, LinearProgress$1 as U, ValueSubject as V, useLocation as W, useColorModeContext as X, Typography$1 as Y, Link as Z, Tooltip$1 as _, Route as a, queuedDocuments$ as a0, fetchingDocuments$ as a1, getDefaultExportFromCjs as a2, commonjsGlobal as a3, useDocOptions as a4, addOrUpdateProject as a5, addOrUpdateManyContents as a6, addOrUpdateContents as a7, getLastModified as a8, getCachedDocument as a9, queueDocument as aa, removeContents as ab, doks as ac, useNavigate as b, useComponentContext as c, documents$ as d, extendSxProp as e, useObservableAndState as f, projects$ as g, createSvgIcon$1 as h, interopRequireDefault as i, useTheme as j, useForkRef as k, getTransitionProps as l, useEnhancedEffect$1 as m, useId as n, ownerDocument as o, pathBrowserify as p, useControlled as q, require$$2 as r, ButtonBase$1 as s, useFormControl as t, useParams as u, formControlState as v, getNativeSelectUtilityClasses as w, default_1$6 as x, contents$ as y, useObservableState as z };
+export { LinearProgress$1 as $, formControlState as A, ButtonBase$1 as B, CloseIcon as C, getNativeSelectUtilityClasses as D, ArrowDropDownIcon as E, Input$1 as F, Grow$1 as G, default_1$8 as H, IconButton$1 as I, contents$ as J, useObservableState as K, FormControl$1 as L, InputLabel$1 as M, NativeSelectInput$1 as N, Button$1 as O, Paper$1 as P, Card$1 as Q, Routes as R, FormControlContext$1 as S, Typography$1 as T, TextField$1 as U, useObservable as V, modifyDocument as W, CardHeader$1 as X, Box$3 as Y, default_1$9 as Z, InputBase$1 as _, createSvgIcon$1 as a, ValueSubject as a0, useLocation as a1, useColorModeContext as a2, Link$1 as a3, Tooltip$1 as a4, codeTheme$ as a5, _assertThisInitialized as a6, _setPrototypeOf as a7, commonjsGlobal as a8, useDocOptions as a9, addOrUpdateProject as aa, addOrUpdateManyContents as ab, addOrUpdateContents as ac, getLastModified as ad, getCachedDocument as ae, queueDocument as af, removeContents as ag, doks as ah, Route as b, createSvgIcon as c, useParams as d, useObservableAndState as e, fetchingDocuments$ as f, useNavigate as g, documents$ as h, interopRequireDefault as i, Box$1 as j, useForkRef as k, useEventCallback as l, useTheme as m, extendSxProp as n, ownerDocument as o, pathBrowserify as p, queuedDocuments$ as q, require$$2 as r, projects$ as s, Transition$1 as t, useComponentContext as u, getTransitionProps as v, useEnhancedEffect$1 as w, useId as x, useControlled as y, useFormControl as z };
 //# sourceMappingURL=doks.js.map

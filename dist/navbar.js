@@ -1,83 +1,10 @@
-import { h as createSvgIcon, i as interopRequireDefault, r as require$$2, Q as Paper, S as InputBase, U as LinearProgress, V as ValueSubject, f as useObservableAndState, u as useParams, W as useLocation, X as useColorModeContext, c as useComponentContext, C as Box, Y as Typography, Z as Link, _ as Tooltip, z as useObservableState, d as documents$, b as useNavigate, $ as codeTheme$, a0 as queuedDocuments$, a1 as fetchingDocuments$ } from "./doks.js";
+import { P as Paper, a as createSvgIcon, i as interopRequireDefault, r as require$$2, _ as InputBase, $ as LinearProgress, a0 as ValueSubject, e as useObservableAndState, d as useParams, a1 as useLocation, a2 as useColorModeContext, u as useComponentContext, j as Box, T as Typography, a3 as Link, a4 as Tooltip, O as Button, K as useObservableState, h as documents$, g as useNavigate, a5 as codeTheme$, q as queuedDocuments$, f as fetchingDocuments$ } from "./doks.js";
 import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, c as capitalize, _ as _extends, r as useThemeProps, b as _objectWithoutPropertiesLoose, e as composeClasses, j as jsx, h as clsx, F as Fragment, i as jsxs } from "./main.js";
-import { map, combineLatest } from "rxjs";
 import * as React from "react";
+import { Suspense } from "react";
+import { map, combineLatest } from "rxjs";
 import "react-dom";
 import "rxjs/operators";
-var Brightness4 = {};
-var _interopRequireDefault$5 = interopRequireDefault.exports;
-Object.defineProperty(Brightness4, "__esModule", {
-  value: true
-});
-var default_1$5 = Brightness4.default = void 0;
-var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
-var _jsxRuntime$5 = require$$2;
-var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
-  d: "M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6z"
-}), "Brightness4");
-default_1$5 = Brightness4.default = _default$5;
-var Brightness7 = {};
-var _interopRequireDefault$4 = interopRequireDefault.exports;
-Object.defineProperty(Brightness7, "__esModule", {
-  value: true
-});
-var default_1$4 = Brightness7.default = void 0;
-var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
-var _jsxRuntime$4 = require$$2;
-var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
-  d: "M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"
-}), "Brightness7");
-default_1$4 = Brightness7.default = _default$4;
-var Code = {};
-var _interopRequireDefault$3 = interopRequireDefault.exports;
-Object.defineProperty(Code, "__esModule", {
-  value: true
-});
-var default_1$3 = Code.default = void 0;
-var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
-var _jsxRuntime$3 = require$$2;
-var _default$3 = (0, _createSvgIcon$3.default)(/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
-  d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
-}), "Code");
-default_1$3 = Code.default = _default$3;
-var Edit = {};
-var _interopRequireDefault$2 = interopRequireDefault.exports;
-Object.defineProperty(Edit, "__esModule", {
-  value: true
-});
-var default_1$2 = Edit.default = void 0;
-var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
-var _jsxRuntime$2 = require$$2;
-var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
-  d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-}), "Edit");
-default_1$2 = Edit.default = _default$2;
-var PostAdd = {};
-var _interopRequireDefault$1 = interopRequireDefault.exports;
-Object.defineProperty(PostAdd, "__esModule", {
-  value: true
-});
-var default_1$1 = PostAdd.default = void 0;
-var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
-var _jsxRuntime$1 = require$$2;
-var _default$1 = (0, _createSvgIcon$1.default)([/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
-  d: "M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
-}, "0"), /* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
-  d: "M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
-}, "1")], "PostAdd");
-default_1$1 = PostAdd.default = _default$1;
-var Search = {};
-var _interopRequireDefault = interopRequireDefault.exports;
-Object.defineProperty(Search, "__esModule", {
-  value: true
-});
-var default_1 = Search.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon);
-var _jsxRuntime = require$$2;
-var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
-  d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-}), "Search");
-default_1 = Search.default = _default;
 function getAppBarUtilityClass(slot) {
   return generateUtilityClass("MuiAppBar", slot);
 }
@@ -254,7 +181,81 @@ const Toolbar = /* @__PURE__ */ React.forwardRef(function Toolbar2(inProps, ref)
   }, other));
 });
 var Toolbar$1 = Toolbar;
-const syntaxThemes = ["a11yDark", "a11yLight", "agate", "anOldHope", "androidstudio", "arduinoLight", "arta", "ascetic", "atelierCaveDark", "atelierCaveLight", "atelierDuneDark", "atelierDuneLight", "atelierEstuaryDark", "atelierEstuaryLight", "atelierForestDark", "atelierForestLight", "atelierHeathDark", "atelierHeathLight", "atelierLakesideDark", "atelierLakesideLight", "atelierPlateauDark", "atelierPlateauLight", "atelierSavannaDark", "atelierSavannaLight", "atelierSeasideDark", "atelierSeasideLight", "atelierSulphurpoolDark", "atelierSulphurpoolLight", "atomOneDark", "atomOneDarkReasonable", "atomOneLight", "brownPaper", "codepenEmbed", "colorBrewer", "darcula", "dark", "defaultStyle", "docco", "dracula", "far", "foundation", "github", "githubGist", "gml", "googlecode", "gradientDark", "gradientLight", "grayscale", "gruvboxDark", "gruvboxLight", "hopscotch", "hybrid", "idea", "irBlack", "isblEditorDark", "isblEditorLight", "kimbieDark", "kimbieLight", "lightfair", "lioshi", "magula", "monoBlue", "monokai", "monokaiSublime", "nightOwl", "nnfx", "nnfxDark", "nord", "obsidian", "ocean", "paraisoDark", "paraisoLight", "pojoaque", "purebasic", "qtcreatorDark", "qtcreatorLight", "railscasts", "rainbow", "routeros", "schoolBook", "shadesOfPurple", "solarizedDark", "solarizedLight", "srcery", "stackoverflowDark", "stackoverflowLight", "sunburst", "tomorrow", "tomorrowNight", "tomorrowNightBlue", "tomorrowNightBright", "tomorrowNightEighties", "vs", "vs2015", "xcode", "xt256", "zenburn"];
+var Code = {};
+var _interopRequireDefault$5 = interopRequireDefault.exports;
+Object.defineProperty(Code, "__esModule", {
+  value: true
+});
+var default_1$5 = Code.default = void 0;
+var _createSvgIcon$5 = _interopRequireDefault$5(createSvgIcon);
+var _jsxRuntime$5 = require$$2;
+var _default$5 = (0, _createSvgIcon$5.default)(/* @__PURE__ */ (0, _jsxRuntime$5.jsx)("path", {
+  d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+}), "Code");
+default_1$5 = Code.default = _default$5;
+var Edit = {};
+var _interopRequireDefault$4 = interopRequireDefault.exports;
+Object.defineProperty(Edit, "__esModule", {
+  value: true
+});
+var default_1$4 = Edit.default = void 0;
+var _createSvgIcon$4 = _interopRequireDefault$4(createSvgIcon);
+var _jsxRuntime$4 = require$$2;
+var _default$4 = (0, _createSvgIcon$4.default)(/* @__PURE__ */ (0, _jsxRuntime$4.jsx)("path", {
+  d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+}), "Edit");
+default_1$4 = Edit.default = _default$4;
+var PostAdd = {};
+var _interopRequireDefault$3 = interopRequireDefault.exports;
+Object.defineProperty(PostAdd, "__esModule", {
+  value: true
+});
+var default_1$3 = PostAdd.default = void 0;
+var _createSvgIcon$3 = _interopRequireDefault$3(createSvgIcon);
+var _jsxRuntime$3 = require$$2;
+var _default$3 = (0, _createSvgIcon$3.default)([/* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+  d: "M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z"
+}, "0"), /* @__PURE__ */ (0, _jsxRuntime$3.jsx)("path", {
+  d: "M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z"
+}, "1")], "PostAdd");
+default_1$3 = PostAdd.default = _default$3;
+var Search = {};
+var _interopRequireDefault$2 = interopRequireDefault.exports;
+Object.defineProperty(Search, "__esModule", {
+  value: true
+});
+var default_1$2 = Search.default = void 0;
+var _createSvgIcon$2 = _interopRequireDefault$2(createSvgIcon);
+var _jsxRuntime$2 = require$$2;
+var _default$2 = (0, _createSvgIcon$2.default)(/* @__PURE__ */ (0, _jsxRuntime$2.jsx)("path", {
+  d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+}), "Search");
+default_1$2 = Search.default = _default$2;
+var Brightness4 = {};
+var _interopRequireDefault$1 = interopRequireDefault.exports;
+Object.defineProperty(Brightness4, "__esModule", {
+  value: true
+});
+var default_1$1 = Brightness4.default = void 0;
+var _createSvgIcon$1 = _interopRequireDefault$1(createSvgIcon);
+var _jsxRuntime$1 = require$$2;
+var _default$1 = (0, _createSvgIcon$1.default)(/* @__PURE__ */ (0, _jsxRuntime$1.jsx)("path", {
+  d: "M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6z"
+}), "Brightness4");
+default_1$1 = Brightness4.default = _default$1;
+var Brightness7 = {};
+var _interopRequireDefault = interopRequireDefault.exports;
+Object.defineProperty(Brightness7, "__esModule", {
+  value: true
+});
+var default_1 = Brightness7.default = void 0;
+var _createSvgIcon = _interopRequireDefault(createSvgIcon);
+var _jsxRuntime = require$$2;
+var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
+  d: "M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"
+}), "Brightness7");
+default_1 = Brightness7.default = _default;
+const syntaxThemes = ["anOldHope", "arta", "atelierDuneDark", "atelierDuneLight", "darcula", "far", "github", "isblEditorDark", "isblEditorLight", "sunburst", "gradientDark", "monokai", "nightOwl"];
 const StyledInputBase = styled(InputBase)(({
   theme
 }) => ({
@@ -306,18 +307,20 @@ const SyntaxMenu = () => {
   const {
     NavbarMenu
   } = useComponentContext();
+  const [codeTheme] = useObservableState(() => codeTheme$);
   return /* @__PURE__ */ jsx(NavbarMenu, {
     tooltip: "Syntax theme",
     items: (_a = syntaxThemes.map((theme) => {
       return {
         key: theme,
         label: theme,
+        selected: codeTheme === theme,
         onClick: () => {
           codeTheme$.next(theme);
         }
       };
     })) != null ? _a : [],
-    children: /* @__PURE__ */ jsx(default_1$3, {})
+    children: /* @__PURE__ */ jsx(default_1$5, {})
   });
 };
 const NavbarTitle = () => /* @__PURE__ */ jsx(Fragment, {
@@ -334,8 +337,10 @@ const NavAppBar = styled(AppBar$1)(({
     textDecoration: "underline"
   }
 }));
-function Navbar() {
-  const [hasDocumentsFetching] = useObservableAndState(() => combineLatest(queuedDocuments$, fetchingDocuments$).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
+function Navbar({
+  embed
+}) {
+  const [hasDocumentsFetching] = useObservableAndState(() => combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(map(([queuedDocuments, fetchingDocuments]) => queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0)));
   const params = useParams();
   const location = useLocation();
   const {
@@ -353,11 +358,18 @@ function Navbar() {
   return /* @__PURE__ */ jsxs(Box, {
     sx: {
       flex: 0,
-      position: "sticky",
+      position: embed ? "static" : "sticky",
       top: 0,
       zIndex: 1e3
     },
-    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(SearchProgress2, {}), /* @__PURE__ */ jsx(NavAppBar, {
+    children: [hasDocumentsFetching && /* @__PURE__ */ jsx(SearchProgress2, {
+      sx: {
+        display: {
+          xs: "block",
+          sm: "none"
+        }
+      }
+    }), /* @__PURE__ */ jsx(NavAppBar, {
       position: "static",
       children: /* @__PURE__ */ jsxs(Toolbar$1, {
         children: [/* @__PURE__ */ jsx(Typography, {
@@ -375,60 +387,74 @@ function Navbar() {
             to: "/docs/",
             children: /* @__PURE__ */ jsx(NavbarTitle2, {})
           })
-        }), params.contentSlug && location.pathname.startsWith("/docs") && /* @__PURE__ */ jsx(Tooltip, {
-          title: "edit current document",
-          children: /* @__PURE__ */ jsx(Link, {
-            to: `/editor/${params.projectSlug}/${params.contentSlug}`,
-            children: /* @__PURE__ */ jsx(NavbarButton, {
-              "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$2, {})
+        }), !embed ? /* @__PURE__ */ jsxs(Fragment, {
+          children: [params.contentSlug && location.pathname.startsWith("/docs") && /* @__PURE__ */ jsx(Tooltip, {
+            title: "edit current document",
+            children: /* @__PURE__ */ jsx(Link, {
+              to: `/editor/${params.projectSlug}/${params.contentSlug}`,
+              children: /* @__PURE__ */ jsx(NavbarButton, {
+                "aria-label": "editor",
+                children: /* @__PURE__ */ jsx(default_1$4, {})
+              })
             })
-          })
-        }), /* @__PURE__ */ jsx(Tooltip, {
-          title: "create document",
-          children: /* @__PURE__ */ jsx(Link, {
-            to: "/editor/" + params.projectSlug,
-            children: /* @__PURE__ */ jsx(NavbarButton, {
-              "aria-label": "editor",
-              children: /* @__PURE__ */ jsx(default_1$1, {})
+          }), /* @__PURE__ */ jsx(Tooltip, {
+            title: "create document",
+            children: /* @__PURE__ */ jsx(Link, {
+              to: "/editor/" + params.projectSlug,
+              children: /* @__PURE__ */ jsx(NavbarButton, {
+                "aria-label": "editor",
+                children: /* @__PURE__ */ jsx(default_1$3, {})
+              })
             })
-          })
-        }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavbarButton, {
-          "aria-label": "toggle dark mode",
-          onClick: toggleColorMode,
-          children: mode === "light" ? /* @__PURE__ */ jsx(default_1$5, {
+          }), /* @__PURE__ */ jsx(SyntaxMenu, {}), /* @__PURE__ */ jsx(FavMenu, {}), /* @__PURE__ */ jsx(NavbarButton, {
+            "aria-label": "toggle dark mode",
+            onClick: toggleColorMode,
+            children: mode === "light" ? /* @__PURE__ */ jsx(default_1$1, {
+              sx: {
+                fontSize: 20
+              }
+            }) : /* @__PURE__ */ jsx(default_1, {
+              sx: {
+                fontSize: 20
+              }
+            })
+          }), /* @__PURE__ */ jsxs(SearchInputWrapper, {
             sx: {
-              fontSize: 20
-            }
-          }) : /* @__PURE__ */ jsx(default_1$4, {
-            sx: {
-              fontSize: 20
-            }
-          })
-        }), /* @__PURE__ */ jsxs(SearchInputWrapper, {
-          sx: {
-            cursor: "text"
-          },
-          onClick: (e) => {
-            e.currentTarget.blur();
-            showSearch$.next(true);
-          },
-          children: [/* @__PURE__ */ jsx(SearchIconWrapper, {
-            children: /* @__PURE__ */ jsx(default_1, {})
-          }), /* @__PURE__ */ jsx(StyledInputBase, {
-            onFocus: (e) => {
-              e.target.blur();
+              cursor: "text"
+            },
+            onClick: (e) => {
+              e.currentTarget.blur();
               showSearch$.next(true);
             },
-            placeholder: "Search\u2026",
-            inputProps: {
-              "aria-label": "search"
-            }
+            children: [/* @__PURE__ */ jsx(SearchIconWrapper, {
+              children: /* @__PURE__ */ jsx(default_1$2, {})
+            }), /* @__PURE__ */ jsx(StyledInputBase, {
+              onFocus: (e) => {
+                e.target.blur();
+                showSearch$.next(true);
+              },
+              placeholder: "Search\u2026",
+              inputProps: {
+                "aria-label": "search"
+              }
+            })]
           })]
+        }) : /* @__PURE__ */ jsx(Fragment, {
+          children: /* @__PURE__ */ jsx("a", {
+            href: window.location.href.replace("#/embed", "#/docs"),
+            target: "window",
+            children: /* @__PURE__ */ jsx(Button, {
+              variant: "contained",
+              children: "open in docs"
+            })
+          })
         })]
       })
-    }), /* @__PURE__ */ jsx(SearchOverlay, {
-      show$: showSearch$
+    }), /* @__PURE__ */ jsx(Suspense, {
+      fallback: /* @__PURE__ */ jsx(Fragment, {}),
+      children: /* @__PURE__ */ jsx(SearchOverlay, {
+        show$: showSearch$
+      })
     })]
   });
 }

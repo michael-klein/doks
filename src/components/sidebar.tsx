@@ -6,7 +6,6 @@ import TreeItem from "@mui/lab/TreeItem";
 import TreeView from "@mui/lab/TreeView";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import CircularProgress from "@mui/material/CircularProgress";
 import Fab from "@mui/material/Fab";
 import FormControl from "@mui/material/FormControl";
@@ -29,6 +28,7 @@ import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import { Contents, contents$, Project, projects$ } from "../store/contents";
+import { ConditionalCard } from "./conditional_card";
 
 interface ContentTree extends Partial<Contents> {
   children: ContentTree[];
@@ -95,6 +95,10 @@ const SidebarWrapper = styled(Grid)(({ theme }) => ({
     display: "block",
     width: "200px",
   },
+  "&:not(.edit-sidebar) > .MuiPaper-root": {
+    maxHeight: "calc(100vh - 180px)",
+    overflow: "auto",
+  },
   [".menu-button"]: {
     display: "none",
     position: "fixed",
@@ -159,22 +163,6 @@ const RenderTreeWrapper = ({
     <RenderTree content={content} />
   ) : (
     <CircularProgress></CircularProgress>
-  );
-};
-const ConditionalCard = ({
-  children,
-  mode,
-}: {
-  children: any;
-  mode: SIDEBAR_MODE;
-}) => {
-  if (mode === "editor") {
-    return children;
-  }
-  return (
-    <Card elevation={1} sx={{ padding: 2, position: "sticky", top: "80px" }}>
-      {children}
-    </Card>
   );
 };
 export function Sidebar({
@@ -248,7 +236,10 @@ export function Sidebar({
         (mode === "editor" ? "editor-sidebar" : "docs-sidebar")
       }
     >
-      <ConditionalCard mode={mode}>
+      <ConditionalCard
+        showCard={mode === "docs"}
+        sx={{ padding: 2, position: "sticky", top: "80px" }}
+      >
         <Fab color="secondary" aria-label="add" className="menu-button">
           {showMobileSidebar ? (
             <CloseIcon onClick={() => setShowMobileSidebar(false)} />

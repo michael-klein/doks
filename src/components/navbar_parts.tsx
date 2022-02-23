@@ -58,7 +58,12 @@ export const NavbarMenu = ({
 }: {
   children: React.ReactChild;
   tooltip: string;
-  items: { key: string; label: string; onClick: () => void }[];
+  items: {
+    key: string;
+    label: string;
+    onClick: () => void;
+    selected?: boolean;
+  }[];
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -96,8 +101,9 @@ export const NavbarMenu = ({
           horizontal: "right",
         }}
       >
-        {items.map(({ onClick, label, key }) => (
+        {items.map(({ onClick, label, key, selected }) => (
           <MenuItem
+            selected={selected}
             key={key}
             onClick={() => {
               onClick();

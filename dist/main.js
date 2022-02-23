@@ -2877,6 +2877,9 @@ function lighten(color2, coefficient) {
   }
   return recomposeColor(color2);
 }
+function emphasize(color2, coefficient = 0.15) {
+  return getLuminance(color2) > 0.5 ? darken(color2, coefficient) : lighten(color2, coefficient);
+}
 function createMixins(breakpoints, spacing2, mixins) {
   return _extends({
     toolbar: {
@@ -3776,7 +3779,7 @@ css`
   }
 `;
 const Doks = lazy(() => import("./doks.js").then(function(n2) {
-  return n2.ac;
+  return n2.ah;
 }));
 const docs = (options) => {
   const link = document.createElement("link");
@@ -3799,5 +3802,5 @@ const docs = (options) => {
     children: wrapDocs(/* @__PURE__ */ jsx(Doks, __spreadValues({}, options)))
   }), targetNode);
 };
-export { darken as A, duration as B, ClassNameGenerator$1 as C, rootShouldForwardProp as D, styledEngine as E, Fragment as F, CircularProgress$1 as G, createTheme as H, GlobalStyles as I, slotShouldForwardProp as J, resolveBreakpointValues as K, handleBreakpoints as L, getThemeProps as M, docs as N, PropTypes as P, ThemeContext$1 as T, _extends as _, generateUtilityClasses as a, _objectWithoutPropertiesLoose as b, capitalize as c, deepmerge as d, composeClasses as e, formatMuiErrorMessage as f, generateUtilityClass as g, clsx as h, jsxs as i, jsx as j, createTheme$1 as k, styled$2 as l, useTheme as m, ThemeContext$2 as n, useTheme$1 as o, propToStyleFunction as p, styled$1 as q, useThemeProps as r, styleFunctionSx as s, jsxRuntime as t, useTheme$2 as u, keyframes as v, alpha as w, defaultTheme$1 as x, css$1 as y, lighten as z };
+export { darken as A, duration as B, ClassNameGenerator$1 as C, rootShouldForwardProp as D, styledEngine as E, Fragment as F, CircularProgress$1 as G, createTheme as H, GlobalStyles as I, slotShouldForwardProp as J, emphasize as K, resolveBreakpointValues as L, handleBreakpoints as M, getThemeProps as N, docs as O, PropTypes as P, ThemeContext$1 as T, _extends as _, generateUtilityClasses as a, _objectWithoutPropertiesLoose as b, capitalize as c, deepmerge as d, composeClasses as e, formatMuiErrorMessage as f, generateUtilityClass as g, clsx as h, jsxs as i, jsx as j, createTheme$1 as k, styled$2 as l, useTheme as m, ThemeContext$2 as n, useTheme$1 as o, propToStyleFunction as p, styled$1 as q, useThemeProps as r, styleFunctionSx as s, jsxRuntime as t, useTheme$2 as u, keyframes as v, alpha as w, defaultTheme$1 as x, css$1 as y, lighten as z };
 //# sourceMappingURL=main.js.map

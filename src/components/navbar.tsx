@@ -1,5 +1,3 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CodeIcon from "@mui/icons-material/Code";
 import EditIcon from "@mui/icons-material/Edit";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -13,7 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useObservableState } from "observable-hooks";
-import React from "react";
+import React, { Suspense } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
@@ -28,105 +26,24 @@ import {
 } from "../store/documents";
 import { codeTheme$ } from "../utils/code_theme";
 import { ValueSubject } from "../utils/value_subject";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Button from "@mui/material/Button";
 
 const syntaxThemes = [
-  "a11yDark",
-  "a11yLight",
-  "agate",
   "anOldHope",
-  "androidstudio",
-  "arduinoLight",
   "arta",
-  "ascetic",
-  "atelierCaveDark",
-  "atelierCaveLight",
   "atelierDuneDark",
   "atelierDuneLight",
-  "atelierEstuaryDark",
-  "atelierEstuaryLight",
-  "atelierForestDark",
-  "atelierForestLight",
-  "atelierHeathDark",
-  "atelierHeathLight",
-  "atelierLakesideDark",
-  "atelierLakesideLight",
-  "atelierPlateauDark",
-  "atelierPlateauLight",
-  "atelierSavannaDark",
-  "atelierSavannaLight",
-  "atelierSeasideDark",
-  "atelierSeasideLight",
-  "atelierSulphurpoolDark",
-  "atelierSulphurpoolLight",
-  "atomOneDark",
-  "atomOneDarkReasonable",
-  "atomOneLight",
-  "brownPaper",
-  "codepenEmbed",
-  "colorBrewer",
   "darcula",
-  "dark",
-  "defaultStyle",
-  "docco",
-  "dracula",
   "far",
-  "foundation",
   "github",
-  "githubGist",
-  "gml",
-  "googlecode",
-  "gradientDark",
-  "gradientLight",
-  "grayscale",
-  "gruvboxDark",
-  "gruvboxLight",
-  "hopscotch",
-  "hybrid",
-  "idea",
-  "irBlack",
   "isblEditorDark",
   "isblEditorLight",
-  "kimbieDark",
-  "kimbieLight",
-  "lightfair",
-  "lioshi",
-  "magula",
-  "monoBlue",
-  "monokai",
-  "monokaiSublime",
-  "nightOwl",
-  "nnfx",
-  "nnfxDark",
-  "nord",
-  "obsidian",
-  "ocean",
-  "paraisoDark",
-  "paraisoLight",
-  "pojoaque",
-  "purebasic",
-  "qtcreatorDark",
-  "qtcreatorLight",
-  "railscasts",
-  "rainbow",
-  "routeros",
-  "schoolBook",
-  "shadesOfPurple",
-  "solarizedDark",
-  "solarizedLight",
-  "srcery",
-  "stackoverflowDark",
-  "stackoverflowLight",
   "sunburst",
-  "tomorrow",
-  "tomorrowNight",
-  "tomorrowNightBlue",
-  "tomorrowNightBright",
-  "tomorrowNightEighties",
-  "vs",
-  "vs2015",
-  "xcode",
-  "xt256",
-  "zenburn",
+  "gradientDark",
+  "monokai",
+  "nightOwl",
 ];
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -180,6 +97,7 @@ const FavMenu = () => {
 
 const SyntaxMenu = () => {
   const { NavbarMenu } = useComponentContext();
+  const [codeTheme] = useObservableState(() => codeTheme$);
   return (
     <NavbarMenu
       tooltip="Syntax theme"
@@ -188,6 +106,7 @@ const SyntaxMenu = () => {
           return {
             key: theme,
             label: theme,
+            selected: codeTheme === theme,
             onClick: () => {
               codeTheme$.next(theme);
             },
@@ -209,9 +128,9 @@ const NavAppBar = styled(AppBar)(({ theme }) => ({
     textDecoration: "underline",
   },
 }));
-function Navbar() {
+function Navbar({ embed }: { embed?: boolean }) {
   const [hasDocumentsFetching] = useObservableAndState(() =>
-    combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
+    combineLatest([queuedDocuments$, fetchingDocuments$]).pipe(
       map(
         ([queuedDocuments, fetchingDocuments]) =>
           queuedDocuments.docs.size > 0 || fetchingDocuments.size > 0
@@ -230,8 +149,21 @@ function Navbar() {
     SearchOverlay,
   } = useComponentContext();
   return (
-    <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
-      {hasDocumentsFetching && <SearchProgress />}
+    <Box
+      sx={{
+        flex: 0,
+        position: embed ? "static" : "sticky",
+        top: 0,
+        zIndex: 1000,
+      }}
+    >
+      {hasDocumentsFetching && (
+        <SearchProgress
+          sx={{
+            display: { xs: "block", sm: "none" },
+          }}
+        />
+      )}
       <NavAppBar position="static">
         <Toolbar>
           <Typography
@@ -247,54 +179,73 @@ function Navbar() {
               <NavbarTitle></NavbarTitle>
             </Link>
           </Typography>
-
-          {params.contentSlug && location.pathname.startsWith("/docs") && (
-            <Tooltip title="edit current document">
-              <Link to={`/editor/${params.projectSlug}/${params.contentSlug}`}>
-                <NavbarButton aria-label="editor">
-                  <EditIcon />
-                </NavbarButton>
-              </Link>
-            </Tooltip>
-          )}
-          <Tooltip title="create document">
-            <Link to={"/editor/" + params.projectSlug ?? ""}>
-              <NavbarButton aria-label="editor">
-                <PostAddIcon />
+          {!embed ? (
+            <>
+              {params.contentSlug && location.pathname.startsWith("/docs") && (
+                <Tooltip title="edit current document">
+                  <Link
+                    to={`/editor/${params.projectSlug}/${params.contentSlug}`}
+                  >
+                    <NavbarButton aria-label="editor">
+                      <EditIcon />
+                    </NavbarButton>
+                  </Link>
+                </Tooltip>
+              )}
+              <Tooltip title="create document">
+                <Link to={"/editor/" + params.projectSlug ?? ""}>
+                  <NavbarButton aria-label="editor">
+                    <PostAddIcon />
+                  </NavbarButton>
+                </Link>
+              </Tooltip>
+              <SyntaxMenu />
+              <FavMenu />
+              <NavbarButton
+                aria-label="toggle dark mode"
+                onClick={toggleColorMode}
+              >
+                {mode === "light" ? (
+                  <Brightness4Icon sx={{ fontSize: 20 }} />
+                ) : (
+                  <Brightness7Icon sx={{ fontSize: 20 }} />
+                )}
               </NavbarButton>
-            </Link>
-          </Tooltip>
-          <SyntaxMenu />
-          <FavMenu />
-          <NavbarButton aria-label="toggle dark mode" onClick={toggleColorMode}>
-            {mode === "light" ? (
-              <Brightness4Icon sx={{ fontSize: 20 }} />
-            ) : (
-              <Brightness7Icon sx={{ fontSize: 20 }} />
-            )}
-          </NavbarButton>
-          <SearchInputWrapper
-            sx={{ cursor: "text" }}
-            onClick={(e: React.MouseEvent<HTMLInputElement>) => {
-              e.currentTarget.blur();
-              showSearch$.next(true);
-            }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              onFocus={(e) => {
-                e.target.blur();
-                showSearch$.next(true);
-              }}
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </SearchInputWrapper>
+              <SearchInputWrapper
+                sx={{ cursor: "text" }}
+                onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+                  e.currentTarget.blur();
+                  showSearch$.next(true);
+                }}
+              >
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  onFocus={(e) => {
+                    e.target.blur();
+                    showSearch$.next(true);
+                  }}
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </SearchInputWrapper>
+            </>
+          ) : (
+            <>
+              <a
+                href={window.location.href.replace("#/embed", "#/docs")}
+                target="window"
+              >
+                <Button variant="contained">open in docs</Button>
+              </a>
+            </>
+          )}
         </Toolbar>
       </NavAppBar>
-      <SearchOverlay show$={showSearch$}></SearchOverlay>
+      <Suspense fallback={<></>}>
+        <SearchOverlay show$={showSearch$}></SearchOverlay>
+      </Suspense>
     </Box>
   );
 }

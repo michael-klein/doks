@@ -9,6 +9,7 @@ import {
   SearchProgress,
 } from "../components/navbar_parts";
 import { Background } from "./background";
+import { ConditionalCard } from "./conditional_card";
 import { EditorRenderer } from "./editor_renderer";
 import { Footer } from "./footer";
 import {

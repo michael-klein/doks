@@ -1,7 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
-import "./css/reset";
 import { DocOptions } from "./interfaces";
 
 const Doks = lazy(() => import("./doks"));

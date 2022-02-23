@@ -1028,6 +1028,7 @@ var createCache = function createCache2(options) {
   cache2.sheet.hydrate(nodesToHydrate);
   return cache2;
 };
+var createCache$1 = createCache;
 var reactIs$1 = { exports: {} };
 var reactIs_production_min = {};
 /** @license React v16.13.1
@@ -1405,7 +1406,7 @@ var serializeStyles = function serializeStyles2(args, registered, mergedProps) {
     next: cursor
   };
 };
-var EmotionCacheContext = /* @__PURE__ */ createContext(typeof HTMLElement !== "undefined" ? /* @__PURE__ */ createCache({
+var EmotionCacheContext = /* @__PURE__ */ createContext(typeof HTMLElement !== "undefined" ? /* @__PURE__ */ createCache$1({
   key: "css"
 }) : null);
 var CacheProvider = EmotionCacheContext.Provider;
@@ -1462,14 +1463,14 @@ var Global = /* @__PURE__ */ withEmotionCache(function(props, cache2) {
   }, [cache2, serialized.name]);
   return null;
 });
-function css$1() {
+function css() {
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
   return serializeStyles(args);
 }
 var keyframes = function keyframes2() {
-  var insertable = css$1.apply(void 0, arguments);
+  var insertable = css.apply(void 0, arguments);
   var name = "animation-" + insertable.name;
   return {
     name,
@@ -1728,7 +1729,7 @@ tags.forEach(function(tagName) {
   newStyled[tagName] = newStyled(tagName);
 });
 var emStyled = newStyled;
-const cache = createCache({
+const cache = createCache$1({
   key: "css",
   prepend: true
 });
@@ -1770,11 +1771,11 @@ var styledEngine = /* @__PURE__ */ Object.freeze({
   "default": styled$2,
   ThemeContext: ThemeContext$2,
   keyframes,
-  css: css$1,
+  css,
   StyledEngineProvider,
   GlobalStyles
 });
-function merge$1(acc, item) {
+function merge(acc, item) {
   if (!item) {
     return acc;
   }
@@ -1918,7 +1919,7 @@ function compose(...styles) {
   const fn = (props) => {
     return Object.keys(props).reduce((acc, prop) => {
       if (handlers[prop]) {
-        return merge$1(acc, handlers[prop](props));
+        return merge(acc, handlers[prop](props));
       }
       return acc;
     }, {});
@@ -2027,7 +2028,7 @@ function resolveCssProperty(props, keys, prop, transformer) {
 }
 function style(props, keys) {
   const transformer = createUnarySpacing(props.theme);
-  return Object.keys(props).map((prop) => resolveCssProperty(props, keys, prop, transformer)).reduce(merge$1, {});
+  return Object.keys(props).map((prop) => resolveCssProperty(props, keys, prop, transformer)).reduce(merge, {});
 }
 function spacing(props) {
   return style(props, spacingKeys);
@@ -2423,7 +2424,7 @@ function styleFunctionSx(props) {
     const value = callIfFn(stylesObject[styleKey], theme);
     if (typeof value === "object") {
       if (propToStyleFunction[styleKey]) {
-        css2 = merge$1(css2, getThemeValue(styleKey, value, theme));
+        css2 = merge(css2, getThemeValue(styleKey, value, theme));
       } else {
         const breakpointsValues = handleBreakpoints({
           theme
@@ -2436,11 +2437,11 @@ function styleFunctionSx(props) {
             theme
           });
         } else {
-          css2 = merge$1(css2, breakpointsValues);
+          css2 = merge(css2, breakpointsValues);
         }
       }
     } else {
-      css2 = merge$1(css2, getThemeValue(styleKey, value, theme));
+      css2 = merge(css2, getThemeValue(styleKey, value, theme));
     }
   });
   return removeUnusedBreakpoints(breakpointsKeys, css2);
@@ -3477,7 +3478,7 @@ const CircularProgressRoot = styled$1("span", {
   color: theme.palette[ownerState.color].main
 }), ({
   ownerState
-}) => ownerState.variant === "indeterminate" && css$1(_t3 || (_t3 = _`
+}) => ownerState.variant === "indeterminate" && css(_t3 || (_t3 = _`
       animation: ${0} 1.4s linear infinite;
     `), circularRotateKeyframe));
 const CircularProgressSVG = styled$1("svg", {
@@ -3508,7 +3509,7 @@ const CircularProgressCircle = styled$1("circle", {
   strokeDashoffset: 0
 }), ({
   ownerState
-}) => ownerState.variant === "indeterminate" && !ownerState.disableShrink && css$1(_t4 || (_t4 = _`
+}) => ownerState.variant === "indeterminate" && !ownerState.disableShrink && css(_t4 || (_t4 = _`
       animation: ${0} 1.4s ease-in-out infinite;
     `), circularDashKeyframe));
 const CircularProgress = /* @__PURE__ */ React.forwardRef(function CircularProgress2(inProps, ref) {
@@ -3573,211 +3574,6 @@ const CircularProgress = /* @__PURE__ */ React.forwardRef(function CircularProgr
   }));
 });
 var CircularProgress$1 = CircularProgress;
-function insertWithoutScoping(cache2, serialized) {
-  if (cache2.inserted[serialized.name] === void 0) {
-    return cache2.insert("", serialized, cache2.sheet, true);
-  }
-}
-function merge(registered, css2, className) {
-  var registeredStyles = [];
-  var rawClassName = getRegisteredStyles(registered, registeredStyles, className);
-  if (registeredStyles.length < 2) {
-    return className;
-  }
-  return rawClassName + css2(registeredStyles);
-}
-var createEmotion = function createEmotion2(options) {
-  var cache2 = createCache(options);
-  cache2.sheet.speedy = function(value) {
-    this.isSpeedy = value;
-  };
-  cache2.compat = true;
-  var css2 = function css3() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-    var serialized = serializeStyles(args, cache2.registered, void 0);
-    insertStyles(cache2, serialized, false);
-    return cache2.key + "-" + serialized.name;
-  };
-  var keyframes3 = function keyframes4() {
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-    var serialized = serializeStyles(args, cache2.registered);
-    var animation = "animation-" + serialized.name;
-    insertWithoutScoping(cache2, {
-      name: serialized.name,
-      styles: "@keyframes " + animation + "{" + serialized.styles + "}"
-    });
-    return animation;
-  };
-  var injectGlobal2 = function injectGlobal3() {
-    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
-    var serialized = serializeStyles(args, cache2.registered);
-    insertWithoutScoping(cache2, serialized);
-  };
-  var cx = function cx2() {
-    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-      args[_key4] = arguments[_key4];
-    }
-    return merge(cache2.registered, css2, classnames(args));
-  };
-  return {
-    css: css2,
-    cx,
-    injectGlobal: injectGlobal2,
-    keyframes: keyframes3,
-    hydrate: function hydrate(ids) {
-      ids.forEach(function(key) {
-        cache2.inserted[key] = true;
-      });
-    },
-    flush: function flush() {
-      cache2.registered = {};
-      cache2.inserted = {};
-      cache2.sheet.flush();
-    },
-    sheet: cache2.sheet,
-    cache: cache2,
-    getRegisteredStyles: getRegisteredStyles.bind(null, cache2.registered),
-    merge: merge.bind(null, cache2.registered, css2)
-  };
-};
-var classnames = function classnames2(args) {
-  var cls = "";
-  for (var i = 0; i < args.length; i++) {
-    var arg = args[i];
-    if (arg == null)
-      continue;
-    var toAdd = void 0;
-    switch (typeof arg) {
-      case "boolean":
-        break;
-      case "object": {
-        if (Array.isArray(arg)) {
-          toAdd = classnames2(arg);
-        } else {
-          toAdd = "";
-          for (var k2 in arg) {
-            if (arg[k2] && k2) {
-              toAdd && (toAdd += " ");
-              toAdd += k2;
-            }
-          }
-        }
-        break;
-      }
-      default: {
-        toAdd = arg;
-      }
-    }
-    if (toAdd) {
-      cls && (cls += " ");
-      cls += toAdd;
-    }
-  }
-  return cls;
-};
-var _createEmotion = createEmotion({
-  key: "css"
-}), injectGlobal = _createEmotion.injectGlobal;
-const css = injectGlobal;
-css`
-  /* Box sizing rules */
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  body,
-  html {
-    min-height: 100vh;
-  }
-
-  .docs-root {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Remove default margin */
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
-  figure,
-  blockquote,
-  dl,
-  dd {
-    margin: 0;
-  }
-
-  /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-  ul[role="list"],
-  ol[role="list"] {
-    list-style: none;
-  }
-
-  /* Set core root defaults */
-  html:focus-within {
-    scroll-behavior: smooth;
-  }
-
-  /* Set core body defaults */
-  body {
-    min-height: 100vh;
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
-  }
-
-  /* A elements that don't have a class get default styles */
-  a:not([class]) {
-    text-decoration-skip-ink: auto;
-  }
-
-  /* Make images easier to work with */
-  img,
-  picture {
-    max-width: 100%;
-    display: block;
-  }
-
-  /* Inherit fonts for inputs and buttons */
-  input,
-  button,
-  textarea,
-  select {
-    font: inherit;
-  }
-
-  /* Remove all animations and transitions for people that prefer not to see them */
-  @media (prefers-reduced-motion: reduce) {
-    html:focus-within {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-  h1:not(:first-child),
-  h2:not(:first-child),
-  h3:not(:first-child),
-  p:not(:first-child) {
-    margin-top: 1em;
-    margin-bottom: 0.2em;
-  }
-`;
 const Doks = lazy(() => import("./doks.js").then(function(n2) {
   return n2.ah;
 }));
@@ -3802,5 +3598,5 @@ const docs = (options) => {
     children: wrapDocs(/* @__PURE__ */ jsx(Doks, __spreadValues({}, options)))
   }), targetNode);
 };
-export { darken as A, duration as B, ClassNameGenerator$1 as C, rootShouldForwardProp as D, styledEngine as E, Fragment as F, CircularProgress$1 as G, createTheme as H, GlobalStyles as I, slotShouldForwardProp as J, emphasize as K, resolveBreakpointValues as L, handleBreakpoints as M, getThemeProps as N, docs as O, PropTypes as P, ThemeContext$1 as T, _extends as _, generateUtilityClasses as a, _objectWithoutPropertiesLoose as b, capitalize as c, deepmerge as d, composeClasses as e, formatMuiErrorMessage as f, generateUtilityClass as g, clsx as h, jsxs as i, jsx as j, createTheme$1 as k, styled$2 as l, useTheme as m, ThemeContext$2 as n, useTheme$1 as o, propToStyleFunction as p, styled$1 as q, useThemeProps as r, styleFunctionSx as s, jsxRuntime as t, useTheme$2 as u, keyframes as v, alpha as w, defaultTheme$1 as x, css$1 as y, lighten as z };
+export { darken as A, duration as B, ClassNameGenerator$1 as C, rootShouldForwardProp as D, styledEngine as E, Fragment as F, CircularProgress$1 as G, createTheme as H, GlobalStyles as I, slotShouldForwardProp as J, getRegisteredStyles as K, createCache$1 as L, serializeStyles as M, insertStyles as N, emphasize as O, PropTypes as P, resolveBreakpointValues as Q, handleBreakpoints as R, getThemeProps as S, ThemeContext$1 as T, docs as U, _extends as _, generateUtilityClasses as a, _objectWithoutPropertiesLoose as b, capitalize as c, deepmerge as d, composeClasses as e, formatMuiErrorMessage as f, generateUtilityClass as g, clsx as h, jsxs as i, jsx as j, createTheme$1 as k, styled$2 as l, useTheme as m, ThemeContext$2 as n, useTheme$1 as o, propToStyleFunction as p, styled$1 as q, useThemeProps as r, styleFunctionSx as s, jsxRuntime as t, useTheme$2 as u, keyframes as v, alpha as w, defaultTheme$1 as x, css as y, lighten as z };
 //# sourceMappingURL=main.js.map

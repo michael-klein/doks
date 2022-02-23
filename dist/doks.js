@@ -32,7 +32,7 @@ var __objRest = (source, exclude) => {
 var _a;
 import * as React from "react";
 import React__default, { useContext, createContext, useRef, useEffect, useCallback, Children, isValidElement, Fragment, createElement, useMemo, useState, useLayoutEffect, forwardRef, cloneElement, memo, Suspense, useDebugValue, lazy } from "react";
-import { P as PropTypes, d as deepmerge, f as formatMuiErrorMessage, c as capitalize, _ as _extends$3, g as generateUtilityClass, a as generateUtilityClasses, b as _objectWithoutPropertiesLoose$1, e as composeClasses, j as jsx, h as clsx, i as jsxs, p as propToStyleFunction, s as styleFunctionSx$1, k as createTheme$1, u as useTheme$1, T as ThemeContext, l as styled$2, m as useTheme$2, n as ThemeContext$1, o as useTheme$3, q as styled$3, r as useThemeProps, C as ClassNameGenerator, t as jsxRuntime, v as keyframes, w as alpha, x as defaultTheme$1, y as css, z as lighten, A as darken, B as duration, D as rootShouldForwardProp, F as Fragment$1, E as styledEngine, G as CircularProgress, H as createTheme$2, I as GlobalStyles$1, J as slotShouldForwardProp } from "./main.js";
+import { P as PropTypes, d as deepmerge, f as formatMuiErrorMessage, c as capitalize, _ as _extends$3, g as generateUtilityClass, a as generateUtilityClasses, b as _objectWithoutPropertiesLoose$1, e as composeClasses, j as jsx, h as clsx, i as jsxs, p as propToStyleFunction, s as styleFunctionSx$1, k as createTheme$1, u as useTheme$1, T as ThemeContext, l as styled$2, m as useTheme$2, n as ThemeContext$1, o as useTheme$3, q as styled$3, r as useThemeProps, C as ClassNameGenerator, t as jsxRuntime, v as keyframes, w as alpha, x as defaultTheme$1, y as css$1, z as lighten, A as darken, B as duration, D as rootShouldForwardProp, F as Fragment$1, E as styledEngine, G as CircularProgress, H as createTheme$2, I as GlobalStyles$1, J as slotShouldForwardProp, K as getRegisteredStyles, L as createCache, M as serializeStyles, N as insertStyles } from "./main.js";
 import * as ReactDOM from "react-dom";
 import ReactDOM__default from "react-dom";
 import { BehaviorSubject, Subject, isObservable, combineLatest, map, debounceTime, startWith } from "rxjs";
@@ -5853,7 +5853,7 @@ const LinearProgressDashed = styled$3("span", {
     backgroundSize: "10px 10px",
     backgroundPosition: "0 -23px"
   });
-}, css(_t4 || (_t4 = _$1`
+}, css$1(_t4 || (_t4 = _$1`
     animation: ${0} 3s infinite linear;
   `), bufferKeyframe));
 const LinearProgressBar1 = styled$3("span", {
@@ -5884,7 +5884,7 @@ const LinearProgressBar1 = styled$3("span", {
   transition: `transform .${TRANSITION_DURATION}s linear`
 }), ({
   ownerState
-}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css(_t5 || (_t5 = _$1`
+}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css$1(_t5 || (_t5 = _$1`
       width: auto;
       animation: ${0} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
     `), indeterminate1Keyframe));
@@ -5917,7 +5917,7 @@ const LinearProgressBar2 = styled$3("span", {
   transition: `transform .${TRANSITION_DURATION}s linear`
 }), ({
   ownerState
-}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css(_t6 || (_t6 = _$1`
+}) => (ownerState.variant === "indeterminate" || ownerState.variant === "query") && css$1(_t6 || (_t6 = _$1`
       width: auto;
       animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
     `), indeterminate2Keyframe));
@@ -8091,6 +8091,11 @@ const NavbarButton = styled$3(IconButton$1)(({
     color: theme.palette.primary.dark
   }
 }));
+const NavbarMenuItem = styled$3(MenuItem$1)(({
+  theme
+}) => ({
+  "white-space": "normal"
+}));
 const NavbarMenu = ({
   items,
   children,
@@ -8137,7 +8142,7 @@ const NavbarMenu = ({
         label,
         key,
         selected
-      }) => /* @__PURE__ */ jsx(MenuItem$1, {
+      }) => /* @__PURE__ */ jsx(NavbarMenuItem, {
         selected,
         onClick: () => {
           onClick();
@@ -8715,11 +8720,11 @@ var compose = function compose2() {
     }, x2);
   };
 };
-function merge$3(target, source) {
+function merge$4(target, source) {
   Object.keys(source).forEach(function(key) {
     if (source[key] instanceof Object) {
       if (target[key]) {
-        Object.assign(source[key], merge$3(target[key], source[key]));
+        Object.assign(source[key], merge$4(target[key], source[key]));
       }
     }
   });
@@ -8751,7 +8756,7 @@ var _state$create = index$2.create({
 function config(config2) {
   setState(function(state) {
     return {
-      config: merge$3(state.config, validators.config(config2))
+      config: merge$4(state.config, validators.config(config2))
     };
   });
 }
@@ -14429,7 +14434,7 @@ const Renderer$1 = Renderer_1$1;
 const TextRenderer$1 = TextRenderer_1$1;
 const Slugger$1 = Slugger_1$1;
 const {
-  merge,
+  merge: merge$3,
   checkSanitizeDeprecation,
   escape
 } = helpers;
@@ -14449,7 +14454,7 @@ function marked$1(src, opt, callback) {
     callback = opt;
     opt = null;
   }
-  opt = merge({}, marked$1.defaults, opt || {});
+  opt = merge$3({}, marked$1.defaults, opt || {});
   checkSanitizeDeprecation(opt);
   if (callback) {
     const highlight = opt.highlight;
@@ -14521,14 +14526,14 @@ function marked$1(src, opt, callback) {
   }
 }
 marked$1.options = marked$1.setOptions = function(opt) {
-  merge(marked$1.defaults, opt);
+  merge$3(marked$1.defaults, opt);
   changeDefaults(marked$1.defaults);
   return marked$1;
 };
 marked$1.getDefaults = getDefaults;
 marked$1.defaults = defaults;
 marked$1.use = function(...args) {
-  const opts = merge({}, ...args);
+  const opts = merge$3({}, ...args);
   const extensions = marked$1.defaults.extensions || { renderers: {}, childTokens: {} };
   let hasExtensions;
   args.forEach((pack) => {
@@ -14663,7 +14668,7 @@ marked$1.parseInline = function(src, opt) {
   if (typeof src !== "string") {
     throw new Error("marked.parseInline(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected");
   }
-  opt = merge({}, marked$1.defaults, opt || {});
+  opt = merge$3({}, marked$1.defaults, opt || {});
   checkSanitizeDeprecation(opt);
   try {
     const tokens = Lexer$1.lexInline(src, opt);
@@ -22661,6 +22666,211 @@ const defaultComponents = {
 };
 const componentContext = createContext(defaultComponents);
 const ComponentContextProvider = componentContext.Provider;
+function insertWithoutScoping(cache, serialized) {
+  if (cache.inserted[serialized.name] === void 0) {
+    return cache.insert("", serialized, cache.sheet, true);
+  }
+}
+function merge(registered, css2, className) {
+  var registeredStyles = [];
+  var rawClassName = getRegisteredStyles(registered, registeredStyles, className);
+  if (registeredStyles.length < 2) {
+    return className;
+  }
+  return rawClassName + css2(registeredStyles);
+}
+var createEmotion = function createEmotion2(options) {
+  var cache = createCache(options);
+  cache.sheet.speedy = function(value) {
+    this.isSpeedy = value;
+  };
+  cache.compat = true;
+  var css2 = function css3() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    var serialized = serializeStyles(args, cache.registered, void 0);
+    insertStyles(cache, serialized, false);
+    return cache.key + "-" + serialized.name;
+  };
+  var keyframes2 = function keyframes3() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    var serialized = serializeStyles(args, cache.registered);
+    var animation = "animation-" + serialized.name;
+    insertWithoutScoping(cache, {
+      name: serialized.name,
+      styles: "@keyframes " + animation + "{" + serialized.styles + "}"
+    });
+    return animation;
+  };
+  var injectGlobal2 = function injectGlobal3() {
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+    var serialized = serializeStyles(args, cache.registered);
+    insertWithoutScoping(cache, serialized);
+  };
+  var cx = function cx2() {
+    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+    return merge(cache.registered, css2, classnames(args));
+  };
+  return {
+    css: css2,
+    cx,
+    injectGlobal: injectGlobal2,
+    keyframes: keyframes2,
+    hydrate: function hydrate(ids) {
+      ids.forEach(function(key) {
+        cache.inserted[key] = true;
+      });
+    },
+    flush: function flush() {
+      cache.registered = {};
+      cache.inserted = {};
+      cache.sheet.flush();
+    },
+    sheet: cache.sheet,
+    cache,
+    getRegisteredStyles: getRegisteredStyles.bind(null, cache.registered),
+    merge: merge.bind(null, cache.registered, css2)
+  };
+};
+var classnames = function classnames2(args) {
+  var cls = "";
+  for (var i2 = 0; i2 < args.length; i2++) {
+    var arg = args[i2];
+    if (arg == null)
+      continue;
+    var toAdd = void 0;
+    switch (typeof arg) {
+      case "boolean":
+        break;
+      case "object": {
+        if (Array.isArray(arg)) {
+          toAdd = classnames2(arg);
+        } else {
+          toAdd = "";
+          for (var k2 in arg) {
+            if (arg[k2] && k2) {
+              toAdd && (toAdd += " ");
+              toAdd += k2;
+            }
+          }
+        }
+        break;
+      }
+      default: {
+        toAdd = arg;
+      }
+    }
+    if (toAdd) {
+      cls && (cls += " ");
+      cls += toAdd;
+    }
+  }
+  return cls;
+};
+var _createEmotion = createEmotion({
+  key: "css"
+}), injectGlobal = _createEmotion.injectGlobal;
+const css = injectGlobal;
+css`
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body,
+  html {
+    min-height: 100vh;
+  }
+
+  .docs-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Remove default margin */
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+  }
+
+  /* Set core root defaults */
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+
+  /* Set core body defaults */
+  body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+  }
+
+  /* A elements that don't have a class get default styles */
+  a:not([class]) {
+    text-decoration-skip-ink: auto;
+  }
+
+  /* Make images easier to work with */
+  img,
+  picture {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* Inherit fonts for inputs and buttons */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  /* Remove all animations and transitions for people that prefer not to see them */
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  h1:not(:first-child),
+  h2:not(:first-child),
+  h3:not(:first-child),
+  p:not(:first-child) {
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+  }
+`;
 createTheme$2({
   palette: {
     mode: "light",

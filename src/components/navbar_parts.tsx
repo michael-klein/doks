@@ -50,6 +50,9 @@ export const NavbarButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.primary.dark,
   },
 }));
+const NavbarMenuItem = styled(MenuItem)(({ theme }) => ({
+  "white-space": "normal",
+}));
 
 export const NavbarMenu = ({
   items,
@@ -102,7 +105,7 @@ export const NavbarMenu = ({
         }}
       >
         {items.map(({ onClick, label, key, selected }) => (
-          <MenuItem
+          <NavbarMenuItem
             selected={selected}
             key={key}
             onClick={() => {
@@ -111,7 +114,7 @@ export const NavbarMenu = ({
             }}
           >
             {label}
-          </MenuItem>
+          </NavbarMenuItem>
         ))}
       </Menu>
     </Fragment>

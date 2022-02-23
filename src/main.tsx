@@ -28,3 +28,5 @@ export const docs = (options: DocOptions) => {
     targetNode
   );
 };
+export * from "./components/components";
+export * from "./hooks/use_component_context";

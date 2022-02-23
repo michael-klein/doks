@@ -1,7 +1,6 @@
-import { R as Routes, b as Route, u as useComponentContext, d as useParams, e as useObservableAndState, h as documents$, p as pathBrowserify, s as projects$ } from "./doks.js";
+import { a as jsxs, R as Routes, j as jsx, b as Route, u as useComponentContext, V as useParams, W as useObservableAndState, ah as documents$, aD as pathBrowserify, X as projects$, at as Fragment, a3 as CircularProgress } from "./main.js";
 import { lazy, useMemo, Fragment as Fragment$1 } from "react";
 import { combineLatest, map } from "rxjs";
-import { i as jsxs, j as jsx, F as Fragment, G as CircularProgress } from "./main.js";
 import { C as Container } from "./Container.js";
 import "react-dom";
 import "rxjs/operators";

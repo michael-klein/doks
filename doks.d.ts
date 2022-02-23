@@ -5,5 +5,6 @@ declare module "doks" {
   export = interfaces;
   export const docs: typeof main.docs;
   export const ComponentContextProvider: typeof components.ComponentContextProvider;
+  export const defaultComponents: typeof components.defaultComponents;
   export type ComponentsContext = components.ComponentsContext;
 }

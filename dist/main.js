@@ -3776,7 +3776,7 @@ css`
   }
 `;
 const Doks = lazy(() => import("./doks.js").then(function(n2) {
-  return n2.f;
+  return n2.ac;
 }));
 const docs = (options) => {
   const link = document.createElement("link");
@@ -3784,7 +3784,8 @@ const docs = (options) => {
   link.setAttribute("href", "https://fonts.googleapis.com/css?family=Roboto:300,4 00,500,700&display=swap");
   document.head.appendChild(link);
   const {
-    targetNode = document.body
+    targetNode = document.body,
+    wrapDocs = (docs2) => docs2
   } = options;
   targetNode.classList.add("docs-root");
   ReactDOM__default.render(/* @__PURE__ */ jsx(Suspense, {
@@ -3795,8 +3796,8 @@ const docs = (options) => {
         left: "50%"
       }
     }),
-    children: /* @__PURE__ */ jsx(Doks, __spreadValues({}, options))
+    children: wrapDocs(/* @__PURE__ */ jsx(Doks, __spreadValues({}, options)))
   }), targetNode);
 };
-export { rootShouldForwardProp as A, alpha as B, CircularProgress$1 as C, defaultTheme$1 as D, useTheme$1 as E, Fragment as F, duration as G, getThemeProps as H, GlobalStyles as I, css$1 as J, lighten as K, darken as L, slotShouldForwardProp as M, docs as N, PropTypes as P, ThemeContext$1 as T, _extends as _, useTheme as a, ThemeContext$2 as b, createTheme as c, jsxs as d, deepmerge as e, formatMuiErrorMessage as f, capitalize as g, _objectWithoutPropertiesLoose as h, createTheme$1 as i, jsx as j, styled$2 as k, clsx as l, generateUtilityClass as m, generateUtilityClasses as n, styled$1 as o, propToStyleFunction as p, useThemeProps as q, composeClasses as r, styleFunctionSx as s, styledEngine as t, useTheme$2 as u, keyframes as v, ClassNameGenerator$1 as w, jsxRuntime as x, resolveBreakpointValues as y, handleBreakpoints as z };
+export { darken as A, duration as B, ClassNameGenerator$1 as C, rootShouldForwardProp as D, styledEngine as E, Fragment as F, CircularProgress$1 as G, createTheme as H, GlobalStyles as I, slotShouldForwardProp as J, resolveBreakpointValues as K, handleBreakpoints as L, getThemeProps as M, docs as N, PropTypes as P, ThemeContext$1 as T, _extends as _, generateUtilityClasses as a, _objectWithoutPropertiesLoose as b, capitalize as c, deepmerge as d, composeClasses as e, formatMuiErrorMessage as f, generateUtilityClass as g, clsx as h, jsxs as i, jsx as j, createTheme$1 as k, styled$2 as l, useTheme as m, ThemeContext$2 as n, useTheme$1 as o, propToStyleFunction as p, styled$1 as q, useThemeProps as r, styleFunctionSx as s, jsxRuntime as t, useTheme$2 as u, keyframes as v, alpha as w, defaultTheme$1 as x, css$1 as y, lighten as z };
 //# sourceMappingURL=main.js.map

@@ -20,18 +20,11 @@ import { combineLatest, debounceTime, map } from "rxjs";
 import { DoksTheme } from "../css/theme";
 import { projects$ } from "../store/contents";
 import { documents$ } from "../store/documents";
+import { codeTheme$ } from "../utils/code_theme";
 import { ValueSubject } from "../utils/value_subject";
 
 const CodeSyntaxHighlighter = lazy(() => import("./syntax_highlighter"));
 
-const SYNTAX_KEY = "SYNTAX";
-export const codeTheme$ = new ValueSubject(
-  localStorage.getItem(SYNTAX_KEY) ?? "atomOneDark"
-);
-
-codeTheme$.subscribe((theme) => {
-  localStorage.setItem(SYNTAX_KEY, theme);
-});
 class ErrorBoundary extends React.Component<
   { onError: () => void },
   { hasError: boolean; error: string }
@@ -91,7 +84,7 @@ const removeVoidElements = (mdx: string) => {
   return mdx;
 };
 
-const MDX = memo(
+export const MDX = memo(
   ({
     mdx,
     onSaveMDX,

@@ -11,12 +11,10 @@ import Box from "@mui/system/Box";
 import styled from "@mui/system/styled";
 import React, { lazy, Suspense, useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useComponentContext } from "../hooks/use_component_context";
 import { documents$ } from "../store/documents";
-import { EditorRenderer } from "./editor_renderer";
-import { MarkdownRenderer } from "./markdown_renderer";
-const Sidebar = lazy(() => import("./sidebar"));
 
-const EditorWrapper = styled(Card)({
+export const EditorWrapper = styled(Card)({
   width: "100%",
   flex: "auto",
   display: "flex",
@@ -29,7 +27,7 @@ const EditorWrapper = styled(Card)({
   },
 });
 
-const EditorHeader = styled(CardHeader)(({ theme }) => ({
+export const EditorHeader = styled(CardHeader)(({ theme }) => ({
   background: theme.palette.primary.dark,
   color: theme.palette.getContrastText(theme.palette.primary.dark),
   padding: 2,
@@ -40,14 +38,14 @@ const EditorHeader = styled(CardHeader)(({ theme }) => ({
   },
 }));
 
-const ContentBox = styled(Box)({
+export const EditorContentBox = styled(Box)({
   overflow: "auto",
   paddingLeft: "20px",
   paddingRight: "20px",
   paddingBottom: "20px",
 });
 
-const SidebarBox = styled(Box)({
+export const EditorSidebarBox = styled(Box)({
   flex: 0,
   position: "relative",
 });
@@ -91,6 +89,8 @@ export const MarkdownEditor = ({
     [params]
   );
   const [showPreview, setShowPreview] = useState(true);
+
+  const { Sidebar, EditorRenderer, MarkdownRenderer } = useComponentContext();
   return (
     <EditorWrapper>
       <EditorHeader
@@ -146,7 +146,7 @@ export const MarkdownEditor = ({
       ></EditorHeader>
       <Box className="editor">
         {
-          <SidebarBox>
+          <EditorSidebarBox>
             <Suspense fallback={<></>}>
               <Sidebar
                 mode={"editor"}
@@ -170,7 +170,7 @@ export const MarkdownEditor = ({
                 onProjectSelect={onProjectSelected}
               ></Sidebar>
             </Suspense>
-          </SidebarBox>
+          </EditorSidebarBox>
         }
         <Box
           ref={boxRef}
@@ -189,7 +189,7 @@ export const MarkdownEditor = ({
           ></EditorRenderer>
         </Box>
         {showPreview && (
-          <ContentBox
+          <EditorContentBox
             sx={{
               height: height + "px",
               flex: "auto",
@@ -199,7 +199,7 @@ export const MarkdownEditor = ({
             {!!height && (
               <MarkdownRenderer mdx={mdx} isEditor={true}></MarkdownRenderer>
             )}
-          </ContentBox>
+          </EditorContentBox>
         )}
       </Box>
     </EditorWrapper>

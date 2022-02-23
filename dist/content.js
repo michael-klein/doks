@@ -17,20 +17,13 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { d as default_1$1 } from "./Favorite.js";
-import { d as default_1, B as Box, H as modifyDocument, a as documents$ } from "./documents.js";
+import { x as default_1, u as useParams, z as useObservableState, J as useObservable, K as modifyDocument, c as useComponentContext, H as Card, L as CardHeader, O as IconButton, P as default_1$1, d as documents$ } from "./doks.js";
 import * as React from "react";
-import React__default, { memo, useMemo, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { h as htmdx, I as IconButton, M as MarkdownRenderer } from "./markdown_renderer.js";
-import { u as useParams, L as Link } from "./doks.js";
-import { m as generateUtilityClass, n as generateUtilityClasses, o as styled, q as useThemeProps, h as _objectWithoutPropertiesLoose, _ as _extends, r as composeClasses, j as jsx, l as clsx, d as jsxs, F as Fragment } from "./main.js";
-import { G as Grid } from "./Button.js";
-import { u as useObservableState, a as useObservable } from "./use-observable-state.js";
-import { C as Card } from "./Card.js";
-import { C as CardHeader } from "./CardHeader.js";
-import "./index.js";
+import { g as generateUtilityClass, a as generateUtilityClasses, q as styled, r as useThemeProps, b as _objectWithoutPropertiesLoose, _ as _extends, e as composeClasses, j as jsx, h as clsx, i as jsxs } from "./main.js";
+import { G as Grid } from "./Grid.js";
 import "react-dom";
 function getCardContentUtilityClass(slot) {
   return generateUtilityClass("MuiCardContent", slot);
@@ -82,117 +75,6 @@ var CardContent$1 = CardContent;
 const formatDate = (date) => {
   return new Date(date).toLocaleString();
 };
-class ErrorBoundary extends React__default.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: ""
-    };
-  }
-  componentDidCatch(error, errorInfo) {
-  }
-  static getDerivedStateFromError(error) {
-    return {
-      hasError: true,
-      error: error.message
-    };
-  }
-  render() {
-    if (this.state.hasError) {
-      console.error("toc error", this.state.error);
-      return /* @__PURE__ */ jsxs(Fragment, {
-        children: [/* @__PURE__ */ jsx("h1", {
-          children: "MDX error:"
-        }), /* @__PURE__ */ jsx("div", {
-          children: this.state.error
-        })]
-      });
-    }
-    return this.props.children;
-  }
-}
-const TOCList = default_1("ul")({
-  listStyle: "none",
-  margin: 0,
-  padding: 10,
-  lineHeight: "1.6em"
-});
-const TOCListItem = default_1("li")({
-  fontSize: "1.1em",
-  "a,a:hover,a:link,a:active": {
-    color: "inherit",
-    textDecoration: "none"
-  },
-  "a:hover": {
-    textDecoration: "underline"
-  }
-});
-const getListItem = (level) => (props) => {
-  const params = useParams();
-  return /* @__PURE__ */ jsx(TOCListItem, {
-    sx: {
-      paddingLeft: 10 * (level - 1) + "px"
-    },
-    children: /* @__PURE__ */ jsx(Link, __spreadProps(__spreadValues({}, props), {
-      to: `/${params.projectSlug}/${params.contentSlug}/${props.index}`
-    }))
-  });
-};
-const TOC = memo(({
-  mdx
-}) => {
-  const headings = useMemo(() => mdx == null ? void 0 : mdx.replace(/(<([^>]+)>)/gi, "").split("\n").filter((line) => line.includes("#")).join("\n"), [mdx]);
-  let i = 0;
-  let hIndex = 0;
-  return /* @__PURE__ */ jsx(Fragment, {
-    children: headings !== void 0 ? /* @__PURE__ */ jsx(TOCList, {
-      children: htmdx(headings, React__default.createElement, {
-        components: {
-          h1: getListItem(1),
-          h2: getListItem(2),
-          h3: getListItem(3),
-          h4: getListItem(4),
-          h6: getListItem(6),
-          h7: getListItem(7),
-          h8: getListItem(8),
-          h10: getListItem(10)
-        },
-        jsxTransforms: [(type, props, children) => {
-          if (!props) {
-            props = {};
-          }
-          if (type.startsWith("h")) {
-            props.index = hIndex;
-            hIndex++;
-          }
-          props.key = i++;
-          return [type, props, children];
-        }]
-      })
-    }) : /* @__PURE__ */ jsx(Fragment, {})
-  });
-});
-const Wrapper = default_1(Box)(({
-  theme
-}) => __spreadValues({}, theme.typography.body1));
-const Header = default_1("h1")({
-  fontSize: "1.2em",
-  fontWeight: "bold"
-});
-const TableOfContents = ({
-  mdx
-}) => {
-  return /* @__PURE__ */ jsxs(Wrapper, {
-    children: [/* @__PURE__ */ jsx(Header, {
-      children: "Table of contents"
-    }), /* @__PURE__ */ jsx(ErrorBoundary, {
-      children: /* @__PURE__ */ jsx(TOC, {
-        mdx
-      })
-    }, "toc-" + mdx)]
-  });
-};
 const ContentWrapper = default_1(Grid)(({
   theme
 }) => ({
@@ -236,6 +118,10 @@ const Content = () => {
       }
     }
   }, [params.headingIndex]);
+  const {
+    TableOfContents,
+    MarkdownRenderer
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(ContentWrapper, {
     item: true,
     xs: 9,

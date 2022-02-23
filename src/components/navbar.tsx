@@ -1,25 +1,24 @@
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CodeIcon from "@mui/icons-material/Code";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import SearchIcon from "@mui/icons-material/Search";
-import LinearProgress from "@mui/material/LinearProgress";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
-import { alpha, styled } from "@mui/material/styles";
+import LinearProgress from "@mui/material/LinearProgress";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useObservableState } from "observable-hooks";
-import React, { Fragment, useState } from "react";
+import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { combineLatest, map } from "rxjs";
-import { useDocOptions } from "../hooks/use_doc_options_context";
+import { useColorModeContext } from "../css/theme";
+import { useComponentContext } from "../hooks/use_component_context";
 import { useObservableAndState } from "../hooks/use_observable_and_state";
 import {
   documents$,
@@ -27,12 +26,8 @@ import {
   fetchingDocuments$,
   queuedDocuments$,
 } from "../store/documents";
+import { codeTheme$ } from "../utils/code_theme";
 import { ValueSubject } from "../utils/value_subject";
-import { codeTheme$ } from "./markdown_renderer";
-import { SearchOverlay } from "./search";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { useColorModeContext } from "../css/theme";
 
 const syntaxThemes = [
   "a11yDark",
@@ -134,31 +129,6 @@ const syntaxThemes = [
   "zenburn",
 ];
 
-const SearchInputWrapper = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
@@ -172,88 +142,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const Progress = styled(LinearProgress)(({ theme }) => ({
+export const SearchProgress = styled(LinearProgress)(({ theme }) => ({
   position: "fixed",
   top: 0,
   right: 0,
   left: 0,
 }));
 const showSearch$ = new ValueSubject(false);
-const FavButton = styled(FavoriteIcon)(({ theme }) => ({
-  color: theme.palette.getContrastText(theme.palette.primary.main),
-  "&:hover": {
-    color: "red",
-  },
-}));
-const NavButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.getContrastText(theme.palette.primary.main),
-  "&:hover": {
-    color: theme.palette.primary.dark,
-  },
-}));
-
-const NavMenu = ({
-  items,
-  children,
-  tooltip,
-}: {
-  children: React.ReactChild;
-  tooltip: string;
-  items: { key: string; label: string; onClick: () => void }[];
-}) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent) => {
-    setAnchorEl(event.target as HTMLElement);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return items?.length > 0 ? (
-    <Fragment>
-      <Tooltip title={tooltip}>
-        <NavButton aria-label={tooltip} onClick={handleClick}>
-          {children}
-        </NavButton>
-      </Tooltip>
-      <Menu
-        id="fav-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: "80vh",
-            width: "100%",
-            maxWidth: "200px",
-          },
-        }}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        {items.map(({ onClick, label, key }) => (
-          <MenuItem
-            key={key}
-            onClick={() => {
-              onClick();
-              handleClose();
-            }}
-          >
-            {label}
-          </MenuItem>
-        ))}
-      </Menu>
-    </Fragment>
-  ) : (
-    <></>
-  );
-};
 const FavMenu = () => {
   const [favDocs] = useObservableState(() =>
     documents$.pipe(
@@ -266,8 +161,9 @@ const FavMenu = () => {
       replace: true,
     });
   };
+  const { NavbarMenu, NavbarFavButton } = useComponentContext();
   return (
-    <NavMenu
+    <NavbarMenu
       tooltip="Favourites"
       items={
         favDocs?.map((doc) => ({
@@ -277,14 +173,15 @@ const FavMenu = () => {
         })) ?? []
       }
     >
-      <FavButton></FavButton>
-    </NavMenu>
+      <NavbarFavButton></NavbarFavButton>
+    </NavbarMenu>
   );
 };
 
 const SyntaxMenu = () => {
+  const { NavbarMenu } = useComponentContext();
   return (
-    <NavMenu
+    <NavbarMenu
       tooltip="Syntax theme"
       items={
         syntaxThemes.map((theme) => {
@@ -299,9 +196,10 @@ const SyntaxMenu = () => {
       }
     >
       <CodeIcon></CodeIcon>
-    </NavMenu>
+    </NavbarMenu>
   );
 };
+export const NavbarTitle = () => <>documentation</>;
 const NavAppBar = styled(AppBar)(({ theme }) => ({
   "a, a:link, a:visited, a:hover, a:active": {
     color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -311,7 +209,7 @@ const NavAppBar = styled(AppBar)(({ theme }) => ({
     textDecoration: "underline",
   },
 }));
-export function Navbar() {
+function Navbar() {
   const [hasDocumentsFetching] = useObservableAndState(() =>
     combineLatest(queuedDocuments$, fetchingDocuments$).pipe(
       map(
@@ -320,13 +218,20 @@ export function Navbar() {
       )
     )
   );
-  const { title = "documentation" } = useDocOptions();
   const params = useParams();
   const location = useLocation();
   const { mode, toggleColorMode } = useColorModeContext();
+  const {
+    NavbarTitle,
+    SearchProgress,
+    NavbarButton,
+    SearchIconWrapper,
+    SearchInputWrapper,
+    SearchOverlay,
+  } = useComponentContext();
   return (
     <Box sx={{ flex: 0, position: "sticky", top: 0, zIndex: 1000 }}>
-      {hasDocumentsFetching && <Progress />}
+      {hasDocumentsFetching && <SearchProgress />}
       <NavAppBar position="static">
         <Toolbar>
           <Typography
@@ -338,34 +243,36 @@ export function Navbar() {
               display: { xs: "none", sm: "block" },
             }}
           >
-            <Link to="/docs/">{title}</Link>
+            <Link to="/docs/">
+              <NavbarTitle></NavbarTitle>
+            </Link>
           </Typography>
 
           {params.contentSlug && location.pathname.startsWith("/docs") && (
             <Tooltip title="edit current document">
               <Link to={`/editor/${params.projectSlug}/${params.contentSlug}`}>
-                <NavButton aria-label="editor">
+                <NavbarButton aria-label="editor">
                   <EditIcon />
-                </NavButton>
+                </NavbarButton>
               </Link>
             </Tooltip>
           )}
           <Tooltip title="create document">
             <Link to={"/editor/" + params.projectSlug ?? ""}>
-              <NavButton aria-label="editor">
+              <NavbarButton aria-label="editor">
                 <PostAddIcon />
-              </NavButton>
+              </NavbarButton>
             </Link>
           </Tooltip>
           <SyntaxMenu />
           <FavMenu />
-          <NavButton aria-label="toggle dark mode" onClick={toggleColorMode}>
+          <NavbarButton aria-label="toggle dark mode" onClick={toggleColorMode}>
             {mode === "light" ? (
               <Brightness4Icon sx={{ fontSize: 20 }} />
             ) : (
               <Brightness7Icon sx={{ fontSize: 20 }} />
             )}
-          </NavButton>
+          </NavbarButton>
           <SearchInputWrapper
             sx={{ cursor: "text" }}
             onClick={(e: React.MouseEvent<HTMLInputElement>) => {

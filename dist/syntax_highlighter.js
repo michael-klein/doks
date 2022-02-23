@@ -1,8 +1,9 @@
-import { g as getDefaultExportFromCjs, i as interopRequireDefault } from "./documents.js";
-import { h as _objectWithoutPropertiesLoose, _ as _extends, j as jsx } from "./main.js";
+import { a2 as getDefaultExportFromCjs, i as interopRequireDefault } from "./doks.js";
+import { b as _objectWithoutPropertiesLoose, _ as _extends, j as jsx } from "./main.js";
 import React__default from "react";
-import "rxjs";
 import "react-dom";
+import "rxjs";
+import "rxjs/operators";
 function _mergeNamespaces(n, m) {
   m.forEach(function(e) {
     e && typeof e !== "string" && !Array.isArray(e) && Object.keys(e).forEach(function(k) {

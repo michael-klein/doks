@@ -5,10 +5,10 @@ import { lazy, ReactChild, Suspense, useCallback } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/background";
 import { Footer } from "../components/footer";
+import { useComponentContext } from "../hooks/use_component_context";
 import { documents$ } from "../store/documents";
 
 const DocFetcher = lazy(() => import("../components/doc_fetcher"));
-const Sidebar = lazy(() => import("../components/sidebar"));
 const Content = lazy(() => import("../components/content"));
 const Navbar = lazy(() => import("../components/navbar"));
 
@@ -43,6 +43,7 @@ const Layout = ({ children }: { children: ReactChild }) => {
     },
     [params]
   );
+  const { Sidebar } = useComponentContext();
   return (
     <Background>
       <DocFetcher mode="docs"></DocFetcher>

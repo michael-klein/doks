@@ -1,55 +1,12 @@
 import { lazy, Suspense, useCallback } from "react";
-import { d as default_1$1, B as Box, c as createSvgIcon, i as interopRequireDefault, r as require$$2, a as documents$, C as Container } from "./documents.js";
-import { j as jsx, d as jsxs, F as Fragment, C as CircularProgress } from "./main.js";
-import { B as Button, G as Grid } from "./Button.js";
-import { R as Routes, a as Route, u as useParams, b as useNavigate } from "./doks.js";
-import "rxjs";
+import { R as Routes, a as Route, u as useParams, b as useNavigate, d as documents$, c as useComponentContext, B as Background, F as Footer } from "./doks.js";
+import { i as jsxs, j as jsx, F as Fragment, G as CircularProgress } from "./main.js";
+import { C as Container } from "./Container.js";
+import { G as Grid } from "./Grid.js";
 import "react-dom";
-const Background = default_1$1(Box)(({
-  theme
-}) => ({
-  background: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[100],
-  flex: "auto",
-  flexDirection: "column",
-  display: "flex"
-}));
-var KeyboardArrowUp = {};
-var _interopRequireDefault = interopRequireDefault.exports;
-Object.defineProperty(KeyboardArrowUp, "__esModule", {
-  value: true
-});
-var default_1 = KeyboardArrowUp.default = void 0;
-var _createSvgIcon = _interopRequireDefault(createSvgIcon);
-var _jsxRuntime = require$$2;
-var _default = (0, _createSvgIcon.default)(/* @__PURE__ */ (0, _jsxRuntime.jsx)("path", {
-  d: "M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"
-}), "KeyboardArrowUp");
-default_1 = KeyboardArrowUp.default = _default;
-const StyledFooter = default_1$1("footer")(({
-  theme
-}) => ({
-  background: theme.palette.primary.light,
-  padding: 20,
-  display: "flex",
-  justifyContent: "flex-end"
-}));
-const UpButton = default_1$1(Button)(({
-  theme
-}) => ({
-  color: theme.palette.primary.dark
-}));
-const Footer = () => {
-  return /* @__PURE__ */ jsx(StyledFooter, {
-    children: /* @__PURE__ */ jsxs(UpButton, {
-      onClick: () => {
-        window.scrollTo(0, 0);
-      },
-      children: [/* @__PURE__ */ jsx(default_1, {}), "up"]
-    })
-  });
-};
+import "rxjs";
+import "rxjs/operators";
 const DocFetcher = lazy(() => import("./doc_fetcher.js"));
-const Sidebar = lazy(() => import("./sidebar.js"));
 const Content = lazy(() => import("./content.js"));
 const Navbar = lazy(() => import("./navbar.js"));
 const Project = () => {
@@ -79,6 +36,9 @@ const Layout = ({
       });
     }
   }, [params]);
+  const {
+    Sidebar
+  } = useComponentContext();
   return /* @__PURE__ */ jsxs(Background, {
     children: [/* @__PURE__ */ jsx(DocFetcher, {
       mode: "docs"

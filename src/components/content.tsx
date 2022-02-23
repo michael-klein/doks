@@ -11,9 +11,8 @@ import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { documents$, modifyDocument } from "../store/documents";
 import { formatDate } from "../utils/format_date";
-import { MarkdownRenderer } from "./markdown_renderer";
-import { TableOfContents } from "./table_of_contents";
 import { useParams } from "react-router-dom";
+import { useComponentContext } from "../hooks/use_component_context";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   display: "flex",
   alignItems: "start",
@@ -62,6 +61,7 @@ export const Content = () => {
       }
     }
   }, [params.headingIndex]);
+  const { TableOfContents, MarkdownRenderer } = useComponentContext();
   return (
     <ContentWrapper item xs={9}>
       <Card

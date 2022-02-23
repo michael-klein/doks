@@ -1,6 +1,7 @@
 {
     "name": "doks",
     "version": "0.1.7",
+    "types": "./doks.d.ts",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build && npx uglifyjs-folder dist -eo dist/min -x .js"
